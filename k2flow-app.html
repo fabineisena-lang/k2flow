@@ -1586,7 +1586,8 @@ function renderWA(){
     <div style="font-size:10px;color:var(--t3);margin-top:4px">instância: ${inst}</div>
   </div>`;
 
-  evCall('chat/findChats/'+inst, 'POST', {})
+  /* Evolution API v2: tenta /chat/findChats primeiro, depois /chat/findChats com where */
+  evCall('chat/findChats/'+inst, 'POST', { where:{}, limit:50 })
     .then(res=>{
       console.log('[K2 Flow] findChats raw:', JSON.stringify(res).substring(0,500));
 
@@ -1596,8 +1597,13 @@ function renderWA(){
       else if(Array.isArray(res?.data)) raw = res.data;
       else if(Array.isArray(res?.chats)) raw = res.chats;
       else if(res && typeof res === 'object'){
-        const vals = Object.values(res);
-        if(vals.length && typeof vals[0] === 'object') raw = vals;
+        /* Objeto único — embala em array */
+        if(res.id || res.remoteJid) raw = [res];
+        /* Objeto com chaves numéricas */
+        else {
+          const vals = Object.values(res);
+          if(vals.length && vals[0] && typeof vals[0] === 'object') raw = vals;
+        }
       }
 
       if(!raw.length){
@@ -1616,11 +1622,12 @@ function renderWA(){
 
       /* Mapeia para formato interno */
       const reais = raw
-        .filter(c=> c && (c.id||c.remoteJid) && !((c.id||c.remoteJid)||'').includes('g.us'))
-        .slice(0,50)
+        .filter(c=> c && (c.id||c.remoteJid))
+        .slice(0,60)
         .map((c)=>{
-          const jid = c.id||c.remoteJid||'';
-          const num = jid.split('@')[0].split(':')[0];
+          const jid = c.remoteJid||c.id||'';
+          if(jid.includes('g.us')) return null; /* ignora grupos */
+          const num = jid.split('@')[0].split(':')[0].replace(/\D/g,'');
           const nome = c.pushName||c.name||c.verifiedName||c.notify||num||'Contato';
           const lastMsg = c.lastMessage||c.messages?.[0]||{};
           const ultima =
@@ -1629,16 +1636,17 @@ function renderWA(){
             lastMsg.imageMessage?.caption ||
             (lastMsg.audioMessage ? '🎤 Áudio' : '') ||
             (lastMsg.documentMessage ? '📄 Documento' : '') ||
-            c.lastMessageText || c.text || 'Nova mensagem';
-          const ts = lastMsg.messageTimestamp||c.lastMessageTimestamp||c.updatedAt||0;
+            c.lastMessageText || c.text || '💬 Mensagem';
+          const ts = lastMsg.messageTimestamp||c.lastMessageTimestamp||c.updatedAt||c.t||0;
           const hora = ts ? new Date(Number(ts)*1000).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
           return {
-            id:'wa-'+num, jid, nome, num, hora,
-            ultima: ultima.toString().substring(0,80),
+            id:'wa-'+(num||jid.replace(/\W/g,'')),
+            jid, nome, num, hora,
+            ultima: String(ultima).substring(0,80),
             status:'aberta', ia:false, msgs:[],
             unread: c.unreadCount||c.unreadMessages||0
           };
-        });
+        }).filter(Boolean);
 
       if(!reais.length){
         el.innerHTML=`<div style="padding:16px;text-align:center;font-size:11px;color:var(--t3)">
