@@ -1101,7 +1101,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 <script>
 const SB_URL='https://xlxquingaqgselwfoyki.supabase.co';
 const SB_KEY='sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
-const EV_URL_DEFAULT='http://145.223.29.155:8080';
+const EV_URL_DEFAULT='http://appk2-evolution-api.k8wm1v.easypanel.host';
 
 let hubAtivo=null,iaOn=true,currentConv=null,agOffset=0;
 
@@ -1213,6 +1213,8 @@ const PAGE_META={
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
   checkAuth();
+  carregarConfig();
+  carregarCRM();
   renderDashAgenda();
   renderAgenda();
   renderWA();
@@ -1229,6 +1231,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   window._currentModal='modal-ag';
 });
 
+function carregarConfig(){
+  const defaults={'ev-url':'http://appk2-evolution-api.k8wm1v.easypanel.host','ev-apikey':'429683C4C977415CAAFCCE10F7D57E11','ev-inst':'','cfg-ai-key':'','cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?','gemini-key':'','cfg-n8n-url':'https://n8n.vps1170.panel.speedfy.host','cfg-n8n-key':'','cfg-nome':'','cfg-tel':'','cfg-end':'','cfg-open':'08:00','cfg-close':'18:00','cfg-link':''};
+  Object.keys(defaults).forEach(k=>{const saved=localStorage.getItem('k2cfg_'+k);const el=document.getElementById(k);if(el)el.value=saved!==null?saved:defaults[k];});
+  if(localStorage.getItem('k2cfg_google')==='1'){const el=document.getElementById('google-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
+  if(localStorage.getItem('k2cfg_meta')==='1'){const el=document.getElementById('meta-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
+}
 function checkAuth(){
   const imp=localStorage.getItem('k2_impersonando');
   if(imp==='1'){document.getElementById('mbanner').classList.add('show');document.getElementById('mbanner-nome').textContent=localStorage.getItem('k2_tenant_nome')||'Cliente';}
@@ -1371,7 +1379,30 @@ function conectarGoogle(){
 /* ── WHATSAPP ── */
 function renderWA(){
   const el=document.getElementById('wa-conv-list');if(!el)return;
-  el.innerHTML=CONVS.map(c=>`<div class="wci" id="wci-${c.id}" onclick="openConv('${c.id}')"><div class="wc-av">${c.nome.charAt(0)}</div><div class="wc-info"><div class="wc-nome">${c.nome}</div><div class="wc-msg">${c.ultima}</div></div><div class="wc-meta"><div class="wc-hora">${c.hora}</div>${c.status==='aberta'?'<div class="wc-badge">1</div>':''}${c.ia?'<span class="wc-ia">IA</span>':''}</div></div>`).join('');
+  el.innerHTML=CONVS.map(c=>`<div class="wci" id="wci-${c.id}" onclick="openConv('${c.id}')"><div class="wc-av" style="background:${c.ia?'var(--pu-l)':'var(--bl-l)'};color:${c.ia?'var(--pu)':'var(--bl)'}">${c.nome.charAt(0).toUpperCase()}</div><div class="wc-info"><div class="wc-nome">${c.nome}</div><div class="wc-msg">${c.ultima}</div></div><div class="wc-meta"><div class="wc-hora">${c.hora}</div>${c.status==='aberta'?'<div class="wc-badge">1</div>':''}${c.ia?'<span class="wc-ia">IA</span>':''}</div></div>`).join('');
+  /* Tenta buscar conversas reais da Evolution API */
+  const url=localStorage.getItem('k2cfg_ev-url')||EV_URL_DEFAULT;
+  const key=localStorage.getItem('k2cfg_ev-apikey')||'';
+  const inst=localStorage.getItem('k2cfg_ev-inst')||'';
+  if(!key||!inst)return;
+  fetch(`${url}/chat/findChats/${inst}`,{headers:{'apikey':key}})
+    .then(r=>r.json())
+    .then(chats=>{
+      if(!Array.isArray(chats)||!chats.length)return;
+      const reais=chats.slice(0,20).map((c,i)=>({
+        id:'real-'+i,
+        nome:c.pushName||c.name||c.id?.split('@')[0]||'Contato',
+        num:c.id?.split('@')[0]||'',
+        status:'aberta',ia:false,hora:'agora',
+        ultima:c.lastMessage?.conversation||c.lastMessage?.extendedTextMessage?.text||'Nova mensagem',
+        msgs:[]
+      }));
+      if(reais.length>0){
+        CONVS=[...reais,...CONVS.filter(c=>c.id.startsWith('c'))];
+        el.innerHTML=CONVS.map(c=>`<div class="wci" id="wci-${c.id}" onclick="openConv('${c.id}')"><div class="wc-av">${c.nome.charAt(0).toUpperCase()}</div><div class="wc-info"><div class="wc-nome">${c.nome}</div><div class="wc-msg">${c.ultima}</div></div><div class="wc-meta"><div class="wc-hora">${c.hora}</div>${c.status==='aberta'?'<div class="wc-badge">1</div>':''}</div></div>`).join('');
+        document.getElementById('nb-wa').textContent=reais.length;
+      }
+    }).catch(()=>{});
 }
 function filterConvs(q){
   const f=CONVS.filter(c=>c.nome.toLowerCase().includes(q.toLowerCase()));
@@ -1416,29 +1447,94 @@ function toggleIA(){iaOn=!iaOn;updateIABtn();toast(iaOn?'IA reativada':'IA pausa
 function updateIABtn(){const btn=document.getElementById('ia-toggle');if(!btn)return;btn.classList.toggle('ia-on',iaOn);btn.textContent=iaOn?'🤖 IA Ativa':'🤖 IA Pausada';}
 
 /* ── CRM ── */
-function renderKanban(filtro){
+/* ── CRM: drag & drop ── */
+let dragCard=null,dragColId=null;
+
+function renderKanban(){
   const board=document.getElementById('kanban-board');if(!board)return;
-  board.innerHTML=CRM_COLS.map(col=>`<div class="kanban-col"><div class="kanban-col-hd" style="background:${col.bg};border-color:${col.cor}20"><span class="kanban-col-nome" style="color:${col.cor}">${col.nome}</span><span class="kanban-col-n" style="background:${col.cor}20;color:${col.cor}">${col.cards.length}</span></div><div class="kanban-cards">${col.cards.map(c=>`<div class="kcard"><div class="kcard-nome">${c.nome}</div><div class="kcard-meta"><span class="badge ${c.tagCor}">${c.tag}</span>${c.val?`<span style="font-size:10px;font-weight:700;color:var(--ok)">${c.val}</span>`:''}</div>${c.wa?`<div style="font-size:10px;color:var(--t3);margin-top:4px;display:flex;align-items:center;gap:4px"><svg width="10" height="10" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5"/></svg>${c.wa}</div>`:''}  <div class="kcard-footer"><div class="kcard-resp"><div class="kcard-av">${c.resp.charAt(0)}</div>${c.resp}</div><div style="display:flex;gap:4px">${c.wa?`<button style="background:#E8FFF0;border:1px solid #25D36630;color:#25D366;border-radius:5px;padding:3px 7px;font-size:9px;font-weight:700" onclick="window.open('https://wa.me/${c.wa}','_blank')">WhatsApp</button>`:''}  <span style="font-size:10px;color:var(--t3)">${c.data}</span></div></div></div>`).join('')}<button class="add-card" onclick="openModal('modal-lead')">+ Adicionar</button></div></div>`).join('');
+  board.innerHTML=CRM_COLS.map(col=>`
+    <div class="kanban-col">
+      <div class="kanban-col-hd" style="background:${col.bg};border-color:${col.cor}20">
+        <span class="kanban-col-nome" style="color:${col.cor}">${col.nome}</span>
+        <span class="kanban-col-n" style="background:${col.cor}20;color:${col.cor}">${col.cards.length}</span>
+      </div>
+      <div class="kanban-cards" id="kc-${col.id}"
+        ondragover="event.preventDefault();this.style.background='#E0F2FE'"
+        ondragleave="this.style.background=''"
+        ondrop="dropCard(event,'${col.id}')">
+        ${col.cards.map(c=>`
+          <div class="kcard" draggable="true"
+            id="kcard-${c.id}"
+            ondragstart="dragCard='${c.id}';dragColId='${col.id}';this.style.opacity='.5'"
+            ondragend="this.style.opacity='1'">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+              <div class="kcard-nome">${c.nome}</div>
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" style="color:var(--t3);cursor:grab" title="Arraste para mover"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg>
+            </div>
+            <div class="kcard-meta">
+              <span class="badge ${c.tagCor}">${c.tag}</span>
+              ${c.val?`<span style="font-size:10px;font-weight:700;color:var(--ok)">${c.val}</span>`:''}
+            </div>
+            ${c.wa?`<div style="font-size:10px;color:var(--t3);margin-top:5px;display:flex;align-items:center;gap:4px">
+              <svg width="10" height="10" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5"/></svg>
+              ${c.wa}
+            </div>`:''}
+            <div class="kcard-footer">
+              <div class="kcard-resp"><div class="kcard-av">${c.resp.charAt(0)}</div>${c.resp}</div>
+              <div style="display:flex;gap:4px;align-items:center">
+                ${c.wa?`<button onclick="window.open('https://wa.me/${c.wa}','_blank')" style="background:#E8FFF0;border:1px solid #25D36640;color:#25D366;border-radius:5px;padding:3px 7px;font-size:9px;font-weight:700">WhatsApp</button>`:''}
+                <span style="font-size:10px;color:var(--t3)">${c.data}</span>
+              </div>
+            </div>
+          </div>`).join('')}
+        <button class="add-card" onclick="openModal('modal-lead')">+ Adicionar</button>
+      </div>
+    </div>`).join('');
+  salvarCRM();
 }
-function filterKanban(q){
-  CRM_COLS.forEach(col=>{col._filtered=col.cards.filter(c=>c.nome.toLowerCase().includes(q.toLowerCase()));});
-  renderKanban(true);
-}
-function filterKanbanCanal(canal){
-  if(!canal){renderKanban();return;}
-  CRM_COLS.forEach(col=>{col.cards=col.cards.filter(c=>c.tag===canal||!canal);});
+
+function dropCard(e,toColId){
+  e.preventDefault();
+  document.querySelectorAll('.kanban-cards').forEach(el=>el.style.background='');
+  if(!dragCard||!dragColId||dragColId===toColId)return;
+  const fromCol=CRM_COLS.find(c=>c.id===dragColId);
+  const toCol=CRM_COLS.find(c=>c.id===toColId);
+  if(!fromCol||!toCol)return;
+  const idx=fromCol.cards.findIndex(c=>c.id===dragCard);
+  if(idx===-1)return;
+  const [card]=fromCol.cards.splice(idx,1);
+  toCol.cards.unshift(card);
+  dragCard=null;dragColId=null;
   renderKanban();
+  toast(`Lead movido para "${toCol.nome}"!`,'✅');
 }
+
+function filterKanban(q){renderKanban();}
+function filterKanbanCanal(v){renderKanban();}
+
 function criarLead(){
   const nome=document.getElementById('lead-nome').value.trim();
   if(!nome){toast('Informe o nome do lead','⚠️');return;}
   const canal=document.getElementById('lead-canal').value;
-  const lead={id:'k'+Date.now(),nome,tag:canal,tagCor:'bk-ok',resp:'IA',data:'agora',val:''};
+  const wa=document.getElementById('lead-wa').value.trim().replace(/\D/g,'');
+  const lead={id:'k'+Date.now(),nome,tag:canal,tagCor:'bk-ok',resp:'IA',data:'agora',val:'',wa};
   CRM_COLS[0].cards.unshift(lead);
   renderKanban();closeModal('modal-lead');
-  toast(`Lead "${nome}" adicionado ao CRM!`,'✅');
+  toast(`Lead "${nome}" adicionado!`,'✅');
   document.getElementById('lead-nome').value='';
+  document.getElementById('lead-wa').value='';
   document.getElementById('nb-crm').textContent=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
+}
+
+function salvarCRM(){
+  try{localStorage.setItem('k2crm',JSON.stringify(CRM_COLS));}catch(e){}
+}
+
+function carregarCRM(){
+  try{
+    const saved=localStorage.getItem('k2crm');
+    if(saved){CRM_COLS=JSON.parse(saved);}
+  }catch(e){}
 }
 
 /* ── CLIENTES ── */
@@ -1526,19 +1622,35 @@ function conectarN8n(){toast('Conectando ao n8n...','🔄');setTimeout(()=>toast
 
 /* ── CONFIG ── */
 function salvarEvolution(){
-  const url=document.getElementById('ev-url').value;
-  const key=document.getElementById('ev-apikey').value;
-  const inst=document.getElementById('ev-inst').value;
+  const url=document.getElementById('ev-url').value.trim();
+  const key=document.getElementById('ev-apikey').value.trim();
+  const inst=document.getElementById('ev-inst').value.trim();
   if(!key||!inst){toast('Preencha API Key e nome da instância','⚠️');return;}
-  localStorage.setItem('ev-url',url);
-  localStorage.setItem('ev-apikey',key);
-  localStorage.setItem('ev-inst',inst);
-  toast('Configurações WhatsApp salvas!','✅');
+  localStorage.setItem('k2cfg_ev-url',url);
+  localStorage.setItem('k2cfg_ev-apikey',key);
+  localStorage.setItem('k2cfg_ev-inst',inst);
+  /* atualiza badge */
+  const badge=document.getElementById('badge-wa');if(badge){badge.textContent='✅ Salvo';badge.style.background='var(--ok-l)';badge.style.color='var(--ok)';}
+  toast('WhatsApp configurado e salvo!','✅');
+}
+function salvarIA(){
+  const key=document.getElementById('cfg-ai-key').value;
+  const persona=document.getElementById('cfg-ai-persona').value;
+  localStorage.setItem('k2cfg_cfg-ai-key',key);
+  localStorage.setItem('k2cfg_cfg-ai-persona',persona);
+  const badge=document.getElementById('badge-claude');if(badge){badge.textContent='✅ Salvo';badge.style.background='var(--ok-l)';badge.style.color='var(--ok)';}
+  toast('Claude API configurado e salvo!','🤖');
+}
+function salvarDados(){
+  ['cfg-nome','cfg-tel','cfg-end','cfg-open','cfg-close','cfg-link'].forEach(k=>{
+    const el=document.getElementById(k);if(el)localStorage.setItem('k2cfg_'+k,el.value);
+  });
+  toast('Dados da clínica salvos!','✅');
 }
 function testarConexaoWA(){
-  const url=document.getElementById('ev-url').value||EV_URL_DEFAULT;
-  const key=document.getElementById('ev-apikey').value;
-  const inst=document.getElementById('ev-inst').value;
+  const url=(localStorage.getItem('k2cfg_ev-url')||document.getElementById('ev-url').value||EV_URL_DEFAULT).trim();
+  const key=(localStorage.getItem('k2cfg_ev-apikey')||document.getElementById('ev-apikey').value||'').trim();
+  const inst=(localStorage.getItem('k2cfg_ev-inst')||document.getElementById('ev-inst').value||'').trim();
   if(!key||!inst){toast('Salve as configurações antes de testar','⚠️');return;}
   toast('Testando conexão...','🔄');
   fetch(`${url}/instance/connectionState/${inst}`,{headers:{'apikey':key}})
@@ -1553,10 +1665,10 @@ function testarConexaoWA(){
     .catch(()=>{toast('Erro ao conectar — verifique URL e API Key','❌');});
 }
 function gerarQRCode(){
-  const url=document.getElementById('ev-url').value||EV_URL_DEFAULT;
-  const key=document.getElementById('ev-apikey').value;
-  const inst=document.getElementById('ev-inst').value;
-  if(!key||!inst){toast('Salve as configurações antes','⚠️');return;}
+  const url=(localStorage.getItem('k2cfg_ev-url')||document.getElementById('ev-url').value||EV_URL_DEFAULT).trim();
+  const key=(localStorage.getItem('k2cfg_ev-apikey')||document.getElementById('ev-apikey').value||'').trim();
+  const inst=(localStorage.getItem('k2cfg_ev-inst')||document.getElementById('ev-inst').value||'').trim();
+  if(!key||!inst){toast('Salve a configuração primeiro','⚠️');return;}
   const box=document.getElementById('qr-box');
   box.style.display='block';
   document.getElementById('qr-dot').style.background='#D97706';
@@ -1600,8 +1712,6 @@ function gerarQRCode(){
       toast('Evolution API offline','❌');
     });
 }
-function salvarIA(){toast('IA configurada!','🤖');}
-function salvarDados(){toast('Dados da clínica salvos!','✅');}
 function conectarGoogleOAuth(){
   toast('Redirecionando para o Google...','🔄');
   setTimeout(()=>{
@@ -1617,6 +1727,7 @@ function conectarMetaOAuth(){
     document.getElementById('meta-st').textContent='✅ Conectado';
     document.getElementById('meta-st').style.background='var(--ok-l)';
     document.getElementById('meta-st').style.color='var(--ok)';
+    localStorage.setItem('k2cfg_meta','1');
     toast('Meta conectado! Facebook, Instagram e Ads disponíveis.','✅');
   },2000);
 }
