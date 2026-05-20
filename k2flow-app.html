@@ -1586,8 +1586,7 @@ function renderWA(){
     <div style="font-size:10px;color:var(--t3);margin-top:4px">instância: ${inst}</div>
   </div>`;
 
-  /* Busca chats com números reais via messages endpoint */
-  evCall('message/findMessages/'+inst, 'POST', { where:{ key:{ fromMe: true } }, limit:50 })
+  evCall('chat/findChats/'+inst, 'POST', { limit:50 })
     .then(async res=>{
       console.log('[K2 Flow] findChats raw:', JSON.stringify(res).substring(0,500));
 
