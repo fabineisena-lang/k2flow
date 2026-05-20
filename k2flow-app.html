@@ -431,6 +431,13 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 .fin-tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
 .fin-per-btn{padding:5px 10px;font-size:11px;font-weight:600;border:none;background:var(--light2);color:var(--t2);cursor:pointer;transition:all .15s}
 .fin-per-btn.on{background:var(--brand);color:#fff}
+.fin-aba{padding:9px 16px;font-size:12px;font-weight:600;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--t3);cursor:pointer;white-space:nowrap;transition:all .15s}
+.fin-aba.on{color:var(--brand);border-bottom-color:var(--brand)}
+.cfg-aba{padding:9px 16px;font-size:12px;font-weight:600;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--t3);cursor:pointer;white-space:nowrap;transition:all .15s}
+.cfg-aba.on{color:var(--brand);border-bottom-color:var(--brand)}
+.cfg-aba-h{padding:7px 14px;font-size:12px;font-weight:500;border:none;border-radius:6px;background:transparent;color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.cfg-aba-h:hover{background:var(--bd);color:var(--t1)}
+.cfg-aba-h.on{background:var(--dark);color:#fff;font-weight:600}
 
 /* ── CONNECT BUTTONS ── */
 .oauth-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--r);border:1px solid var(--bd);background:var(--light2);transition:all .2s;width:100%;text-align:left;margin-bottom:10px}
@@ -585,30 +592,218 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- DASHBOARD -->
   <div class="page on content" id="page-dash">
-    <div class="stats stats-4">
-      <div class="stat"><div class="stat-lbl">MRR</div><div class="stat-val" style="color:var(--ok)">R$14.980</div><div class="stat-sub">↑ 12% vs mês anterior</div></div>
-      <div class="stat"><div class="stat-lbl">Inadimplência</div><div class="stat-val" style="color:var(--er)">R$3.200</div><div class="stat-sub">2 clientes em atraso</div></div>
-      <div class="stat"><div class="stat-lbl">WhatsApp s/ resposta</div><div class="stat-val" style="color:var(--wa)" id="st-wa-sr">5</div><div class="stat-sub">Aguardando retorno</div></div>
-      <div class="stat"><div class="stat-lbl">Leads no CRM</div><div class="stat-val" style="color:var(--bl)">23</div><div class="stat-sub">3 novos hoje</div></div>
+
+    <!-- Header com filtros -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Dashboard</div>
+        <div style="font-size:11px;color:var(--t3)">Visão geral do seu negócio</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
+          <button class="fin-per-btn on" id="dash-per-btn-7" onclick="setDashPeriodo(7,this)">7D</button>
+          <button class="fin-per-btn" onclick="setDashPeriodo(30,this)" style="border-left:1px solid var(--bd)">30D</button>
+          <button class="fin-per-btn" onclick="setDashPeriodo(90,this)" style="border-left:1px solid var(--bd)">90D</button>
+        </div>
+        <button class="btn-prim" onclick="openActionModal()" style="font-size:11px">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span id="btn-prim-txt">Novo Agendamento</span>
+        </button>
+      </div>
     </div>
-    <div class="grid3">
-      <div class="card">
-        <div class="card-h">Central de Alertas <span class="badge bk-r"><span class="bk-dot"></span>5 ativos</span></div>
-        <div class="alert-list">
-          <div class="al al-r"><svg class="al-ico" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>3 tarefas vencidas no Work Hub</div>
-          <div class="al al-w"><svg class="al-ico" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>5 conversas WhatsApp sem resposta há +2h</div>
-          <div class="al al-r"><svg class="al-ico" fill="none" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Campanha "Lançamento" com saldo baixo e CPL alto</div>
-          <div class="al al-b"><svg class="al-ico" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg>2 leads no CRM há +7 dias sem follow-up</div>
-          <div class="al al-w"><svg class="al-ico" fill="none" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Pagamento vencido — Teste 2 — R$3.200</div>
+
+    <!-- Meta de Receita + KPIs -->
+    <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- Meta de Receita -->
+      <div class="card" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:12px;font-weight:700;color:var(--t1)">Meta de Receita</div>
+          <button onclick="abrirMetaModal()" style="background:none;border:none;color:var(--brand);font-size:11px;cursor:pointer;font-weight:600">Editar meta</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:22px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--ok)" id="dash-meta-atual">R$0</span>
+          <span style="font-size:12px;color:var(--t3)">/ <span id="dash-meta-total">R$10.000</span></span>
+        </div>
+        <div style="height:8px;background:var(--bd);border-radius:99px;overflow:hidden;margin-bottom:6px">
+          <div id="dash-meta-bar" style="height:100%;background:linear-gradient(90deg,var(--ok),#16a34a);border-radius:99px;width:0%;transition:width .6s"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3)">
+          <span id="dash-meta-pct">0% alcançado</span>
+          <span id="dash-meta-falta">Faltam R$10.000</span>
         </div>
       </div>
-      <div class="card"><div class="card-h">Agenda Hoje <button class="card-link" onclick="goPage('agenda',null)">Ver tudo →</button></div><div class="ag-list" id="dash-agenda"></div></div>
+
+      <!-- KPIs -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div class="card" style="padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:28px;height:28px;background:var(--brand-l);border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span style="font-size:11px;color:var(--t3)">Faturamento do Mês</span>
+          </div>
+          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--ok)" id="dash-fat">R$0</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px">Recebido: <span id="dash-rec">R$0</span> | Pendente: <span id="dash-pend">R$0</span></div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:28px;height:28px;background:#3B82F620;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#3B82F6" stroke-width="2"/><circle cx="9" cy="7" r="4" stroke="#3B82F6" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span style="font-size:11px;color:var(--t3)">Novos Leads</span>
+          </div>
+          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:#3B82F6" id="dash-leads">0</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px">via WhatsApp e CRM</div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:28px;height:28px;background:#22C55E20;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 1 18" stroke="#22C55E" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span style="font-size:11px;color:var(--t3)">WhatsApp s/ Resposta</span>
+          </div>
+          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--wa)" id="st-wa-sr">0</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px">aguardando retorno</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Gráfico + Alertas -->
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:14px;margin-bottom:14px">
+
+      <!-- Análise Financeira -->
+      <div class="card" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--t1)">Análise Financeira Consolidada</div>
+            <div style="font-size:10px;color:var(--t3)">Faturamento Total · MRR · Despesas</div>
+          </div>
+        </div>
+        <canvas id="dash-chart-financeiro" height="140"></canvas>
+        <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:#22C55E"></div><span style="font-size:10px;color:var(--t3)">Faturamento</span></div>
+          <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:#F26419"></div><span style="font-size:10px;color:var(--t3)">MRR</span></div>
+          <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:#EF4444"></div><span style="font-size:10px;color:var(--t3)">Despesas</span></div>
+        </div>
+      </div>
+
+      <!-- Central de Alertas -->
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div class="card-h" style="margin:0">Central de Alertas</div>
+          <span id="dash-alerta-badge" class="badge bk-r"><span class="bk-dot"></span>0 ativos</span>
+        </div>
+        <div class="alert-list" id="dash-alertas-lista">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando alertas...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid 3 colunas: Tarefas Diárias / Agenda Hoje / Atividade Recente -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- Tarefas Diárias -->
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:700">📋 Tarefas para Hoje</div>
+          <button onclick="goPage('hub',null)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todas →</button>
+        </div>
+        <div id="dash-tasks-hoje" style="max-height:160px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">
+            <div style="font-size:24px;margin-bottom:6px">📋</div>
+            Nenhuma tarefa para hoje
+            <br><button onclick="goPage('hub',null)" style="margin-top:8px;background:var(--brand);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:10px;cursor:pointer">Criar Tarefa</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agenda Hoje -->
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:700">📅 Agenda Hoje</div>
+          <button onclick="goPage('agenda',null)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver tudo →</button>
+        </div>
+        <div class="ag-list" id="dash-agenda" style="max-height:160px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">
+            <div style="font-size:24px;margin-bottom:6px">📅</div>
+            Nenhum evento hoje
+          </div>
+        </div>
+      </div>
+
+      <!-- Próximas Reuniões -->
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:700">🤝 Próximas Reuniões</div>
+          <button onclick="goPage('agenda',null)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver agenda →</button>
+        </div>
+        <div id="dash-reunioes" style="max-height:160px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">
+            <div style="font-size:24px;margin-bottom:6px">🤝</div>
+            Nenhuma reunião agendada
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid 3 colunas: Tarefas Atrasadas / Lembretes / Conteúdos -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- Tarefas Atrasadas -->
+      <div class="card" style="border:1px solid rgba(239,68,68,.2)">
+        <div style="padding:12px 16px;border-bottom:1px solid rgba(239,68,68,.15);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:700;color:#EF4444">⚠️ Tarefas Atrasadas</div>
+          <button onclick="goPage('hub',null)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todas →</button>
+        </div>
+        <div id="dash-tasks-atrasadas" style="max-height:160px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">
+            <div style="font-size:24px;margin-bottom:4px">⚠️</div>
+            Nenhuma tarefa atrasada 🎉
+          </div>
+        </div>
+      </div>
+
+      <!-- Lembretes Rápidos -->
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:700">📌 Lembretes Rápidos</div>
+        </div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;gap:6px">
+          <input id="dash-lembrete-inp" class="inp" placeholder="Adicionar lembrete..." style="flex:1;font-size:11px;padding:6px 10px" onkeydown="if(event.key==='Enter')adicionarLembrete()">
+          <button onclick="adicionarLembrete()" style="background:var(--brand);border:none;color:#fff;border-radius:7px;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+        </div>
+        <div id="dash-lembretes-lista" style="max-height:120px;overflow-y:auto">
+          <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Nenhum lembrete ainda</div>
+        </div>
+      </div>
+
+      <!-- Conteúdos do Dia -->
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:700">🎨 Conteúdos do Dia</div>
+          <button onclick="goPage('sh',null)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver calendário →</button>
+        </div>
+        <div id="dash-conteudos" style="max-height:160px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">
+            <div style="font-size:24px;margin-bottom:6px">🎨</div>
+            Nenhum conteúdo para hoje
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claude AI Analysis -->
     <div class="ai-box">
-      <div class="ai-box-h"><div class="ai-box-ico"><svg width="11" height="11" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ai-box-title">AI Growth Engine — Análise Geral · Agora</span></div>
-      <div class="ai-box-body">A operação tem <strong>5 conversas sem resposta</strong> no WhatsApp e <strong>2 leads parados há +7 dias</strong> no CRM. No financeiro, o MRR cresceu 12% mas há <strong>R$3.200 em inadimplência</strong>. Campanha "Lançamento" com <strong>CPL elevado e saldo baixo</strong>. <strong>Prioridade:</strong> WhatsApp → follow-up CRM → pausar campanha para ajuste.</div>
+      <div class="ai-box-h">
+        <div class="ai-box-ico"><svg width="11" height="11" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="ai-box-title">AI Growth Engine — Análise Geral · Agora</span>
+        <button onclick="atualizarAnaliseDash()" style="margin-left:auto;background:var(--brand);border:none;color:#fff;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer">↻ Analisar</button>
+      </div>
+      <div class="ai-box-body" id="dash-ai-body">Carregando análise da operação...</div>
     </div>
   </div>
+
 
   <!-- AGENDA -->
   <div class="page content" id="page-agenda">
@@ -787,7 +982,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   </div>
 
   <!-- WORK HUB PAGE -->
-  <div class="page" id="page-workhub">
+  <div class="page" id="page-hub">
     <div class="wh-layout">
       <div class="wh-sidebar">
         <div style="padding:12px 14px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--bd)">Projetos</div>
@@ -825,7 +1020,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   </div>
 
   <!-- SOCIAL HUB PAGE -->
-  <div class="page content" id="page-socialhub">
+  <div class="page content" id="page-sh">
     <div class="sh-grid" id="sh-platforms"></div>
     <div class="grid2">
       <div class="card">
@@ -1046,20 +1241,180 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- RELATÓRIOS -->
   <div class="page content" id="page-relatorios">
-    <div class="sh-grid" style="margin-bottom:20px" id="rel-platforms"></div>
-    <div class="card"><div class="card-h">Relatório Consolidado — Maio/2026</div><div style="text-align:center;padding:30px;color:var(--t3);font-size:13px">Conecte suas plataformas em <strong>Configurações → Integrações</strong> para ver métricas aqui automaticamente.<br><br><button class="btn-prim" onclick="goPage('config',null)">Conectar Plataformas</button></div></div>
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Relatórios Operacionais</div>
+        <div style="font-size:11px;color:var(--t3)">Saúde geral da operação · atualizado agora</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-prim" onclick="atualizarRelatorios()" style="font-size:11px">↻ Atualizar</button>
+        <button class="btn-sec" onclick="gerarRelatorioGeral()" style="font-size:11px">📤 Exportar</button>
+      </div>
+    </div>
+
+    <!-- Score geral -->
+    <div style="background:var(--dark);border-radius:14px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="text-align:center">
+        <div style="font-size:48px;font-weight:900;font-family:'Barlow',sans-serif;line-height:1" id="rel-score">—</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px">Score operacional</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:var(--brand);margin-bottom:6px" id="rel-score-titulo">Calculando...</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.6" id="rel-score-desc">Analisando todos os módulos da operação...</div>
+      </div>
+      <button onclick="analisarOperacaoIA()" style="background:var(--brand);border:none;color:#fff;border-radius:8px;padding:10px 18px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer">🤖 Análise IA</button>
+    </div>
+
+    <!-- Grid de alertas -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+      <!-- WhatsApp sem resposta -->
+      <div class="card" style="border-left:3px solid #EF4444">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;background:#EF444420;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#EF4444" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700">WhatsApp sem resposta +7 dias</div>
+              <div style="font-size:10px;color:var(--t3)">Contatos esquecidos</div>
+            </div>
+          </div>
+          <span id="rel-wa-badge" style="background:#EF444420;color:#EF4444;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
+        </div>
+        <div id="rel-wa-lista" style="max-height:200px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando...</div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--bd)">
+          <button onclick="goPage('wa',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todos no WhatsApp →</button>
+        </div>
+      </div>
+
+      <!-- Leads esquecidos no CRM -->
+      <div class="card" style="border-left:3px solid #F59E0B">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;background:#F59E0B20;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="#F59E0B" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700">Leads parados no CRM +7 dias</div>
+              <div style="font-size:10px;color:var(--t3)">Sem movimentação recente</div>
+            </div>
+          </div>
+          <span id="rel-crm-badge" style="background:#F59E0B20;color:#F59E0B;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
+        </div>
+        <div id="rel-crm-lista" style="max-height:200px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando...</div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--bd)">
+          <button onclick="goPage('crm',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver CRM →</button>
+        </div>
+      </div>
+
+      <!-- Orçamentos parados -->
+      <div class="card" style="border-left:3px solid #8B5CF6">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;background:#8B5CF620;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#8B5CF6" stroke-width="1.5"/><polyline points="14 2 14 8 20 8" stroke="#8B5CF6" stroke-width="1.5"/><line x1="12" y1="18" x2="12" y2="12" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="15" x2="15" y2="15" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700">Orçamentos sem continuidade</div>
+              <div style="font-size:10px;color:var(--t3)">Enviados há +3 dias sem resposta</div>
+            </div>
+          </div>
+          <span id="rel-orc-badge" style="background:#8B5CF620;color:#8B5CF6;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
+        </div>
+        <div id="rel-orc-lista" style="max-height:200px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando...</div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--bd)">
+          <button onclick="goPage('orca',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver Orçamentos →</button>
+        </div>
+      </div>
+
+      <!-- Tarefas em atraso -->
+      <div class="card" style="border-left:3px solid #3B82F6">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;background:#3B82F620;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#3B82F6" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="#3B82F6" stroke-width="1.5"/></svg>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700">Tarefas em atraso</div>
+              <div style="font-size:10px;color:var(--t3)">Work Hub + Social Hub</div>
+            </div>
+          </div>
+          <span id="rel-task-badge" style="background:#3B82F620;color:#3B82F6;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
+        </div>
+        <div id="rel-task-lista" style="max-height:200px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando...</div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--bd)">
+          <button onclick="goPage('hub',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver Work Hub →</button>
+        </div>
+      </div>
+
+      <!-- Automações com problema -->
+      <div class="card" style="border-left:3px solid #EF4444">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;background:#EF444420;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="#EF4444" stroke-width="1.5"/><path d="M3 12h6M15 12h6M12 3v6M12 15v6" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700">Automações com falha</div>
+              <div style="font-size:10px;color:var(--t3)">n8n · workflows com erro</div>
+            </div>
+          </div>
+          <span id="rel-auto-badge" style="background:#EF444420;color:#EF4444;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
+        </div>
+        <div id="rel-auto-lista" style="max-height:200px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Verificando workflows n8n...</div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--bd)">
+          <button onclick="goPage('n8n',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver n8n Fluxos →</button>
+        </div>
+      </div>
+
+      <!-- Financeiro em risco -->
+      <div class="card" style="border-left:3px solid #22C55E">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;background:#22C55E20;border-radius:7px;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700">Financeiro — Alertas</div>
+              <div style="font-size:10px;color:var(--t3)">Inadimplência + vencimentos</div>
+            </div>
+          </div>
+          <span id="rel-fin-badge" style="background:#22C55E20;color:#22C55E;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
+        </div>
+        <div id="rel-fin-lista" style="max-height:200px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando...</div>
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid var(--bd)">
+          <button onclick="goPage('financeiro',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver Financeiro →</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- FINANCEIRO -->
   <div class="page content" id="page-financeiro">
 
-    <!-- Header com período -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
       <div>
-        <div style="font-size:17px;font-weight:800;font-family:'Barlow',sans-serif;color:var(--t1)">Financeiro — K2 Company</div>
-        <div style="font-size:11px;color:var(--t3)" id="fin-header-data">Competência · carregando...</div>
+        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Financeiro</div>
+        <div style="font-size:11px;color:var(--t3)" id="fin-header-data">Controle suas receitas, despesas e contas</div>
       </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
           <button class="fin-per-btn on" onclick="setFinPeriodo(1,this)">1M</button>
           <button class="fin-per-btn" onclick="setFinPeriodo(3,this)" style="border-left:1px solid var(--bd)">3M</button>
@@ -1067,109 +1422,220 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
           <button class="fin-per-btn" onclick="setFinPeriodo(12,this)" style="border-left:1px solid var(--bd)">12M</button>
           <button class="fin-per-btn" onclick="setFinPeriodo(24,this)" style="border-left:1px solid var(--bd)">2A</button>
         </div>
-        <button class="btn-prim" style="font-size:11px" onclick="abrirModalFinReceita()">+ Receita</button>
-        <button class="btn-sec" style="font-size:11px" onclick="abrirModalFinDespesa()">+ Despesa</button>
-        <button class="btn-sec" style="font-size:11px" onclick="abrirModalFinContrato()">+ Contrato</button>
-        <button class="btn-sec" style="font-size:11px" onclick="document.getElementById('fin-excel-input').click()">📎 Extrato</button>
+        <button onclick="abrirModalFinReceita()" style="background:#22C55E;border:none;color:#fff;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="22 7 12 17 7 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><polyline points="22 7 12 17 7 12" stroke="#fff" stroke-width="0"/><line x1="7" y1="12" x2="2" y2="17" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Venda Rápida
+        </button>
+        <button onclick="abrirModalFinDespesa()" style="background:#EF4444;border:none;color:#fff;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Lançar Despesa
+        </button>
+        <button onclick="abrirModalFinContrato()" style="background:var(--bd2);border:1px solid var(--bd);color:var(--t2);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer">+ Contrato</button>
+        <button onclick="document.getElementById('fin-excel-input').click()" style="background:var(--bd2);border:1px solid var(--bd);color:var(--t2);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer">📎 Extrato</button>
         <input type="file" id="fin-excel-input" accept=".csv,.xlsx,.xls" style="display:none" onchange="importarExtrato(this)">
       </div>
     </div>
 
-    <!-- KPIs linha 1 -->
-    <div class="stats stats-4" style="margin-bottom:12px">
-      <div class="stat" style="border-top:3px solid var(--ok)">
-        <div class="stat-lbl">MRR</div>
-        <div class="stat-val" id="fin-mrr" style="color:var(--ok)">R$0</div>
-        <div class="stat-sub">receita recorrente/mês</div>
-      </div>
-      <div class="stat" style="border-top:3px solid #4285F4">
-        <div class="stat-lbl">ARR</div>
-        <div class="stat-val" id="fin-arr" style="color:#4285F4">R$0</div>
-        <div class="stat-sub">projeção anual</div>
-      </div>
-      <div class="stat" style="border-top:3px solid var(--er)">
-        <div class="stat-lbl">Despesas do Mês</div>
-        <div class="stat-val" id="fin-desp" style="color:var(--er)">R$0</div>
-        <div class="stat-sub" id="fin-desp-sub">fixas + variáveis</div>
-      </div>
-      <div class="stat" style="border-top:3px solid var(--brand)">
-        <div class="stat-lbl">Margem Líquida</div>
-        <div class="stat-val" id="fin-margem">—</div>
-        <div class="stat-sub" id="fin-margem-cor">resultado do mês</div>
-      </div>
+    <!-- Abas -->
+    <div style="display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--bd);overflow-x:auto">
+      <button class="fin-aba on" onclick="setFinAba('geral',this)">• Visão Geral</button>
+      <button class="fin-aba" onclick="setFinAba('receber',this)">↑ Receber</button>
+      <button class="fin-aba" onclick="setFinAba('pagar',this)">↓ Pagar</button>
+      <button class="fin-aba" onclick="setFinAba('recorrentes',this)">↻ Recorrentes</button>
+      <button class="fin-aba" onclick="setFinAba('caixa',this)">$ Caixa</button>
+      <button class="fin-aba" onclick="setFinAba('relatorios',this)">📊 Relatórios</button>
     </div>
 
-    <!-- KPIs linha 2 -->
-    <div class="stats stats-4" style="margin-bottom:20px">
-      <div class="stat">
-        <div class="stat-lbl">A Receber (30d)</div>
-        <div class="stat-val" id="fin-areceber" style="color:var(--wa);font-size:18px">R$0</div>
-        <div class="stat-sub">em aberto</div>
-      </div>
-      <div class="stat">
-        <div class="stat-lbl">Inadimplência</div>
-        <div class="stat-val" id="fin-inadimp" style="color:var(--er);font-size:18px">R$0</div>
-        <div class="stat-sub" id="fin-inadimp-sub">em atraso</div>
-      </div>
-      <div class="stat">
-        <div class="stat-lbl">A Pagar (30d)</div>
-        <div class="stat-val" id="fin-apagar" style="color:var(--er);font-size:18px">R$0</div>
-        <div class="stat-sub">compromissos</div>
-      </div>
-      <div class="stat" id="fin-posso-gastar-card">
-        <div class="stat-lbl">Posso gastar?</div>
-        <div class="stat-val" id="fin-saldo-livre" style="font-size:18px">R$0</div>
-        <div class="stat-sub" id="fin-saldo-sub">saldo livre</div>
-      </div>
-    </div>
+    <!-- ABA: VISÃO GERAL -->
+    <div id="fin-aba-geral">
 
-    <!-- Alerta Claude CFO -->
-    <div id="fin-alerta-cfo" style="background:var(--dark);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start">
-      <div style="font-size:20px;flex-shrink:0">🤖</div>
-      <div style="flex:1">
-        <div style="font-size:12px;font-weight:700;color:var(--brand);margin-bottom:4px">Claude CFO — Análise Automática</div>
-        <div id="fin-cfo-texto" style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.6">Carregando análise financeira...</div>
-      </div>
-      <button onclick="analisarFinanceiroCFO()" style="background:var(--brand);border:none;color:#fff;border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">↻ Analisar</button>
-    </div>
+      <!-- 3 cards principais -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
 
-    <!-- Gráfico Receita vs Despesa -->
-    <div style="display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:20px">
-      <div class="card" style="padding:18px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-          <div class="card-h" style="margin:0">Receita vs Despesa</div>
-          <div style="font-size:10px;color:var(--t3)">Regime de competência</div>
+        <!-- Contas a Receber -->
+        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+            <div style="background:#22C55E20;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17 6 23 6 23 12" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span style="font-weight:700;font-size:13px;color:var(--t1)">Contas a Receber</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t2);font-weight:600">Faturamento do Mês</span><span style="font-size:12px;font-weight:800;color:var(--t1)" id="fin-fat-mes">R$0,00</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Pendente</span><span style="font-size:12px;font-weight:700;color:#1877F2" id="fin-rec-pendente">R$0,00</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Vencido</span><span style="font-size:12px;font-weight:700;color:#EF4444" id="fin-rec-vencido">R$0,00</span></div>
+            <div style="height:1px;background:var(--bd)"></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Recebido este mês</span><span style="font-size:12px;font-weight:700;color:#22C55E" id="fin-rec-recebido">R$0,00</span></div>
+          </div>
         </div>
-        <canvas id="fin-chart-bars" height="180"></canvas>
-      </div>
-      <div class="card" style="padding:18px">
-        <div class="card-h" style="margin-bottom:12px">Composição de Despesas</div>
-        <canvas id="fin-chart-pizza" height="160"></canvas>
-        <div id="fin-legenda-desp" style="margin-top:10px;font-size:10px;display:flex;flex-direction:column;gap:4px"></div>
-      </div>
-    </div>
 
-    <!-- Fluxo de Caixa Projetado -->
-    <div class="card" style="padding:18px;margin-bottom:20px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div class="card-h" style="margin:0">Fluxo de Caixa Projetado</div>
-        <div style="display:flex;gap:4px">
-          <button class="fin-per-btn on" onclick="setFluxoPeriodo(6,this)">6M</button>
-          <button class="fin-per-btn" onclick="setFluxoPeriodo(12,this)" style="border-left:1px solid var(--bd)">12M</button>
-          <button class="fin-per-btn" onclick="setFluxoPeriodo(24,this)" style="border-left:1px solid var(--bd)">2A</button>
+        <!-- Contas a Pagar -->
+        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+            <div style="background:#EF444420;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17 18 23 18 23 12" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span style="font-weight:700;font-size:13px;color:var(--t1)">Contas a Pagar</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Pago em <span id="fin-mes-label">Mai 2026</span></span><span style="font-size:12px;font-weight:700;color:#22C55E" id="fin-dep-pago">R$0,00</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Pendente</span><span style="font-size:12px;font-weight:700;color:#1877F2" id="fin-dep-pendente">R$0,00</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Vencido</span><span style="font-size:12px;font-weight:700;color:#EF4444" id="fin-dep-vencido">R$0,00</span></div>
+            <div style="height:1px;background:var(--bd)"></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t2);font-weight:600">Total de Despesas</span><span style="font-size:12px;font-weight:800;color:var(--t1)" id="fin-dep-total">R$0,00</span></div>
+          </div>
+        </div>
+
+        <!-- Lucro do Período -->
+        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+            <div style="background:#F2641920;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#F26419" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="16" stroke="#F26419" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="#F26419" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span style="font-weight:700;font-size:13px;color:var(--t1)">Lucro do Período</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">MRR (recorrente)</span><span style="font-size:12px;font-weight:700;color:#22C55E" id="fin-mrr">R$0,00</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">ARR (anual)</span><span style="font-size:12px;font-weight:700;color:#1877F2" id="fin-arr">R$0,00</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--t3)">Despesas do Mês</span><span style="font-size:12px;font-weight:700;color:#EF4444" id="fin-desp">R$0,00</span></div>
+            <div style="height:1px;background:var(--bd)"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:var(--t2);font-weight:700">Lucro Líquido</span><span style="font-size:15px;font-weight:900;font-family:'Barlow',sans-serif" id="fin-margem">R$0,00</span></div>
+          </div>
         </div>
       </div>
-      <canvas id="fin-chart-fluxo" height="160"></canvas>
-      <div id="fin-meta-info" style="margin-top:12px;font-size:11px;color:var(--t3);text-align:center"></div>
+
+      <!-- Vencidos -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+          <div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="#22C55E" stroke-width="2" stroke-linecap="round"/></svg>
+              <span style="font-weight:700;font-size:12px">Recebimentos Vencidos</span>
+            </div>
+            <span id="fin-venc-rec-badge" style="background:#EF444420;color:#EF4444;border-radius:99px;padding:2px 10px;font-size:11px;font-weight:700">0</span>
+          </div>
+          <div id="fin-lista-venc-rec" style="max-height:140px;overflow-y:auto;padding:10px 0">
+            <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Nenhum recebimento vencido</div>
+          </div>
+        </div>
+        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+          <div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/></svg>
+              <span style="font-weight:700;font-size:12px">Pagamentos Vencidos</span>
+            </div>
+            <span id="fin-venc-pag-badge" style="background:#EF444420;color:#EF4444;border-radius:99px;padding:2px 10px;font-size:11px;font-weight:700">0</span>
+          </div>
+          <div id="fin-lista-venc-pag" style="max-height:140px;overflow-y:auto;padding:10px 0">
+            <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Nenhum pagamento vencido</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude CFO -->
+      <div style="background:var(--dark);border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:18px;flex-shrink:0">🤖</span>
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:700;color:var(--brand);margin-bottom:3px">Claude CFO — Análise Automática</div>
+          <div id="fin-cfo-texto" style="font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.6">Carregando análise...</div>
+        </div>
+        <button onclick="analisarFinanceiroCFO()" style="background:var(--brand);border:none;color:#fff;border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">↻ Analisar</button>
+      </div>
+
+      <!-- Gráficos -->
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:14px;margin-bottom:14px">
+        <div class="card" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div class="card-h" style="margin:0">Receita vs Despesa</div>
+            <div style="display:flex;gap:2px;border:1px solid var(--bd);border-radius:6px;overflow:hidden">
+              <button class="fin-per-btn on" onclick="setFinPeriodo(1,this)">1M</button>
+              <button class="fin-per-btn" onclick="setFinPeriodo(3,this)" style="border-left:1px solid var(--bd)">3M</button>
+              <button class="fin-per-btn" onclick="setFinPeriodo(6,this)" style="border-left:1px solid var(--bd)">6M</button>
+              <button class="fin-per-btn" onclick="setFinPeriodo(12,this)" style="border-left:1px solid var(--bd)">12M</button>
+            </div>
+          </div>
+          <canvas id="fin-chart-bars" height="160"></canvas>
+        </div>
+        <div class="card" style="padding:16px">
+          <div class="card-h" style="margin-bottom:10px">Composição de Despesas</div>
+          <canvas id="fin-chart-pizza" height="140"></canvas>
+          <div id="fin-legenda-desp" style="margin-top:8px;font-size:10px;display:flex;flex-direction:column;gap:3px"></div>
+        </div>
+      </div>
+
+      <!-- Transações -->
+      <div class="card" style="margin-bottom:14px">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div style="font-weight:700;font-size:13px">Transações</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <select class="inp-sel" style="width:auto;font-size:11px" onchange="FIN_FILTRO=this.value;renderExtrato()">
+              <option value="todos">Todas</option>
+              <option value="receita">Receitas</option>
+              <option value="despesa">Despesas</option>
+            </select>
+            <select class="inp-sel" style="width:auto;font-size:11px" id="fin-filtro-status" onchange="renderExtrato()">
+              <option value="">Todos</option>
+              <option value="recebido">Recebido</option>
+              <option value="a_receber">A Receber</option>
+              <option value="atrasado">Atrasado</option>
+              <option value="pago">Pago</option>
+              <option value="pendente">Pendente</option>
+            </select>
+          </div>
+        </div>
+        <div style="padding:10px 16px;font-size:11px;color:var(--t3);background:var(--bd2);border-bottom:1px solid var(--bd)">
+          As transações são geradas pelos lançamentos em Receitas e Despesas.
+        </div>
+        <div class="tbl-wrap" style="border:none">
+          <table>
+            <thead><tr>
+              <th>Competência</th><th>Descrição</th><th>Cliente/Fornecedor</th>
+              <th>Categoria</th><th>Valor</th><th>Tipo</th><th>Status</th>
+            </tr></thead>
+            <tbody id="fin-extrato-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum lançamento — clique em "Venda Rápida" ou "Lançar Despesa"</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- Contratos Recorrentes -->
-    <div class="card" style="margin-bottom:16px">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--bd)">
-        <div class="card-h" style="margin:0">Contratos Recorrentes</div>
-        <div style="font-size:11px;color:var(--t3)" id="fin-contratos-mrr"></div>
+    <!-- ABA: RECEBER -->
+    <div id="fin-aba-receber" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="font-weight:700;font-size:14px;color:var(--ok)">↑ Contas a Receber</div>
+        <button class="btn-prim" onclick="abrirModalFinReceita()">+ Nova Receita</button>
       </div>
-      <div style="overflow-x:auto">
+      <div class="card">
+        <div id="fin-lista-receber" style="min-height:100px">
+          <div style="text-align:center;padding:32px;font-size:12px;color:var(--t3)">Sem contas a receber</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA: PAGAR -->
+    <div id="fin-aba-pagar" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="font-weight:700;font-size:14px;color:var(--er)">↓ Contas a Pagar</div>
+        <button class="btn-prim" onclick="abrirModalFinDespesa()">+ Nova Despesa</button>
+      </div>
+      <div class="card">
+        <div id="fin-lista-pagar" style="min-height:100px">
+          <div style="text-align:center;padding:32px;font-size:12px;color:var(--t3)">Sem contas a pagar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA: RECORRENTES -->
+    <div id="fin-aba-recorrentes" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="font-weight:700;font-size:14px">↻ Contratos Recorrentes</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:12px;color:var(--t3)" id="fin-contratos-mrr"></span>
+          <button class="btn-prim" onclick="abrirModalFinContrato()">+ Contrato</button>
+        </div>
+      </div>
+      <div class="card" style="overflow-x:auto">
         <table style="width:100%;border-collapse:collapse">
           <thead><tr style="background:var(--bd2)">
             <th style="padding:8px 16px;text-align:left;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Cliente</th>
@@ -1181,61 +1647,59 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
             <th style="padding:8px 12px;text-align:center;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">LTV</th>
           </tr></thead>
           <tbody id="fin-contratos-tbody">
-            <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum contrato cadastrado — clique em "+ Contrato"</td></tr>
+            <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum contrato — clique em "+ Contrato"</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Contas a Receber e a Pagar lado a lado -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div class="card">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
-          <div class="card-h" style="margin:0;color:var(--ok)">↓ A Receber</div>
-          <span id="fin-total-receber" style="font-size:13px;font-weight:700;color:var(--ok)">R$0</span>
-        </div>
-        <div id="fin-lista-receber" style="max-height:240px;overflow-y:auto">
-          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Sem contas a receber</div>
+    <!-- ABA: CAIXA -->
+    <div id="fin-aba-caixa" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="font-weight:700;font-size:14px">$ Fluxo de Caixa Projetado</div>
+        <div style="display:flex;gap:4px;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
+          <button class="fin-per-btn on" onclick="setFluxoPeriodo(6,this)">6M</button>
+          <button class="fin-per-btn" onclick="setFluxoPeriodo(12,this)" style="border-left:1px solid var(--bd)">12M</button>
+          <button class="fin-per-btn" onclick="setFluxoPeriodo(24,this)" style="border-left:1px solid var(--bd)">2A</button>
         </div>
       </div>
-      <div class="card">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
-          <div class="card-h" style="margin:0;color:var(--er)">↑ A Pagar</div>
-          <span id="fin-total-pagar" style="font-size:13px;font-weight:700;color:var(--er)">R$0</span>
+      <div class="card" style="padding:18px;margin-bottom:14px">
+        <canvas id="fin-chart-fluxo" height="200"></canvas>
+        <div id="fin-meta-info" style="margin-top:12px;font-size:11px;color:var(--t3);text-align:center"></div>
+      </div>
+      <!-- KPIs caixa -->
+      <div class="stats stats-4">
+        <div class="stat"><div class="stat-lbl">Saldo Livre</div><div class="stat-val" id="fin-saldo-livre" style="font-size:18px">R$0</div><div class="stat-sub" id="fin-saldo-sub">disponível</div></div>
+        <div class="stat"><div class="stat-lbl">A Receber 30d</div><div class="stat-val" id="fin-areceber" style="font-size:18px;color:var(--ok)">R$0</div><div class="stat-sub">em aberto</div></div>
+        <div class="stat"><div class="stat-lbl">A Pagar 30d</div><div class="stat-val" id="fin-apagar" style="font-size:18px;color:var(--er)">R$0</div><div class="stat-sub">compromissos</div></div>
+        <div class="stat"><div class="stat-lbl">Inadimplência</div><div class="stat-val" id="fin-inadimp" style="font-size:18px;color:var(--er)">R$0</div><div class="stat-sub" id="fin-inadimp-sub">em atraso</div></div>
+      </div>
+    </div>
+
+    <!-- ABA: RELATÓRIOS -->
+    <div id="fin-aba-relatorios" style="display:none">
+      <div style="font-weight:700;font-size:14px;margin-bottom:14px">📊 Relatórios</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Exportando DRE...','📊')">
+          <div style="font-size:20px;margin-bottom:8px">📋</div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">DRE — Resultado</div>
+          <div style="font-size:11px;color:var(--t3)">Demonstrativo de Resultado do Exercício</div>
         </div>
-        <div id="fin-lista-pagar" style="max-height:240px;overflow-y:auto">
-          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Sem contas a pagar</div>
+        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Exportando Fluxo...','💵')">
+          <div style="font-size:20px;margin-bottom:8px">💵</div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Fluxo de Caixa</div>
+          <div style="font-size:11px;color:var(--t3)">Entradas e saídas projetadas</div>
+        </div>
+        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Exportando Extrato...','📑')">
+          <div style="font-size:20px;margin-bottom:8px">📑</div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Extrato Completo</div>
+          <div style="font-size:11px;color:var(--t3)">Todas as transações do período</div>
         </div>
       </div>
     </div>
 
-    <!-- Extrato completo -->
-    <div class="card">
-      <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <div class="card-h" style="margin:0">Extrato</div>
-        <div style="display:flex;gap:6px">
-          <div class="fin-tabs" style="margin:0">
-            <button class="fin-tab on" onclick="setFinTab(this,'todos')">Todos</button>
-            <button class="fin-tab" onclick="setFinTab(this,'receita')">Receitas</button>
-            <button class="fin-tab" onclick="setFinTab(this,'despesa')">Despesas</button>
-          </div>
-        </div>
-      </div>
-      <div class="tbl-wrap" style="border:none">
-        <table>
-          <thead><tr>
-            <th>Competência</th><th>Descrição</th><th>Cliente/Fornecedor</th>
-            <th>Categoria</th><th>Valor</th><th>Tipo</th><th>Status</th>
-          </tr></thead>
-          <tbody id="fin-extrato-tbody">
-            <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum lançamento — clique em "+ Receita" ou "+ Despesa"</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div>
 
-  <!-- AUTOMAÇÕES -->
   <div class="page content" id="page-automacoes">
     <div class="cfg-sec">
       <div class="cfg-sec-h">⚡ Automações Ativas</div>
@@ -1251,50 +1715,433 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- N8N -->
   <div class="page content" id="page-n8n">
-    <div class="n8n-connect-box">
-      <div class="n8n-connect-h"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 12h6M15 12h6M12 3v6M12 15v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Conexão com n8n</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
-        <div style="flex:1"><label style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">URL do n8n</label><input class="inp" id="n8n-url" value="https://n8n-n8n.k8wm1v.easypanel.host" placeholder="https://seu-n8n.com"></div>
-        <div style="flex:1"><label style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">API Key</label><input class="inp" id="n8n-key" type="password" placeholder="n8n_api_..."></div>
-        <button class="btn-prim" style="flex-shrink:0;align-self:flex-end" onclick="conectarN8n()">Conectar</button>
-        <button class="btn-sec" style="flex-shrink:0;align-self:flex-end" onclick="window.open(document.getElementById('n8n-url').value,'_blank')">Abrir editor →</button>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">n8n · Fluxos de Automação</div>
+        <div style="font-size:11px;color:var(--t3)">Gerencie seus workflows e automações</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-sec" onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:11px">⚡ Abrir editor n8n →</button>
+        <button class="btn-prim" onclick="toast('Sincronizando workflows...','🔄');renderN8n()" style="font-size:11px">↻ Sincronizar</button>
       </div>
     </div>
-    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;color:var(--t1);margin-bottom:12px">Workflows</div>
-    <div class="n8n-grid" id="n8n-workflows"></div>
+
+    <!-- Status da conexão -->
+    <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px">
+      <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0"></div>
+      <div style="flex:1;font-size:12px;color:var(--t1)"><strong>n8n conectado</strong> — <span style="color:var(--t3)">https://n8n-n8n.k8wm1v.easypanel.host</span></div>
+      <button onclick="goPage('config',null);setTimeout(()=>setCfgAba('ia',document.querySelector('.cfg-aba:nth-child(8)')),100)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Editar conexão →</button>
+    </div>
+
+    <!-- Workflows ativos -->
+    <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:12px">Workflows ativos</div>
+    <div class="n8n-grid" id="n8n-workflows" style="margin-bottom:24px"></div>
+
+    <!-- Automações disponíveis -->
+    <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:12px">Automações K2 Flow</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">⏰</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Lembrete de consulta — 15min antes</div>
+            <div style="font-size:10px;color:var(--t3)">Envia WhatsApp automaticamente para o paciente antes da consulta</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span style="background:#22C55E20;color:#22C55E;border-radius:99px;padding:2px 10px;font-size:10px;font-weight:700">✅ Ativo</span>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Editar</button>
+        </div>
+      </div>
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">📋</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Agenda diária — 8h da manhã</div>
+            <div style="font-size:10px;color:var(--t3)">Resumo do dia com todos os agendamentos via WhatsApp</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span style="background:#22C55E20;color:#22C55E;border-radius:99px;padding:2px 10px;font-size:10px;font-weight:700">✅ Ativo</span>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Editar</button>
+        </div>
+      </div>
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">🔄</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Reativação de inativo — 90 dias</div>
+            <div style="font-size:10px;color:var(--t3)">Mensagem automática para clientes sem visita há 3 meses</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span style="background:#22C55E20;color:#22C55E;border-radius:99px;padding:2px 10px;font-size:10px;font-weight:700">✅ Ativo</span>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Editar</button>
+        </div>
+      </div>
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">📊</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Relatório semanal</div>
+            <div style="font-size:10px;color:var(--t3)">Resumo de leads, agendamentos e financeiro toda segunda-feira</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <button class="toggle" onclick="this.classList.toggle('on')"></button>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Configurar</button>
+        </div>
+      </div>
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">🎂</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Aniversariantes do dia</div>
+            <div style="font-size:10px;color:var(--t3)">Parabeniza clientes automaticamente no aniversário</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <button class="toggle" onclick="this.classList.toggle('on')"></button>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Configurar</button>
+        </div>
+      </div>
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">💰</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Alerta de inadimplência</div>
+            <div style="font-size:10px;color:var(--t3)">Notifica o gestor quando um pagamento atrasa</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Configurar</button>
+        </div>
+      </div>
+
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">🤖</div>
+          <div>
+            <div style="font-size:12px;font-weight:700">Agente IA WhatsApp</div>
+            <div style="font-size:10px;color:var(--t3)">Responde dúvidas, agenda e qualifica leads automaticamente via Claude</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <button class="toggle" onclick="this.classList.toggle('on')"></button>
+          <button onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ativar</button>
+        </div>
+      </div>
+
+    </div>
   </div>
+
 
   <!-- CONFIG -->
   <div class="page content" id="page-config">
-    <!-- SEÇÃO: Conectividade -->
-    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:16px;color:var(--t1);margin-bottom:4px">Configurações</div>
-    <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Gerencie integrações, dados e preferências da sua conta</div>
 
-    <!-- GRID DE INTEGRAÇÕES -->
-    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;color:var(--t1);margin-bottom:12px;text-transform:uppercase;letter-spacing:.07em;font-size:10px;color:var(--t3)">Conectividade & APIs</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+    <!-- Header -->
+    <div style="margin-bottom:14px">
+      <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Configurações</div>
+      <div style="font-size:11px;color:var(--t3)">Personalize sua experiência no K2 Flow</div>
+    </div>
 
-      <!-- WhatsApp -->
-      <div class="cfg-int-card" id="card-wa">
-        <div class="cfg-int-hd" onclick="toggleCfg('wa')">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:#E8FFF0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">WhatsApp</div><div style="font-size:11px;color:var(--t3)">Evolution API</div></div>
-          </div>
-          <span class="cfg-int-badge" id="badge-wa" style="background:var(--wa-l);color:var(--wa)">Configurar</span>
+    <!-- Abas horizontais estilo DGFlow -->
+    <div style="display:flex;gap:2px;margin-bottom:20px;background:var(--light2);border:1px solid var(--bd);border-radius:8px;padding:3px;overflow-x:auto;flex-wrap:nowrap">
+      <button class="cfg-aba-h on" onclick="setCfgAba('perfil',this)">Perfil</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('aparencia',this)">Aparência</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('assinatura',this)">Assinatura</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('notificacoes',this)">Notificações</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('automacoes',this)">Automações</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('integracoes',this)">Integrações</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('whatsapp',this)">WhatsApp</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('ia',this)">IA & APIs</button>
+    </div>
+
+    <!-- ABA: PERFIL -->
+    <div id="cfg-aba-perfil">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;max-width:700px">
+        <div style="text-align:center">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:28px">🏢</div>
+          <button class="btn-sec" style="font-size:10px;padding:4px 10px">Trocar logo</button>
         </div>
-        <div class="cfg-int-body" id="body-wa">
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px">Dados da empresa</div>
+          <div class="grid2-form">
+            <div class="field"><label>Nome da empresa</label><input class="inp" id="cfg-empresa-nome" value="K2 Company" placeholder="Nome da empresa"></div>
+            <div class="field"><label>CNPJ</label><input class="inp" id="cfg-empresa-cnpj" value="45.948.176/0001-08" placeholder="00.000.000/0001-00"></div>
+          </div>
+          <div class="grid2-form">
+            <div class="field"><label>Telefone</label><input class="inp" id="cfg-empresa-tel" value="+55 (11) 93004-0192" placeholder="+55 (11) 99999-9999"></div>
+            <div class="field"><label>E-mail</label><input class="inp" id="cfg-empresa-email" value="fabineijdi@gmail.com" placeholder="email@empresa.com"></div>
+          </div>
+          <div class="field">
+            <label>Endereço</label>
+            <input class="inp" id="cfg-empresa-end" value="Al. Rio Negro, 503 - cj 2011" placeholder="Endereço completo">
+          </div>
+          <div class="grid2-form">
+            <div class="field"><label>Cidade</label><input class="inp" id="cfg-empresa-cidade" value="Jundiaí" placeholder="Cidade"></div>
+            <div class="field"><label>Estado</label><input class="inp" id="cfg-empresa-estado" value="SP" placeholder="SP"></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:8px">
+        <button class="btn-prim" onclick="salvarPerfil()">Salvar</button>
+      </div>
+
+      <!-- Segurança -->
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--bd);max-width:700px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px">🔒 Segurança</div>
+        <div class="field"><label>Senha atual</label><input class="inp" type="password" id="cfg-senha-atual" placeholder="••••••••"></div>
+        <div class="grid2-form">
+          <div class="field"><label>Nova senha</label><input class="inp" type="password" id="cfg-senha-nova" placeholder="••••••••"></div>
+          <div class="field"><label>Confirmar senha</label><input class="inp" type="password" id="cfg-senha-conf" placeholder="••••••••"></div>
+        </div>
+        <button class="btn-sec" onclick="toast('Senha atualizada!','✅')">Atualizar Senha</button>
+      </div>
+    </div>
+
+    <!-- ABA: APARÊNCIA -->
+    <div id="cfg-aba-aparencia" style="display:none">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px">Tema</div>
+      <div style="display:flex;gap:12px;margin-bottom:20px">
+        <div onclick="setTema('dark')" style="width:80px;height:60px;background:#0D1117;border:2px solid var(--brand);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">Dark</div>
+        <div onclick="setTema('light')" style="width:80px;height:60px;background:#F8F9FB;border:2px solid var(--bd);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#000">Light</div>
+      </div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px">Cor principal</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div onclick="setBrandColor('#F26419')" style="width:36px;height:36px;border-radius:50%;background:#F26419;cursor:pointer;border:3px solid #F26419;outline:2px solid transparent" title="Laranja K2"></div>
+        <div onclick="setBrandColor('#2563EB')" style="width:36px;height:36px;border-radius:50%;background:#2563EB;cursor:pointer;border:2px solid transparent" title="Azul"></div>
+        <div onclick="setBrandColor('#22C55E')" style="width:36px;height:36px;border-radius:50%;background:#22C55E;cursor:pointer;border:2px solid transparent" title="Verde"></div>
+        <div onclick="setBrandColor('#8B5CF6')" style="width:36px;height:36px;border-radius:50%;background:#8B5CF6;cursor:pointer;border:2px solid transparent" title="Roxo"></div>
+        <div onclick="setBrandColor('#EF4444')" style="width:36px;height:36px;border-radius:50%;background:#EF4444;cursor:pointer;border:2px solid transparent" title="Vermelho"></div>
+      </div>
+    </div>
+
+    <!-- ABA: ASSINATURA -->
+    <div id="cfg-aba-assinatura" style="display:none">
+      <div style="background:linear-gradient(135deg,var(--brand),#ff8c42);border-radius:14px;padding:24px;color:#fff;margin-bottom:16px;max-width:600px">
+        <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Plano atual</div>
+        <div style="font-size:28px;font-weight:900;font-family:'Barlow',sans-serif">K2 Flow Premium</div>
+        <div style="font-size:13px;opacity:.8;margin-top:4px">Todos os módulos desbloqueados</div>
+        <div style="margin-top:16px;font-size:12px;opacity:.7">Próximo vencimento: 01/11/2026</div>
+      </div>
+      <div class="stats stats-3" style="max-width:600px">
+        <div class="stat"><div class="stat-lbl">Plano</div><div class="stat-val" style="font-size:16px;color:var(--brand)">Premium</div><div class="stat-sub">R$299/sem</div></div>
+        <div class="stat"><div class="stat-lbl">Cobrança</div><div class="stat-val" style="font-size:16px">Semestral</div><div class="stat-sub">via Asaas</div></div>
+        <div class="stat"><div class="stat-lbl">Status</div><div class="stat-val" style="font-size:16px;color:var(--ok)">Ativo</div><div class="stat-sub">6 meses</div></div>
+      </div>
+    </div>
+
+    <!-- ABA: NOTIFICAÇÕES -->
+    <div id="cfg-aba-notificacoes" style="display:none;max-width:600px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px">Alertas ativos</div>
+      <div class="cfg-sec">
+        <div class="cfg-row"><div><div class="cfg-row-lbl">WhatsApp sem resposta +2h</div><div class="cfg-row-sub">Alerta quando cliente aguarda retorno</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Lead novo no CRM</div><div class="cfg-row-sub">Notifica quando entra novo lead</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Pagamento vencido</div><div class="cfg-row-sub">Alerta de inadimplência</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Tarefa em atraso</div><div class="cfg-row-sub">Aviso de tarefas no Work Hub</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Automação com falha</div><div class="cfg-row-sub">Erro em workflow n8n</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Orçamento sem resposta +3 dias</div><div class="cfg-row-sub">Follow-up automático</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+      </div>
+    </div>
+
+    <!-- ABA: AUTOMAÇÕES -->
+    <div id="cfg-aba-automacoes" style="display:none;max-width:600px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px">Fluxos automáticos</div>
+      <div class="cfg-sec">
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Lembrete de consulta 15min antes</div><div class="cfg-row-sub">n8n envia via WhatsApp automaticamente</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Agenda diária 8h da manhã</div><div class="cfg-row-sub">Resumo do dia via WhatsApp</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Lead novo → CRM Primeiro Contato</div><div class="cfg-row-sub">Sincronização automática</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Reativação de inativo (90 dias)</div><div class="cfg-row-sub">Mensagem automática para clientes parados</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Alerta de inadimplência</div><div class="cfg-row-sub">Notifica gestor quando pagamento atrasa</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Pós-consulta — satisfação</div><div class="cfg-row-sub">Mensagem após atendimento</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Aniversariantes do dia</div><div class="cfg-row-sub">Parabeniza clientes automaticamente</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+      </div>
+    </div>
+
+    <!-- ABA: INTEGRAÇÕES — cards visuais estilo DGFlow -->
+    <div id="cfg-aba-integracoes" style="display:none">
+
+      <!-- ATIVAS -->
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">✅ Conectadas</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px">
+
+        <div onclick="setCfgAba('whatsapp',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
+          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
+          <div style="font-size:26px;margin-bottom:6px">💬</div>
+          <div style="font-size:12px;font-weight:700">WhatsApp</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Evolution API</div>
+        </div>
+
+        <div onclick="setCfgAba('whatsapp',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
+          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
+          <div style="font-size:26px;margin-bottom:6px">📅</div>
+          <div style="font-size:12px;font-weight:700">Google Calendar</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">via n8n</div>
+        </div>
+
+        <div onclick="setCfgAba('ia',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
+          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
+          <div style="font-size:26px;margin-bottom:6px">🤖</div>
+          <div style="font-size:12px;font-weight:700">Claude IA</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Anthropic API</div>
+        </div>
+
+        <div onclick="setCfgAba('ia',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
+          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
+          <div style="font-size:26px;margin-bottom:6px">⚡</div>
+          <div style="font-size:12px;font-weight:700">n8n</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Automações</div>
+        </div>
+      </div>
+
+      <!-- REDES SOCIAIS & ADS -->
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">📱 Redes Sociais & Ads</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px">
+
+        <!-- Facebook Ads -->
+        <div onclick="abrirIntegracao('facebook')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#1877F2'" onmouseout="this.style.borderColor='var(--bd)'">
+          <div style="font-size:26px;margin-bottom:6px;color:#1877F2;font-weight:900;font-family:serif">f</div>
+          <div style="font-size:12px;font-weight:700">Facebook Ads</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Campanhas</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <!-- Meta Pixel -->
+        <div onclick="abrirIntegracao('pixel')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#1877F2'" onmouseout="this.style.borderColor='var(--bd)'">
+          <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 6px;display:block"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/></svg>
+          <div style="font-size:12px;font-weight:700">Meta Pixel</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Conversões</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <!-- Instagram -->
+        <div onclick="abrirIntegracao('instagram')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#E1306C'" onmouseout="this.style.borderColor='var(--bd)'">
+          <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 6px;display:block"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="25%" style="stop-color:#e6683c"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="75%" style="stop-color:#cc2366"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><circle cx="12" cy="12" r="4.5" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg>
+          <div style="font-size:12px;font-weight:700">Instagram</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Posts & Stories</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <!-- TikTok -->
+        <div onclick="abrirIntegracao('tiktok')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#010101'" onmouseout="this.style.borderColor='var(--bd)'">
+          <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 6px;display:block"><rect width="24" height="24" rx="6" fill="#010101"/><path d="M16.5 8a3.5 3.5 0 0 1-3.5-3.5V8h-2v8a2 2 0 1 0 2-2v-2a4 4 0 1 1 4 4V8h-0.5z" fill="#fff"/><path d="M16.5 8a3.5 3.5 0 0 0 3 3.5V8h-3z" fill="#69C9D0"/><path d="M13 16a2 2 0 1 1-2-2v-2a4 4 0 1 0 4 4h-2z" fill="#EE1D52"/></svg>
+          <div style="font-size:12px;font-weight:700">TikTok</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">TikTok Ads</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <!-- Google Ads -->
+        <div onclick="abrirIntegracao('google_ads')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#4285F4'" onmouseout="this.style.borderColor='var(--bd)'">
+          <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 6px;display:block"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          <div style="font-size:12px;font-weight:700">Google Ads</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Campanhas</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <!-- Google Analytics -->
+        <div onclick="abrirIntegracao('google_analytics')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#E37400'" onmouseout="this.style.borderColor='var(--bd)'">
+          <div style="font-size:26px;margin-bottom:6px">📊</div>
+          <div style="font-size:12px;font-weight:700">Google Analytics</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Tráfego</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <!-- Google Business -->
+        <div onclick="abrirIntegracao('google_business')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#34A853'" onmouseout="this.style.borderColor='var(--bd)'">
+          <div style="font-size:26px;margin-bottom:6px">📍</div>
+          <div style="font-size:12px;font-weight:700">Google Business</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Avaliações</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+      </div>
+
+      <!-- PAGAMENTOS -->
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">💳 Pagamentos</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px">
+
+        <div onclick="abrirIntegracao('asaas')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#4F46E5'" onmouseout="this.style.borderColor='var(--bd)'">
+          <div style="font-size:26px;margin-bottom:6px">🏦</div>
+          <div style="font-size:12px;font-weight:700">Asaas</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">PIX · Boleto</div>
+          <div style="font-size:9px;background:var(--brand-l);color:var(--brand);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Configurar</div>
+        </div>
+
+        <div onclick="abrirIntegracao('mercadopago')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#00B1EA'" onmouseout="this.style.borderColor='var(--bd)'">
+          <div style="font-size:26px;margin-bottom:6px">💙</div>
+          <div style="font-size:12px;font-weight:700">Mercado Pago</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Pagamentos</div>
+          <div style="font-size:9px;background:var(--bd2);color:var(--t3);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Em breve</div>
+        </div>
+
+        <div onclick="abrirIntegracao('abacate')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:26px;margin-bottom:6px">🥑</div>
+          <div style="font-size:12px;font-weight:700">AbacatePay</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Cripto PIX</div>
+          <div style="font-size:9px;background:var(--bd2);color:var(--t3);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Em breve</div>
+        </div>
+      </div>
+
+      <!-- OUTRAS -->
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">🔧 Outras</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px">
+
+        <div onclick="toast('Google Drive — em breve!','🔜')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer">
+          <div style="font-size:26px;margin-bottom:6px">📂</div>
+          <div style="font-size:12px;font-weight:700">Google Drive</div>
+          <div style="font-size:9px;background:var(--bd2);color:var(--t3);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Em breve</div>
+        </div>
+
+        <div onclick="toast('Doctoralia — em breve!','🔜')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer">
+          <div style="font-size:26px;margin-bottom:6px">🏥</div>
+          <div style="font-size:12px;font-weight:700">Doctoralia</div>
+          <div style="font-size:9px;background:var(--bd2);color:var(--t3);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Em breve</div>
+        </div>
+
+        <div onclick="toast('iFood — em breve!','🔜')" style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer">
+          <div style="font-size:26px;margin-bottom:6px">🍕</div>
+          <div style="font-size:12px;font-weight:700">iFood</div>
+          <div style="font-size:9px;background:var(--bd2);color:var(--t3);border-radius:99px;padding:1px 6px;margin-top:4px;font-weight:700">Em breve</div>
+        </div>
+
+        <!-- Sugerir -->
+        <div onclick="toast('Sugestão enviada!','✅')" style="background:var(--bd2);border:2px dashed var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer">
+          <div style="font-size:26px;margin-bottom:6px">➕</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t3)">Sugerir</div>
+        </div>
+      </div>
+
+      <!-- Modal de configuração de integração -->
+      <div id="cfg-integracao-detail" style="display:none;background:var(--light2);border:1px solid var(--bd);border-radius:12px;padding:20px;max-width:500px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px" id="cfg-int-titulo">Configurar integração</div>
+        <div id="cfg-int-body"></div>
+        <button onclick="document.getElementById('cfg-integracao-detail').style.display='none'" style="margin-top:12px;background:none;border:1px solid var(--bd);border-radius:7px;padding:6px 14px;font-size:12px;cursor:pointer">Fechar</button>
+      </div>
+    </div>
+
+
+    <!-- ABA: WHATSAPP -->
+    <div id="cfg-aba-whatsapp" style="display:none;max-width:600px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px">WhatsApp — Evolution API</div>
+      <div class="cfg-int-card" style="margin-bottom:12px">
+        <div class="cfg-int-body" id="body-wa" style="display:block">
           <div class="grid2-form" style="margin-bottom:10px">
             <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://..." value="https://appk2-evolution-api.k8wm1v.easypanel.host"></div>
             <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="429683C4..."></div>
           </div>
-          <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="AmandaCS"></div>
+          <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="Comercialk2"></div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="salvarEvolution()">Salvar</button>
-            <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="testarConexaoWA()">Testar</button>
-            <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="gerarQRCode()">📱 QR Code</button>
+            <button class="btn-prim" style="font-size:12px" onclick="salvarEvolution()">Salvar</button>
+            <button class="btn-sec" style="font-size:12px" onclick="testarConexaoWA()">Testar conexão</button>
+            <button class="btn-sec" style="font-size:12px" onclick="gerarQRCode()">📱 Gerar QR Code</button>
           </div>
           <div class="qr-box" id="qr-box" style="display:none;margin-top:12px">
             <div class="qr-status"><div class="qr-status-dot" id="qr-dot" style="background:#D97706"></div><div class="qr-status-txt" id="qr-st-txt">Aguardando...</div></div>
@@ -1304,259 +2151,60 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
           <div id="wa-status-box" style="margin-top:10px;display:none"></div>
         </div>
       </div>
+      <div class="cfg-sec">
+        <div class="cfg-sec-h">Google Calendar</div>
+        <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#065F46;margin-bottom:12px;line-height:1.7">
+          ✅ <strong>Conectado via n8n</strong> — O Google Calendar já está autenticado no n8n. Clique em "Sincronizar" para carregar os eventos.
+        </div>
+        <button class="btn-prim" style="display:flex;align-items:center;gap:6px;font-size:12px" onclick="gcalCarregarEventos()">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Sincronizar Google Calendar
+        </button>
+        <div id="gcal-status-cfg" style="margin-top:8px;font-size:11px;color:var(--t3)">Clique em Sincronizar para carregar os eventos</div>
+      </div>
+    </div>
 
-      <!-- Claude API -->
-      <div class="cfg-int-card" id="card-claude">
+    <!-- ABA: IA & APIs -->
+    <div id="cfg-aba-ia" style="display:none;max-width:600px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px">IA & APIs</div>
+
+      <!-- Claude -->
+      <div class="cfg-int-card" style="margin-bottom:12px">
         <div class="cfg-int-hd" onclick="toggleCfg('claude')">
           <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:#FDF4E7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#F59E0B" stroke-width="1.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">Claude (Anthropic)</div><div style="font-size:11px;color:var(--t3)">IA principal do agente</div></div>
+            <div style="width:36px;height:36px;border-radius:10px;background:#FF6B3520;display:flex;align-items:center;justify-content:center">🤖</div>
+            <div><div style="font-size:13px;font-weight:600">Claude API</div><div style="font-size:11px;color:var(--t3)">Anthropic · IA do K2 Flow</div></div>
           </div>
-          <span class="cfg-int-badge" id="badge-claude" style="background:var(--am-l);color:var(--am)">Configurar</span>
+          <span class="cfg-int-badge" id="badge-claude">Configurar</span>
         </div>
         <div class="cfg-int-body" id="body-claude">
-          <div class="field" style="margin-bottom:10px"><label>API Key (sk-ant-api03-...)</label><input class="inp" id="cfg-ai-key" type="password" placeholder="sk-ant-api03-..."></div>
-          <div class="field" style="margin-bottom:10px"><label>Personalidade do agente</label><textarea class="inp" rows="3" id="cfg-ai-persona" placeholder="Olá! Sou assistente da Clínica... Como posso ajudar?"></textarea></div>
-          <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="salvarIA()">Salvar Claude</button>
-        </div>
-      </div>
-
-      <!-- Gemini -->
-      <div class="cfg-int-card" id="card-gemini">
-        <div class="cfg-int-hd" onclick="toggleCfg('gemini')">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" fill="#4285F4"/></svg>
-            </div>
-            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">Gemini (Google)</div><div style="font-size:11px;color:var(--t3)">IA alternativa — mais barata</div></div>
-          </div>
-          <span class="cfg-int-badge" style="background:var(--bl-l);color:var(--bl)">Alternativa</span>
-        </div>
-        <div class="cfg-int-body" id="body-gemini">
-          <div style="background:var(--bl-l);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--bl)">💡 Gemini é uma alternativa mais econômica ao Claude, ideal para volumes altos de mensagens.</div>
-          <div class="field" style="margin-bottom:10px"><label>API Key do Gemini</label><input class="inp" id="gemini-key" type="password" placeholder="AIzaSy..."></div>
-          <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="toast('Gemini configurado!','✅')">Salvar Gemini</button>
+          <div class="field"><label>API Key do Claude</label><input class="inp" id="cfg-ai-key" type="password" placeholder="sk-ant-..."></div>
+          <div style="display:flex;gap:8px"><button class="btn-prim" style="font-size:12px" onclick="salvarClaude()">Salvar</button><button class="btn-sec" style="font-size:12px" onclick="testarClaude()">Testar</button></div>
+          <div style="font-size:10px;color:var(--t3);margin-top:6px">Obtenha em: console.anthropic.com</div>
         </div>
       </div>
 
       <!-- n8n -->
-      <div class="cfg-int-card" id="card-n8n">
+      <div class="cfg-int-card">
         <div class="cfg-int-hd" onclick="toggleCfg('n8n')">
           <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#F26419" stroke-width="1.5"/><path d="M3 12h6M15 12h6M12 3v6M12 15v6" stroke="#F26419" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">n8n</div><div style="font-size:11px;color:var(--t3)">Motor de automação</div></div>
+            <div style="width:36px;height:36px;border-radius:10px;background:#EA483520;display:flex;align-items:center;justify-content:center">⚡</div>
+            <div><div style="font-size:13px;font-weight:600">n8n</div><div style="font-size:11px;color:var(--t3)">Automações e workflows</div></div>
           </div>
-          <span class="cfg-int-badge" id="badge-n8n" style="background:var(--brand-l);color:var(--brand)">Configurar</span>
+          <span class="cfg-int-badge bk-ok" id="badge-n8n">Conectado</span>
         </div>
         <div class="cfg-int-body" id="body-n8n">
-          <div class="field" style="margin-bottom:10px"><label>URL do n8n</label><input class="inp" id="cfg-n8n-url" value="https://n8n-n8n.k8wm1v.easypanel.host" placeholder="https://..."></div>
-          <div class="field" style="margin-bottom:10px"><label>API Key</label><input class="inp" id="cfg-n8n-key" type="password" placeholder="n8n_api_..."></div>
-          <div style="display:flex;gap:8px">
-            <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="toast('n8n conectado!','✅')">Conectar</button>
-            <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="window.open(document.getElementById('cfg-n8n-url').value,'_blank')">Abrir editor →</button>
-          </div>
+          <div class="field"><label>URL do n8n</label><input class="inp" id="cfg-n8n-url" value="https://n8n-n8n.k8wm1v.easypanel.host" placeholder="https://seu-n8n.com"></div>
+          <div style="display:flex;gap:8px"><button class="btn-prim" style="font-size:12px" onclick="salvarN8n()">Salvar</button><button class="btn-sec" style="font-size:12px" onclick="window.open(document.getElementById('cfg-n8n-url').value,'_blank')">Abrir editor →</button></div>
         </div>
       </div>
-    </div>
 
-    <!-- INTEGRAÇÕES OAUTH -->
-    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Plataformas & Redes Sociais</div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
-      <button class="oauth-btn" onclick="conectarGoogleOAuth()">
-        <div class="oauth-btn-ico" style="background:#E8F0FE"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">Google — Calendar · Analytics · Meu Negócio</div><div class="oauth-btn-desc">Sincroniza agenda, dados de tráfego e avaliações</div></div>
-        <span class="oauth-btn-st" id="google-st" style="background:var(--brand-l);color:var(--brand)">Conectar</span>
-      </button>
-      <button class="oauth-btn" onclick="conectarMetaOAuth()">
-        <div class="oauth-btn-ico" style="background:#E8F0FE"><svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">Meta — Facebook · Instagram · Ads</div><div class="oauth-btn-desc">Conecta páginas, perfil e campanhas de anúncio</div></div>
-        <span class="oauth-btn-st" id="meta-st" style="background:var(--brand-l);color:var(--brand)">Conectar</span>
-      </button>
-      <button class="oauth-btn" onclick="toast('Doctoralia em breve!','🏥')">
-        <div class="oauth-btn-ico" style="background:#E3F2FD"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#0288D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">Doctoralia</div><div class="oauth-btn-desc">Sincroniza agendamentos e avaliações</div></div>
-        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
-      </button>
-      <button class="oauth-btn" onclick="toast('Asaas em breve!','💳')">
-        <div class="oauth-btn-ico" style="background:#E8F5E9"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="#43A047" stroke-width="1.5"/><line x1="2" y1="10" x2="22" y2="10" stroke="#43A047" stroke-width="1.5"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">Asaas — Cobranças & Pagamentos</div><div class="oauth-btn-desc">PIX, boleto e cartão automáticos</div></div>
-        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
-      </button>
-      <button class="oauth-btn" onclick="toast('TikTok em breve!','🎵')">
-        <div class="oauth-btn-ico" style="background:#000"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">TikTok — Ads + Orgânico</div><div class="oauth-btn-desc">Métricas de vídeos e campanhas</div></div>
-        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
-      </button>
-    </div>
-
-    <!-- DADOS DA CLÍNICA -->
-    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Dados & Configurações</div>
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">💬 WhatsApp — Evolution API</div>
-      <div class="grid2-form">
-        <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://appk2-evolution-api.k8wm1v.easypanel.host" value="https://appk2-evolution-api.k8wm1v.easypanel.host"></div>
-        <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="SUA_API_KEY_GLOBAL"></div>
+      <!-- Conta -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)">
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Sair da conta</div><div class="cfg-row-sub">Encerrar sessão atual</div></div><button class="btn-sec" style="color:var(--er);border-color:var(--er)" onclick="logout()">Sair</button></div>
       </div>
-      <div class="field"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="AmandaCS"></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn-prim" onclick="salvarEvolution()">Salvar configuração</button>
-        <button class="btn-sec" onclick="testarConexaoWA()">Testar conexão</button>
-        <button class="btn-sec" onclick="gerarQRCode()">📱 Escanear QR Code</button>
-      </div>
-      <div class="qr-box" id="qr-box" style="display:none">
-        <div class="qr-status"><div class="qr-status-dot" id="qr-dot" style="background:#D97706"></div><div class="qr-status-txt" id="qr-st-txt">Aguardando conexão...</div></div>
-        <div class="qr-img-wrap" id="qr-img-wrap"><div style="font-size:12px;color:var(--t3);text-align:center">Gerando QR Code...<br>Aguarde</div></div>
-        <div class="qr-hint">Abra o WhatsApp no celular<br>Vá em <strong>Configurações → Dispositivos conectados</strong><br>Escaneie o QR Code acima</div>
-      </div>
-      <div id="wa-status-box" style="margin-top:12px;display:none"></div>
-
-      <!-- DIAGNÓSTICO INTEGRADO -->
-      <div style="margin-top:14px;border-top:1px solid var(--bd);padding-top:14px">
-        <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">🔧 Diagnóstico & Conexão</div>
-
-        <!-- Alerta URL n8n -->
-        <div style="background:var(--bl-l);border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#1D4ED8;margin-bottom:10px;line-height:1.6">
-          <strong>⚠️ Importante:</strong> No n8n, o node HTTP Request do workflow AmandaCS precisa ter a URL como:<br>
-          <code style="background:rgba(37,99,235,.1);padding:2px 6px;border-radius:4px;font-size:11px">={{ $json.body.evUrl }}/{{ $json.body.endpoint }}</code><br>
-          Se estiver hardcoded para appk2-evolution-api, as conversas não vão aparecer.
-        </div>
-
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-          <button onclick="diagRunAll()" style="background:var(--dark);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:11.5px;font-weight:700">▶ Diagnóstico completo</button>
-          <button onclick="diagQR()" style="background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#059669;border-radius:7px;padding:7px 14px;font-size:11.5px;font-weight:700">📱 Gerar QR Code</button>
-          <button onclick="diagClear()" style="background:transparent;border:1px solid var(--bd);border-radius:7px;padding:7px 12px;font-size:11px;color:var(--t3)">Limpar</button>
-        </div>
-
-        <!-- Status dots -->
-        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
-          <div class="diag-step" id="dstep-proxy" style="padding:8px 12px"><div class="diag-step-ico" id="dico-proxy" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">1. n8n proxy</div><div class="diag-step-sub" id="dsub-proxy" style="font-size:10px">Webhook /AmandaCS respondendo</div></div><button onclick="diagStep('proxy')" class="diag-run-btn">Testar</button></div>
-          <div class="diag-step" id="dstep-auth" style="padding:8px 12px"><div class="diag-step-ico" id="dico-auth" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">2. API Key</div><div class="diag-step-sub" id="dsub-auth" style="font-size:10px">Autenticação na Evolution API</div></div><button onclick="diagStep('auth')" class="diag-run-btn">Testar</button></div>
-          <div class="diag-step" id="dstep-instance" style="padding:8px 12px"><div class="diag-step-ico" id="dico-instance" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">3. Instância</div><div class="diag-step-sub" id="dsub-instance" style="font-size:10px">Verifica se a instância existe</div></div><button onclick="diagStep('instance')" class="diag-run-btn">Testar</button></div>
-          <div class="diag-step" id="dstep-state" style="padding:8px 12px"><div class="diag-step-ico" id="dico-state" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">4. WhatsApp conectado</div><div class="diag-step-sub" id="dsub-state" style="font-size:10px">Estado: open / close / qr</div></div><button onclick="diagStep('state')" class="diag-run-btn">Testar</button></div>
-          <div class="diag-step" id="dstep-send" style="padding:8px 12px"><div class="diag-step-ico" id="dico-send" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">5. Envio de teste</div><div class="diag-step-sub" id="dsub-send" style="font-size:10px">Envia mensagem para confirmar</div></div><button onclick="diagStep('send')" class="diag-run-btn">Testar</button></div>
-        </div>
-
-        <!-- QR Box -->
-        <div id="diag-qr-area" style="display:none;background:var(--dark);border-radius:10px;padding:16px;text-align:center;margin-bottom:10px">
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
-            <span style="width:8px;height:8px;border-radius:50%;background:#D97706;display:inline-block" id="diag-qr-dot"></span>
-            <span style="font-size:12px;font-weight:600;color:#fff" id="diag-qr-txt">Aguardando...</span>
-          </div>
-          <div style="background:#fff;width:170px;height:170px;border-radius:8px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center" id="diag-qr-img"><span style="font-size:11px;color:#888">Gerando...</span></div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4)">WhatsApp → Dispositivos conectados → Escanear</div>
-        </div>
-
-        <!-- Console -->
-        <div style="background:var(--dark);border-radius:8px;overflow:hidden">
-          <div style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.25);font-family:monospace;display:flex;align-items:center;gap:6px">
-            <span style="width:8px;height:8px;border-radius:50%;background:#FF5F57;display:inline-block"></span>
-            <span style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;display:inline-block"></span>
-            <span style="width:8px;height:8px;border-radius:50%;background:#28C840;display:inline-block"></span>
-            Console
-          </div>
-          <div id="diag-log" style="padding:10px 12px;font-family:monospace;font-size:11px;line-height:1.8;color:rgba(255,255,255,.45);min-height:100px;max-height:220px;overflow-y:auto">
-            <span style="color:rgba(255,255,255,.2)">Clique em "Diagnóstico completo"</span>
-          </div>
-        </div>
-
-        <!-- Status global -->
-        <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
-          <span style="width:10px;height:10px;border-radius:50%;background:#6B7280;display:inline-block" id="diag-dot"></span>
-          <span id="diag-estado" style="font-size:12px;font-weight:600;color:var(--t2)">Não verificado</span>
-          <span style="font-size:11px;color:var(--t3)" id="diag-url" style="display:none"></span>
-        </div>
-        <input type="hidden" id="diag-inst">
-        <input type="hidden" id="diag-key">
-      </div>
-    </div>
-    <!-- IA -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">📅 Google Calendar</div>
-      <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#065F46;margin-bottom:12px;line-height:1.7">
-        ✅ <strong>Conectado via n8n</strong> — O Google Calendar já está autenticado no n8n. Clique em "Sincronizar" para carregar os eventos da Agência K2 e agenda pessoal diretamente na Agenda do K2 Flow.
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-prim" style="display:flex;align-items:center;gap:6px" onclick="gcalCarregarEventos()">
-          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Sincronizar Google Calendar
-        </button>
-      </div>
-      <div id="gcal-status-cfg" style="margin-top:8px;font-size:11px;color:var(--t3)">Clique em Sincronizar para carregar os eventos</div>
-    </div>
-    <!-- IA -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">🤖 IA — Claude API</div>
-      <div class="field"><label>Chave API Claude (Anthropic)</label><input class="inp" id="cfg-ai-key" type="password" placeholder="sk-ant-api03-..."></div>
-      <div class="field"><label>Personalidade do agente</label><textarea class="inp" rows="3" id="cfg-ai-persona" placeholder="Olá! Sou assistente virtual da Clínica... Como posso ajudar?"></textarea></div>
-      <button class="btn-prim" onclick="salvarIA()">Salvar IA</button>
-    </div>
-    <!-- Integrações OAuth -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">🔌 Integrações</div>
-      <button class="oauth-btn" onclick="conectarGoogleOAuth()">
-        <div class="oauth-btn-ico" style="background:#E8F0FE"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">Google (Calendar + Analytics + GMN)</div><div class="oauth-btn-desc">Conecta agenda, métricas e Google Meu Negócio</div></div>
-        <span class="oauth-btn-st" id="google-st" style="background:var(--brand-l);color:var(--brand)">Conectar</span>
-      </button>
-      <button class="oauth-btn" onclick="conectarMetaOAuth()">
-        <div class="oauth-btn-ico" style="background:#E8F0FE"><svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">Meta (Facebook + Instagram + Ads)</div><div class="oauth-btn-desc">Conecta páginas, perfis e campanhas</div></div>
-        <span class="oauth-btn-st" id="meta-st" style="background:var(--brand-l);color:var(--brand)">Conectar</span>
-      </button>
-      <button class="oauth-btn" onclick="toast('TikTok em breve!','🎵')">
-        <div class="oauth-btn-ico" style="background:#000"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></div>
-        <div class="oauth-btn-info"><div class="oauth-btn-nome">TikTok (Ads + Orgânico)</div><div class="oauth-btn-desc">Em breve disponível</div></div>
-        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
-      </button>
-    </div>
-    <!-- Dados da Clínica -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">🏥 Dados da Clínica</div>
-      <div class="grid2-form">
-        <div class="field"><label>Nome</label><input class="inp" id="cfg-nome" placeholder="Clínica Exemplo"></div>
-        <div class="field"><label>Telefone</label><input class="inp" id="cfg-tel" placeholder="(11) 99999-9999"></div>
-      </div>
-      <div class="field"><label>Endereço</label><input class="inp" id="cfg-end" placeholder="Rua Exemplo, 123"></div>
-      <div class="grid2-form">
-        <div class="field"><label>Abertura</label><input class="inp" type="time" id="cfg-open" value="08:00"></div>
-        <div class="field"><label>Fechamento</label><input class="inp" type="time" id="cfg-close" value="18:00"></div>
-      </div>
-      <button class="btn-prim" onclick="salvarDados()">Salvar Dados</button>
-    </div>
-    <!-- Link agendamento -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">🔗 Link de Agendamento</div>
-      <div class="field"><label>Link público</label><input class="inp" id="cfg-link" placeholder="https://crm.k2company.com.br/agendar/sua-clinica"></div>
-      <div class="cfg-row"><div><div class="cfg-row-lbl">Agendamento online ativo</div><div class="cfg-row-sub">Clientes podem agendar pelo link</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-    </div>
-    <!-- Aparência -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">🎨 Aparência</div>
-      <div class="cfg-row"><div><div class="cfg-row-lbl">Tema escuro</div><div class="cfg-row-sub">Alterna entre claro e escuro</div></div><button class="toggle" onclick="this.classList.toggle('on');toast('Tema alterado','🎨')"></button></div>
-    </div>
-    <!-- Funcionários -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">👥 Funcionários & Acesso</div>
-      <div class="tbl-wrap" style="margin-bottom:12px"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead><tbody id="func-tbody"></tbody></table></div>
-      <button class="btn-sec" onclick="openModal('modal-func')">+ Adicionar funcionário</button>
-    </div>
-    <!-- Planos da clínica -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h">📦 Planos & Serviços</div>
-      <div class="tbl-wrap" style="margin-bottom:12px"><table><thead><tr><th>Plano</th><th>Valor</th><th>Duração</th><th>Status</th><th>Ações</th></tr></thead><tbody id="planos-tbody"></tbody></table></div>
-      <button class="btn-sec" onclick="openModal('modal-plano')">+ Novo plano</button>
-    </div>
-    <!-- Conta -->
-    <div class="cfg-sec">
-      <div class="cfg-sec-h" style="color:var(--er)">⚠️ Conta</div>
-      <div class="cfg-row"><div><div class="cfg-row-lbl">Plano atual: Premium</div><div class="cfg-row-sub">Todos os módulos desbloqueados</div></div><span class="badge bk-ok">Ativo</span></div>
-      <div class="cfg-row"><div><div class="cfg-row-lbl">Sair da conta</div></div><button class="btn-sec" style="color:var(--er);border-color:var(--er)" onclick="logout()">Sair</button></div>
-    </div>
-  </div>
+    </div><!-- fim aba ia -->
+  </div><!-- fim page-config -->
 
 </main></div>
 
@@ -1571,27 +2219,183 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 </div>
 
 <div class="modal-bg" id="modal-ag">
-  <div class="modal"><div class="modal-h">Novo Agendamento</div><div class="modal-s">Agendar consulta ou procedimento</div>
-    <div class="field">
-      <label>Cliente</label>
-      <select class="inp-sel" id="ag-cli-sel"></select>
+  <div class="modal" style="max-width:580px;max-height:90vh;overflow-y:auto">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+      <div style="background:var(--brand);border-radius:8px;padding:6px;display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#fff" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="#fff" stroke-width="2"/></svg>
+      </div>
+      <div>
+        <div class="modal-h" style="margin:0;font-size:15px">Novo Compromisso</div>
+      </div>
+      <button onclick="closeModal('modal-ag')" style="margin-left:auto;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;line-height:1">✕</button>
     </div>
-    <div class="grid2-form">
-      <div class="field"><label>Data</label><input class="inp" type="date" id="ag-data" onchange="atualizarHorariosLivres()"></div>
-      <div class="field"><label>Profissional</label><select class="inp-sel" id="ag-prof" onchange="atualizarHorariosLivres()"><option>Dr. Carlos</option><option>Dra. Ana</option></select></div>
+
+    <!-- Título -->
+    <div class="field" style="margin-bottom:12px">
+      <label>Título</label>
+      <input class="inp" id="ag-titulo" placeholder="Ex: Reunião com cliente" style="border-color:var(--brand)">
     </div>
-    <div class="field">
-      <label>Horário disponível</label>
+
+    <!-- Descrição -->
+    <div class="field" style="margin-bottom:12px">
+      <label>Descrição</label>
+      <textarea class="inp" id="ag-desc" placeholder="Detalhes do compromisso..." rows="2" style="resize:none;font-family:inherit;font-size:12px"></textarea>
+    </div>
+
+    <!-- Data / Hora / Duração -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+      <div class="field" style="margin:0">
+        <label>Data</label>
+        <input class="inp" type="date" id="ag-data" onchange="atualizarHorariosLivres()">
+      </div>
+      <div class="field" style="margin:0">
+        <label>Hora</label>
+        <input class="inp" type="time" id="ag-hora-input" value="09:00">
+      </div>
+      <div class="field" style="margin:0">
+        <label>Duração</label>
+        <select class="inp-sel" id="ag-duracao">
+          <option value="30">30 min</option>
+          <option value="60" selected>60 min</option>
+          <option value="90">90 min</option>
+          <option value="120">2 horas</option>
+          <option value="180">3 horas</option>
+          <option value="0">Dia todo</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Local -->
+    <div class="field" style="margin-bottom:12px">
+      <label>Local</label>
+      <input class="inp" id="ag-local" placeholder="Endereço, link da reunião...">
+    </div>
+
+    <!-- Horários disponíveis -->
+    <div class="field" style="margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:6px">
+        Horários disponíveis
+        <span style="font-size:10px;color:var(--t3);font-weight:400">clique para selecionar</span>
+      </label>
       <div id="ag-slots-livres" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
       <input type="hidden" id="ag-hora">
     </div>
-    <div class="field"><label>Serviço</label><select class="inp-sel" id="ag-serv"><option>Consulta / Avaliação</option><option>Limpeza</option><option>Ortodontia</option><option>Implante</option><option>Clareamento</option><option>Cirurgia</option><option>Emergência</option></select></div>
-    <div id="ag-gcal-info" style="display:none;background:var(--bl-l);border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:#1D4ED8;margin-top:4px">
-      📅 Será criado automaticamente no Google Calendar
+
+    <!-- Separador -->
+    <div style="height:1px;background:var(--bd);margin:14px 0"></div>
+
+    <!-- Repetir -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 12px;background:var(--bd2);border-radius:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9" stroke="var(--t2)" stroke-width="2" stroke-linecap="round"/><path d="M3 11V9a4 4 0 0 1 4-4h14" stroke="var(--t2)" stroke-width="2" stroke-linecap="round"/><polyline points="7 23 3 19 7 15" stroke="var(--t2)" stroke-width="2" stroke-linecap="round"/><path d="M21 13v2a4 4 0 0 1-4 4H3" stroke="var(--t2)" stroke-width="2" stroke-linecap="round"/></svg>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--t1)">Repetir compromisso</div>
+          <div style="font-size:10px;color:var(--t3)">Cria várias ocorrências automaticamente</div>
+        </div>
+      </div>
+      <button class="toggle" id="ag-toggle-repetir" onclick="this.classList.toggle('on');document.getElementById('ag-repetir-opts').style.display=this.classList.contains('on')?'block':'none'"></button>
     </div>
-    <div class="modal-acts">
+    <div id="ag-repetir-opts" style="display:none;background:var(--bd2);border-radius:8px;padding:12px;margin-bottom:12px">
+      <div class="grid2-form" style="margin:0">
+        <div class="field" style="margin:0"><label>Frequência</label>
+          <select class="inp-sel" id="ag-freq"><option value="daily">Diário</option><option value="weekly" selected>Semanal</option><option value="monthly">Mensal</option></select>
+        </div>
+        <div class="field" style="margin:0"><label>Repetições</label>
+          <select class="inp-sel" id="ag-reps"><option value="4">4x</option><option value="8">8x</option><option value="12">12x</option><option value="24">24x</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separador -->
+    <div style="height:1px;background:var(--bd);margin:14px 0"></div>
+
+    <!-- Vincular a -->
+    <div style="margin-bottom:12px">
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Vincular a (Opcional)
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="field" style="margin:0"><label>Cliente</label><select class="inp-sel" id="ag-cli-sel"></select></div>
+        <div class="field" style="margin:0"><label>Profissional</label><select class="inp-sel" id="ag-prof" onchange="atualizarHorariosLivres()"><option value="">— Qualquer —</option><option>Dr. Carlos</option><option>Dra. Ana</option></select></div>
+        <div class="field" style="margin:0"><label>Serviço</label><select class="inp-sel" id="ag-serv"><option>Consulta / Avaliação</option><option>Limpeza</option><option>Ortodontia</option><option>Implante</option><option>Clareamento</option><option>Cirurgia</option><option>Emergência</option><option>Reunião</option><option>Call</option><option>Outro</option></select></div>
+      </div>
+    </div>
+
+    <!-- Separador -->
+    <div style="height:1px;background:var(--bd);margin:14px 0"></div>
+
+    <!-- Mostrar no Kanban -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:10px 12px;background:var(--bd2);border-radius:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke="var(--t2)" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="var(--t2)" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="var(--t2)" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="var(--t2)" stroke-width="2"/></svg>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--t1)">Mostrar no quadro Kanban</div>
+          <div style="font-size:10px;color:var(--t3)">O compromisso aparece na agenda e como card no CRM</div>
+        </div>
+      </div>
+      <button class="toggle on" id="ag-toggle-kanban" onclick="this.classList.toggle('on');document.getElementById('ag-kanban-opts').style.display=this.classList.contains('on')?'grid':'none'"></button>
+    </div>
+    <div id="ag-kanban-opts" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;padding:0 2px">
+      <div class="field" style="margin:0"><label>Coluna / etapa</label>
+        <select class="inp-sel" id="ag-kanban-col"><option value="ag">Agendado</option><option value="pc">Primeiro Contato</option><option value="ea">Em Atendimento</option><option value="fc">Fechado</option></select>
+      </div>
+      <div class="field" style="margin:0"><label>Posição</label>
+        <select class="inp-sel" id="ag-kanban-pos"><option value="top">Topo da coluna</option><option value="bottom">Final da coluna</option></select>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="field" style="margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:5px">
+        <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="7" x2="7.01" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Tags
+      </label>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px" id="ag-tags-list">
+        <span onclick="agToggleTag(this,'Urgente')" style="padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #EF4444;color:#EF4444;background:transparent">+ Urgente</span>
+        <span onclick="agToggleTag(this,'Retorno')" style="padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #3B82F6;color:#3B82F6;background:transparent">+ Retorno</span>
+        <span onclick="agToggleTag(this,'Avaliação')" style="padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #22C55E;color:#22C55E;background:transparent">+ Avaliação</span>
+        <span onclick="agToggleTag(this,'Follow-up')" style="padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #F26419;color:#F26419;background:transparent">+ Follow-up</span>
+        <span onclick="agToggleTag(this,'VIP')" style="padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid #A78BFA;color:#A78BFA;background:transparent">+ VIP</span>
+      </div>
+      <input type="hidden" id="ag-tags-val">
+    </div>
+
+    <!-- Separador -->
+    <div style="height:1px;background:var(--bd);margin:14px 0"></div>
+
+    <!-- Cor do evento -->
+    <div class="field" style="margin-bottom:14px">
+      <label>Cor do evento</label>
+      <div style="display:flex;gap:8px;margin-top:4px" id="ag-cores">
+        <span onclick="agSelecionarCor(this,'#4285F4')" style="width:22px;height:22px;border-radius:50%;background:#4285F4;cursor:pointer;border:2px solid #4285F4;outline:2px solid transparent" title="Azul"></span>
+        <span onclick="agSelecionarCor(this,'#22C55E')" style="width:22px;height:22px;border-radius:50%;background:#22C55E;cursor:pointer;border:2px solid transparent" title="Verde"></span>
+        <span onclick="agSelecionarCor(this,'#F26419')" style="width:22px;height:22px;border-radius:50%;background:#F26419;cursor:pointer;border:2px solid transparent" title="Laranja"></span>
+        <span onclick="agSelecionarCor(this,'#EF4444')" style="width:22px;height:22px;border-radius:50%;background:#EF4444;cursor:pointer;border:2px solid transparent" title="Vermelho"></span>
+        <span onclick="agSelecionarCor(this,'#8B5CF6')" style="width:22px;height:22px;border-radius:50%;background:#8B5CF6;cursor:pointer;border:2px solid transparent" title="Roxo"></span>
+        <span onclick="agSelecionarCor(this,'#D97706')" style="width:22px;height:22px;border-radius:50%;background:#D97706;cursor:pointer;border:2px solid transparent" title="Âmbar"></span>
+      </div>
+      <input type="hidden" id="ag-cor-val" value="#4285F4">
+    </div>
+
+    <!-- Sincronizar Google Calendar -->
+    <div style="padding:10px 12px;background:var(--bd2);border-radius:8px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--t1)">Sincronizar com Google Calendar</div>
+          <div style="font-size:10px;color:var(--t3)" id="ag-gcal-status-txt">Conectado via n8n</div>
+        </div>
+      </div>
+      <button class="toggle on" id="ag-toggle-gcal"></button>
+    </div>
+
+    <!-- Ações -->
+    <div class="modal-acts" style="margin-top:18px">
       <button class="btn-cancel" onclick="closeModal('modal-ag')">Cancelar</button>
-      <button class="btn-ok" onclick="criarAgendamento()">Agendar</button>
+      <button class="btn-ok" onclick="criarAgendamento()" style="min-width:90px">Criar</button>
     </div>
   </div>
 </div>
@@ -1710,20 +2514,20 @@ const N8N_FLOWS=[
   {nome:'Relatório Semanal IA',ico:'⭐',cor:'#F59E0B',desc:'Toda segunda gera relatório com Claude e envia por WhatsApp.',status:'on',ultima:'seg'},
 ];
 const PAGE_META={
-  dash:{title:'Dashboard',sub:'Visão geral da operação',btn:'Novo Agendamento',modal:'modal-ag'},
+  dash:{title:'Dashboard',sub:'Visão geral do seu negócio',btn:'Novo Agendamento',modal:'modal-ag'},
   agenda:{title:'Agenda',sub:'Calendário de atendimentos',btn:'Novo Agendamento',modal:'modal-ag'},
-  wa:{title:'WhatsApp',sub:'Central de atendimento via Evolution API',btn:'',modal:''},
+  wa:{title:'WhatsApp',sub:'Central de atendimento',btn:'',modal:''},
   crm:{title:'CRM',sub:'Funil Kanban — leads e oportunidades',btn:'Novo Lead',modal:'modal-lead'},
   clientes:{title:'Clientes',sub:'Cadastro e histórico completo',btn:'Novo Cliente',modal:'modal-cli'},
   orca:{title:'Orçamentos',sub:'Propostas e contratos',btn:'Novo Orçamento',modal:'modal-orca'},
-  financeiro:{title:'Financeiro',sub:'Receitas, despesas e inadimplência',btn:'Nova Entrada',modal:''},
+  financeiro:{title:'Financeiro',sub:'Receitas, despesas e fluxo de caixa',btn:'',modal:''},
   automacoes:{title:'Automações',sub:'Mensagens e fluxos automáticos',btn:'',modal:''},
-  n8n:{title:'n8n · Fluxos',sub:'Central de automação integrada',btn:'',modal:''},
-  ads:{title:'Campanhas & Ads',sub:'Resultados de mídia paga',btn:'',modal:''},
-  relatorios:{title:'Relatórios',sub:'Métricas por plataforma',btn:'',modal:''},
-  config:{title:'Configurações',sub:'Dados, integrações e preferências',btn:'',modal:''},
-  workhub:{title:'Work Hub',sub:'Central de tarefas e produção · ClickUp',btn:'Nova Tarefa',modal:'modal-task'},
-  socialhub:{title:'Social Hub',sub:'Gestão de redes sociais · MLabs',btn:'Novo Post',modal:''},
+  n8n:{title:'n8n · Fluxos',sub:'Workflows e automações ativas',btn:'',modal:''},
+  ads:{title:'Campanhas & Ads',sub:'Meta Ads + Google Ads · performance completa',btn:'+ Campanha',modal:''},
+  relatorios:{title:'Relatórios Operacionais',sub:'Saúde geral da operação em tempo real',btn:'↻ Atualizar',modal:''},
+  config:{title:'Configurações',sub:'Personalize sua experiência no K2 Flow',btn:'',modal:''},
+  hub:{title:'Work Hub',sub:'Central de tarefas e produção',btn:'Nova Tarefa',modal:'modal-task'},
+  sh:{title:'Social Hub',sub:'Gestão de redes sociais',btn:'Novo Post',modal:''},
   aigrowth:{title:'AI Growth Engine',sub:'Diagnóstico inteligente da operação',btn:'Gerar Análise',modal:''},
 };
 
@@ -1732,12 +2536,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   checkAuth();
   carregarConfig();
   carregarCRM();
-  carregarGCal();
   carregarFinanceiro();
   carregarCampanhas();
-  renderDashAgenda();
-  renderAgenda();
-  renderWA();
   renderKanban();
   renderCli();
   renderOrcamentos();
@@ -1748,9 +2548,57 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderAGE();
   renderSHPlatforms();
   renderWHtasks();
-  renderRelPlatforms();
+  renderAgenda();
+  renderWA();
   window._currentModal='modal-ag';
+  /* Carrega GCal + Dashboard com delay para garantir que dados estejam prontos */
+  setTimeout(()=>{
+    carregarGCal();
+    renderDashboard();
+    atualizarRelatorios();
+  },600);
+  /* Auto-refresh a cada 3 minutos */
+  setInterval(()=>{
+    renderDashboard();
+    renderWA();
+  },180000);
 });
+
+/* ── NAVEGAÇÃO PRINCIPAL — com auto-render por página ── */
+function goPage(page,el){
+  fecharHub();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  const pg=document.getElementById('page-'+page);
+  if(pg)pg.classList.add('on');
+  if(el)el.classList.add('on');
+  const m=PAGE_META[page]||{title:page,sub:'',btn:'',modal:''};
+  document.getElementById('tb-title').textContent=m.title;
+  document.getElementById('tb-sub').textContent=m.sub;
+  const pb=document.getElementById('btn-prim');
+  document.getElementById('btn-prim-txt').textContent=m.btn;
+  pb.style.display=m.btn?'flex':'none';
+  window._currentModal=m.modal;
+  /* Auto-render da página ativa */
+  const renders={
+    'dash':()=>renderDashboard(),
+    'agenda':()=>{renderAgenda();renderDashAgenda();},
+    'wa':()=>renderWA(),
+    'crm':()=>renderKanban(),
+    'clientes':()=>renderCli(),
+    'orca':()=>renderOrcamentos(),
+    'financeiro':()=>renderFinanceiro(),
+    'ads':()=>{renderAds();preencherFiltroClientes();},
+    'relatorios':()=>atualizarRelatorios(),
+    'hub':()=>renderWHtasks(),
+    'sh':()=>renderSHPlatforms(),
+    'aigrowth':()=>renderAGE(),
+    'automacoes':()=>renderAGE(),
+    'config':()=>carregarConfig(),
+    'n8n':()=>renderN8n(),
+  };
+  if(renders[page]) setTimeout(renders[page],50);
+}
 
 function carregarConfig(){
   /* Só seta defaults se o campo ainda não foi salvo pelo usuário */
@@ -1816,15 +2664,22 @@ function abrirHub(hub){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on','hub-on','sh-on','ai-on'));
   const cls={work:'hub-on',social:'sh-on',ai:'ai-on'}[hub];
   document.getElementById('ni-'+hub).classList.add(cls);
-  const pages={work:'workhub',social:'socialhub',ai:'aigrowth'};
+  /* page IDs corretos */
+  const pages={work:'hub',social:'sh',ai:'aigrowth'};
+  const pageKey=pages[hub];
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.getElementById('page-'+pages[hub]).classList.add('on');
-  const m=PAGE_META[pages[hub]];
+  const pg=document.getElementById('page-'+pageKey);
+  if(pg) pg.classList.add('on');
+  const metaKey={work:'hub',social:'sh',ai:'aigrowth'}[hub];
+  const m=PAGE_META[metaKey]||{title:'Hub',sub:'',btn:'',modal:''};
   document.getElementById('tb-title').textContent=m.title;
   document.getElementById('tb-sub').textContent=m.sub;
   document.getElementById('btn-prim').style.display=m.btn?'flex':'none';
   document.getElementById('btn-prim-txt').textContent=m.btn;
   window._currentModal=m.modal;
+  /* Auto-render */
+  const renders={work:renderWHtasks,social:renderSHPlatforms,ai:renderAGE};
+  if(renders[hub]) setTimeout(renders[hub],50);
 }
 function fecharHub(){
   if(!hubAtivo)return;
@@ -2023,22 +2878,68 @@ function renderAgendaMes(d){
 
 function agNav(d){agOffset+=d;renderAgenda();}
 function criarAgendamento(){
-  const cli=document.getElementById('ag-cli-sel').value;
-  const data=document.getElementById('ag-data').value;
-  const hora=document.getElementById('ag-hora').value;
-  const serv=document.getElementById('ag-serv').value;
-  const prof=document.getElementById('ag-prof').value;
-  if(!data||!hora){toast('Preencha data e horário','⚠️');return;}
-  /* Verifica conflito de horário */
+  const titulo=document.getElementById('ag-titulo')?.value.trim();
+  const cli=document.getElementById('ag-cli-sel')?.value||'';
+  const data=document.getElementById('ag-data')?.value;
+  const horaInput=document.getElementById('ag-hora-input')?.value||document.getElementById('ag-hora')?.value;
+  const horaSlot=document.getElementById('ag-hora')?.value;
+  const hora=horaSlot||horaInput;
+  const serv=document.getElementById('ag-serv')?.value||'Consulta / Avaliação';
+  const prof=document.getElementById('ag-prof')?.value||'Dr. Carlos';
+  const desc=document.getElementById('ag-desc')?.value||'';
+  const local=document.getElementById('ag-local')?.value||'';
+  const cor=document.getElementById('ag-cor-val')?.value||'#4285F4';
+  const tags=document.getElementById('ag-tags-val')?.value||'';
+  const duracao=parseInt(document.getElementById('ag-duracao')?.value||60);
+  const kanban=document.getElementById('ag-toggle-kanban')?.classList.contains('on');
+  const kanbanCol=document.getElementById('ag-kanban-col')?.value||'ag';
+  const repetir=document.getElementById('ag-toggle-repetir')?.classList.contains('on');
+  const freq=document.getElementById('ag-freq')?.value||'weekly';
+  const reps=parseInt(document.getElementById('ag-reps')?.value||4);
+
+  const nome=titulo||cli||'Compromisso';
+  if(!data){toast('Preencha a data','⚠️');return;}
+  if(!hora){toast('Selecione um horário','⚠️');return;}
+
+  /* Calcula hora de fim */
+  const [hh,mm]=(hora||'09:00').split(':').map(Number);
+  const fimMin=(hh*60+mm+duracao);
+  const horaFim=`${String(Math.floor(fimMin/60)).padStart(2,'0')}:${String(fimMin%60).padStart(2,'0')}`;
+
+  /* Verifica conflito */
   const conflito=AGENDA.find(a=>a.data===data&&a.hora===hora&&a.prof===prof&&a.status!=='cancelado');
-  if(conflito){toast(`${prof} já tem agendamento às ${hora}!`,'⚠️');return;}
-  const novo={id:'ag-'+Date.now(),hora,data,nome:cli,proc:serv,prof,status:'agendado',cor:'#7C3AED',wa:'',gcalId:''};
+  if(conflito){toast(`${prof} já tem compromisso às ${hora}!`,'⚠️');return;}
+
+  const novo={id:'ag-'+Date.now(),hora,horaFim,data,nome,proc:serv,prof,status:'agendado',
+    cor,wa:'',gcalId:'',desc,local,tags,cli};
   AGENDA.push(novo);
+
+  /* Repetições */
+  if(repetir&&reps>1){
+    for(let i=1;i<reps;i++){
+      const d=new Date(data+'T12:00:00');
+      if(freq==='daily')d.setDate(d.getDate()+i);
+      else if(freq==='weekly')d.setDate(d.getDate()+i*7);
+      else d.setMonth(d.getMonth()+i);
+      const ds=d.toISOString().split('T')[0];
+      AGENDA.push({...novo,id:'ag-'+Date.now()+i,data:ds});
+    }
+  }
+
+  /* Kanban */
+  if(kanban&&cli){
+    const col=CRM_COLS.find(c=>c.id===kanbanCol)||CRM_COLS.find(c=>c.id==='ag');
+    if(col){
+      col.cards.unshift({id:'k-'+Date.now(),nome,tag:serv,tagCor:'bk-b',resp:prof,data:hora,val:'',wa:''});
+      renderKanban();
+    }
+  }
+
+  AGENDA.sort((a,b)=>a.data.localeCompare(b.data)||a.hora.localeCompare(b.hora));
   renderAgenda();renderDashAgenda();
   closeModal('modal-ag');
-  toast(`Agendamento criado — ${cli} às ${hora}`,'✅');
-  /* Sincroniza com Google Calendar se conectado */
-  if(GCAL_CONNECTED) gcalCriarEvento(novo);
+  toast(`✅ ${nome} agendado às ${hora}${repetir?' ('+reps+'x)':''}`, '📅');
+  if(GCAL_CONNECTED&&document.getElementById('ag-toggle-gcal')?.classList.contains('on')) gcalCriarEvento(novo);
 }
 
 /* ── GOOGLE CALENDAR INTEGRATION ── */
@@ -2196,23 +3097,33 @@ function salvarGCal(){
   });
 }
 
-function abrirModalAgendamento(waNum, nomeCliente){
-  /* Popular dropdown de clientes */
+function agToggleTag(el,tag){
+  const isOn=el.style.background!=='transparent'&&el.style.background!=='';
+  if(isOn){el.style.background='transparent';el.textContent='+ '+tag;}
+  else{el.style.background=el.style.color+'20';el.textContent='✓ '+tag;}
+  const cur=document.getElementById('ag-tags-val')?.value.split(',').filter(Boolean)||[];
+  const idx=cur.indexOf(tag);
+  if(idx>=0)cur.splice(idx,1);else cur.push(tag);
+  const el2=document.getElementById('ag-tags-val');
+  if(el2)el2.value=cur.join(',');
+}
+
+function agSelecionarCor(el,cor){
+  document.querySelectorAll('#ag-cores span').forEach(s=>s.style.outline='2px solid transparent');
+  el.style.outline='2px solid '+cor;el.style.outlineOffset='2px';
+  const elV=document.getElementById('ag-cor-val');if(elV)elV.value=cor;
+}
+
+function abrirModalAgendamento(waNum,nomeCliente){
   const sel=document.getElementById('ag-cli-sel');
   if(sel){
-    sel.innerHTML=`<option value="">Selecione o cliente...</option>`
+    sel.innerHTML='<option value="">Selecione o cliente...</option>'
       +CLIENTES.map(c=>`<option value="${c.nome}" data-wa="${c.wa}">${c.nome}</option>`).join('');
-    if(nomeCliente){
-      for(const opt of sel.options){
-        if(opt.value===nomeCliente){opt.selected=true;break;}
-      }
-    }
+    if(nomeCliente)for(const opt of sel.options){if(opt.value===nomeCliente){opt.selected=true;break;}}
   }
-  /* Data padrão = hoje */
   const agData=document.getElementById('ag-data');
-  if(agData) agData.value=new Date().toISOString().split('T')[0];
-  /* Sincroniza Google Calendar antes de abrir */
-  if(GCAL_CONNECTED) gcalSincronizar();
+  if(agData)agData.value=new Date().toISOString().split('T')[0];
+  if(GCAL_CONNECTED)gcalSincronizar();
   atualizarHorariosLivres();
   openModal('modal-ag');
 }
@@ -3747,43 +4658,72 @@ function calcAPagar30(){
 /* ── Render principal ── */
 function renderFinanceiro(){
   const mes=mesAtual();
+  const hoje=new Date();
   const mrr=calcMRR();
   const receita=calcReceitaMes(mes);
   const despesa=calcDespesaMes(mes);
-  const margem=receita>0?((receita-despesa)/receita*100):0;
+  const lucro=receita-despesa;
   const inadimp=calcInadimplencia();
   const areceber=calcAReceber30();
   const apagar=calcAPagar30();
   const saldoLivre=receita-despesa-inadimp;
-
-  /* Atualiza data header */
-  const el=document.getElementById('fin-header-data');
-  if(el) el.textContent=`Competência · ${new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`;
-
-  /* KPIs */
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  set('fin-mrr', fmtR(mrr));
-  set('fin-arr', fmtR(mrr*12));
-  set('fin-desp', fmtR(despesa));
-  set('fin-desp-sub', despesa>receita?'⚠️ acima da receita':'fixas + variáveis');
-  set('fin-margem', margem.toFixed(1)+'%');
+
+  /* Mês label */
+  const elMes=document.getElementById('fin-mes-label');
+  if(elMes) elMes.textContent=hoje.toLocaleDateString('pt-BR',{month:'short',year:'numeric'});
+
+  /* Card Receber */
+  const recTotal=RECEITAS_FIN.filter(r=>r.competencia===mes).reduce((s,r)=>s+Number(r.valor||0),0)+mrr;
+  const recPend=RECEITAS_FIN.filter(r=>r.status==='a_receber'&&r.competencia===mes).reduce((s,r)=>s+Number(r.valor||0),0);
+  const recVenc=RECEITAS_FIN.filter(r=>r.status==='atrasado'||(r.status==='a_receber'&&r.vencimento&&new Date(r.vencimento)<hoje)).reduce((s,r)=>s+Number(r.valor||0),0);
+  const recReceb=RECEITAS_FIN.filter(r=>r.status==='recebido'&&r.competencia===mes).reduce((s,r)=>s+Number(r.valor||0),0)+mrr;
+  set('fin-fat-mes',fmtR(recTotal));
+  set('fin-rec-pendente',fmtR(recPend));
+  set('fin-rec-vencido',fmtR(recVenc));
+  set('fin-rec-recebido',fmtR(recReceb));
+
+  /* Card Pagar */
+  const depPago=DESPESAS_FIN.filter(d=>d.status==='pago'&&d.competencia===mes).reduce((s,d)=>s+Number(d.valor||0),0);
+  const depPend=DESPESAS_FIN.filter(d=>d.status==='pendente'&&d.competencia===mes).reduce((s,d)=>s+Number(d.valor||0),0);
+  const depVenc=DESPESAS_FIN.filter(d=>d.status==='pendente'&&d.vencimento&&new Date(d.vencimento)<hoje).reduce((s,d)=>s+Number(d.valor||0),0);
+  set('fin-dep-pago',fmtR(depPago));
+  set('fin-dep-pendente',fmtR(depPend));
+  set('fin-dep-vencido',fmtR(depVenc));
+  set('fin-dep-total',fmtR(despesa));
+
+  /* Card Lucro */
+  set('fin-mrr',fmtR(mrr));
+  set('fin-arr',fmtR(mrr*12));
+  set('fin-desp',fmtR(despesa));
   const elMargem=document.getElementById('fin-margem');
-  if(elMargem) elMargem.style.color=margem>30?'var(--ok)':margem>0?'var(--wa)':'var(--er)';
-  set('fin-areceber', fmtR(areceber));
-  set('fin-inadimp', fmtR(inadimp));
-  set('fin-inadimp-sub', inadimp>0?`⚠️ ${Math.round(inadimp/receita*100)||0}% da receita`:'sem atrasos');
-  set('fin-apagar', fmtR(apagar));
-  set('fin-saldo-livre', fmtR(Math.max(0,saldoLivre)));
+  if(elMargem){elMargem.textContent=fmtR(lucro);elMargem.style.color=lucro>=0?'var(--ok)':'var(--er)';}
+
+  /* Caixa */
+  set('fin-saldo-livre',fmtR(Math.max(0,saldoLivre)));
+  set('fin-areceber',fmtR(areceber));
+  set('fin-apagar',fmtR(apagar));
+  set('fin-inadimp',fmtR(inadimp));
   const elSaldo=document.getElementById('fin-saldo-livre');
   if(elSaldo) elSaldo.style.color=saldoLivre>0?'var(--ok)':'var(--er)';
-  set('fin-saldo-sub', saldoLivre>0?'disponível para investir':'caixa negativo ⚠️');
+  set('fin-saldo-sub',saldoLivre>0?'disponível para investir':'⚠️ caixa negativo');
+  set('fin-inadimp-sub',inadimp>0?'em atraso':'');
+
+  /* Vencidos */
+  const vencRec=RECEITAS_FIN.filter(r=>r.status==='atrasado'||(r.status==='a_receber'&&r.vencimento&&new Date(r.vencimento)<hoje));
+  const vencPag=DESPESAS_FIN.filter(d=>d.status==='pendente'&&d.vencimento&&new Date(d.vencimento)<hoje);
+  set('fin-venc-rec-badge',vencRec.length);
+  set('fin-venc-pag-badge',vencPag.length);
+  const elVR=document.getElementById('fin-lista-venc-rec');
+  if(elVR) elVR.innerHTML=vencRec.length?vencRec.map(r=>`<div style="padding:8px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:600">${r.descricao}</div><div style="font-size:10px;color:var(--t3)">${r.cliente||'—'}</div></div><span style="font-weight:700;color:#EF4444;font-size:12px">${fmtR(r.valor)}</span></div>`).join(''):'<div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Nenhum recebimento vencido</div>';
+  const elVP=document.getElementById('fin-lista-venc-pag');
+  if(elVP) elVP.innerHTML=vencPag.length?vencPag.map(d=>`<div style="padding:8px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:600">${d.descricao}</div><div style="font-size:10px;color:var(--t3)">${d.categoria||'—'}</div></div><span style="font-weight:700;color:#EF4444;font-size:12px">${fmtR(d.valor)}</span></div>`).join(''):'<div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Nenhum pagamento vencido</div>';
 
   renderGraficoBarras();
-  renderGraficoFluxo(FIN_FLUXO_MESES);
   renderContratosTabela();
   renderContasListas();
   renderExtrato();
-  atualizarCFOTexto(mrr, receita, despesa, margem, inadimp, saldoLivre);
+  atualizarCFOTexto(mrr,receita,despesa,(receita>0?(receita-despesa)/receita*100:0),inadimp,saldoLivre);
 }
 
 /* ── Gráfico Barras Receita vs Despesa ── */
@@ -4625,6 +5565,325 @@ function excluirCampanha(id){
   document.getElementById('modal-campanha')?.remove();
   toast('Campanha excluída','✅');
 }
+/* ══════════════════════════════════════
+   DASHBOARD — K2 Flow
+   ══════════════════════════════════════ */
+let DASH_META = parseInt(localStorage.getItem('k2-dash-meta')||'10000');
+let DASH_LEMBRETES = JSON.parse(localStorage.getItem('k2-dash-lembretes')||'[]');
+let DASH_PERIODO = 7;
+
+function setDashPeriodo(d,btn){
+  DASH_PERIODO=d;
+  document.querySelectorAll('#page-dash .fin-per-btn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  renderDashFinanceiro();
+}
+
+function renderDashboard(){
+  renderDashMeta();
+  renderDashKPIs();
+  renderDashFinanceiro();
+  renderDashAlertas();
+  renderDashAgenda();
+  renderDashTasks();
+  renderDashReunioes();
+  renderDashLembretes();
+  renderDashConteudos();
+  renderDashAIBody();
+}
+
+function renderDashMeta(){
+  const mrr=calcMRR();
+  const fat=calcReceitaMes(mesAtual());
+  const pct=DASH_META>0?Math.min(100,Math.round(fat/DASH_META*100)):0;
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('dash-meta-atual',fmtR(fat));
+  set('dash-meta-total',fmtR(DASH_META));
+  set('dash-meta-pct',pct+'% alcançado');
+  set('dash-meta-falta',fat>=DASH_META?'✅ Meta atingida!':'Faltam '+fmtR(DASH_META-fat));
+  const bar=document.getElementById('dash-meta-bar');
+  if(bar){bar.style.width=pct+'%';bar.style.background=pct>=100?'#22C55E':pct>=60?'#F59E0B':'#EF4444';}
+}
+
+function renderDashKPIs(){
+  const mrr=calcMRR();
+  const fat=calcReceitaMes(mesAtual());
+  const pend=calcAReceber30();
+  const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
+  const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('dash-fat',fmtR(fat));
+  set('dash-rec',fmtR(fat-pend));
+  set('dash-pend',fmtR(pend));
+  set('dash-leads',leads);
+  set('st-wa-sr',waAbertos);
+}
+
+function renderDashFinanceiro(){
+  const canvas=document.getElementById('dash-chart-financeiro');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const meses=Array.from({length:6},(_,i)=>addMeses(mesAtual(),i-5));
+  const fats=meses.map(m=>calcReceitaMes(m));
+  const mrrs=meses.map(()=>calcMRR());
+  const desps=meses.map(m=>calcDespesaMes(m));
+  const labels=meses.map(m=>nomeMes(m));
+  const W=canvas.offsetWidth||500; const H=140;
+  canvas.width=W; canvas.height=H;
+  ctx.clearRect(0,0,W,H);
+  const maxV=Math.max(...fats,...desps,1000);
+  const pad=30;
+  const drawLine=(data,color)=>{
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();
+    data.forEach((v,i)=>{
+      const x=pad+i*(W-pad*2)/(data.length-1);
+      const y=H-20-(v/maxV)*(H-30);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    data.forEach((v,i)=>{
+      const x=pad+i*(W-pad*2)/(data.length-1);
+      const y=H-20-(v/maxV)*(H-30);
+      ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();
+    });
+  };
+  ctx.font='9px DM Sans';ctx.fillStyle='#888';ctx.textAlign='center';
+  labels.forEach((l,i)=>{const x=pad+i*(W-pad*2)/(labels.length-1);ctx.fillText(l,x,H-5);});
+  drawLine(fats,'#22C55E');
+  drawLine(mrrs,'#F26419');
+  drawLine(desps,'#EF4444');
+}
+
+function renderDashAlertas(){
+  const alertas=[];
+  const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
+  if(waAbertos>0) alertas.push({tipo:'w',txt:`${waAbertos} conversas WhatsApp sem resposta`});
+  const leads=CRM_COLS.filter(c=>c.id!=='fc'&&c.id!=='pd').reduce((s,c)=>s+c.cards.length,0);
+  if(leads>0) alertas.push({tipo:'b',txt:`${leads} leads no CRM aguardando ação`});
+  const inadimp=calcInadimplencia();
+  if(inadimp>0) alertas.push({tipo:'r',txt:`Inadimplência: ${fmtR(inadimp)}`});
+  const orcPend=ORCAMENTOS.filter(o=>o.status==='aguardando').length;
+  if(orcPend>0) alertas.push({tipo:'w',txt:`${orcPend} orçamento(s) aguardando aprovação`});
+  const tasksPend=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado').length;
+  if(tasksPend>0) alertas.push({tipo:'r',txt:`${tasksPend} tarefa(s) pendente(s)`});
+  const badge=document.getElementById('dash-alerta-badge');
+  if(badge) badge.textContent=alertas.length+' ativos';
+  const lista=document.getElementById('dash-alertas-lista');
+  if(lista) lista.innerHTML=alertas.length?alertas.map(a=>`<div class="al al-${a.tipo}">${a.txt}</div>`).join(''):'<div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">✅ Nenhum alerta ativo</div>';
+}
+
+function renderDashTasks(){
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  const taskHoje=TASKS.filter(t=>t.data===hoje||t.data===new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
+  const taskAtras=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado');
+
+  const elHoje=document.getElementById('dash-tasks-hoje');
+  if(elHoje) elHoje.innerHTML=taskHoje.length?taskHoje.map(t=>`<div style="padding:8px 14px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · ${t.resp||'—'}</div></div><span style="font-size:10px;background:var(--bd2);border-radius:5px;padding:2px 7px">${t.status}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)"><div style="font-size:24px;margin-bottom:6px">📋</div>Nenhuma tarefa para hoje<br><button onclick="goPage(\'hub\',null)" style="margin-top:8px;background:var(--brand);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:10px;cursor:pointer">Criar Tarefa</button></div>';
+
+  const elAtras=document.getElementById('dash-tasks-atrasadas');
+  if(elAtras) elAtras.innerHTML=taskAtras.length?taskAtras.slice(0,4).map(t=>`<div style="padding:8px 14px;border-bottom:1px solid rgba(239,68,68,.1);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · vence ${t.data||'—'}</div></div><span style="font-size:10px;background:#EF444420;color:#EF4444;border-radius:5px;padding:2px 7px">${t.status}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)"><div style="font-size:24px;margin-bottom:4px">⚠️</div>Nenhuma tarefa atrasada 🎉</div>';
+}
+
+function renderDashReunioes(){
+  const hoje=new Date();
+  const proximas=AGENDA.filter(a=>new Date(a.data+'T12:00:00')>=hoje)
+    .sort((a,b)=>a.data.localeCompare(b.data)||a.hora.localeCompare(b.hora)).slice(0,4);
+  const el=document.getElementById('dash-reunioes');
+  if(el) el.innerHTML=proximas.length?proximas.map(a=>`<div style="padding:8px 14px;border-bottom:1px solid var(--bd2);display:flex;align-items:center;gap:10px"><div style="width:4px;height:36px;background:${a.cor||'#4285F4'};border-radius:2px;flex-shrink:0"></div><div><div style="font-size:11px;font-weight:600">${a.nome}</div><div style="font-size:10px;color:var(--t3)">${new Date(a.data+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})} · ${a.hora}</div></div></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)"><div style="font-size:24px;margin-bottom:6px">🤝</div>Nenhuma reunião agendada</div>';
+}
+
+function renderDashLembretes(){
+  const el=document.getElementById('dash-lembretes-lista');
+  if(!el)return;
+  el.innerHTML=DASH_LEMBRETES.length?DASH_LEMBRETES.map((l,i)=>`<div style="padding:8px 14px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px">📌 ${l}</span><button onclick="removerLembrete(${i})" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px">✕</button></div>`).join(''):'<div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Nenhum lembrete ainda</div>';
+}
+
+function adicionarLembrete(){
+  const inp=document.getElementById('dash-lembrete-inp');
+  const txt=inp?.value.trim();
+  if(!txt)return;
+  DASH_LEMBRETES.unshift(txt);
+  localStorage.setItem('k2-dash-lembretes',JSON.stringify(DASH_LEMBRETES));
+  inp.value='';
+  renderDashLembretes();
+}
+
+function removerLembrete(i){
+  DASH_LEMBRETES.splice(i,1);
+  localStorage.setItem('k2-dash-lembretes',JSON.stringify(DASH_LEMBRETES));
+  renderDashLembretes();
+}
+
+function renderDashConteudos(){
+  const el=document.getElementById('dash-conteudos');
+  if(!el)return;
+  const tasksSH=TASKS.filter(t=>t.cli&&t.data);
+  el.innerHTML=tasksSH.length?tasksSH.slice(0,3).map(t=>`<div style="padding:8px 14px;border-bottom:1px solid var(--bd2)"><div style="font-size:11px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli} · ${t.data}</div></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)"><div style="font-size:24px;margin-bottom:6px">🎨</div>Nenhum conteúdo para hoje<br><button onclick="goPage(\'sh\',null)" style="margin-top:8px;background:var(--brand);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:10px;cursor:pointer">Ver Social Hub</button></div>';
+}
+
+function renderDashAIBody(){
+  const el=document.getElementById('dash-ai-body');if(!el)return;
+  const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
+  const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
+  const inadimp=calcInadimplencia();
+  const mrr=calcMRR();
+  const parts=[];
+  if(waAbertos>0)parts.push(`<strong>${waAbertos} conversas sem resposta</strong> no WhatsApp`);
+  if(leads>0)parts.push(`<strong>${leads} leads no CRM</strong> aguardando ação`);
+  if(inadimp>0)parts.push(`<strong>${fmtR(inadimp)} em inadimplência</strong>`);
+  if(mrr>0)parts.push(`MRR ativo de <strong>${fmtR(mrr)}</strong>`);
+  el.innerHTML=parts.length?'A operação tem '+parts.join(', ')+'. <strong>Clique em Analisar para análise detalhada com IA.</strong>':'Lance dados no sistema para ativar a análise automática da operação.';
+}
+
+async function atualizarAnaliseDash(){
+  const el=document.getElementById('dash-ai-body');if(!el)return;
+  el.textContent='🔄 Analisando com Claude...';
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){el.textContent='Configure a API Key do Claude em Configurações → IA & APIs.';return;}
+  const mrr=calcMRR(),fat=calcReceitaMes(mesAtual()),inadimp=calcInadimplencia();
+  const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
+  const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
+  const prompt=`Agência K2 Company. Dashboard hoje: MRR=${fmtR(mrr)}, Faturamento=${fmtR(fat)}, Inadimplência=${fmtR(inadimp)}, WA abertos=${waAbertos}, Leads CRM=${leads}, Tarefas pendentes=${TASKS.filter(t=>t.status!=='Concluído').length}. Em 2 frases: situação atual e prioridade do dia.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    el.textContent=d.content?.[0]?.text||'Erro na análise';
+  }catch(e){el.textContent='Erro: '+e.message;}
+}
+
+function abrirMetaModal(){
+  const nova=prompt('Defina sua meta de faturamento mensal (R$):',DASH_META);
+  if(!nova)return;
+  DASH_META=parseInt(nova.replace(/\D/g,''))||10000;
+  localStorage.setItem('k2-dash-meta',DASH_META);
+  renderDashMeta();
+  toast('Meta atualizada: '+fmtR(DASH_META),'🎯');
+}
+
+/* Atualiza dashboard quando muda de aba */
+const _origGoPage=typeof goPage==='function'?goPage:null;
+function setCfgAba(aba,btn){
+  ['perfil','aparencia','assinatura','notificacoes','automacoes','integracoes','whatsapp','ia'].forEach(a=>{
+    const el=document.getElementById('cfg-aba-'+a);
+    if(el) el.style.display=a===aba?'block':'none';
+  });
+  document.querySelectorAll('.cfg-aba-h,.cfg-menu-btn,.cfg-aba').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+}
+function salvarPerfil(){toast('Perfil salvo!','✅');}
+function setTema(t){document.body.classList.toggle('light-mode',t==='light');localStorage.setItem('k2-tema',t);toast('Tema alterado!','✅');}
+function setBrandColor(cor){document.documentElement.style.setProperty('--brand',cor);localStorage.setItem('k2-brand-color',cor);toast('Cor atualizada!','✅');}
+function salvarN8n(){const url=document.getElementById('cfg-n8n-url')?.value.trim();if(!url){toast('Informe a URL do n8n','⚠️');return;}localStorage.setItem('k2cfg_cfg-n8n-url',url);toast('n8n salvo!','✅');}
+
+function abrirIntegracao(tipo){
+  const el=document.getElementById('cfg-integracao-detail');
+  const titulo=document.getElementById('cfg-int-titulo');
+  const body=document.getElementById('cfg-int-body');
+  if(!el||!titulo||!body)return;
+  const configs={
+    facebook:{nome:'Facebook Ads',campos:[{l:'App ID',id:'fb-app-id',ph:'123456789'},{l:'Token de Acesso',id:'fb-token',ph:'EAA...',type:'password'},{l:'ID da Conta de Anúncios',id:'fb-account',ph:'act_123456789'}]},
+    pixel:{nome:'Meta Pixel',campos:[{l:'Pixel ID',id:'pixel-id',ph:'1234567890'},{l:'Token da API de Conversões',id:'pixel-token',ph:'EAA...',type:'password'}]},
+    instagram:{nome:'Instagram',campos:[{l:'Instagram Business Account ID',id:'ig-id',ph:'123456789'},{l:'Token de Acesso',id:'ig-token',ph:'EAA...',type:'password'}]},
+    tiktok:{nome:'TikTok Ads',campos:[{l:'App ID',id:'tt-app-id',ph:'...'},{l:'Access Token',id:'tt-token',ph:'...',type:'password'},{l:'Advertiser ID',id:'tt-adv',ph:'...'}]},
+    google_ads:{nome:'Google Ads',campos:[{l:'Customer ID',id:'gads-cid',ph:'123-456-7890'},{l:'Developer Token',id:'gads-dev',ph:'...',type:'password'},{l:'OAuth Client ID',id:'gads-oauth',ph:'...'}]},
+    google_analytics:{nome:'Google Analytics',campos:[{l:'Measurement ID',id:'ga-mid',ph:'G-XXXXXXXXXX'},{l:'API Secret',id:'ga-secret',ph:'...',type:'password'}]},
+    google_business:{nome:'Google Business',campos:[{l:'Location ID',id:'gb-loc',ph:'...'},{l:'API Key',id:'gb-key',ph:'...',type:'password'}]},
+    asaas:{nome:'Asaas',campos:[{l:'API Key Asaas',id:'asaas-key',ph:'$aact_...',type:'password'},{l:'Ambiente',id:'asaas-env',ph:'sandbox ou production',type:'select',opts:['Produção','Sandbox']}]},
+    mercadopago:{nome:'Mercado Pago',campos:[{l:'Access Token',id:'mp-token',ph:'APP_USR-...',type:'password'}]},
+    abacate:{nome:'AbacatePay',campos:[{l:'API Key',id:'abacate-key',ph:'...',type:'password'}]},
+  };
+  const cfg=configs[tipo];if(!cfg){toast('Integração em desenvolvimento','ℹ️');return;}
+  titulo.textContent='🔗 '+cfg.nome;
+  body.innerHTML=cfg.campos.map(f=>`<div class="field" style="margin-bottom:10px"><label>${f.l}</label>${f.type==='select'?`<select class="inp-sel" id="${f.id}">${(f.opts||[]).map(o=>`<option>${o}</option>`).join('')}</select>`:`<input class="inp" id="${f.id}" type="${f.type||'text'}" placeholder="${f.ph}">`}</div>`).join('')
+    +`<button class="btn-prim" style="font-size:12px" onclick="salvarIntegracao('${tipo}')">Salvar e conectar</button>`;
+  el.style.display='block';
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function salvarIntegracao(tipo){
+  localStorage.setItem('k2int_'+tipo, JSON.stringify({ativo:true,ts:Date.now()}));
+  document.getElementById('cfg-integracao-detail').style.display='none';
+  toast(`${tipo} salvo! Integração ativa.`,'✅');
+}
+
+/* ── RELATÓRIOS OPERACIONAIS ── */
+function atualizarRelatorios(){
+  calcRelWA();calcRelCRM();calcRelOrcamentos();calcRelTasks();calcRelFinanceiro();calcRelAutomacoes();calcScoreGeral();
+}
+function calcRelWA(){
+  const items=CONVS.filter(c=>c.status==='aberta').slice(0,5);
+  const el=document.getElementById('rel-wa-badge');const lista=document.getElementById('rel-wa-lista');
+  if(el) el.textContent=CONVS.filter(c=>c.status==='aberta').length;
+  if(lista) lista.innerHTML=items.length?items.map(c=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${c.nome}</div><div style="font-size:10px;color:var(--t3)">${c.ultima||'Sem resposta'}</div></div><button onclick="goPage('wa',null)" style="font-size:10px;background:var(--brand);border:none;color:#fff;border-radius:5px;padding:3px 8px;cursor:pointer">Responder</button></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhuma conversa parada</div>';
+}
+function calcRelCRM(){
+  const parados=[];CRM_COLS.filter(c=>c.id!=='fc'&&c.id!=='pd').forEach(col=>{col.cards.forEach(card=>{parados.push({...card,coluna:col.nome});});});
+  const el=document.getElementById('rel-crm-badge');const lista=document.getElementById('rel-crm-lista');
+  if(el) el.textContent=parados.length;
+  if(lista) lista.innerHTML=parados.length?parados.slice(0,5).map(c=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${c.nome}</div><div style="font-size:10px;color:var(--t3)">${c.coluna} · ${c.data||'—'}</div></div><span style="font-size:10px;background:#F59E0B20;color:#F59E0B;border-radius:5px;padding:2px 7px">Parado</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhum lead parado</div>';
+}
+function calcRelOrcamentos(){
+  const pendentes=ORCAMENTOS.filter(o=>o.status==='aguardando');
+  const el=document.getElementById('rel-orc-badge');const lista=document.getElementById('rel-orc-lista');
+  if(el) el.textContent=pendentes.length;
+  if(lista) lista.innerHTML=pendentes.length?pendentes.slice(0,5).map(o=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${o.cli||o.desc}</div><div style="font-size:10px;color:var(--t3)">${o.desc||'—'} · ${o.valor||'—'}</div></div><span style="font-size:10px;background:#8B5CF620;color:#8B5CF6;border-radius:5px;padding:2px 7px">Sem resposta</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhum orçamento parado</div>';
+}
+function calcRelTasks(){
+  const atrasadas=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado');
+  const el=document.getElementById('rel-task-badge');const lista=document.getElementById('rel-task-lista');
+  if(el) el.textContent=atrasadas.length;
+  if(lista) lista.innerHTML=atrasadas.length?atrasadas.slice(0,5).map(t=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · ${t.data||'—'}</div></div><span style="font-size:10px;background:#3B82F620;color:#3B82F6;border-radius:5px;padding:2px 7px">${t.status||'Pendente'}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhuma tarefa atrasada</div>';
+}
+function calcRelFinanceiro(){
+  const hoje=new Date();
+  const inadimp=calcInadimplencia();
+  const vencidos=DESPESAS_FIN.filter(d=>d.status==='pendente'&&d.vencimento&&new Date(d.vencimento)<hoje);
+  const total=vencidos.length+(inadimp>0?1:0);
+  const el=document.getElementById('rel-fin-badge');const lista=document.getElementById('rel-fin-lista');
+  if(el){el.textContent=total;el.style.background=total>0?'#EF444420':'#22C55E20';el.style.color=total>0?'#EF4444':'#22C55E';}
+  const items=[];
+  if(inadimp>0)items.push({desc:'Inadimplência total',val:fmtR(inadimp),cor:'#EF4444'});
+  vencidos.forEach(d=>items.push({desc:d.descricao,val:fmtR(d.valor),cor:'#F59E0B'}));
+  if(lista) lista.innerHTML=items.length?items.map(i=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between"><div style="font-size:12px;font-weight:600">${i.desc}</div><span style="font-weight:700;color:${i.cor};font-size:12px">${i.val}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Financeiro saudável</div>';
+}
+function calcRelAutomacoes(){
+  const workflows=[{nome:'WhatsApp Proxy',status:'ativo'},{nome:'Google Calendar API',status:'ativo'},{nome:'Lembrete 15min',status:'ativo'},{nome:'Agenda Diária',status:'ativo'}];
+  const el=document.getElementById('rel-auto-badge');const lista=document.getElementById('rel-auto-lista');
+  const falhas=workflows.filter(w=>w.status!=='ativo');
+  if(el){el.textContent=falhas.length;el.style.background=falhas.length>0?'#EF444420':'#22C55E20';el.style.color=falhas.length>0?'#EF4444':'#22C55E';}
+  if(lista) lista.innerHTML=workflows.map(w=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div style="font-size:12px;font-weight:600">K2 Flow — ${w.nome}</div><span style="font-size:10px;background:${w.status==='ativo'?'#22C55E20':'#EF444420'};color:${w.status==='ativo'?'#22C55E':'#EF4444'};border-radius:5px;padding:2px 7px">${w.status==='ativo'?'✅ Ativo':'❌ Erro'}</span></div>`).join('');
+}
+function calcScoreGeral(){
+  const waOk=CONVS.filter(c=>c.status==='aberta').length===0;
+  const crmOk=CRM_COLS.reduce((s,c)=>s+c.cards.length,0)===0;
+  const orcOk=ORCAMENTOS.filter(o=>o.status==='aguardando').length===0;
+  const taskOk=TASKS.filter(t=>t.status!=='Concluído').length===0;
+  const finOk=calcInadimplencia()===0;
+  const pontos=[waOk,crmOk,orcOk,taskOk,finOk].filter(Boolean).length;
+  const score=Math.round(pontos/5*100);
+  const el=document.getElementById('rel-score');const titulo=document.getElementById('rel-score-titulo');const desc=document.getElementById('rel-score-desc');
+  if(el){el.textContent=score+'%';el.style.color=score>=80?'#22C55E':score>=50?'#F59E0B':'#EF4444';}
+  if(titulo) titulo.textContent=score>=80?'✅ Operação saudável':score>=50?'⚠️ Atenção necessária':'🚨 Ação imediata necessária';
+  if(desc){const p=[];if(!waOk)p.push('WhatsApp parado');if(!crmOk)p.push('leads no CRM');if(!orcOk)p.push('orçamentos pendentes');if(!taskOk)p.push('tarefas atrasadas');if(!finOk)p.push('inadimplência');desc.textContent=p.length?'Pendências: '+p.join(', ')+'.' :'Todos os módulos em dia!';}
+}
+async function analisarOperacaoIA(){
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){toast('Configure a API Key do Claude em Configurações → IA','⚠️');return;}
+  const desc=document.getElementById('rel-score-desc');
+  if(desc)desc.textContent='🔄 Analisando com Claude...';
+  const prompt=`Agência: ${CONVS.filter(c=>c.status==='aberta').length} WA abertos, ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)} leads CRM, ${ORCAMENTOS.filter(o=>o.status==='aguardando').length} orçamentos pendentes, ${TASKS.filter(t=>t.status!=='Concluído').length} tarefas, inadimplência ${fmtR(calcInadimplencia())}. Em 2 frases: prioridade e ação imediata.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(desc)desc.textContent=d.content?.[0]?.text||'Erro';
+  }catch(e){if(desc)desc.textContent='Erro: '+e.message;}
+}
+function gerarRelatorioGeral(){
+  const score=document.getElementById('rel-score')?.textContent||'—';
+  const txt=`📊 *Relatório Operacional K2 Flow*\n📅 ${new Date().toLocaleDateString('pt-BR')}\n\n🎯 *Score:* ${score}\n💬 WA abertos: ${CONVS.filter(c=>c.status==='aberta').length}\n👤 Leads CRM: ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)}\n📄 Orçamentos pendentes: ${ORCAMENTOS.filter(o=>o.status==='aguardando').length}\n✅ Tarefas: ${TASKS.filter(t=>t.status!=='Concluído').length}\n💰 Inadimplência: ${fmtR(calcInadimplencia())}\n\n_K2 Flow_`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+  toast('Relatório copiado!','📤');
+}
+
 function toggleCfg(id){
   const body=document.getElementById('body-'+id);
   if(!body)return;
