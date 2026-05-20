@@ -1586,32 +1586,30 @@ function renderWA(){
     <div style="font-size:10px;color:var(--t3);margin-top:4px">instância: ${inst}</div>
   </div>`;
 
-  evCall('chat/findChats/'+inst)
+  evCall('chat/findChats/'+inst, 'POST', {})
     .then(res=>{
-      /* Log para debug */
-      console.log('[K2 Flow] findChats raw:', res);
+      console.log('[K2 Flow] findChats raw:', JSON.stringify(res).substring(0,500));
 
       /* Suporte a todos os formatos possíveis da Evolution API */
       let raw = [];
       if(Array.isArray(res)) raw = res;
       else if(Array.isArray(res?.data)) raw = res.data;
       else if(Array.isArray(res?.chats)) raw = res.chats;
-      else if(typeof res === 'object' && res !== null){
-        /* Pode ser objeto indexado */
+      else if(res && typeof res === 'object'){
         const vals = Object.values(res);
         if(vals.length && typeof vals[0] === 'object') raw = vals;
       }
 
       if(!raw.length){
-        el.innerHTML=`<div style="padding:20px;text-align:center">
-          <div style="font-size:11px;color:var(--wa);font-weight:600;margin-bottom:6px">⚠️ Nenhuma conversa retornada</div>
-          <div style="font-size:10px;color:var(--t3);line-height:1.6">
-            Possíveis causas:<br>
-            1. URL do n8n hardcoded (veja Configurações → Diagnóstico)<br>
-            2. Instância "${inst}" não tem conversas<br>
-            3. Resposta: ${JSON.stringify(res).substring(0,80)}
+        el.innerHTML=`<div style="padding:14px">
+          <div style="background:var(--wa-l);border:1px solid rgba(217,119,6,.3);border-radius:8px;padding:12px;margin-bottom:10px">
+            <div style="font-size:11.5px;font-weight:700;color:#92400E;margin-bottom:6px">⚠️ Nenhuma conversa retornada</div>
+            <div style="font-size:10px;color:#92400E;line-height:1.7">
+              <strong>Resposta da API:</strong><br>
+              <code style="font-size:9px;word-break:break-all">${JSON.stringify(res).substring(0,300)}</code>
+            </div>
           </div>
-          <button onclick="renderWA()" style="margin-top:10px;background:var(--brand);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700">↺ Tentar novamente</button>
+          <button onclick="renderWA()" style="background:var(--brand);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;width:100%">↺ Tentar novamente</button>
         </div>`;
         return;
       }
@@ -2948,7 +2946,7 @@ const EV_ACTION_MAP = {
   sendMedia:            { method:'POST',   ep: (inst)=>`message/sendMedia/${inst}` },
   sendWhatsAppAudio:    { method:'POST',   ep: (inst)=>`message/sendWhatsAppAudio/${inst}` },
   logout:               { method:'DELETE', ep: (inst)=>`instance/logout/${inst}` },
-  findChats:            { method:'GET',    ep: (inst)=>`chat/findChats/${inst}` },
+  findChats:            { method:'POST',   ep: (inst)=>`chat/findChats/${inst}` },
   findMessages:         { method:'POST',   ep: (inst)=>`chat/findMessages/${inst}` },
   getBase64FromMedia:   { method:'POST',   ep: (inst)=>`chat/getBase64FromMediaMessage/${inst}` },
 };
