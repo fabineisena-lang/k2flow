@@ -416,6 +416,23 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 .oauth-btn-st{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;flex-shrink:0}
 
 @media(max-width:768px){.stats-4,.stats-3{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.grid2-form{grid-template-columns:1fr}.sh-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── WA TABS ── */
+.wa-tab{padding:12px 18px;font-size:12.5px;font-weight:600;border:none;background:transparent;color:var(--t3);border-bottom:2px solid transparent;transition:all .15s;cursor:pointer}
+.wa-tab.on{color:var(--brand);border-bottom-color:var(--brand)}
+.wa-tab:hover{color:var(--t1)}
+.page-wa-layout.on{flex-direction:column!important;overflow:hidden!important}
+
+/* ── DIAGNOSTIC STEPS ── */
+.diag-step{display:flex;align-items:center;gap:12px;background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;transition:border-color .2s}
+.diag-step.ok{border-color:rgba(5,150,105,.35);background:rgba(5,150,105,.04)}
+.diag-step.fail{border-color:rgba(220,38,38,.35);background:rgba(220,38,38,.04)}
+.diag-step.running{border-color:rgba(242,100,25,.35);background:rgba(242,100,25,.04)}
+.diag-step-ico{font-size:18px;width:28px;text-align:center;flex-shrink:0}
+.diag-step-title{font-size:12.5px;font-weight:600;color:var(--t1)}
+.diag-step-sub{font-size:11px;color:var(--t3);margin-top:2px;line-height:1.4}
+.diag-run-btn{background:transparent;border:1px solid var(--bd);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--t2);flex-shrink:0;transition:all .15s}
+.diag-run-btn:hover{background:var(--bd2);color:var(--t1)}
 </style>
 </head><body>
 <div class="mbanner" id="mbanner"><div style="display:flex;align-items:center;gap:8px"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Modo Master — Visualizando: <strong id="mbanner-nome">—</strong></div><button class="mbtn-back" onclick="voltarMaster()">← Voltar ao Master</button></div>
@@ -623,32 +640,154 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   </div>
 
   <!-- WHATSAPP -->
-  <div class="page" id="page-wa" style="padding:12px">
-    <div class="wa-wrap">
-      <div class="wa-list">
-        <div class="wa-list-hd"><div class="wa-list-title">Conversas</div><span class="ia-badge" id="wa-ia-badge">IA Ativa</span></div>
-        <div class="wa-search"><input class="wa-search-inp" type="text" placeholder="Buscar conversa..." oninput="filterConvs(this.value)"></div>
-        <div class="wa-convs" id="wa-conv-list"></div>
-      </div>
-      <div class="wa-chat" id="wa-chat">
-        <div class="wa-empty" id="wa-empty"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" style="opacity:.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="1.5"/></svg><span style="font-size:13px">Selecione uma conversa</span></div>
-        <div id="wa-chat-inner" style="display:none;flex:1;flex-direction:column">
-          <div class="wa-chat-hd">
-            <div class="wa-chat-user"><div class="wc-av" id="wc-av">?</div><div><div class="wa-chat-nome" id="wc-nome">—</div><div class="wa-chat-st" id="wc-st">online</div></div></div>
-            <div class="wa-acts">
-              <button class="wa-btn ia-on" id="ia-toggle" onclick="toggleIA()">🤖 IA Ativa</button>
-              <button class="wa-btn" onclick="toast('Transferido para humano','👤')">👤 Humano</button>
-              <button class="wa-btn" onclick="toast('Conversa encerrada','✅')">✓ Encerrar</button>
+  <div class="page page-wa-layout" id="page-wa" style="padding:0">
+
+    <!-- TABS -->
+    <div style="display:flex;border-bottom:1px solid var(--bd);background:var(--light2);flex-shrink:0;padding:0 16px">
+      <button class="wa-tab on" id="watab-conv" onclick="setWATab('conv')">💬 Conversas</button>
+      <button class="wa-tab" id="watab-diag" onclick="setWATab('diag')">🔧 Diagnóstico & Conexão</button>
+    </div>
+
+    <!-- PAINEL CONVERSAS -->
+    <div id="wa-panel-conv" style="flex:1;display:flex;overflow:hidden;padding:12px">
+      <div class="wa-wrap">
+        <div class="wa-list">
+          <div class="wa-list-hd"><div class="wa-list-title">Conversas</div><span class="ia-badge" id="wa-ia-badge">IA Ativa</span></div>
+          <div class="wa-search"><input class="wa-search-inp" type="text" placeholder="Buscar conversa..." oninput="filterConvs(this.value)"></div>
+          <div class="wa-convs" id="wa-conv-list"></div>
+        </div>
+        <div class="wa-chat" id="wa-chat">
+          <div class="wa-empty" id="wa-empty"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" style="opacity:.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="1.5"/></svg><span style="font-size:13px">Selecione uma conversa</span></div>
+          <div id="wa-chat-inner" style="display:none;flex:1;flex-direction:column">
+            <div class="wa-chat-hd">
+              <div class="wa-chat-user"><div class="wc-av" id="wc-av">?</div><div><div class="wa-chat-nome" id="wc-nome">—</div><div class="wa-chat-st" id="wc-st">online</div></div></div>
+              <div class="wa-acts">
+                <button class="wa-btn ia-on" id="ia-toggle" onclick="toggleIA()">🤖 IA Ativa</button>
+                <button class="wa-btn" onclick="toast('Transferido para humano','👤')">👤 Humano</button>
+                <button class="wa-btn" onclick="toast('Conversa encerrada','✅')">✓ Encerrar</button>
+              </div>
             </div>
-          </div>
-          <div class="wa-msgs" id="wa-msgs"></div>
-          <div class="wa-input-area">
-            <button class="wa-attach" onclick="toast('Anexe um arquivo','📎')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <textarea class="wa-inp" id="wa-inp" rows="1" placeholder="Digite sua mensagem..." onkeydown="waEnter(event)"></textarea>
-            <button class="wa-send" onclick="waSend()"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></button>
+            <div class="wa-msgs" id="wa-msgs"></div>
+            <div class="wa-input-area">
+              <button class="wa-attach" onclick="toast('Anexe um arquivo','📎')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <textarea class="wa-inp" id="wa-inp" rows="1" placeholder="Digite sua mensagem..." onkeydown="waEnter(event)"></textarea>
+              <button class="wa-send" onclick="waSend()"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- PAINEL DIAGNÓSTICO -->
+    <div id="wa-panel-diag" style="display:none;flex:1;overflow-y:auto;padding:16px;flex-direction:column;gap:14px">
+
+      <!-- STATUS CARD -->
+      <div style="background:var(--dark);border-radius:12px;padding:18px 20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px">
+            <span style="width:10px;height:10px;border-radius:50%;background:#6B7280;display:inline-block" id="diag-dot"></span>
+            Status da Conexão
+          </div>
+          <span id="diag-estado" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(107,114,128,.2);color:#9CA3AF">Não verificado</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px">
+            <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">URL / Proxy</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600;word-break:break-all" id="diag-url">—</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px">
+            <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Instância</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600" id="diag-inst">—</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px">
+            <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">API Key</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600" id="diag-key">—</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="diagRunAll()" style="background:var(--brand);border:none;color:#fff;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px">▶ Executar Diagnóstico Completo</button>
+          <button onclick="diagQR()" style="background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:700">📱 Gerar QR Code</button>
+          <button onclick="diagClear()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);border-radius:8px;padding:9px 14px;font-size:12px">🗑 Limpar log</button>
+        </div>
+      </div>
+
+      <!-- QR CODE BOX -->
+      <div id="diag-qr-area" style="display:none;background:var(--dark);border-radius:12px;padding:20px;text-align:center">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px">
+          <span style="width:10px;height:10px;border-radius:50%;background:#D97706" id="diag-qr-dot"></span>
+          <span style="font-size:13px;font-weight:600;color:#fff" id="diag-qr-txt">Aguardando...</span>
+        </div>
+        <div style="background:#fff;width:190px;height:190px;border-radius:10px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center" id="diag-qr-img">
+          <span style="font-size:12px;color:#888">Gerando...</span>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.7">
+          Abra o WhatsApp → <strong style="color:rgba(255,255,255,.7)">Dispositivos Conectados</strong> → Escanear QR Code
+        </div>
+      </div>
+
+      <!-- STEPS -->
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Testes em etapas</div>
+
+        <div class="diag-step" id="dstep-proxy">
+          <div class="diag-step-ico" id="dico-proxy">⏳</div>
+          <div style="flex:1">
+            <div class="diag-step-title">1. Proxy nginx → Evolution API</div>
+            <div class="diag-step-sub" id="dsub-proxy">Verifica se o proxy /ev-api está respondendo</div>
+          </div>
+          <button onclick="diagStep('proxy')" class="diag-run-btn">Testar</button>
+        </div>
+
+        <div class="diag-step" id="dstep-auth">
+          <div class="diag-step-ico" id="dico-auth">⏳</div>
+          <div style="flex:1">
+            <div class="diag-step-title">2. Autenticação API Key</div>
+            <div class="diag-step-sub" id="dsub-auth">Verifica se a API Key está correta e autorizada</div>
+          </div>
+          <button onclick="diagStep('auth')" class="diag-run-btn">Testar</button>
+        </div>
+
+        <div class="diag-step" id="dstep-instance">
+          <div class="diag-step-ico" id="dico-instance">⏳</div>
+          <div style="flex:1">
+            <div class="diag-step-title">3. Instância existe</div>
+            <div class="diag-step-sub" id="dsub-instance">Verifica se a instância "AmandaCS" existe na Evolution API</div>
+          </div>
+          <button onclick="diagStep('instance')" class="diag-run-btn">Testar</button>
+        </div>
+
+        <div class="diag-step" id="dstep-state">
+          <div class="diag-step-ico" id="dico-state">⏳</div>
+          <div style="flex:1">
+            <div class="diag-step-title">4. Estado da conexão WhatsApp</div>
+            <div class="diag-step-sub" id="dsub-state">Verifica se o WhatsApp está conectado (open/close/qr)</div>
+          </div>
+          <button onclick="diagStep('state')" class="diag-run-btn">Testar</button>
+        </div>
+
+        <div class="diag-step" id="dstep-send">
+          <div class="diag-step-ico" id="dico-send">⏳</div>
+          <div style="flex:1">
+            <div class="diag-step-title">5. Envio de mensagem de teste</div>
+            <div class="diag-step-sub" id="dsub-send">Envia "Teste K2 Flow" para o próprio número configurado</div>
+          </div>
+          <button onclick="diagStep('send')" class="diag-run-btn">Testar</button>
+        </div>
+      </div>
+
+      <!-- CONSOLE LOG -->
+      <div style="background:var(--dark);border-radius:12px;overflow:hidden">
+        <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;border-radius:50%;background:#FF5F57"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#FEBC2E"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#28C840"></div>
+          <span style="font-size:11px;color:rgba(255,255,255,.25);margin-left:6px;font-family:monospace">Console — K2 Flow WhatsApp Diagnostic</span>
+        </div>
+        <div id="diag-log" style="padding:12px 14px;font-family:monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.5);min-height:160px;max-height:320px;overflow-y:auto">
+          <span style="color:rgba(255,255,255,.2)">Aguardando diagnóstico... clique em "Executar Diagnóstico Completo"</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -835,7 +974,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
         </div>
         <div class="cfg-int-body" id="body-wa">
           <div class="grid2-form" style="margin-bottom:10px">
-            <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://..." value="/ev-api"></div>
+            <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://..." value="https://appk2-evolution-api.k8wm1v.easypanel.host"></div>
             <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="429683C4..."></div>
           </div>
           <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="AmandaCS"></div>
@@ -946,7 +1085,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     <div class="cfg-sec">
       <div class="cfg-sec-h">💬 WhatsApp — Evolution API</div>
       <div class="grid2-form">
-        <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://appk2-evolution-api.k8wm1v.easypanel.host" value="/ev-api"></div>
+        <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://appk2-evolution-api.k8wm1v.easypanel.host" value="https://appk2-evolution-api.k8wm1v.easypanel.host"></div>
         <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="SUA_API_KEY_GLOBAL"></div>
       </div>
       <div class="field"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="AmandaCS"></div>
@@ -1101,7 +1240,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 <script>
 const SB_URL='https://xlxquingaqgselwfoyki.supabase.co';
 const SB_KEY='sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
-const EV_URL_DEFAULT='/ev-api';
+const EV_URL_DEFAULT='https://appk2-evolution-api.k8wm1v.easypanel.host';
 const EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33';
 
 let hubAtivo=null,iaOn=true,currentConv=null,agOffset=0;
@@ -1233,19 +1372,33 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 function carregarConfig(){
-  /* garante URL correta — limpa qualquer URL HTTP salva incorretamente */
-  /* credenciais corretas hardcoded */
-  localStorage.setItem('k2cfg_ev-url','/ev-api');
-  localStorage.setItem('k2cfg_ev-apikey','BD06CAA569F1-44CE-B980-D83AC96F6F33');
-  localStorage.setItem('k2cfg_ev-inst','AmandaCS');
-  localStorage.setItem('k2cfg_ev-url','/ev-api');
-  if(!localStorage.getItem('k2cfg_ev-apikey')||localStorage.getItem('k2cfg_ev-apikey')==='BD06CAA569F1-44CE-B980-D83AC96F6F33'){localStorage.setItem('k2cfg_ev-apikey','BD06CAA569F1-44CE-B980-D83AC96F6F33');}
-  if(!localStorage.getItem('k2cfg_ev-inst')){localStorage.setItem('k2cfg_ev-inst','AmandaCS');}
-  if(localStorage.getItem('k2cfg_ev-url') && !localStorage.getItem('k2cfg_ev-url').includes('easypanel') && !localStorage.getItem('k2cfg_ev-url').includes('145.223')){localStorage.removeItem('k2cfg_ev-url');}
-  const defaults={'ev-url':'/ev-api','ev-apikey':'BD06CAA569F1-44CE-B980-D83AC96F6F33','ev-inst':'AmandaCS','cfg-ai-key':'','cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?','gemini-key':'','cfg-n8n-url':'https://n8n-n8n.k8wm1v.easypanel.host','cfg-n8n-key':'','cfg-nome':'','cfg-tel':'','cfg-end':'','cfg-open':'08:00','cfg-close':'18:00','cfg-link':''};
-  Object.keys(defaults).forEach(k=>{const saved=localStorage.getItem('k2cfg_'+k);const el=document.getElementById(k);if(el)el.value=saved!==null?saved:defaults[k];});
-  if(localStorage.getItem('k2cfg_google')==='1'){const el=document.getElementById('google-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
-  if(localStorage.getItem('k2cfg_meta')==='1'){const el=document.getElementById('meta-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
+  /* Só seta defaults se o campo ainda não foi salvo pelo usuário */
+  const defaults={
+    'ev-url':'https://appk2-evolution-api.k8wm1v.easypanel.host',
+    'ev-apikey':'BD06CAA569F1-44CE-B980-D83AC96F6F33',
+    'ev-inst':'AmandaCS',
+    'cfg-ai-key':'',
+    'cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?',
+    'gemini-key':'',
+    'cfg-n8n-url':'https://n8n-n8n.k8wm1v.easypanel.host',
+    'cfg-n8n-key':'',
+    'cfg-nome':'','cfg-tel':'','cfg-end':'',
+    'cfg-open':'08:00','cfg-close':'18:00','cfg-link':''
+  };
+  Object.keys(defaults).forEach(k=>{
+    /* Não sobrescreve valores já salvos pelo usuário */
+    if(!localStorage.getItem('k2cfg_'+k)){
+      localStorage.setItem('k2cfg_'+k, defaults[k]);
+    }
+    const el=document.getElementById(k);
+    if(el) el.value=localStorage.getItem('k2cfg_'+k)||defaults[k];
+  });
+  if(localStorage.getItem('k2cfg_google')==='1'){
+    document.querySelectorAll('#google-st').forEach(el=>{el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';});
+  }
+  if(localStorage.getItem('k2cfg_meta')==='1'){
+    document.querySelectorAll('#meta-st').forEach(el=>{el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';});
+  }
 }
 function checkAuth(){
   const imp=localStorage.getItem('k2_impersonando');
@@ -1444,9 +1597,9 @@ function waSend(){
   if(currentConv){currentConv.msgs.push({dir:'out',txt,hora:'agora',ia:false,tipo:'text'});currentConv.ultima=txt;}
   inp.value='';renderMsgs();
   /* Envia via Evolution API se configurado */
-  const evUrl=localStorage.getItem('ev-url')||EV_URL_DEFAULT;
-  const evKey=localStorage.getItem('ev-apikey');
-  const evInst=localStorage.getItem('ev-inst');
+  const evUrl=localStorage.getItem('k2cfg_ev-url')||EV_URL_DEFAULT;
+  const evKey=localStorage.getItem('k2cfg_ev-apikey');
+  const evInst=localStorage.getItem('k2cfg_ev-inst');
   if(evKey&&evInst&&currentConv){
     fetch(`${evUrl}/message/sendText/${evInst}`,{method:'POST',headers:{'apikey':evKey,'Content-Type':'application/json'},body:JSON.stringify({number:currentConv.num,text:txt})}).catch(()=>{});
   }
@@ -1726,3 +1879,410 @@ function pollWAStatus(inst){
     if(n>40)clearInterval(t);
   },3000);
 }
+
+/* ══════════════════════════════════════════════
+   WHATSAPP DIAGNOSTIC ENGINE
+   ══════════════════════════════════════════════ */
+
+function setWATab(tab){
+  document.querySelectorAll('.wa-tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('watab-'+tab).classList.add('on');
+  document.getElementById('wa-panel-conv').style.display = tab==='conv' ? 'flex' : 'none';
+  const diagPanel = document.getElementById('wa-panel-diag');
+  diagPanel.style.display = tab==='diag' ? 'flex' : 'none';
+  if(tab==='diag') diagInit();
+}
+
+function diagInit(){
+  const url = localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT;
+  const inst = localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS';
+  const key = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  document.getElementById('diag-url').textContent = url;
+  document.getElementById('diag-inst').textContent = inst;
+  document.getElementById('diag-key').textContent = key ? key.substring(0,8)+'••••••' : '❌ Não configurada';
+}
+
+function diagLog(msg, type){
+  const el = document.getElementById('diag-log');
+  const ts = new Date().toLocaleTimeString('pt-BR');
+  const colors = {ok:'#34D399', err:'#FCA5A5', info:'rgba(255,255,255,.55)', warn:'#FCD34D', raw:'rgba(255,255,255,.25)'};
+  const prefixes = {ok:'✅', err:'❌', info:'ℹ️', warn:'⚠️', raw:'  '};
+  const color = colors[type]||colors.info;
+  const pre = prefixes[type]||'';
+  if(el.querySelector('span[style*="Aguardando"]')) el.innerHTML='';
+  el.innerHTML += `<div style="color:${color}"><span style="color:rgba(255,255,255,.2)">[${ts}]</span> ${pre} ${msg}</div>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+function diagSetStep(id, state, msg){
+  const el = document.getElementById('dstep-'+id);
+  const ico = document.getElementById('dico-'+id);
+  const sub = document.getElementById('dsub-'+id);
+  if(!el) return;
+  el.className = 'diag-step ' + state;
+  ico.textContent = state==='ok' ? '✅' : state==='fail' ? '❌' : state==='running' ? '⏳' : '⏳';
+  if(msg) sub.textContent = msg;
+}
+
+function diagSetStatus(state, label){
+  const dot = document.getElementById('diag-dot');
+  const badge = document.getElementById('diag-estado');
+  const colors = {ok:'#34D399', fail:'#FCA5A5', connecting:'#FCD34D', idle:'#6B7280'};
+  const bgColors = {ok:'rgba(5,150,105,.2)', fail:'rgba(220,38,38,.2)', connecting:'rgba(245,158,11,.2)', idle:'rgba(107,114,128,.2)'};
+  const textColors = {ok:'#34D399', fail:'#FCA5A5', connecting:'#FCD34D', idle:'#9CA3AF'};
+  dot.style.background = colors[state] || colors.idle;
+  badge.textContent = label;
+  badge.style.background = bgColors[state] || bgColors.idle;
+  badge.style.color = textColors[state] || textColors.idle;
+}
+
+function diagClear(){
+  document.getElementById('diag-log').innerHTML = '<span style="color:rgba(255,255,255,.2)">Log limpo.</span>';
+  ['proxy','auth','instance','state','send'].forEach(id=>{
+    diagSetStep(id,'','⏳');
+    const sub = document.getElementById('dsub-'+id);
+    if(sub) sub.textContent = {
+      proxy:'Verifica se o proxy /ev-api está respondendo',
+      auth:'Verifica se a API Key está correta e autorizada',
+      instance:'Verifica se a instância "AmandaCS" existe na Evolution API',
+      state:'Verifica se o WhatsApp está conectado (open/close/qr)',
+      send:'Envia "Teste K2 Flow" para o próprio número configurado'
+    }[id];
+  });
+  diagSetStatus('idle','Não verificado');
+}
+
+async function diagStep(step){
+  const url = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
+  const key = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  const inst = localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS';
+
+  diagSetStep(step,'running','Testando...');
+  diagLog(`Iniciando teste: ${step}`, 'info');
+
+  try {
+    if(step==='proxy'){
+      diagLog(`Fazendo GET ${url}/instance/fetchInstances`, 'info');
+      const r = await fetch(url+'/instance/fetchInstances', {
+        headers: {'apikey': key},
+        signal: AbortSignal.timeout(8000)
+      });
+      diagLog(`HTTP Status: ${r.status} ${r.statusText}`, r.ok ? 'ok' : 'err');
+      const xDeny = r.headers.get('x-deny-reason');
+      if(xDeny) diagLog(`BLOQUEADO pelo proxy: ${xDeny}`, 'err');
+      if(r.ok){
+        diagSetStep('proxy','ok',`Proxy OK — HTTP ${r.status}`);
+        diagLog('Proxy nginx → Evolution API funcionando!', 'ok');
+      } else {
+        diagSetStep('proxy','fail',`HTTP ${r.status} — verifique o nginx`);
+        diagLog(`Falha no proxy. Status: ${r.status}`, 'err');
+      }
+
+    } else if(step==='auth'){
+      diagLog(`GET ${url}/instance/fetchInstances com apikey`, 'info');
+      const r = await fetch(url+'/instance/fetchInstances', {
+        headers: {'apikey': key},
+        signal: AbortSignal.timeout(8000)
+      });
+      const body = await r.json().catch(()=>({}));
+      diagLog(`Resposta: ${JSON.stringify(body).substring(0,200)}`, 'raw');
+      if(r.status===401 || body?.message?.includes('unauthorized') || body?.status===401){
+        diagSetStep('auth','fail','API Key inválida ou sem permissão');
+        diagLog('API Key rejeitada. Verifique em Configurações.', 'err');
+      } else if(r.ok || Array.isArray(body)){
+        diagSetStep('auth','ok','API Key válida ✓');
+        diagLog('API Key aceita pela Evolution API!', 'ok');
+      } else {
+        diagSetStep('auth','fail',`Resposta inesperada: ${r.status}`);
+        diagLog(`Status: ${r.status} — ${JSON.stringify(body).substring(0,100)}`, 'warn');
+      }
+
+    } else if(step==='instance'){
+      diagLog(`GET ${url}/instance/fetchInstances`, 'info');
+      const r = await fetch(url+'/instance/fetchInstances', {
+        headers: {'apikey': key},
+        signal: AbortSignal.timeout(8000)
+      });
+      const instances = await r.json().catch(()=>[]);
+      diagLog(`Instâncias encontradas: ${JSON.stringify(instances).substring(0,300)}`, 'raw');
+      const found = Array.isArray(instances)
+        ? instances.some(i => (i.instance?.instanceName||i.name||i.instanceName||'') === inst)
+        : false;
+      if(found){
+        diagSetStep('instance','ok',`Instância "${inst}" encontrada!`);
+        diagLog(`Instância "${inst}" existe na Evolution API.`, 'ok');
+      } else {
+        diagSetStep('instance','fail',`Instância "${inst}" NÃO encontrada`);
+        diagLog(`Instâncias disponíveis: ${Array.isArray(instances)?instances.map(i=>i.instance?.instanceName||i.name||i.instanceName).join(', '):'(nenhuma)'}`, 'warn');
+        diagLog(`AÇÃO: Crie a instância "${inst}" na Evolution API ou corrija o nome em Configurações.`, 'err');
+      }
+
+    } else if(step==='state'){
+      diagLog(`GET ${url}/instance/connectionState/${inst}`, 'info');
+      const r = await fetch(url+'/instance/connectionState/'+inst, {
+        headers: {'apikey': key},
+        signal: AbortSignal.timeout(8000)
+      });
+      const d = await r.json().catch(()=>({}));
+      diagLog(`Resposta completa: ${JSON.stringify(d)}`, 'raw');
+      const state = d.instance?.state || d.state || d.connectionStatus || '';
+      diagLog(`Estado detectado: "${state}"`, state==='open'?'ok':'warn');
+      if(state==='open'){
+        diagSetStep('state','ok','✅ WhatsApp CONECTADO!');
+        diagSetStatus('ok','WhatsApp Conectado ✅');
+        diagLog('WhatsApp conectado! Pode usar normalmente.', 'ok');
+      } else if(state==='close' || state==='closed'){
+        diagSetStep('state','fail','Desconectado — precisa escanear QR Code');
+        diagSetStatus('fail','Desconectado');
+        diagLog('WhatsApp desconectado. Clique em "Gerar QR Code" e escaneie.', 'err');
+      } else if(state==='connecting'){
+        diagSetStep('state','running','Conectando... aguarde');
+        diagSetStatus('connecting','Conectando...');
+        diagLog('WhatsApp está tentando conectar. Aguarde alguns segundos.', 'warn');
+      } else {
+        diagSetStep('state','fail',`Estado: "${state||'desconhecido'}" — verifique a instância`);
+        diagSetStatus('fail',state||'Desconhecido');
+        diagLog(`Estado inesperado: "${state}" — pode precisar criar/reconectar a instância.`, 'warn');
+      }
+
+    } else if(step==='send'){
+      const testNum = localStorage.getItem('k2cfg_ev-inst-num') || prompt('Número para teste (ex: 5511999999999):','5511999999999');
+      if(!testNum){diagLog('Envio cancelado — nenhum número informado.','warn');diagSetStep('send','','—');return;}
+      localStorage.setItem('k2cfg_ev-inst-num', testNum);
+      diagLog(`POST ${url}/message/sendText/${inst} → número ${testNum}`, 'info');
+      const r = await fetch(url+'/message/sendText/'+inst, {
+        method:'POST',
+        headers:{'apikey':key,'Content-Type':'application/json'},
+        body: JSON.stringify({number:testNum, text:'✅ Teste K2 Flow — '+new Date().toLocaleTimeString('pt-BR')}),
+        signal: AbortSignal.timeout(10000)
+      });
+      const d = await r.json().catch(()=>({}));
+      diagLog(`Resposta: ${JSON.stringify(d).substring(0,300)}`, 'raw');
+      if(r.ok && (d.key||d.status||d.messageId)){
+        diagSetStep('send','ok','Mensagem enviada com sucesso!');
+        diagLog('Mensagem de teste enviada! Verifique o WhatsApp.', 'ok');
+      } else {
+        diagSetStep('send','fail',`Erro ao enviar: ${d.message||d.error||r.status}`);
+        diagLog(`Falha no envio: ${JSON.stringify(d).substring(0,200)}`, 'err');
+      }
+    }
+  } catch(e) {
+    const msg = e.name==='AbortError' ? 'Timeout (8s) — servidor não respondeu'
+              : e.name==='TypeError' && e.message.includes('fetch') ? 'Não foi possível conectar — proxy inacessível ou CORS bloqueando'
+              : e.message;
+    diagSetStep(step,'fail',msg);
+    diagLog(`ERRO ${step}: ${msg}`, 'err');
+    if(msg.includes('proxy') || msg.includes('fetch')){
+      diagLog('Dica: Verifique se o nginx está rodando e o proxy /ev-api está configurado.', 'warn');
+    }
+  }
+}
+
+async function diagRunAll(){
+  diagClear();
+  diagLog('=== DIAGNÓSTICO COMPLETO K2 FLOW — WHATSAPP ===', 'info');
+  diagInit();
+  for(const step of ['proxy','auth','instance','state']){
+    await diagStep(step);
+    await new Promise(r=>setTimeout(r,600));
+  }
+  diagLog('=== Diagnóstico concluído. Verifique os resultados acima. ===', 'info');
+}
+
+async function diagQR(){
+  const url = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
+  const key = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  const inst = localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS';
+  const qrArea = document.getElementById('diag-qr-area');
+  qrArea.style.display = 'block';
+  document.getElementById('diag-qr-dot').style.background = '#D97706';
+  document.getElementById('diag-qr-txt').textContent = 'Verificando estado...';
+  document.getElementById('diag-qr-img').innerHTML = '<span style="font-size:12px;color:#888">Aguarde...</span>';
+  diagLog('Verificando estado da instância antes do QR...', 'info');
+  try {
+    const stateR = await fetch(url+'/instance/connectionState/'+inst, {
+      headers:{'apikey':key}, signal:AbortSignal.timeout(8000)
+    });
+    const stateD = await stateR.json().catch(()=>({}));
+    const state = stateD.instance?.state || stateD.state || '';
+    diagLog(`Estado atual: "${state}"`, 'raw');
+    if(state==='open'){
+      document.getElementById('diag-qr-dot').style.background = '#34D399';
+      document.getElementById('diag-qr-txt').textContent = '✅ WhatsApp já está conectado!';
+      document.getElementById('diag-qr-img').innerHTML = '<div style="font-size:56px">✅</div>';
+      diagLog('WhatsApp já conectado — QR Code não necessário!', 'ok');
+      diagSetStatus('ok','WhatsApp Conectado ✅');
+      return;
+    }
+    diagLog(`Solicitando QR Code: POST ${url}/instance/connect/${inst}`, 'info');
+    const r = await fetch(url+'/instance/connect/'+inst, {
+      method:'GET',
+      headers:{'apikey':key},
+      signal: AbortSignal.timeout(15000)
+    });
+    const d = await r.json().catch(()=>({}));
+    diagLog(`Resposta QR: ${JSON.stringify(d).substring(0,400)}`, 'raw');
+    const b64 = d.base64 || d.qrcode?.base64 || d.qr?.base64 || d.qrcode || d.code;
+    if(b64 && b64.length > 100){
+      const src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,'+b64;
+      document.getElementById('diag-qr-img').innerHTML = `<img src="${src}" style="width:170px;height:170px;border-radius:8px">`;
+      document.getElementById('diag-qr-txt').textContent = 'Escaneie com o WhatsApp';
+      diagLog('QR Code gerado! Escaneie agora.', 'ok');
+      diagSetStatus('connecting','Aguardando scan...');
+      let n=0;
+      const poll = setInterval(async()=>{
+        n++;
+        try{
+          const s = await fetch(url+'/instance/connectionState/'+inst,{headers:{'apikey':key}});
+          const sd = await s.json().catch(()=>({}));
+          const st = sd.instance?.state||sd.state||'';
+          if(st==='open'){
+            clearInterval(poll);
+            document.getElementById('diag-qr-dot').style.background='#34D399';
+            document.getElementById('diag-qr-txt').textContent='✅ Conectado!';
+            document.getElementById('diag-qr-img').innerHTML='<div style="font-size:56px">✅</div>';
+            diagLog('WhatsApp conectado com sucesso!','ok');
+            diagSetStatus('ok','WhatsApp Conectado ✅');
+            diagSetStep('state','ok','✅ WhatsApp CONECTADO!');
+            renderWA();
+          }
+        }catch(e){}
+        if(n>40) clearInterval(poll);
+      },3000);
+    } else {
+      document.getElementById('diag-qr-txt').textContent = 'Erro ao gerar QR';
+      document.getElementById('diag-qr-img').innerHTML = `<div style="font-size:11px;color:#DC2626;padding:12px;text-align:center">Sem base64 na resposta.<br>Chave: ${Object.keys(d).join(', ')||'(vazio)'}</div>`;
+      diagLog(`QR sem base64. Campos retornados: ${Object.keys(d).join(', ')||'(resposta vazia)'}`, 'err');
+      diagLog('Verifique se a instância existe e está no estado "close".', 'warn');
+    }
+  } catch(e) {
+    const msg = e.name==='AbortError' ? 'Timeout — servidor não respondeu em 15s' : e.message;
+    document.getElementById('diag-qr-txt').textContent = 'Erro: '+msg;
+    diagLog('Erro ao gerar QR: '+msg, 'err');
+  }
+}
+
+/* ── TOAST ── */
+let _toastTimer;
+function toast(msg,ico){
+  const el=document.getElementById('toast');
+  const ti=document.getElementById('toast-ico');
+  const tt=document.getElementById('toast-txt');
+  if(!el)return;
+  ti.textContent=ico||'✅';
+  tt.textContent=msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+/* ── MODAIS ── */
+function openModal(id){
+  const m=document.getElementById(id);
+  if(!m)return;
+  m.classList.add('show');
+  const close=e=>{if(e.target===m)closeModal(id);};
+  m.addEventListener('click',close,{once:true});
+}
+function closeModal(id){
+  const m=document.getElementById(id);
+  if(m)m.classList.remove('show');
+}
+
+/* ── EVOLUTION API CALL ── */
+async function evCall(endpoint,method,body){
+  method=method||'GET';
+  const url=(localStorage.getItem('k2cfg_ev-url')||EV_URL_DEFAULT).replace(/\/+$/,'');
+  const key=localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT;
+  const opts={method,headers:{'apikey':key,'Content-Type':'application/json'}};
+  if(body)opts.body=JSON.stringify(body);
+  const r=await fetch(url+'/'+endpoint,opts);
+  if(!r.ok)throw new Error('HTTP '+r.status+' '+r.statusText);
+  return r.json();
+}
+
+/* ── FIN TABS ── */
+function setFinTab(el){
+  document.querySelectorAll('.fin-tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+/* ── CONFIG CARDS TOGGLE ── */
+function toggleCfg(id){
+  const body=document.getElementById('body-'+id);
+  if(!body)return;
+  body.classList.toggle('open');
+}
+
+/* ── RENDER FUNCIONÁRIOS & PLANOS ── */
+function renderFuncs(){
+  const tbody=document.getElementById('func-tbody');if(!tbody)return;
+  tbody.innerHTML=FUNCS.map(f=>`<tr>
+    <td><strong>${f.nome}</strong></td>
+    <td>${f.email}</td>
+    <td>${f.perfil}</td>
+    <td><span class="badge bk-ok"><span class="bk-dot"></span>${f.status}</span></td>
+    <td><button class="btn-sec btn-sm" onclick="toast('Edição em breve','⚙️')">Editar</button></td>
+  </tr>`).join('');
+}
+function renderPlanos(){
+  const tbody=document.getElementById('planos-tbody');if(!tbody)return;
+  tbody.innerHTML=PLANOS_CLI.map(p=>`<tr>
+    <td><strong>${p.nome}</strong></td>
+    <td style="color:var(--ok);font-weight:600">${p.valor}</td>
+    <td>${p.dur}</td>
+    <td><span class="badge bk-ok"><span class="bk-dot"></span>${p.status}</span></td>
+    <td><button class="btn-sec btn-sm" onclick="toast('Edição em breve','⚙️')">Editar</button></td>
+  </tr>`).join('');
+}
+
+/* ── CRIAR FUNCIONÁRIO & PLANO ── */
+function criarFunc(){
+  const nome=document.getElementById('func-nome').value.trim();
+  if(!nome){toast('Informe o nome','⚠️');return;}
+  FUNCS.push({nome,email:document.getElementById('func-email').value,perfil:document.getElementById('func-perfil').value,status:'ativo'});
+  renderFuncs();closeModal('modal-func');toast(`Funcionário "${nome}" adicionado!`,'✅');
+  document.getElementById('func-nome').value='';
+}
+function criarPlano(){
+  const nome=document.getElementById('plano-nome').value.trim();
+  if(!nome){toast('Informe o nome do plano','⚠️');return;}
+  PLANOS_CLI.push({nome,valor:document.getElementById('plano-valor').value,dur:document.getElementById('plano-dur').value,tipo:document.getElementById('plano-tipo').value,status:'ativo'});
+  renderPlanos();closeModal('modal-plano');toast(`Plano "${nome}" adicionado!`,'✅');
+  document.getElementById('plano-nome').value='';
+}
+
+/* ── OAUTH INTEGRAÇÕES ── */
+function conectarGoogleOAuth(){
+  localStorage.setItem('k2cfg_google','1');
+  document.querySelectorAll('[id="google-st"]').forEach(el=>{
+    el.textContent='✅ Conectado';
+    el.style.background='var(--ok-l)';
+    el.style.color='var(--ok)';
+  });
+  toast('Google Calendar + Analytics conectado!','✅');
+}
+function conectarMetaOAuth(){
+  localStorage.setItem('k2cfg_meta','1');
+  document.querySelectorAll('[id="meta-st"]').forEach(el=>{
+    el.textContent='✅ Conectado';
+    el.style.background='var(--ok-l)';
+    el.style.color='var(--ok)';
+  });
+  toast('Meta (Facebook + Instagram + Ads) conectado!','✅');
+}
+
+/* ── AUTH ── */
+function logout(){
+  if(!confirm('Deseja sair da conta K2 Flow?'))return;
+  localStorage.clear();
+  location.href='k2flow-login.html';
+}
+function voltarMaster(){
+  localStorage.removeItem('k2_impersonando');
+  localStorage.removeItem('k2_tenant_nome');
+  location.href='k2flow-master.html';
+}
+</script>
+</body>
+</html>
