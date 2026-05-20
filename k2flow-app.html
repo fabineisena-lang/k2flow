@@ -1042,7 +1042,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     </div>
     <div class="ai-box" style="margin-top:0;margin-bottom:16px">
       <div class="ai-box-h"><div class="ai-box-ico"><svg width="11" height="11" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ai-box-title">Resumo executivo — AI Growth Engine</span></div>
-      <div class="ai-box-body" id="age-resumo">A operação tem <strong>5 conversas sem resposta</strong> no WhatsApp e <strong>2 leads parados há +7 dias</strong> no CRM. No financeiro, MRR cresceu 12% mas há <strong>R$3.200 em inadimplência</strong>. Campanha "Lançamento" com <strong>CPL elevado e saldo baixo</strong>. <strong>Prioridade:</strong> WhatsApp → follow-up CRM → pausar campanha.</div>
+      <div class="ai-box-body" id="age-resumo">Carregando análise da operação...</div>
     </div>
     <div class="age-items" id="age-items"></div>
   </div>
@@ -2687,6 +2687,12 @@ function fecharHub(){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('hub-on','sh-on','ai-on'));
   hubAtivo=null;
 }
+
+/* Garante que o sidebar sempre reseta ao navegar para qualquer página */
+function resetSidebar(){
+  const sb1=document.getElementById('sb1');
+  if(sb1&&hubAtivo===null) sb1.classList.remove('min');
+}
 function goWH(sub,el){
   document.querySelectorAll('#sb2-work .s2ni').forEach(n=>n.classList.remove('on'));
   el.classList.add('on');
@@ -4021,8 +4027,41 @@ function renderRelPlatforms(){
 
 /* ── AI GROWTH ENGINE ── */
 function renderAGE(){
-  const el=document.getElementById('age-items');if(!el)return;
-  el.innerHTML=AGE_ITEMS.map(a=>`<div class="age-item ${a.cls}"><div class="age-item-h">${a.h}</div><div class="age-item-body">${a.body}</div></div>`).join('');
+  /* Gera análise baseada em dados reais */
+  const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
+  const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
+  const inadimp=calcInadimplencia();
+  const mrr=calcMRR();
+  const tasksPend=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado').length;
+  const orcPend=ORCAMENTOS.filter(o=>o.status==='aguardando').length;
+  const campAlertas=CAMPANHAS.filter(c=>avaliarAlerta(c)).length;
+
+  /* Atualiza resumo executivo com dados reais */
+  const resumo=document.getElementById('age-resumo');
+  if(resumo){
+    const parts=[];
+    if(waAbertos>0) parts.push(`<strong>${waAbertos} conversa(s) sem resposta</strong> no WhatsApp`);
+    if(leads>0) parts.push(`<strong>${leads} lead(s) no CRM</strong>`);
+    if(inadimp>0) parts.push(`<strong>${fmtR(inadimp)} em inadimplência</strong>`);
+    if(mrr>0) parts.push(`MRR ativo de <strong>${fmtR(mrr)}</strong>`);
+    if(tasksPend>0) parts.push(`<strong>${tasksPend} tarefa(s) pendente(s)</strong>`);
+    resumo.innerHTML=parts.length
+      ?'A operação tem '+parts.join(', ')+'. <strong>Clique em "Gerar Nova Análise" para diagnóstico completo com IA.</strong>'
+      :'Nenhum dado cadastrado ainda. Adicione conversas, leads, financeiro e campanhas para ativar a análise.';
+  }
+
+  /* Gera itens de análise dinamicamente */
+  const items=[];
+  if(campAlertas>0) items.push({cls:'age-r',h:'🔴 Campanhas com problema',body:`${campAlertas} campanha(s) com CPL acima da meta ou ROAS baixo. Revise criativos e públicos.`});
+  if(leads>0) items.push({cls:'age-r',h:'🔴 Leads parados no CRM',body:`${leads} lead(s) aguardando ação. Priorize follow-up por WhatsApp.`});
+  if(inadimp>0) items.push({cls:'age-w',h:'⚠️ Pagamentos em atraso',body:`${fmtR(inadimp)} em inadimplência. Enviar cobrança por WhatsApp + proposta de parcelamento.`});
+  if(waAbertos>0) items.push({cls:'age-w',h:'⚠️ WhatsApp sem resposta',body:`${waAbertos} conversa(s) aguardando. Responda nas próximas 2h para não perder o lead.`});
+  if(orcPend>0) items.push({cls:'age-w',h:'⚠️ Orçamentos pendentes',body:`${orcPend} orçamento(s) sem resposta. Faça follow-up ativo.`});
+  if(mrr>0) items.push({cls:'age-g',h:'✅ MRR em crescimento',body:`Receita recorrente de ${fmtR(mrr)}/mês ativa. ARR projetado: ${fmtR(mrr*12)}.`});
+  if(items.length===0) items.push({cls:'age-g',h:'✅ Operação sem alertas',body:'Nenhum problema identificado. Continue monitorando os KPIs diariamente.'});
+
+  const el=document.getElementById('age-items');
+  if(el) el.innerHTML=items.map(a=>`<div class="age-item ${a.cls}"><div class="age-item-h">${a.h}</div><div class="age-item-body">${a.body}</div></div>`).join('');
 }
 function gerarAnalise(){toast('Análise sendo gerada pela IA...','⭐');setTimeout(()=>toast('Análise atualizada!','✅'),2500);}
 
