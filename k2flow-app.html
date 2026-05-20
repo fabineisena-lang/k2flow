@@ -429,6 +429,8 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 .fin-tabs{display:flex;gap:6px;margin-bottom:14px}
 .fin-tab{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--bd);color:var(--t2);background:var(--light2);transition:all .15s}
 .fin-tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.fin-per-btn{padding:5px 10px;font-size:11px;font-weight:600;border:none;background:var(--light2);color:var(--t2);cursor:pointer;transition:all .15s}
+.fin-per-btn.on{background:var(--brand);color:#fff}
 
 /* ── CONNECT BUTTONS ── */
 .oauth-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--r);border:1px solid var(--bd);background:var(--light2);transition:all .2s;width:100%;text-align:left;margin-bottom:10px}
@@ -851,18 +853,195 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   </div>
 
   <!-- CAMPANHAS -->
+  <!-- CAMPANHAS & ADS -->
   <div class="page content" id="page-ads">
-    <div class="stats stats-4">
-      <div class="stat"><div class="stat-lbl">Investimento Mai</div><div class="stat-val" style="color:var(--bl);font-size:20px">R$2.400</div><div class="stat-sub">3 campanhas</div></div>
-      <div class="stat"><div class="stat-lbl">Leads gerados</div><div class="stat-val" style="color:var(--ok)">27</div><div class="stat-sub">CPL médio R$88</div></div>
-      <div class="stat"><div class="stat-lbl">Campanhas ativas</div><div class="stat-val">3</div><div class="stat-sub">1 com alerta</div></div>
-      <div class="stat"><div class="stat-lbl">ROAS estimado</div><div class="stat-val" style="color:var(--brand)">3.2x</div><div class="stat-sub">meta 4x</div></div>
+
+    <!-- Header estilo Looker Studio -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <!-- Logo Meta + Google -->
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          <div>
+            <div style="font-size:15px;font-weight:800;font-family:'Barlow',sans-serif;color:var(--t1)">Relatório de Marketing</div>
+            <div style="font-size:11px;color:var(--t3)" id="ads-subtitulo">Meta Ads + Google Ads · todos os clientes</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <select class="inp-sel" style="width:auto;font-size:12px" id="ads-filtro-cliente" onchange="renderAds()">
+          <option value="">Todos os clientes</option>
+        </select>
+        <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
+          <button class="fin-per-btn on" onclick="setAdsPeriodo(7,this)">7D</button>
+          <button class="fin-per-btn" onclick="setAdsPeriodo(30,this)" style="border-left:1px solid var(--bd)">30D</button>
+          <button class="fin-per-btn" onclick="setAdsPeriodo(90,this)" style="border-left:1px solid var(--bd)">90D</button>
+        </div>
+        <button class="btn-prim" style="font-size:11px" onclick="abrirModalCampanha()">+ Campanha</button>
+        <button class="btn-sec" style="font-size:11px" onclick="gerarRelatorioCliente()">📤 Relatório</button>
+      </div>
     </div>
-    <div class="tbl-wrap"><table><thead><tr><th>Campanha</th><th>Plataforma</th><th>Investido</th><th>Leads</th><th>CPL</th><th>Status</th></tr></thead><tbody>
-      <tr><td><strong>Captação Ortodontia</strong></td><td><span class="badge bk-b">Meta Ads</span></td><td>R$1.200</td><td>18</td><td>R$66</td><td><span class="badge bk-ok"><span class="bk-dot"></span>Ativa</span></td></tr>
-      <tr><td><strong>Implante — Lançamento</strong></td><td><span class="badge bk-b">Meta Ads</span></td><td>R$800</td><td>7</td><td style="color:var(--er);font-weight:600">R$114</td><td><span class="badge bk-r"><span class="bk-dot"></span>CPL alto</span></td></tr>
-      <tr><td><strong>Google — Dentista SP</strong></td><td><span class="badge bk-g">Google Ads</span></td><td>R$400</td><td>2</td><td>R$200</td><td><span class="badge bk-w"><span class="bk-dot"></span>Saldo baixo</span></td></tr>
-    </tbody></table></div>
+
+    <!-- KPIs principais — estilo Looker Studio dark -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px" id="ads-kpis-grid">
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Investimento Total</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Barlow',sans-serif;color:#fff" id="ads-kpi-invest">R$0</div>
+        <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:10px"><div id="ads-bar-invest" style="height:100%;background:#1877F2;border-radius:2px;width:0%;transition:width .5s"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px" id="ads-kpi-invest-sub"></div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Resultados (Leads)</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Barlow',sans-serif;color:#22C55E" id="ads-kpi-leads">0</div>
+        <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:10px"><div id="ads-bar-leads" style="height:100%;background:#22C55E;border-radius:2px;width:0%;transition:width .5s"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px" id="ads-kpi-leads-sub">CPL: —</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Custo por Lead (CPL)</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Barlow',sans-serif;color:#FBBF24" id="ads-kpi-cpl">—</div>
+        <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:10px"><div id="ads-bar-cpl" style="height:100%;background:#FBBF24;border-radius:2px;width:50%;transition:width .5s"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px">meta ideal: &lt; R$80</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Taxa de Conversão</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Barlow',sans-serif;color:#A78BFA" id="ads-kpi-conv">—</div>
+        <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:10px"><div id="ads-bar-conv" style="height:100%;background:#A78BFA;border-radius:2px;width:0%;transition:width .5s"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px">cliques → leads</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Cliques Totais</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Barlow',sans-serif;color:#38BDF8" id="ads-kpi-cliques">0</div>
+        <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:10px"><div id="ads-bar-cliques" style="height:100%;background:#38BDF8;border-radius:2px;width:0%;transition:width .5s"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px" id="ads-kpi-ctr">CTR: —</div>
+      </div>
+    </div>
+
+    <!-- Segunda linha KPIs -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Impressões Totais</div>
+        <div style="font-size:20px;font-weight:800;font-family:'Barlow',sans-serif;color:#fff" id="ads-kpi-imp">0</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:8px">alcance bruto</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">ROAS Médio</div>
+        <div style="font-size:20px;font-weight:800;font-family:'Barlow',sans-serif;color:#F26419" id="ads-kpi-roas">—</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:8px">meta: 3x+</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Campanhas Ativas</div>
+        <div style="font-size:20px;font-weight:800;font-family:'Barlow',sans-serif;color:#22C55E" id="ads-kpi-ativas">0</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:8px">rodando agora</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">⚠️ Alertas</div>
+        <div style="font-size:20px;font-weight:800;font-family:'Barlow',sans-serif;color:#EF4444" id="ads-kpi-alertas">0</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:8px">CPL alto ou parada</div>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:16px 18px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px">Melhor Campanha</div>
+        <div style="font-size:13px;font-weight:800;font-family:'Barlow',sans-serif;color:#22C55E;line-height:1.2" id="ads-kpi-melhor">—</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:8px" id="ads-kpi-melhor-cpl">menor CPL</div>
+      </div>
+    </div>
+
+    <!-- Funil + Meta vs Google + Claude -->
+    <div style="display:grid;grid-template-columns:260px 1fr 280px;gap:16px;margin-bottom:20px">
+
+      <!-- Funil de tráfego -->
+      <div style="background:var(--dark);border-radius:12px;padding:18px">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em">Funil de Tráfego</div>
+        <div id="ads-funil" style="display:flex;flex-direction:column;gap:8px;align-items:center"></div>
+      </div>
+
+      <!-- Meta Ads vs Google Ads lado a lado -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <!-- Meta Ads -->
+        <div style="background:#1877F210;border:1px solid #1877F230;border-radius:12px;padding:16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span style="font-size:13px;font-weight:700;color:#1877F2">Meta Ads</span>
+          </div>
+          <div id="ads-meta-dados" style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:20px 0">Cadastre campanhas Meta</div>
+          </div>
+        </div>
+        <!-- Google Ads -->
+        <div style="background:#EA433510;border:1px solid #EA433530;border-radius:12px;padding:16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            <span style="font-size:13px;font-weight:700;color:#EA4335">Google Ads</span>
+          </div>
+          <div id="ads-google-dados" style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:20px 0">Cadastre campanhas Google</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude análise -->
+      <div style="background:var(--dark);border-radius:12px;padding:18px;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <span style="font-size:18px">🤖</span>
+          <span style="font-size:12px;font-weight:700;color:var(--brand)">IA — Análise</span>
+        </div>
+        <div id="ads-ia-texto" style="font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.7;flex:1">Lance campanhas para ativar a análise.</div>
+        <button onclick="analisarCampanhasIA()" style="background:var(--brand);border:none;color:#fff;border-radius:7px;padding:7px;font-size:11px;font-weight:700;margin-top:12px;width:100%">↻ Analisar com Claude</button>
+      </div>
+    </div>
+
+    <!-- Gráfico tendência + pizza plataforma -->
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:16px;margin-bottom:20px">
+      <div style="background:var(--dark);border-radius:12px;padding:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em">Investimento vs Leads por Cliente</div>
+        </div>
+        <canvas id="ads-chart-barras" height="160"></canvas>
+      </div>
+      <div style="background:var(--dark);border-radius:12px;padding:18px">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em">Por Plataforma</div>
+        <canvas id="ads-chart-pizza" height="130"></canvas>
+        <div id="ads-legenda-plat" style="margin-top:10px;font-size:10px;display:flex;flex-direction:column;gap:5px"></div>
+      </div>
+    </div>
+
+    <!-- Tabela campanhas estilo Looker Studio -->
+    <div style="background:var(--dark);border-radius:12px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em">Campanhas em Detalhe</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select class="inp-sel" style="width:auto;font-size:11px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.7)" id="ads-filtro-plat" onchange="renderAds()">
+            <option value="">Todas plataformas</option>
+            <option value="meta">Meta Ads</option>
+            <option value="google">Google Ads</option>
+          </select>
+          <button onclick="abrirModalCampanha()" style="background:var(--brand);border:none;color:#fff;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700">+ Campanha</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;min-width:900px">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,.08)">
+            <th style="padding:10px 20px;text-align:left;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Cliente</th>
+            <th style="padding:10px 12px;text-align:left;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Campanha</th>
+            <th style="padding:10px 12px;text-align:center;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Plataforma</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Investido</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Leads</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">CPL</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Cliques</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">CTR</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Impressões</th>
+            <th style="padding:10px 12px;text-align:right;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">ROAS</th>
+            <th style="padding:10px 12px;text-align:center;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Status</th>
+            <th style="padding:10px 12px;text-align:center;font-size:10px;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase">Ação</th>
+          </tr></thead>
+          <tbody id="ads-tbody">
+            <tr><td colspan="12" style="text-align:center;padding:40px;color:rgba(255,255,255,.3);font-size:12px">
+              Nenhuma campanha cadastrada — clique em "+ Campanha"
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- RELATÓRIOS -->
@@ -873,18 +1052,187 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- FINANCEIRO -->
   <div class="page content" id="page-financeiro">
-    <div class="stats stats-3">
-      <div class="stat"><div class="stat-lbl">Receita do Mês</div><div class="stat-val" style="color:var(--ok)">R$14.980</div><div class="stat-sub">confirmadas</div></div>
-      <div class="stat"><div class="stat-lbl">A Receber</div><div class="stat-val" style="color:var(--wa)">R$6.400</div><div class="stat-sub">pendentes</div></div>
-      <div class="stat"><div class="stat-lbl">Inadimplência</div><div class="stat-val" style="color:var(--er)">R$3.200</div><div class="stat-sub">em atraso</div></div>
+
+    <!-- Header com período -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:17px;font-weight:800;font-family:'Barlow',sans-serif;color:var(--t1)">Financeiro — K2 Company</div>
+        <div style="font-size:11px;color:var(--t3)" id="fin-header-data">Competência · carregando...</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
+          <button class="fin-per-btn on" onclick="setFinPeriodo(1,this)">1M</button>
+          <button class="fin-per-btn" onclick="setFinPeriodo(3,this)" style="border-left:1px solid var(--bd)">3M</button>
+          <button class="fin-per-btn" onclick="setFinPeriodo(6,this)" style="border-left:1px solid var(--bd)">6M</button>
+          <button class="fin-per-btn" onclick="setFinPeriodo(12,this)" style="border-left:1px solid var(--bd)">12M</button>
+          <button class="fin-per-btn" onclick="setFinPeriodo(24,this)" style="border-left:1px solid var(--bd)">2A</button>
+        </div>
+        <button class="btn-prim" style="font-size:11px" onclick="abrirModalFinReceita()">+ Receita</button>
+        <button class="btn-sec" style="font-size:11px" onclick="abrirModalFinDespesa()">+ Despesa</button>
+        <button class="btn-sec" style="font-size:11px" onclick="abrirModalFinContrato()">+ Contrato</button>
+        <button class="btn-sec" style="font-size:11px" onclick="document.getElementById('fin-excel-input').click()">📎 Extrato</button>
+        <input type="file" id="fin-excel-input" accept=".csv,.xlsx,.xls" style="display:none" onchange="importarExtrato(this)">
+      </div>
     </div>
-    <div class="fin-tabs"><button class="fin-tab on" onclick="setFinTab(this)">Todos</button><button class="fin-tab" onclick="setFinTab(this)">Receitas</button><button class="fin-tab" onclick="setFinTab(this)">Despesas</button></div>
-    <div class="tbl-wrap"><table><thead><tr><th>Descrição</th><th>Cliente</th><th>Valor</th><th>Tipo</th><th>Status</th><th>Vencimento</th></tr></thead><tbody>
-      <tr><td>Ortodontia — Mensalidade</td><td>Teste 1</td><td style="color:var(--ok);font-weight:600">R$400</td><td><span class="badge bk-ok">receita</span></td><td><span class="badge bk-ok"><span class="bk-dot"></span>Pago</span></td><td>10/05/2026</td></tr>
-      <tr><td>Implante Unitário</td><td>Teste 2</td><td style="color:var(--er);font-weight:600">R$3.200</td><td><span class="badge bk-ok">receita</span></td><td><span class="badge bk-r"><span class="bk-dot"></span>Atrasado</span></td><td>01/05/2026</td></tr>
-      <tr><td>Licença K2 Flow Premium</td><td>—</td><td style="color:var(--er);font-weight:600">R$299</td><td><span class="badge bk-r">despesa</span></td><td><span class="badge bk-ok"><span class="bk-dot"></span>Pago</span></td><td>01/05/2026</td></tr>
-      <tr><td>Meta Ads — Mai/2026</td><td>—</td><td style="color:var(--er);font-weight:600">R$800</td><td><span class="badge bk-r">despesa</span></td><td><span class="badge bk-w"><span class="bk-dot"></span>Pendente</span></td><td>31/05/2026</td></tr>
-    </tbody></table></div>
+
+    <!-- KPIs linha 1 -->
+    <div class="stats stats-4" style="margin-bottom:12px">
+      <div class="stat" style="border-top:3px solid var(--ok)">
+        <div class="stat-lbl">MRR</div>
+        <div class="stat-val" id="fin-mrr" style="color:var(--ok)">R$0</div>
+        <div class="stat-sub">receita recorrente/mês</div>
+      </div>
+      <div class="stat" style="border-top:3px solid #4285F4">
+        <div class="stat-lbl">ARR</div>
+        <div class="stat-val" id="fin-arr" style="color:#4285F4">R$0</div>
+        <div class="stat-sub">projeção anual</div>
+      </div>
+      <div class="stat" style="border-top:3px solid var(--er)">
+        <div class="stat-lbl">Despesas do Mês</div>
+        <div class="stat-val" id="fin-desp" style="color:var(--er)">R$0</div>
+        <div class="stat-sub" id="fin-desp-sub">fixas + variáveis</div>
+      </div>
+      <div class="stat" style="border-top:3px solid var(--brand)">
+        <div class="stat-lbl">Margem Líquida</div>
+        <div class="stat-val" id="fin-margem">—</div>
+        <div class="stat-sub" id="fin-margem-cor">resultado do mês</div>
+      </div>
+    </div>
+
+    <!-- KPIs linha 2 -->
+    <div class="stats stats-4" style="margin-bottom:20px">
+      <div class="stat">
+        <div class="stat-lbl">A Receber (30d)</div>
+        <div class="stat-val" id="fin-areceber" style="color:var(--wa);font-size:18px">R$0</div>
+        <div class="stat-sub">em aberto</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Inadimplência</div>
+        <div class="stat-val" id="fin-inadimp" style="color:var(--er);font-size:18px">R$0</div>
+        <div class="stat-sub" id="fin-inadimp-sub">em atraso</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">A Pagar (30d)</div>
+        <div class="stat-val" id="fin-apagar" style="color:var(--er);font-size:18px">R$0</div>
+        <div class="stat-sub">compromissos</div>
+      </div>
+      <div class="stat" id="fin-posso-gastar-card">
+        <div class="stat-lbl">Posso gastar?</div>
+        <div class="stat-val" id="fin-saldo-livre" style="font-size:18px">R$0</div>
+        <div class="stat-sub" id="fin-saldo-sub">saldo livre</div>
+      </div>
+    </div>
+
+    <!-- Alerta Claude CFO -->
+    <div id="fin-alerta-cfo" style="background:var(--dark);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start">
+      <div style="font-size:20px;flex-shrink:0">🤖</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700;color:var(--brand);margin-bottom:4px">Claude CFO — Análise Automática</div>
+        <div id="fin-cfo-texto" style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.6">Carregando análise financeira...</div>
+      </div>
+      <button onclick="analisarFinanceiroCFO()" style="background:var(--brand);border:none;color:#fff;border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0">↻ Analisar</button>
+    </div>
+
+    <!-- Gráfico Receita vs Despesa -->
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:20px">
+      <div class="card" style="padding:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div class="card-h" style="margin:0">Receita vs Despesa</div>
+          <div style="font-size:10px;color:var(--t3)">Regime de competência</div>
+        </div>
+        <canvas id="fin-chart-bars" height="180"></canvas>
+      </div>
+      <div class="card" style="padding:18px">
+        <div class="card-h" style="margin-bottom:12px">Composição de Despesas</div>
+        <canvas id="fin-chart-pizza" height="160"></canvas>
+        <div id="fin-legenda-desp" style="margin-top:10px;font-size:10px;display:flex;flex-direction:column;gap:4px"></div>
+      </div>
+    </div>
+
+    <!-- Fluxo de Caixa Projetado -->
+    <div class="card" style="padding:18px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="card-h" style="margin:0">Fluxo de Caixa Projetado</div>
+        <div style="display:flex;gap:4px">
+          <button class="fin-per-btn on" onclick="setFluxoPeriodo(6,this)">6M</button>
+          <button class="fin-per-btn" onclick="setFluxoPeriodo(12,this)" style="border-left:1px solid var(--bd)">12M</button>
+          <button class="fin-per-btn" onclick="setFluxoPeriodo(24,this)" style="border-left:1px solid var(--bd)">2A</button>
+        </div>
+      </div>
+      <canvas id="fin-chart-fluxo" height="160"></canvas>
+      <div id="fin-meta-info" style="margin-top:12px;font-size:11px;color:var(--t3);text-align:center"></div>
+    </div>
+
+    <!-- Contratos Recorrentes -->
+    <div class="card" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--bd)">
+        <div class="card-h" style="margin:0">Contratos Recorrentes</div>
+        <div style="font-size:11px;color:var(--t3)" id="fin-contratos-mrr"></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:var(--bd2)">
+            <th style="padding:8px 16px;text-align:left;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Cliente</th>
+            <th style="padding:8px 12px;text-align:left;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Plano</th>
+            <th style="padding:8px 12px;text-align:right;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Valor/mês</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Duração</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Vence em</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Status</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">LTV</th>
+          </tr></thead>
+          <tbody id="fin-contratos-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum contrato cadastrado — clique em "+ Contrato"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Contas a Receber e a Pagar lado a lado -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div class="card-h" style="margin:0;color:var(--ok)">↓ A Receber</div>
+          <span id="fin-total-receber" style="font-size:13px;font-weight:700;color:var(--ok)">R$0</span>
+        </div>
+        <div id="fin-lista-receber" style="max-height:240px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Sem contas a receber</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div class="card-h" style="margin:0;color:var(--er)">↑ A Pagar</div>
+          <span id="fin-total-pagar" style="font-size:13px;font-weight:700;color:var(--er)">R$0</span>
+        </div>
+        <div id="fin-lista-pagar" style="max-height:240px;overflow-y:auto">
+          <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Sem contas a pagar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extrato completo -->
+    <div class="card">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div class="card-h" style="margin:0">Extrato</div>
+        <div style="display:flex;gap:6px">
+          <div class="fin-tabs" style="margin:0">
+            <button class="fin-tab on" onclick="setFinTab(this,'todos')">Todos</button>
+            <button class="fin-tab" onclick="setFinTab(this,'receita')">Receitas</button>
+            <button class="fin-tab" onclick="setFinTab(this,'despesa')">Despesas</button>
+          </div>
+        </div>
+      </div>
+      <div class="tbl-wrap" style="border:none">
+        <table>
+          <thead><tr>
+            <th>Competência</th><th>Descrição</th><th>Cliente/Fornecedor</th>
+            <th>Categoria</th><th>Valor</th><th>Tipo</th><th>Status</th>
+          </tr></thead>
+          <tbody id="fin-extrato-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum lançamento — clique em "+ Receita" ou "+ Despesa"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- AUTOMAÇÕES -->
@@ -1385,6 +1733,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   carregarConfig();
   carregarCRM();
   carregarGCal();
+  carregarFinanceiro();
+  carregarCampanhas();
   renderDashAgenda();
   renderAgenda();
   renderWA();
@@ -3327,12 +3677,954 @@ async function evCall(endpoint, method, body){
 }
 
 /* ── FIN TABS ── */
-function setFinTab(el){
-  document.querySelectorAll('.fin-tab').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
+/* ══════════════════════════════════════
+   FINANCEIRO — CFO VIRTUAL K2 FLOW
+   ══════════════════════════════════════ */
+
+let FIN_PERIODO = 1; /* meses para visualização */
+let FIN_FLUXO_MESES = 6;
+let FIN_FILTRO = 'todos';
+
+/* Dados financeiros */
+let CONTRATOS_FIN = []; /* contratos recorrentes */
+let RECEITAS_FIN = [];  /* lançamentos de receita */
+let DESPESAS_FIN = [];  /* lançamentos de despesa */
+
+/* Formata valor em R$ */
+function fmtR(v){ return 'R$'+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function parseMes(ym){ const [y,m]=ym.split('-'); return new Date(y,m-1,1); }
+function mesAtual(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+function addMeses(ym,n){ const d=parseMes(ym); d.setMonth(d.getMonth()+n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+function nomeMes(ym){ return parseMes(ym).toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}); }
+
+/* Persiste financeiro no localStorage */
+function salvarFinanceiro(){
+  localStorage.setItem('k2fin_contratos', JSON.stringify(CONTRATOS_FIN));
+  localStorage.setItem('k2fin_receitas',  JSON.stringify(RECEITAS_FIN));
+  localStorage.setItem('k2fin_despesas',  JSON.stringify(DESPESAS_FIN));
+}
+function carregarFinanceiro(){
+  try{ CONTRATOS_FIN = JSON.parse(localStorage.getItem('k2fin_contratos')||'[]'); }catch(e){}
+  try{ RECEITAS_FIN  = JSON.parse(localStorage.getItem('k2fin_receitas')||'[]');  }catch(e){}
+  try{ DESPESAS_FIN  = JSON.parse(localStorage.getItem('k2fin_despesas')||'[]');  }catch(e){}
+  renderFinanceiro();
 }
 
-/* ── CONFIG CARDS TOGGLE ── */
+/* ── Cálculos ── */
+function calcMRR(){
+  return CONTRATOS_FIN.filter(c=>c.status==='ativo').reduce((s,c)=>s+Number(c.valor_mensal||0),0);
+}
+function calcReceitaMes(ym){
+  /* Receitas avulsas + parcelas de contratos no mês */
+  let total = RECEITAS_FIN.filter(r=>r.competencia===ym).reduce((s,r)=>s+Number(r.valor||0),0);
+  /* Adiciona MRR dos contratos ativos nesse mês */
+  CONTRATOS_FIN.filter(c=>c.status==='ativo'&&c.competencia_inicio<=ym&&(c.competencia_fim>=ym||!c.competencia_fim))
+    .forEach(c=>total+=Number(c.valor_mensal||0));
+  return total;
+}
+function calcDespesaMes(ym){
+  return DESPESAS_FIN.filter(d=>d.competencia===ym).reduce((s,d)=>s+Number(d.valor||0),0);
+}
+function calcInadimplencia(){
+  const hoje=new Date();
+  return RECEITAS_FIN.filter(r=>r.status==='atrasado'||
+    (r.status==='a_receber'&&r.vencimento&&new Date(r.vencimento)<hoje))
+    .reduce((s,r)=>s+Number(r.valor||0),0);
+}
+function calcAReceber30(){
+  const hoje=new Date(); const fim=new Date(); fim.setDate(fim.getDate()+30);
+  return RECEITAS_FIN.filter(r=>r.status==='a_receber'&&r.vencimento&&
+    new Date(r.vencimento)>=hoje&&new Date(r.vencimento)<=fim)
+    .reduce((s,r)=>s+Number(r.valor||0),0)+calcMRR();
+}
+function calcAPagar30(){
+  const hoje=new Date(); const fim=new Date(); fim.setDate(fim.getDate()+30);
+  return DESPESAS_FIN.filter(d=>d.status==='pendente'&&d.vencimento&&
+    new Date(d.vencimento)>=hoje&&new Date(d.vencimento)<=fim)
+    .reduce((s,d)=>s+Number(d.valor||0),0);
+}
+
+/* ── Render principal ── */
+function renderFinanceiro(){
+  const mes=mesAtual();
+  const mrr=calcMRR();
+  const receita=calcReceitaMes(mes);
+  const despesa=calcDespesaMes(mes);
+  const margem=receita>0?((receita-despesa)/receita*100):0;
+  const inadimp=calcInadimplencia();
+  const areceber=calcAReceber30();
+  const apagar=calcAPagar30();
+  const saldoLivre=receita-despesa-inadimp;
+
+  /* Atualiza data header */
+  const el=document.getElementById('fin-header-data');
+  if(el) el.textContent=`Competência · ${new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`;
+
+  /* KPIs */
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('fin-mrr', fmtR(mrr));
+  set('fin-arr', fmtR(mrr*12));
+  set('fin-desp', fmtR(despesa));
+  set('fin-desp-sub', despesa>receita?'⚠️ acima da receita':'fixas + variáveis');
+  set('fin-margem', margem.toFixed(1)+'%');
+  const elMargem=document.getElementById('fin-margem');
+  if(elMargem) elMargem.style.color=margem>30?'var(--ok)':margem>0?'var(--wa)':'var(--er)';
+  set('fin-areceber', fmtR(areceber));
+  set('fin-inadimp', fmtR(inadimp));
+  set('fin-inadimp-sub', inadimp>0?`⚠️ ${Math.round(inadimp/receita*100)||0}% da receita`:'sem atrasos');
+  set('fin-apagar', fmtR(apagar));
+  set('fin-saldo-livre', fmtR(Math.max(0,saldoLivre)));
+  const elSaldo=document.getElementById('fin-saldo-livre');
+  if(elSaldo) elSaldo.style.color=saldoLivre>0?'var(--ok)':'var(--er)';
+  set('fin-saldo-sub', saldoLivre>0?'disponível para investir':'caixa negativo ⚠️');
+
+  renderGraficoBarras();
+  renderGraficoFluxo(FIN_FLUXO_MESES);
+  renderContratosTabela();
+  renderContasListas();
+  renderExtrato();
+  atualizarCFOTexto(mrr, receita, despesa, margem, inadimp, saldoLivre);
+}
+
+/* ── Gráfico Barras Receita vs Despesa ── */
+function renderGraficoBarras(){
+  const canvas=document.getElementById('fin-chart-bars');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const meses=Array.from({length:FIN_PERIODO},(_,i)=>addMeses(mesAtual(),i-FIN_PERIODO+1));
+  const receitas=meses.map(m=>calcReceitaMes(m));
+  const despesas=meses.map(m=>calcDespesaMes(m));
+  const labels=meses.map(m=>nomeMes(m));
+  const W=canvas.offsetWidth||600; const H=180;
+  canvas.width=W; canvas.height=H;
+  const pad=40; const barW=Math.min(40,(W-pad*2)/meses.length/2-4);
+  const maxVal=Math.max(...receitas,...despesas,1000);
+  ctx.clearRect(0,0,W,H);
+  ctx.font='10px DM Sans';
+  meses.forEach((m,i)=>{
+    const x=pad+(i*(W-pad*2)/meses.length)+(W-pad*2)/(meses.length*2);
+    const rH=(receitas[i]/maxVal)*(H-50);
+    const dH=(despesas[i]/maxVal)*(H-50);
+    /* Barra receita */
+    ctx.fillStyle='#22C55E';
+    ctx.fillRect(x-barW-2,H-30-rH,barW,rH);
+    /* Barra despesa */
+    ctx.fillStyle='#EF4444';
+    ctx.fillRect(x+2,H-30-dH,barW,dH);
+    /* Label mês */
+    ctx.fillStyle='#888';ctx.textAlign='center';
+    ctx.fillText(labels[i],x,H-12);
+    /* Valor receita */
+    if(receitas[i]>0){ctx.fillStyle='#22C55E';ctx.fillText(fmtR(receitas[i]),x-barW/2-2,H-32-rH);}
+  });
+  /* Legenda */
+  ctx.fillStyle='#22C55E';ctx.fillRect(W-120,8,10,10);
+  ctx.fillStyle='#555';ctx.textAlign='left';ctx.fillText('Receita',W-106,17);
+  ctx.fillStyle='#EF4444';ctx.fillRect(W-60,8,10,10);
+  ctx.fillStyle='#555';ctx.fillText('Despesa',W-46,17);
+}
+
+/* ── Gráfico Fluxo de Caixa Projetado ── */
+function renderGraficoFluxo(meses){
+  const canvas=document.getElementById('fin-chart-fluxo');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const mrr=calcMRR();
+  const despMes=calcDespesaMes(mesAtual())||0;
+  /* Projeção: assume crescimento 5% ao mês em contratos */
+  const fluxos=Array.from({length:meses},(_,i)=>{
+    const crescimento=Math.pow(1.05,i);
+    return (mrr*crescimento)-despMes;
+  });
+  const acumulado=fluxos.reduce((acc,v,i)=>{acc.push((acc[i-1]||0)+v);return acc;},[]);
+  const labels=Array.from({length:meses},(_,i)=>nomeMes(addMeses(mesAtual(),i+1)));
+  const W=canvas.offsetWidth||700; const H=160;
+  canvas.width=W; canvas.height=H;
+  const pad=50; const maxV=Math.max(...acumulado.map(Math.abs),1);
+  ctx.clearRect(0,0,W,H);
+  ctx.font='10px DM Sans';
+  /* Linha zero */
+  const zeroY=H-30;
+  ctx.strokeStyle='#ddd';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad,zeroY);ctx.lineTo(W-10,zeroY);ctx.stroke();
+  /* Linha fluxo */
+  ctx.strokeStyle='#F26419';ctx.lineWidth=2.5;ctx.beginPath();
+  acumulado.forEach((v,i)=>{
+    const x=pad+i*(W-pad-10)/(meses-1);
+    const y=zeroY-(v/maxV)*(H-50);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  /* Pontos e labels */
+  acumulado.forEach((v,i)=>{
+    const x=pad+i*(W-pad-10)/(meses-1);
+    const y=zeroY-(v/maxV)*(H-50);
+    ctx.fillStyle=v>=0?'#22C55E':'#EF4444';
+    ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();
+    if(i%Math.ceil(meses/6)===0||i===meses-1){
+      ctx.fillStyle='#888';ctx.textAlign='center';ctx.fillText(labels[i],x,H-12);
+      ctx.fillStyle=v>=0?'#22C55E':'#EF4444';
+      ctx.fillText(fmtR(v),x,y-8);
+    }
+  });
+  const elMeta=document.getElementById('fin-meta-info');
+  if(elMeta) elMeta.textContent=`Projeção acumulada em ${meses} meses: ${fmtR(acumulado[acumulado.length-1])} (crescimento 5%/mês estimado)`;
+}
+
+/* ── Contratos tabela ── */
+function renderContratosTabela(){
+  const tbody=document.getElementById('fin-contratos-tbody');if(!tbody)return;
+  const mrr=calcMRR();
+  const el=document.getElementById('fin-contratos-mrr');
+  if(el) el.textContent=`MRR total: ${fmtR(mrr)}`;
+  if(!CONTRATOS_FIN.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum contrato — clique em "+ Contrato"</td></tr>';
+    return;
+  }
+  tbody.innerHTML=CONTRATOS_FIN.map(c=>{
+    const ltv=(Number(c.valor_mensal)||0)*(Number(c.duracao)||12);
+    const vencimento=c.competencia_fim?nomeMes(c.competencia_fim):'Indeterminado';
+    const statusCor=c.status==='ativo'?'bk-ok':c.status==='atrasado'?'bk-r':'bk-g';
+    return`<tr>
+      <td style="padding:10px 16px;font-weight:600">${c.cliente}</td>
+      <td style="padding:10px 12px;font-size:12px">${c.plano||'—'}</td>
+      <td style="padding:10px 12px;text-align:right;color:var(--ok);font-weight:700">${fmtR(c.valor_mensal)}</td>
+      <td style="padding:10px 12px;text-align:center;font-size:12px">${c.duracao||'—'}m</td>
+      <td style="padding:10px 12px;text-align:center;font-size:12px;color:var(--t2)">${vencimento}</td>
+      <td style="padding:10px 12px;text-align:center"><span class="badge ${statusCor}"><span class="bk-dot"></span>${c.status}</span></td>
+      <td style="padding:10px 12px;text-align:center;font-weight:600;color:var(--bl)">${fmtR(ltv)}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Listas a receber / a pagar ── */
+function renderContasListas(){
+  const hoje=new Date();
+  const fim30=new Date(); fim30.setDate(fim30.getDate()+30);
+
+  /* A Receber */
+  const receber=RECEITAS_FIN.filter(r=>r.status==='a_receber'||r.status==='atrasado');
+  const totalRec=receber.reduce((s,r)=>s+Number(r.valor||0),0);
+  const elTR=document.getElementById('fin-total-receber');if(elTR)elTR.textContent=fmtR(totalRec);
+  const elLR=document.getElementById('fin-lista-receber');
+  if(elLR){
+    elLR.innerHTML=receber.length?receber.map(r=>{
+      const atrasado=r.status==='atrasado'||(r.vencimento&&new Date(r.vencimento)<hoje);
+      return`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:12px;font-weight:600">${r.descricao}</div>
+          <div style="font-size:10px;color:var(--t3)">${r.cliente||'—'} · vence ${r.vencimento?new Date(r.vencimento).toLocaleDateString('pt-BR'):'—'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:700;color:${atrasado?'var(--er)':'var(--ok)'}">${fmtR(r.valor)}</div>
+          <span style="font-size:9px;background:${atrasado?'var(--er-l)':'var(--ok-l)'};color:${atrasado?'var(--er)':'var(--ok)'};padding:1px 6px;border-radius:10px">${atrasado?'ATRASADO':'A RECEBER'}</span>
+        </div>
+      </div>`;
+    }).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Nenhuma conta a receber</div>';
+  }
+
+  /* A Pagar */
+  const pagar=DESPESAS_FIN.filter(d=>d.status==='pendente');
+  const totalPag=pagar.reduce((s,d)=>s+Number(d.valor||0),0);
+  const elTP=document.getElementById('fin-total-pagar');if(elTP)elTP.textContent=fmtR(totalPag);
+  const elLP=document.getElementById('fin-lista-pagar');
+  if(elLP){
+    elLP.innerHTML=pagar.length?pagar.map(d=>{
+      const vencido=d.vencimento&&new Date(d.vencimento)<hoje;
+      return`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:12px;font-weight:600">${d.descricao}</div>
+          <div style="font-size:10px;color:var(--t3)">${d.categoria||'—'} · vence ${d.vencimento?new Date(d.vencimento).toLocaleDateString('pt-BR'):'—'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:700;color:${vencido?'var(--er)':'var(--wa)'}">${fmtR(d.valor)}</div>
+          <span style="font-size:9px;background:${vencido?'var(--er-l)':'var(--wa-l)'};color:${vencido?'var(--er)':'var(--wa)'};padding:1px 6px;border-radius:10px">${vencido?'VENCIDO':'PENDENTE'}</span>
+        </div>
+      </div>`;
+    }).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Nenhuma conta a pagar</div>';
+  }
+}
+
+/* ── Extrato ── */
+function renderExtrato(){
+  const tbody=document.getElementById('fin-extrato-tbody');if(!tbody)return;
+  let items=[];
+  if(FIN_FILTRO!=='despesa') RECEITAS_FIN.forEach(r=>items.push({...r,_tipo:'receita'}));
+  if(FIN_FILTRO!=='receita') DESPESAS_FIN.forEach(d=>items.push({...d,_tipo:'despesa'}));
+  items.sort((a,b)=>(b.competencia||'').localeCompare(a.competencia||''));
+  if(!items.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Nenhum lançamento</td></tr>';
+    return;
+  }
+  tbody.innerHTML=items.map(i=>{
+    const isRec=i._tipo==='receita';
+    const statusCor=i.status==='pago'||i.status==='recebido'?'bk-ok':i.status==='atrasado'||i.status==='vencido'?'bk-r':'bk-w';
+    return`<tr>
+      <td style="font-size:11px">${i.competencia?nomeMes(i.competencia):'—'}</td>
+      <td><strong>${i.descricao||'—'}</strong></td>
+      <td style="font-size:12px">${i.cliente||i.fornecedor||'—'}</td>
+      <td><span class="badge bk-g" style="font-size:10px">${i.categoria||'—'}</span></td>
+      <td style="font-weight:700;color:${isRec?'var(--ok)':'var(--er)'}">${isRec?'+':'-'}${fmtR(i.valor)}</td>
+      <td><span class="badge ${isRec?'bk-ok':'bk-r'}" style="font-size:10px">${isRec?'receita':'despesa'}</span></td>
+      <td><span class="badge ${statusCor}"><span class="bk-dot"></span>${i.status||'—'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Claude CFO ── */
+function atualizarCFOTexto(mrr,receita,despesa,margem,inadimp,saldo){
+  const el=document.getElementById('fin-cfo-texto');if(!el)return;
+  /* Análise simples local enquanto não chama a API */
+  const alertas=[];
+  if(despesa>receita) alertas.push('⚠️ Despesas ('+fmtR(despesa)+') superam receita ('+fmtR(receita)+'). Caixa negativo este mês.');
+  if(inadimp>0) alertas.push('⚠️ '+fmtR(inadimp)+' em inadimplência. Cobrar antes do fim do mês.');
+  if(margem<20&&margem>0) alertas.push('⚠️ Margem de '+margem.toFixed(1)+'% está abaixo do recomendado (30%+).');
+  if(mrr===0) alertas.push('💡 Nenhum contrato recorrente cadastrado. Adicione em "+ Contrato" para ver MRR e projeções.');
+  if(saldo>0&&alertas.length===0) alertas.push('✅ Financeiro saudável. Saldo livre de '+fmtR(saldo)+' disponível para investir.');
+  el.textContent=alertas.join(' | ')||'Lance receitas e despesas para ativar a análise automática.';
+}
+
+async function analisarFinanceiroCFO(){
+  const el=document.getElementById('fin-cfo-texto');if(!el)return;
+  el.textContent='🔄 Analisando com Claude...';
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){el.textContent='Configure a API Key do Claude em Configurações → IA para análise completa.';return;}
+  const mrr=calcMRR(), receita=calcReceitaMes(mesAtual()), despesa=calcDespesaMes(mesAtual());
+  const prompt=`Sou empresário, K2 Company. Dados financeiros deste mês:
+MRR: ${fmtR(mrr)} | Receita: ${fmtR(receita)} | Despesa: ${fmtR(despesa)} | Margem: ${receita>0?((receita-despesa)/receita*100).toFixed(1):'0'}% | Inadimplência: ${fmtR(calcInadimplencia())} | Contratos ativos: ${CONTRATOS_FIN.filter(c=>c.status==='ativo').length}
+Em 2 frases diretas: qual meu maior gargalo e o que fazer HOJE?`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    el.textContent=d.content?.[0]?.text||'Erro na análise';
+  }catch(e){el.textContent='Erro: '+e.message;}
+}
+
+function setFinPeriodo(meses,btn){
+  FIN_PERIODO=meses;
+  document.querySelectorAll('.fin-per-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderFinanceiro();
+}
+function setFluxoPeriodo(meses,btn){
+  FIN_FLUXO_MESES=meses;
+  document.querySelectorAll('#fin-chart-fluxo').forEach(()=>{});
+  renderGraficoFluxo(meses);
+}
+function setFinTab(el,filtro){
+  document.querySelectorAll('.fin-tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  FIN_FILTRO=filtro||'todos';
+  renderExtrato();
+}
+
+/* ── Modais ── */
+function abrirModalFinReceita(){
+  const modal=`<div class="modal-bg" id="modal-fin-receita" style="display:flex">
+    <div class="modal"><div class="modal-h">Nova Receita</div>
+      <div class="grid2-form">
+        <div class="field"><label>Descrição</label><input class="inp" id="fin-rec-desc" placeholder="Ex: Consulta Ortodontia"></div>
+        <div class="field"><label>Cliente</label><input class="inp" id="fin-rec-cli" placeholder="Nome do cliente"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Valor (R$)</label><input class="inp" type="number" id="fin-rec-valor" placeholder="0,00"></div>
+        <div class="field"><label>Competência</label><input class="inp" type="month" id="fin-rec-comp" value="${mesAtual()}"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Vencimento</label><input class="inp" type="date" id="fin-rec-venc"></div>
+        <div class="field"><label>Status</label><select class="inp-sel" id="fin-rec-status"><option value="a_receber">A Receber</option><option value="recebido">Recebido</option><option value="atrasado">Atrasado</option></select></div>
+      </div>
+      <div class="field"><label>Categoria</label><select class="inp-sel" id="fin-rec-cat"><option>Consulta</option><option>Procedimento</option><option>Mensalidade</option><option>Avulso</option><option>Outro</option></select></div>
+      <div class="modal-acts">
+        <button class="btn-cancel" onclick="document.getElementById('modal-fin-receita').remove()">Cancelar</button>
+        <button class="btn-ok" onclick="salvarReceita()">Salvar</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',modal);
+}
+
+function salvarReceita(){
+  const desc=document.getElementById('fin-rec-desc')?.value.trim();
+  const valor=parseFloat(document.getElementById('fin-rec-valor')?.value||0);
+  if(!desc||!valor){toast('Preencha descrição e valor','⚠️');return;}
+  RECEITAS_FIN.push({
+    id:'r'+Date.now(), descricao:desc,
+    cliente:document.getElementById('fin-rec-cli')?.value||'',
+    valor, competencia:document.getElementById('fin-rec-comp')?.value||mesAtual(),
+    vencimento:document.getElementById('fin-rec-venc')?.value||'',
+    status:document.getElementById('fin-rec-status')?.value||'a_receber',
+    categoria:document.getElementById('fin-rec-cat')?.value||'Avulso'
+  });
+  salvarFinanceiro(); renderFinanceiro();
+  document.getElementById('modal-fin-receita')?.remove();
+  toast('Receita registrada!','✅');
+}
+
+function abrirModalFinDespesa(){
+  const modal=`<div class="modal-bg" id="modal-fin-despesa" style="display:flex">
+    <div class="modal"><div class="modal-h">Nova Despesa</div>
+      <div class="grid2-form">
+        <div class="field"><label>Descrição</label><input class="inp" id="fin-dep-desc" placeholder="Ex: Aluguel, Meta Ads..."></div>
+        <div class="field"><label>Fornecedor</label><input class="inp" id="fin-dep-forn" placeholder="Fornecedor"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Valor (R$)</label><input class="inp" type="number" id="fin-dep-valor" placeholder="0,00"></div>
+        <div class="field"><label>Competência</label><input class="inp" type="month" id="fin-dep-comp" value="${mesAtual()}"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Vencimento</label><input class="inp" type="date" id="fin-dep-venc"></div>
+        <div class="field"><label>Tipo</label><select class="inp-sel" id="fin-dep-tipo"><option value="fixo">Fixo</option><option value="variavel">Variável</option></select></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Categoria</label><select class="inp-sel" id="fin-dep-cat"><option>Pessoal/Folha</option><option>Marketing/Ads</option><option>Sistemas/SaaS</option><option>Aluguel</option><option>Insumos</option><option>Impostos</option><option>Outros</option></select></div>
+        <div class="field"><label>Status</label><select class="inp-sel" id="fin-dep-status"><option value="pendente">Pendente</option><option value="pago">Pago</option></select></div>
+      </div>
+      <div class="modal-acts">
+        <button class="btn-cancel" onclick="document.getElementById('modal-fin-despesa').remove()">Cancelar</button>
+        <button class="btn-ok" onclick="salvarDespesa()">Salvar</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',modal);
+}
+
+function salvarDespesa(){
+  const desc=document.getElementById('fin-dep-desc')?.value.trim();
+  const valor=parseFloat(document.getElementById('fin-dep-valor')?.value||0);
+  if(!desc||!valor){toast('Preencha descrição e valor','⚠️');return;}
+  DESPESAS_FIN.push({
+    id:'d'+Date.now(), descricao:desc,
+    fornecedor:document.getElementById('fin-dep-forn')?.value||'',
+    valor, competencia:document.getElementById('fin-dep-comp')?.value||mesAtual(),
+    vencimento:document.getElementById('fin-dep-venc')?.value||'',
+    tipo:document.getElementById('fin-dep-tipo')?.value||'variavel',
+    categoria:document.getElementById('fin-dep-cat')?.value||'Outros',
+    status:document.getElementById('fin-dep-status')?.value||'pendente'
+  });
+  salvarFinanceiro(); renderFinanceiro();
+  document.getElementById('modal-fin-despesa')?.remove();
+  toast('Despesa registrada!','✅');
+}
+
+function abrirModalFinContrato(){
+  const modal=`<div class="modal-bg" id="modal-fin-contrato" style="display:flex">
+    <div class="modal"><div class="modal-h">Novo Contrato Recorrente</div>
+      <div class="grid2-form">
+        <div class="field"><label>Cliente</label><input class="inp" id="fin-con-cli" placeholder="Nome do cliente"></div>
+        <div class="field"><label>Plano/Serviço</label><input class="inp" id="fin-con-plano" placeholder="Ex: Ortodontia, K2 Flow Pro..."></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Valor mensal (R$)</label><input class="inp" type="number" id="fin-con-valor" placeholder="0,00"></div>
+        <div class="field"><label>Duração (meses)</label><select class="inp-sel" id="fin-con-dur"><option value="1">1 mês</option><option value="3">3 meses</option><option value="6">6 meses</option><option value="12">12 meses</option><option value="24">24 meses</option><option value="0">Indeterminado</option></select></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Início</label><input class="inp" type="month" id="fin-con-inicio" value="${mesAtual()}"></div>
+        <div class="field"><label>Status</label><select class="inp-sel" id="fin-con-status"><option value="ativo">Ativo</option><option value="pausado">Pausado</option><option value="cancelado">Cancelado</option></select></div>
+      </div>
+      <div class="modal-acts">
+        <button class="btn-cancel" onclick="document.getElementById('modal-fin-contrato').remove()">Cancelar</button>
+        <button class="btn-ok" onclick="salvarContrato()">Salvar Contrato</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',modal);
+}
+
+function salvarContrato(){
+  const cli=document.getElementById('fin-con-cli')?.value.trim();
+  const valor=parseFloat(document.getElementById('fin-con-valor')?.value||0);
+  if(!cli||!valor){toast('Preencha cliente e valor','⚠️');return;}
+  const inicio=document.getElementById('fin-con-inicio')?.value||mesAtual();
+  const dur=parseInt(document.getElementById('fin-con-dur')?.value||12);
+  const fim=dur>0?addMeses(inicio,dur-1):'';
+  CONTRATOS_FIN.push({
+    id:'c'+Date.now(), cliente:cli,
+    plano:document.getElementById('fin-con-plano')?.value||'',
+    valor_mensal:valor, duracao:dur,
+    competencia_inicio:inicio, competencia_fim:fim,
+    status:document.getElementById('fin-con-status')?.value||'ativo'
+  });
+  salvarFinanceiro(); renderFinanceiro();
+  document.getElementById('modal-fin-contrato')?.remove();
+  toast(`Contrato de ${cli} cadastrado! MRR atualizado.`,'✅');
+}
+
+/* ── Importar Extrato ── */
+async function importarExtrato(input){
+  const file=input.files[0]; if(!file)return;
+  toast('Analisando extrato com IA...','🔄');
+  /* Lê o arquivo como texto */
+  const texto=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsText(file,'UTF-8');});
+  /* Usa Claude para categorizar */
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){toast('Configure a API Key do Claude para importar extrato','⚠️');return;}
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:2000,
+        messages:[{role:'user',content:`Analise este extrato bancário e retorne JSON com array de transações. Para cada linha retorne: {"descricao":"texto","valor":numero,"tipo":"receita ou despesa","categoria":"categoria","competencia":"YYYY-MM"}. Retorne APENAS o JSON, sem texto extra.\n\nExtrato:\n${texto.substring(0,3000)}`}]
+      })
+    });
+    const d=await r.json();
+    const txt=d.content?.[0]?.text||'[]';
+    const clean=txt.replace(/```json|```/g,'').trim();
+    const transacoes=JSON.parse(clean);
+    transacoes.forEach(t=>{
+      if(t.tipo==='receita') RECEITAS_FIN.push({id:'r'+Date.now()+Math.random(),descricao:t.descricao,valor:t.valor,competencia:t.competencia||mesAtual(),categoria:t.categoria,status:'recebido'});
+      else DESPESAS_FIN.push({id:'d'+Date.now()+Math.random(),descricao:t.descricao,valor:t.valor,competencia:t.competencia||mesAtual(),categoria:t.categoria,status:'pago'});
+    });
+    salvarFinanceiro(); renderFinanceiro();
+    toast(`${transacoes.length} lançamentos importados do extrato!`,'✅');
+  }catch(e){toast('Erro ao importar: '+e.message,'❌');}
+  input.value='';
+}
+
+/* ══════════════════════════════════════
+   CAMPANHAS & ADS — K2 FLOW
+   ══════════════════════════════════════ */
+
+let CAMPANHAS = [];
+let ADS_PERIODO = 30;
+let ADS_FILTRO_CLI = '';
+let ADS_FILTRO_PLAT = '';
+
+const PLAT_CORES = {
+  meta: '#1877F2', google: '#EA4335', instagram: '#E1306C',
+  tiktok: '#000', youtube: '#FF0000'
+};
+const PLAT_LABELS = {
+  meta:'Meta Ads', google:'Google Ads', instagram:'Instagram',
+  tiktok:'TikTok Ads', youtube:'YouTube Ads'
+};
+
+function salvarCampanhas(){ localStorage.setItem('k2ads_campanhas', JSON.stringify(CAMPANHAS)); }
+function carregarCampanhas(){
+  try{ CAMPANHAS = JSON.parse(localStorage.getItem('k2ads_campanhas')||'[]'); }catch(e){}
+  preencherFiltroClientes();
+  renderAds();
+}
+
+function preencherFiltroClientes(){
+  const sel=document.getElementById('ads-filtro-cliente');if(!sel)return;
+  const clientes=[...new Set(CAMPANHAS.map(c=>c.cliente).filter(Boolean))];
+  sel.innerHTML='<option value="">Todos os clientes</option>'
+    +clientes.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+function setAdsPeriodo(dias,btn){
+  ADS_PERIODO=dias;
+  document.querySelectorAll('#page-ads .fin-per-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderAds();
+}
+
+function renderAds(){
+  ADS_FILTRO_CLI = document.getElementById('ads-filtro-cliente')?.value||'';
+  ADS_FILTRO_PLAT = document.getElementById('ads-filtro-plat')?.value||'';
+
+  let lista = CAMPANHAS;
+  if(ADS_FILTRO_CLI) lista=lista.filter(c=>c.cliente===ADS_FILTRO_CLI);
+  if(ADS_FILTRO_PLAT) lista=lista.filter(c=>c.plataforma===ADS_FILTRO_PLAT);
+
+  const invest=lista.reduce((s,c)=>s+Number(c.investimento||0),0);
+  const leads=lista.reduce((s,c)=>s+Number(c.leads||0),0);
+  const cliques=lista.reduce((s,c)=>s+Number(c.cliques||0),0);
+  const impressoes=lista.reduce((s,c)=>s+Number(c.impressoes||0),0);
+  const cpl=leads>0?(invest/leads):0;
+  const conv=cliques>0?(leads/cliques*100):0;
+  const roas=lista.filter(c=>c.roas>0);
+  const roasMed=roas.length?roas.reduce((s,c)=>s+c.roas,0)/roas.length:0;
+  const ativas=lista.filter(c=>c.status==='ativa').length;
+  const alertas=lista.filter(c=>avaliarAlerta(c)).length;
+  const ctr=impressoes>0?(cliques/impressoes*100):0;
+  const melhor=lista.filter(c=>c.leads>0).sort((a,b)=>(a.investimento/a.leads)-(b.investimento/b.leads))[0];
+
+  /* Subtitulo */
+  const sub=document.getElementById('ads-subtitulo');
+  if(sub) sub.textContent=(ADS_FILTRO_CLI||'Todos os clientes')+' · Meta Ads + Google Ads';
+
+  /* KPIs linha 1 */
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('ads-kpi-invest','R$'+invest.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}));
+  set('ads-kpi-invest-sub',lista.length+' campanhas');
+  set('ads-kpi-leads',leads.toLocaleString('pt-BR'));
+  set('ads-kpi-leads-sub','CPL: '+(cpl>0?'R$'+cpl.toFixed(0):'—'));
+  set('ads-kpi-cpl',cpl>0?'R$'+cpl.toFixed(2):'—');
+  set('ads-kpi-conv',conv>0?conv.toFixed(1)+'%':'—');
+  set('ads-kpi-cliques',cliques.toLocaleString('pt-BR'));
+  set('ads-kpi-ctr','CTR: '+(ctr>0?ctr.toFixed(2)+'%':'—'));
+  /* KPIs linha 2 */
+  set('ads-kpi-imp',impressoes>0?(impressoes>=1000?(impressoes/1000).toFixed(1)+'K':impressoes):'0');
+  set('ads-kpi-roas',roasMed>0?roasMed.toFixed(1)+'x':'—');
+  set('ads-kpi-ativas',ativas);
+  set('ads-kpi-alertas',alertas);
+  set('ads-kpi-melhor',melhor?melhor.nome.substring(0,18):'—');
+  set('ads-kpi-melhor-cpl',melhor?'CPL: R$'+(melhor.investimento/melhor.leads).toFixed(0):'menor CPL');
+
+  /* Barras de progresso */
+  const maxInvest=Math.max(invest,1);
+  const setBar=(id,pct)=>{const e=document.getElementById(id);if(e)e.style.width=Math.min(100,pct)+'%';};
+  setBar('ads-bar-invest',100);
+  setBar('ads-bar-leads',leads>0?Math.min(100,leads/50*100):0);
+  setBar('ads-bar-cpl',cpl>0?Math.max(10,100-cpl/2):50);
+  setBar('ads-bar-conv',conv);
+  setBar('ads-bar-cliques',cliques>0?Math.min(100,cliques/500*100):0);
+
+  /* Funil */
+  renderFunil(impressoes,Math.round(impressoes*0.4),cliques,leads);
+
+  /* Meta vs Google breakdown */
+  renderMetaGoogleCards(lista);
+
+  /* Gráficos */
+  renderGraficoAds(lista);
+
+  /* Tabela */
+  renderTabelaCampanhas(lista);
+
+  /* Análise local */
+  renderAnaliseAdsLocal(lista,invest,leads,cpl,roasMed,alertas);
+}
+
+function renderFunil(imp,alc,cli,lea){
+  const el=document.getElementById('ads-funil');if(!el)return;
+  const etapas=[
+    {label:'Impressões',valor:imp,cor:'#38BDF8',w:100},
+    {label:'Alcance',valor:alc,cor:'#818CF8',w:80},
+    {label:'Cliques',valor:cli,cor:'#34D399',w:60},
+    {label:'Leads',valor:lea,cor:'#F26419',w:40},
+  ];
+  el.innerHTML=etapas.map((e,i)=>`
+    <div style="width:${e.w}%;background:${e.cor}20;border:1px solid ${e.cor}50;border-radius:6px;padding:8px 12px;text-align:center;position:relative">
+      <div style="font-size:16px;font-weight:800;font-family:'Barlow',sans-serif;color:${e.cor}">${e.valor>0?(e.valor>=1000?(e.valor/1000).toFixed(1)+'K':e.valor):0}</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">${e.label}</div>
+      ${i<etapas.length-1?`<div style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);font-size:14px;color:rgba(255,255,255,.2)">↓</div>`:''}
+    </div>
+  `).join('');
+}
+
+function renderMetaGoogleCards(lista){
+  const meta=lista.filter(c=>c.plataforma==='meta'||c.plataforma==='instagram');
+  const google=lista.filter(c=>c.plataforma==='google');
+
+  const metricCard=(label,valor,cor)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+      <div style="font-size:11px;color:rgba(255,255,255,.4)">${label}</div>
+      <div style="font-size:13px;font-weight:700;color:${cor||'#fff'}">${valor}</div>
+    </div>`;
+
+  const buildCard=(lista,elId)=>{
+    const el=document.getElementById(elId);if(!el)return;
+    if(!lista.length){el.innerHTML='<div style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;padding:16px 0">Nenhuma campanha</div>';return;}
+    const inv=lista.reduce((s,c)=>s+Number(c.investimento||0),0);
+    const lea=lista.reduce((s,c)=>s+Number(c.leads||0),0);
+    const cli=lista.reduce((s,c)=>s+Number(c.cliques||0),0);
+    const imp=lista.reduce((s,c)=>s+Number(c.impressoes||0),0);
+    const cpl=lea>0?(inv/lea):0;
+    el.innerHTML=
+      metricCard('Investimento','R$'+inv.toFixed(2),'#fff')
+      +metricCard('Leads',lea,'#22C55E')
+      +metricCard('CPL',cpl>0?'R$'+cpl.toFixed(2):'—','#FBBF24')
+      +metricCard('Cliques',cli,'#38BDF8')
+      +metricCard('Impressões',imp>0?(imp/1000).toFixed(1)+'K':'0','#A78BFA');
+  };
+
+  buildCard(meta,'ads-meta-dados');
+  buildCard(google,'ads-google-dados');
+}
+
+function renderTabelaCampanhas(lista){
+  const tbody=document.getElementById('ads-tbody');if(!tbody)return;
+  if(!lista.length){
+    tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:40px;color:rgba(255,255,255,.3);font-size:12px">Nenhuma campanha — clique em "+ Campanha"</td></tr>';
+    return;
+  }
+  tbody.innerHTML=lista.map(c=>{
+    const cpl=c.leads>0?(c.investimento/c.leads):0;
+    const metaCpl=c.meta_cpl||100;
+    const cplAlto=cpl>metaCpl*1.3;
+    const roasBaixo=c.roas>0&&c.roas<1.5;
+    const ctr=c.impressoes>0?(c.cliques/c.impressoes*100):0;
+    const platCor=PLAT_CORES[c.plataforma]||'#888';
+    const platLabel=PLAT_LABELS[c.plataforma]||c.plataforma;
+    const alerta=avaliarAlerta(c);
+    const statusCor=c.status==='ativa'?'#22C55E':c.status==='pausada'?'#FBBF24':'#EF4444';
+    return`<tr style="border-bottom:1px solid rgba(255,255,255,.06);${alerta?'background:rgba(239,68,68,.05)':''}">
+      <td style="padding:10px 20px;font-weight:600;color:rgba(255,255,255,.85);font-size:12px">${alerta?'⚠️ ':''}<span>${c.cliente||'K2'}</span></td>
+      <td style="padding:10px 12px"><div style="font-weight:600;font-size:12px;color:#fff">${c.nome}</div><div style="font-size:10px;color:rgba(255,255,255,.3)">${c.objetivo||''}</div></td>
+      <td style="padding:10px 12px;text-align:center"><span style="background:${platCor}20;color:${platCor};border:1px solid ${platCor}40;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700">${platLabel}</span></td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:#fff">R$${Number(c.investimento||0).toFixed(2)}</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:#22C55E">${c.leads||0}</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:${cplAlto?'#EF4444':'#FBBF24'}">${cpl>0?'R$'+cpl.toFixed(0):'—'}</td>
+      <td style="padding:10px 12px;text-align:right;color:rgba(255,255,255,.7);font-size:12px">${Number(c.cliques||0).toLocaleString('pt-BR')}</td>
+      <td style="padding:10px 12px;text-align:right;color:rgba(255,255,255,.7);font-size:12px">${ctr>0?ctr.toFixed(2)+'%':'—'}</td>
+      <td style="padding:10px 12px;text-align:right;color:rgba(255,255,255,.5);font-size:12px">${Number(c.impressoes||0)>0?(Number(c.impressoes)/1000).toFixed(1)+'K':'—'}</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:${roasBaixo?'#EF4444':c.roas>=3?'#22C55E':'#FBBF24'}">${c.roas?c.roas.toFixed(1)+'x':'—'}</td>
+      <td style="padding:10px 12px;text-align:center"><span style="background:${statusCor}20;color:${statusCor};border-radius:99px;padding:2px 10px;font-size:10px;font-weight:700">${c.status||'—'}</span></td>
+      <td style="padding:10px 12px;text-align:center">
+        <button onclick="editarCampanha('${c.id}')" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer">✏️</button>
+        <button onclick="analisarCampanhaUnica('${c.id}')" style="background:rgba(242,100,25,.15);border:1px solid rgba(242,100,25,.3);color:#F26419;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;margin-left:4px">🤖</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function gerarRelatorioCliente(){
+  const cli=document.getElementById('ads-filtro-cliente')?.value||'';
+  const lista=cli?CAMPANHAS.filter(c=>c.cliente===cli):CAMPANHAS;
+  if(!lista.length){toast('Selecione um cliente ou cadastre campanhas','⚠️');return;}
+  const invest=lista.reduce((s,c)=>s+Number(c.investimento||0),0);
+  const leads=lista.reduce((s,c)=>s+Number(c.leads||0),0);
+  const cpl=leads>0?(invest/leads).toFixed(2):'—';
+  const txt=`📊 *Relatório de Marketing — ${cli||'Geral'}*\n\n`
+    +`📅 Período: últimos ${ADS_PERIODO} dias\n\n`
+    +`💰 *Investimento Total:* R$${invest.toFixed(2)}\n`
+    +`🎯 *Leads Gerados:* ${leads}\n`
+    +`📌 *CPL Médio:* R$${cpl}\n\n`
+    +lista.map(c=>`• *${c.nome}* — Invest: R$${c.investimento} | Leads: ${c.leads||0} | CPL: ${c.leads>0?'R$'+(c.investimento/c.leads).toFixed(0):'—'}`).join('\n')
+    +`\n\n_Relatório gerado pelo K2 Flow_`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+  toast('Relatório copiado! Cole no WhatsApp do cliente.','📤');
+}
+
+function avaliarAlerta(c){
+  if(!c.investimento) return false;
+  const cpl=c.leads>0?c.investimento/c.leads:999;
+  const metaCpl=c.meta_cpl||100;
+  if(cpl>metaCpl*1.5) return true; /* CPL 50% acima da meta */
+  if(c.roas>0&&c.roas<1) return true; /* ROAS abaixo de 1 */
+  if(c.status==='pausada') return false;
+  return false;
+}
+
+function renderTabelaCampanhas(lista){
+  const tbody=document.getElementById('ads-tbody');if(!tbody)return;
+  if(!lista.length){
+    tbody.innerHTML='<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--t3);font-size:12px">Nenhuma campanha — clique em "+ Campanha"</td></tr>';
+    return;
+  }
+  tbody.innerHTML=lista.map(c=>{
+    const cpl=c.leads>0?(c.investimento/c.leads):0;
+    const metaCpl=c.meta_cpl||100;
+    const cplAlto=cpl>metaCpl*1.3;
+    const roasBaixo=c.roas>0&&c.roas<1.5;
+    const ctr=c.impressoes>0?(c.cliques/c.impressoes*100):0;
+    const platCor=PLAT_CORES[c.plataforma]||'#888';
+    const platLabel=PLAT_LABELS[c.plataforma]||c.plataforma;
+    const statusCor=c.status==='ativa'?'bk-ok':c.status==='pausada'?'bk-w':'bk-r';
+    const alerta=avaliarAlerta(c);
+    return`<tr style="${alerta?'background:rgba(220,38,38,.04)':''}">
+      <td style="padding:10px 16px;font-weight:600">${alerta?'⚠️ ':''}<span style="font-size:12px">${c.cliente||'K2 Company'}</span></td>
+      <td style="padding:10px 12px"><div style="font-weight:600;font-size:12px">${c.nome}</div><div style="font-size:10px;color:var(--t3)">${c.objetivo||''}</div></td>
+      <td style="padding:10px 12px;text-align:center"><span style="background:${platCor}20;color:${platCor};border:1px solid ${platCor}40;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700">${platLabel}</span></td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700">R$${Number(c.investimento||0).toLocaleString('pt-BR')}</td>
+      <td style="padding:10px 12px;text-align:right;color:var(--ok);font-weight:700">${c.leads||0}</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:${cplAlto?'var(--er)':'var(--t1)'}">${cpl>0?'R$'+cpl.toFixed(0):'—'}</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px">${Number(c.cliques||0).toLocaleString('pt-BR')}</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px">${ctr>0?ctr.toFixed(2)+'%':'—'}</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:${roasBaixo?'var(--er)':c.roas>=3?'var(--ok)':'var(--wa)'}">${c.roas?c.roas.toFixed(1)+'x':'—'}</td>
+      <td style="padding:10px 12px;text-align:center"><span class="badge ${statusCor}"><span class="bk-dot"></span>${c.status||'—'}</span></td>
+      <td style="padding:10px 12px;text-align:center;display:flex;gap:4px">
+        <button onclick="editarCampanha('${c.id}')" style="background:var(--bd2);border:1px solid var(--bd);border-radius:5px;padding:3px 8px;font-size:10px">✏️</button>
+        <button onclick="analisarCampanhaUnica('${c.id}')" style="background:var(--brand-l);border:1px solid var(--brand-b);color:var(--brand);border-radius:5px;padding:3px 8px;font-size:10px">🤖</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderGraficoAds(lista){
+  /* Barras por cliente */
+  const canvas=document.getElementById('ads-chart-barras');
+  if(canvas&&lista.length){
+    const ctx=canvas.getContext('2d');
+    const porCli={};
+    lista.forEach(c=>{
+      const k=c.cliente||'K2';
+      if(!porCli[k])porCli[k]={invest:0,leads:0};
+      porCli[k].invest+=Number(c.investimento||0);
+      porCli[k].leads+=Number(c.leads||0);
+    });
+    const clientes=Object.keys(porCli);
+    const W=canvas.offsetWidth||500;const H=180;
+    canvas.width=W;canvas.height=H;
+    const ctx2=canvas.getContext('2d');
+    ctx2.clearRect(0,0,W,H);
+    const maxI=Math.max(...Object.values(porCli).map(v=>v.invest),1);
+    const barW=Math.min(35,(W-60)/clientes.length/2-4);
+    ctx2.font='10px DM Sans';
+    clientes.forEach((cli,i)=>{
+      const x=40+(i*(W-60)/clientes.length)+(W-60)/(clientes.length*2);
+      const iH=(porCli[cli].invest/maxI)*(H-50);
+      ctx2.fillStyle='#1877F2';
+      ctx2.fillRect(x-barW-2,H-30-iH,barW,iH);
+      ctx2.fillStyle='#888';ctx2.textAlign='center';
+      ctx2.fillText(cli.substring(0,10),x,H-12);
+      ctx2.fillStyle='#1877F2';
+      ctx2.fillText('R$'+(porCli[cli].invest/1000).toFixed(0)+'K',x-barW/2-2,H-32-iH);
+    });
+  }
+  /* Pizza por plataforma */
+  const canvas2=document.getElementById('ads-chart-pizza');
+  if(canvas2&&lista.length){
+    const ctx=canvas2.getContext('2d');
+    const porPlat={};
+    lista.forEach(c=>{const k=c.plataforma||'outro';porPlat[k]=(porPlat[k]||0)+Number(c.investimento||0);});
+    const W2=canvas2.offsetWidth||280;const H2=160;
+    canvas2.width=W2;canvas2.height=H2;
+    ctx.clearRect(0,0,W2,H2);
+    const total=Object.values(porPlat).reduce((s,v)=>s+v,0)||1;
+    let startAngle=-Math.PI/2;
+    const cx=W2/2;const cy=H2/2;const r=Math.min(cx,cy)-10;
+    const legenda=document.getElementById('ads-legenda-plat');
+    if(legenda)legenda.innerHTML='';
+    Object.entries(porPlat).forEach(([plat,val])=>{
+      const slice=(val/total)*Math.PI*2;
+      const cor=PLAT_CORES[plat]||'#888';
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,startAngle,startAngle+slice);ctx.fillStyle=cor;ctx.fill();
+      startAngle+=slice;
+      if(legenda)legenda.insertAdjacentHTML('beforeend',
+        `<div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:${cor};flex-shrink:0"></div><span style="color:var(--t2)">${PLAT_LABELS[plat]||plat}: ${(val/total*100).toFixed(0)}%</span></div>`);
+    });
+  }
+}
+
+function renderAnaliseAdsLocal(lista,invest,leads,cpl,roas,alertas){
+  const el=document.getElementById('ads-ia-texto');if(!el)return;
+  if(!lista.length){el.textContent='Lance campanhas para ativar a análise.';return;}
+  const msgs=[];
+  if(alertas>0) msgs.push(`⚠️ ${alertas} campanha(s) com CPL acima da meta — pausar ou ajustar criativo urgente.`);
+  const piorCPL=lista.filter(c=>c.leads>0).sort((a,b)=>(b.investimento/b.leads)-(a.investimento/a.leads))[0];
+  if(piorCPL) msgs.push(`📊 Pior CPL: ${piorCPL.nome} (${piorCPL.cliente}) — R$${(piorCPL.investimento/piorCPL.leads).toFixed(0)} por lead.`);
+  if(roas>0&&roas<2) msgs.push(`💸 ROAS médio de ${roas.toFixed(1)}x está baixo. Meta recomendada: 3x+.`);
+  if(msgs.length===0) msgs.push(`✅ ${lista.length} campanhas ativas. Investimento total: R$${invest.toLocaleString('pt-BR')}. CPL médio: R$${cpl.toFixed(0)}. Clique em "Analisar" para análise completa com IA.`);
+  el.textContent=msgs.join(' | ');
+}
+
+async function analisarCampanhasIA(){
+  const el=document.getElementById('ads-ia-texto');if(!el)return;
+  el.textContent='🔄 Analisando com Claude...';
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){el.textContent='Configure a API Key do Claude em Configurações → IA.';return;}
+  const resumo=CAMPANHAS.map(c=>`${c.cliente}|${c.nome}|${c.plataforma}|R$${c.investimento}|${c.leads}leads|CPL:${c.leads>0?(c.investimento/c.leads).toFixed(0):'—'}|ROAS:${c.roas||'—'}`).join('\n');
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',
+        content:`Sou gestor de tráfego. Minhas campanhas:\n${resumo}\n\nEm 3 frases diretas: 1) Qual cliente tem pior ROI? 2) O que pausar agora? 3) Onde escalar?`}]})});
+    const d=await r.json();
+    el.textContent=d.content?.[0]?.text||'Erro';
+  }catch(e){el.textContent='Erro: '+e.message;}
+}
+
+async function analisarCampanhaUnica(id){
+  const c=CAMPANHAS.find(x=>x.id===id);if(!c)return;
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){toast('Configure a API Key do Claude','⚠️');return;}
+  toast(`Analisando ${c.nome}...`,'🤖');
+  const cpl=c.leads>0?(c.investimento/c.leads).toFixed(0):'sem leads';
+  const prompt=`Campanha: ${c.nome} | Cliente: ${c.cliente} | Plataforma: ${PLAT_LABELS[c.plataforma]} | Investido: R$${c.investimento} | Leads: ${c.leads} | CPL: R$${cpl} | ROAS: ${c.roas||'—'} | Status: ${c.status}. Em 2 frases: diagnóstico e ação imediata.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const txt=d.content?.[0]?.text||'Erro';
+    alert(`🤖 ${c.nome}\n\n${txt}`);
+  }catch(e){toast('Erro: '+e.message,'❌');}
+}
+
+function sincronizarAds(){
+  toast('Sincronize via Windsor.ai em Configurações → Integrações','ℹ️');
+}
+
+/* ── Modal Nova Campanha ── */
+function abrirModalCampanha(id){
+  const camp=id?CAMPANHAS.find(c=>c.id===id):null;
+  const modal=`<div class="modal-bg" id="modal-campanha" style="display:flex">
+    <div class="modal" style="max-width:580px"><div class="modal-h">${camp?'Editar':'Nova'} Campanha</div>
+      <div class="grid2-form">
+        <div class="field"><label>Cliente</label><input class="inp" id="camp-cli" value="${camp?.cliente||''}" placeholder="Nome do cliente"></div>
+        <div class="field"><label>Nome da Campanha</label><input class="inp" id="camp-nome" value="${camp?.nome||''}" placeholder="Ex: Captação Ortodontia"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Plataforma</label><select class="inp-sel" id="camp-plat">
+          <option value="meta" ${camp?.plataforma==='meta'?'selected':''}>Meta Ads</option>
+          <option value="google" ${camp?.plataforma==='google'?'selected':''}>Google Ads</option>
+          <option value="instagram" ${camp?.plataforma==='instagram'?'selected':''}>Instagram</option>
+          <option value="tiktok" ${camp?.plataforma==='tiktok'?'selected':''}>TikTok Ads</option>
+        </select></div>
+        <div class="field"><label>Objetivo</label><select class="inp-sel" id="camp-obj">
+          <option value="leads" ${camp?.objetivo==='leads'?'selected':''}>Geração de Leads</option>
+          <option value="vendas">Conversão/Vendas</option>
+          <option value="trafego">Tráfego</option>
+          <option value="reconhecimento">Reconhecimento</option>
+        </select></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Investimento (R$)</label><input class="inp" type="number" id="camp-invest" value="${camp?.investimento||''}" placeholder="0,00"></div>
+        <div class="field"><label>Meta CPL (R$)</label><input class="inp" type="number" id="camp-meta-cpl" value="${camp?.meta_cpl||''}" placeholder="Ex: 50"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Leads gerados</label><input class="inp" type="number" id="camp-leads" value="${camp?.leads||''}" placeholder="0"></div>
+        <div class="field"><label>Cliques</label><input class="inp" type="number" id="camp-cliques" value="${camp?.cliques||''}" placeholder="0"></div>
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Impressões</label><input class="inp" type="number" id="camp-impressoes" value="${camp?.impressoes||''}" placeholder="0"></div>
+        <div class="field"><label>ROAS</label><input class="inp" type="number" id="camp-roas" step="0.1" value="${camp?.roas||''}" placeholder="Ex: 3.5"></div>
+      </div>
+      <div class="field"><label>Status</label><select class="inp-sel" id="camp-status">
+        <option value="ativa" ${camp?.status==='ativa'?'selected':''}>Ativa</option>
+        <option value="pausada" ${camp?.status==='pausada'?'selected':''}>Pausada</option>
+        <option value="encerrada" ${camp?.status==='encerrada'?'selected':''}>Encerrada</option>
+      </select></div>
+      <div class="modal-acts">
+        <button class="btn-cancel" onclick="document.getElementById('modal-campanha').remove()">Cancelar</button>
+        ${camp?`<button class="btn-sec" style="color:var(--er);border-color:var(--er)" onclick="excluirCampanha('${camp.id}')">Excluir</button>`:''}
+        <button class="btn-ok" onclick="salvarCampanha('${camp?.id||''}')">Salvar</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('modal-campanha')?.remove();
+  document.body.insertAdjacentHTML('beforeend',modal);
+}
+
+function editarCampanha(id){ abrirModalCampanha(id); }
+
+function salvarCampanha(id){
+  const cli=document.getElementById('camp-cli')?.value.trim();
+  const nome=document.getElementById('camp-nome')?.value.trim();
+  if(!nome){toast('Informe o nome da campanha','⚠️');return;}
+  const dados={
+    id:id||'camp-'+Date.now(), cliente:cli||'K2 Company',
+    nome, plataforma:document.getElementById('camp-plat')?.value,
+    objetivo:document.getElementById('camp-obj')?.value,
+    investimento:parseFloat(document.getElementById('camp-invest')?.value||0),
+    meta_cpl:parseFloat(document.getElementById('camp-meta-cpl')?.value||0),
+    leads:parseInt(document.getElementById('camp-leads')?.value||0),
+    cliques:parseInt(document.getElementById('camp-cliques')?.value||0),
+    impressoes:parseInt(document.getElementById('camp-impressoes')?.value||0),
+    roas:parseFloat(document.getElementById('camp-roas')?.value||0),
+    status:document.getElementById('camp-status')?.value||'ativa'
+  };
+  if(id){
+    const idx=CAMPANHAS.findIndex(c=>c.id===id);
+    if(idx>=0) CAMPANHAS[idx]=dados;
+  } else {
+    CAMPANHAS.push(dados);
+  }
+  salvarCampanhas(); preencherFiltroClientes(); renderAds();
+  document.getElementById('modal-campanha')?.remove();
+  toast(`Campanha "${nome}" salva!`,'✅');
+}
+
+function excluirCampanha(id){
+  if(!confirm('Excluir esta campanha?'))return;
+  CAMPANHAS=CAMPANHAS.filter(c=>c.id!==id);
+  salvarCampanhas(); renderAds();
+  document.getElementById('modal-campanha')?.remove();
+  toast('Campanha excluída','✅');
+}
 function toggleCfg(id){
   const body=document.getElementById('body-'+id);
   if(!body)return;
