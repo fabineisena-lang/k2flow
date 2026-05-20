@@ -1810,28 +1810,68 @@ function salvarDados(){
   });
   toast('Dados da clínica salvos!','✅');
 }
+/* Helper universal — lê o estado do WhatsApp em qualquer formato de resposta
+   A Evolution API pode retornar:
+   - { instance: { state: "open" } }           ← formato padrão
+   - { state: "open" }                         ← formato simplificado
+   - { connectionStatus: "open" }              ← formato alternativo
+   - { success: true, data: { connectionStatus: "open" } } ← formato n8n wrapper
+   - { success: true, data: { instance: { state: "open" } } }
+*/
+function getWAState(d){
+  if(!d) return '';
+  const inner = d.data || d;
+  return (
+    inner.instance?.state ||
+    inner.state ||
+    inner.connectionStatus ||
+    inner.status ||
+    d.instance?.state ||
+    d.state ||
+    d.connectionStatus ||
+    ''
+  );
+}
+
+/* Helper universal — extrai base64 do QR em qualquer formato */
+function getQRBase64(d){
+  if(!d) return '';
+  const inner = d.data || d;
+  return (
+    inner.base64 ||
+    inner.qrcode?.base64 ||
+    inner.qr?.base64 ||
+    inner.qrcode ||
+    d.base64 ||
+    d.qrcode?.base64 ||
+    ''
+  );
+}
+
 function testarConexaoWA(){
   const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
   toast('Testando...','🔄');
   evCall('instance/connectionState/'+inst)
     .then(d=>{
-      const ok=d.instance?.state==='open'||d.state==='open';
+      const state = getWAState(d);
+      const ok = state==='open';
       const box=document.getElementById('wa-status-box');
       box.style.display='block';
-      box.innerHTML='<div class="al '+(ok?'al-ok':'al-r')+'">'+(ok?'✅ WhatsApp conectado! Instância: '+inst:'❌ Desconectado — clique em QR Code')+'</div>';
-      toast(ok?'✅ Conectado!':'❌ Desconectado',ok?'✅':'❌');
+      box.innerHTML='<div class="al '+(ok?'al-ok':'al-r')+'">'+(ok?'✅ WhatsApp conectado! Instância: '+inst:'❌ Estado: '+state+' — clique em QR Code')+'</div>';
+      toast(ok?'✅ Conectado!':'❌ '+state,ok?'✅':'❌');
     }).catch(e=>{toast('Erro: '+e.message,'❌');});
 }
+
 function gerarQRCode(){
   const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
   const box=document.getElementById('qr-box');
   box.style.display='block';
   document.getElementById('qr-dot').style.background='#D97706';
-  document.getElementById('qr-st-txt').textContent='Conectando...';
+  document.getElementById('qr-st-txt').textContent='Verificando estado...';
   document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:rgba(255,255,255,.5);text-align:center;padding:24px">Aguarde...</div>';
   evCall('instance/connectionState/'+inst)
     .then(d=>{
-      const state=d.instance?.state||d.state||'';
+      const state = getWAState(d);
       if(state==='open'){
         document.getElementById('qr-dot').style.background='var(--ok)';
         document.getElementById('qr-st-txt').textContent='✅ WhatsApp Conectado!';
@@ -1839,26 +1879,34 @@ function gerarQRCode(){
         toast('WhatsApp já está conectado!','✅');
         renderWA();
       } else {
+        document.getElementById('qr-st-txt').textContent='Gerando QR Code...';
         evCall('instance/connect/'+inst)
           .then(d=>{
-            const b64=d.base64||d.qrcode?.base64||d.qr?.base64;
-            if(b64){
+            const b64 = getQRBase64(d);
+            if(b64 && b64.length > 50){
               const src=b64.startsWith('data:')?b64:'data:image/png;base64,'+b64;
               document.getElementById('qr-img-wrap').innerHTML='<img src="'+src+'" style="width:170px;height:170px;border-radius:8px">';
               document.getElementById('qr-st-txt').textContent='Escaneie com o WhatsApp';
+              document.getElementById('qr-dot').style.background='#25D366';
               pollWAStatus(inst);
+            } else if(d?.count===0||(d?.data?.count===0)){
+              document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:11px;color:#fca5a5;padding:16px;text-align:center"><strong>count: 0</strong><br>Instância em loop de reconexão.<br>Vá em WhatsApp → Diagnóstico<br>→ Recriar Instância</div>';
+              document.getElementById('qr-st-txt').textContent='Erro — instância em loop';
             } else {
-              document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:10px;color:#fca5a5;padding:16px;text-align:center">Resposta: '+JSON.stringify(d).substring(0,200)+'</div>';
+              document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:10px;color:#fca5a5;padding:16px;text-align:center">Resposta: '+JSON.stringify(d).substring(0,300)+'</div>';
+              document.getElementById('qr-st-txt').textContent='Sem QR — veja resposta';
             }
           }).catch(e=>{
-            document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:11px;color:#fca5a5;padding:16px;text-align:center">Erro: '+e.message+'<br><br>Verifique se o workflow<br>ev-proxy está ativo no n8n</div>';
+            document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:11px;color:#fca5a5;padding:16px;text-align:center">Erro: '+e.message+'</div>';
+            document.getElementById('qr-st-txt').textContent='Erro de conexão';
           });
       }
     }).catch(e=>{
       document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:11px;color:#fca5a5;padding:16px;text-align:center">n8n inacessível<br>'+e.message+'</div>';
-      toast('Erro n8n: '+e.message,'❌');
+      toast('Erro: '+e.message,'❌');
     });
 }
+
 function pollWAStatus(inst){
   inst=inst||'AmandaCS';
   let n=0;
@@ -1866,7 +1914,7 @@ function pollWAStatus(inst){
     n++;
     evCall('instance/connectionState/'+inst)
       .then(s=>{
-        const st=s.instance?.state||s.state||'';
+        const st = getWAState(s);
         if(st==='open'){
           clearInterval(t);
           document.getElementById('qr-dot').style.background='var(--ok)';
@@ -2032,7 +2080,7 @@ async function diagStep(step){
       diagLog(`GET connectionState/${inst}`, 'info');
       const d = await waProxy('connectionState');
       diagLog(`Resposta completa: ${JSON.stringify(d)}`, 'raw');
-      const state = d.instance?.state || d.state || d.connectionStatus || d.status || '';
+      const state = getWAState(d) || '';
       diagLog(`Estado: "${state}"`, state==='open'?'ok':'warn');
       if(state==='open'){
         diagSetStep('state','ok','✅ WhatsApp CONECTADO!');
@@ -2103,7 +2151,7 @@ async function diagQR(){
     /* 1. Checa estado atual */
     const stateD = await waProxy('connectionState');
     diagLog(`Estado: ${JSON.stringify(stateD)}`, 'raw');
-    const state = stateD.instance?.state || stateD.state || stateD.connectionStatus || '';
+    const state = getWAState(stateD) || '';
     if(state==='open'){
       document.getElementById('diag-qr-dot').style.background = '#34D399';
       document.getElementById('diag-qr-txt').textContent = '✅ WhatsApp já está conectado!';
@@ -2117,7 +2165,7 @@ async function diagQR(){
     const d = await waProxy('connectQR');
     diagLog(`Resposta QR: ${JSON.stringify(d).substring(0,500)}`, 'raw');
     /* Evolution API v2 retorna: { pairingCode, code, base64, count } */
-    const b64 = d.base64 || d.qrcode?.base64 || d.qr?.base64 || d.qrcode;
+    const b64 = getQRBase64(d);
     if(b64 && b64.length > 50){
       const src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,'+b64;
       document.getElementById('diag-qr-img').innerHTML = `<img src="${src}" style="width:170px;height:170px;border-radius:8px">`;
@@ -2131,7 +2179,7 @@ async function diagQR(){
         n++;
         try{
           const sd = await waProxy('connectionState');
-          const st = sd.instance?.state||sd.state||sd.connectionStatus||'';
+          const st = getWAState(sd)||'';
           if(st==='open'){
             clearInterval(poll);
             document.getElementById('diag-qr-dot').style.background='#34D399';
