@@ -1587,7 +1587,7 @@ function renderWA(){
   </div>`;
 
   /* Evolution API v2: tenta /chat/findChats primeiro, depois /chat/findChats com where */
-  evCall('chat/findChats/'+inst, 'POST', { where:{}, limit:50 })
+  evCall('chat/findChats/'+inst, 'POST', { where:{ remoteJid:{ contains:'s.whatsapp.net' } }, limit:50 })
     .then(res=>{
       console.log('[K2 Flow] findChats raw:', JSON.stringify(res).substring(0,500));
 
