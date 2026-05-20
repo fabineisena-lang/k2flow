@@ -2018,8 +2018,7 @@ async function diagStep(step){
       const r = await fetch(proxyUrl, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ method:'GET', endpoint:'instance/fetchInstances', apikey: evKey, payload:{} }),
-        signal: AbortSignal.timeout(10000)
+        body: JSON.stringify({ method:'GET', endpoint:'instance/fetchInstances', apikey: evKey, payload:{} })
       });
       diagLog(`HTTP ${r.status} ${r.statusText}`, r.ok?'ok':'err');
       if(!r.ok){
@@ -2308,8 +2307,7 @@ async function waProxy(action, extraPayload){
   const r = await fetch(proxyUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(20000)
+    body: JSON.stringify(body)
   });
   if(!r.ok) throw new Error('n8n HTTP ' + r.status + ' — ' + r.statusText);
   const json = await r.json();
@@ -2326,8 +2324,7 @@ async function evCall(endpoint, method, body){
   const r = await fetch(proxyUrl, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ method: method||'GET', endpoint, apikey: evKey, payload: body||{} }),
-    signal: AbortSignal.timeout(20000)
+    body: JSON.stringify({ method: method||'GET', endpoint, apikey: evKey, payload: body||{} })
   });
   if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
