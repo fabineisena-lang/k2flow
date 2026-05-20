@@ -380,6 +380,27 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 .orca-total-lbl{font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em}
 .orca-total-val{font-family:'Barlow',sans-serif;font-weight:800;font-size:24px;color:var(--brand);margin-top:2px}
 
+.ag-view-btn{padding:5px 12px;font-size:11.5px;font-weight:500;border:none;background:transparent;color:var(--t2);transition:all .15s}
+.ag-view-btn.on{background:var(--brand);color:#fff}
+.ag-hora-row{display:flex;height:60px;border-bottom:1px solid var(--bd2);align-items:flex-start;padding-top:4px;justify-content:center}
+.ag-hora-lbl{font-size:10px;color:var(--t3);font-weight:500}
+.ag-slot-event{position:absolute;left:8px;right:8px;border-radius:5px;padding:4px 8px;font-size:11px;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;cursor:pointer;transition:opacity .15s}
+.ag-slot-event:hover{opacity:.9}
+.ag-mes-cell{border-right:1px solid var(--bd2);border-bottom:1px solid var(--bd2);padding:6px;min-height:80px}
+.ag-mes-cell:nth-child(7n){border-right:none}
+.ag-mes-num{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:4px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.ag-mes-num.today{background:var(--brand);color:#fff}
+.ag-mes-ev{font-size:9.5px;padding:2px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:#fff}
+
+/* ── CONFIG INT CARDS ── */
+.cfg-int-card{background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:box-shadow .2s}
+.cfg-int-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.cfg-int-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;transition:background .15s}
+.cfg-int-hd:hover{background:var(--bd2)}
+.cfg-int-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;flex-shrink:0}
+.cfg-int-body{padding:0 16px 14px;display:none;border-top:1px solid var(--bd2)}
+.cfg-int-body.open{display:block;padding-top:14px}
+
 /* ── FIN TABS ── */
 .fin-tabs{display:flex;gap:6px;margin-bottom:14px}
 .fin-tab{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--bd);color:var(--t2);background:var(--light2);transition:all .15s}
@@ -548,21 +569,57 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- AGENDA -->
   <div class="page content" id="page-agenda">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
       <div style="display:flex;align-items:center;gap:8px">
-        <button class="btn-sec" onclick="agNav(-1)">‹</button>
+        <button class="btn-sec" style="padding:6px 10px" onclick="agNav(-1)">‹</button>
         <span style="font-family:'Barlow',sans-serif;font-weight:700;font-size:15px" id="ag-lbl">Hoje</span>
-        <button class="btn-sec" onclick="agNav(1)">›</button>
+        <button class="btn-sec" style="padding:6px 10px" onclick="agNav(1)">›</button>
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="agOffset=0;renderAgenda()">Hoje</button>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-sec" id="gcal-btn" onclick="conectarGoogle()" style="display:flex;align-items:center;gap:6px">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#4285F4" stroke-width="1.5"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#4285F4" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span id="gcal-txt">Conectar Google Calendar</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
+          <button id="ag-view-dia" class="ag-view-btn on" onclick="setAgView('dia',this)">Dia</button>
+          <button id="ag-view-semana" class="ag-view-btn" onclick="setAgView('semana',this)" style="border-left:1px solid var(--bd)">Semana</button>
+          <button id="ag-view-mes" class="ag-view-btn" onclick="setAgView('mes',this)" style="border-left:1px solid var(--bd)">Mês</button>
+        </div>
+        <button class="btn-sec" id="gcal-btn" onclick="conectarGoogle()" style="display:flex;align-items:center;gap:5px;font-size:12px">
+          <svg width="13" height="13" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          <span id="gcal-txt">Google Calendar</span>
         </button>
-        <select class="inp-sel" style="width:auto"><option>Todos os profissionais</option><option>Dr. Carlos</option><option>Dra. Ana</option></select>
+        <select class="inp-sel" style="width:auto;font-size:12px"><option>Todos os profissionais</option><option>Dr. Carlos</option><option>Dra. Ana</option></select>
       </div>
     </div>
-    <div class="tbl-wrap"><table><thead><tr><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Profissional</th><th>Status</th><th>Ações</th></tr></thead><tbody id="ag-tbody"></tbody></table></div>
+    <!-- VISÃO DIA -->
+    <div id="ag-view-content-dia">
+      <div style="display:grid;grid-template-columns:60px 1fr;background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden">
+        <div style="border-right:1px solid var(--bd)">
+          <div style="height:40px;border-bottom:1px solid var(--bd);background:var(--bd2)"></div>
+          <div id="ag-horas"></div>
+        </div>
+        <div>
+          <div style="height:40px;border-bottom:1px solid var(--bd);background:var(--bd2);display:flex;align-items:center;padding:0 16px;font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;color:var(--t1)" id="ag-dia-hd">Hoje</div>
+          <div id="ag-slots" style="position:relative"></div>
+        </div>
+      </div>
+    </div>
+    <!-- VISÃO SEMANA/MÊS oculta por padrão -->
+    <div id="ag-view-content-semana" style="display:none">
+      <div class="tbl-wrap"><table><thead><tr><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Profissional</th><th>Status</th><th>Ações</th></tr></thead><tbody id="ag-tbody"></tbody></table></div>
+    </div>
+    <div id="ag-view-content-mes" style="display:none">
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden">
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--bd)">
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">DOM</div>
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">SEG</div>
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">TER</div>
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">QUA</div>
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">QUI</div>
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">SEX</div>
+          <div style="padding:8px;text-align:center;font-size:10px;font-weight:700;color:var(--t3)">SÁB</div>
+        </div>
+        <div id="ag-mes-grid" style="display:grid;grid-template-columns:repeat(7,1fr)"></div>
+      </div>
+    </div>
   </div>
 
   <!-- WHATSAPP -->
@@ -757,7 +814,135 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- CONFIG -->
   <div class="page content" id="page-config">
-    <!-- WhatsApp -->
+    <!-- SEÇÃO: Conectividade -->
+    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:16px;color:var(--t1);margin-bottom:4px">Configurações</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Gerencie integrações, dados e preferências da sua conta</div>
+
+    <!-- GRID DE INTEGRAÇÕES -->
+    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;color:var(--t1);margin-bottom:12px;text-transform:uppercase;letter-spacing:.07em;font-size:10px;color:var(--t3)">Conectividade & APIs</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+
+      <!-- WhatsApp -->
+      <div class="cfg-int-card" id="card-wa">
+        <div class="cfg-int-hd" onclick="toggleCfg('wa')">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:#E8FFF0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">WhatsApp</div><div style="font-size:11px;color:var(--t3)">Evolution API</div></div>
+          </div>
+          <span class="cfg-int-badge" id="badge-wa" style="background:var(--wa-l);color:var(--wa)">Configurar</span>
+        </div>
+        <div class="cfg-int-body" id="body-wa">
+          <div class="grid2-form" style="margin-bottom:10px">
+            <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="http://..." value="http://145.223.29.155:8080"></div>
+            <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="429683C4..."></div>
+          </div>
+          <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="salvarEvolution()">Salvar</button>
+            <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="testarConexaoWA()">Testar</button>
+            <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="gerarQRCode()">📱 QR Code</button>
+          </div>
+          <div class="qr-box" id="qr-box" style="display:none;margin-top:12px">
+            <div class="qr-status"><div class="qr-status-dot" id="qr-dot" style="background:#D97706"></div><div class="qr-status-txt" id="qr-st-txt">Aguardando...</div></div>
+            <div class="qr-img-wrap" id="qr-img-wrap"><div style="font-size:12px;color:var(--t3);text-align:center">Gerando...<br>Aguarde</div></div>
+            <div class="qr-hint">Abra o WhatsApp → Dispositivos conectados → Escanear</div>
+          </div>
+          <div id="wa-status-box" style="margin-top:10px;display:none"></div>
+        </div>
+      </div>
+
+      <!-- Claude API -->
+      <div class="cfg-int-card" id="card-claude">
+        <div class="cfg-int-hd" onclick="toggleCfg('claude')">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:#FDF4E7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#F59E0B" stroke-width="1.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">Claude (Anthropic)</div><div style="font-size:11px;color:var(--t3)">IA principal do agente</div></div>
+          </div>
+          <span class="cfg-int-badge" id="badge-claude" style="background:var(--am-l);color:var(--am)">Configurar</span>
+        </div>
+        <div class="cfg-int-body" id="body-claude">
+          <div class="field" style="margin-bottom:10px"><label>API Key (sk-ant-api03-...)</label><input class="inp" id="cfg-ai-key" type="password" placeholder="sk-ant-api03-..."></div>
+          <div class="field" style="margin-bottom:10px"><label>Personalidade do agente</label><textarea class="inp" rows="3" id="cfg-ai-persona" placeholder="Olá! Sou assistente da Clínica... Como posso ajudar?"></textarea></div>
+          <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="salvarIA()">Salvar Claude</button>
+        </div>
+      </div>
+
+      <!-- Gemini -->
+      <div class="cfg-int-card" id="card-gemini">
+        <div class="cfg-int-hd" onclick="toggleCfg('gemini')">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" fill="#4285F4"/></svg>
+            </div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">Gemini (Google)</div><div style="font-size:11px;color:var(--t3)">IA alternativa — mais barata</div></div>
+          </div>
+          <span class="cfg-int-badge" style="background:var(--bl-l);color:var(--bl)">Alternativa</span>
+        </div>
+        <div class="cfg-int-body" id="body-gemini">
+          <div style="background:var(--bl-l);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--bl)">💡 Gemini é uma alternativa mais econômica ao Claude, ideal para volumes altos de mensagens.</div>
+          <div class="field" style="margin-bottom:10px"><label>API Key do Gemini</label><input class="inp" id="gemini-key" type="password" placeholder="AIzaSy..."></div>
+          <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="toast('Gemini configurado!','✅')">Salvar Gemini</button>
+        </div>
+      </div>
+
+      <!-- n8n -->
+      <div class="cfg-int-card" id="card-n8n">
+        <div class="cfg-int-hd" onclick="toggleCfg('n8n')">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#F26419" stroke-width="1.5"/><path d="M3 12h6M15 12h6M12 3v6M12 15v6" stroke="#F26419" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--t1)">n8n</div><div style="font-size:11px;color:var(--t3)">Motor de automação</div></div>
+          </div>
+          <span class="cfg-int-badge" id="badge-n8n" style="background:var(--brand-l);color:var(--brand)">Configurar</span>
+        </div>
+        <div class="cfg-int-body" id="body-n8n">
+          <div class="field" style="margin-bottom:10px"><label>URL do n8n</label><input class="inp" id="cfg-n8n-url" value="https://n8n.vps1170.panel.speedfy.host" placeholder="https://..."></div>
+          <div class="field" style="margin-bottom:10px"><label>API Key</label><input class="inp" id="cfg-n8n-key" type="password" placeholder="n8n_api_..."></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="toast('n8n conectado!','✅')">Conectar</button>
+            <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="window.open(document.getElementById('cfg-n8n-url').value,'_blank')">Abrir editor →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTEGRAÇÕES OAUTH -->
+    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Plataformas & Redes Sociais</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+      <button class="oauth-btn" onclick="conectarGoogleOAuth()">
+        <div class="oauth-btn-ico" style="background:#E8F0FE"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+        <div class="oauth-btn-info"><div class="oauth-btn-nome">Google — Calendar · Analytics · Meu Negócio</div><div class="oauth-btn-desc">Sincroniza agenda, dados de tráfego e avaliações</div></div>
+        <span class="oauth-btn-st" id="google-st" style="background:var(--brand-l);color:var(--brand)">Conectar</span>
+      </button>
+      <button class="oauth-btn" onclick="conectarMetaOAuth()">
+        <div class="oauth-btn-ico" style="background:#E8F0FE"><svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+        <div class="oauth-btn-info"><div class="oauth-btn-nome">Meta — Facebook · Instagram · Ads</div><div class="oauth-btn-desc">Conecta páginas, perfil e campanhas de anúncio</div></div>
+        <span class="oauth-btn-st" id="meta-st" style="background:var(--brand-l);color:var(--brand)">Conectar</span>
+      </button>
+      <button class="oauth-btn" onclick="toast('Doctoralia em breve!','🏥')">
+        <div class="oauth-btn-ico" style="background:#E3F2FD"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#0288D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="oauth-btn-info"><div class="oauth-btn-nome">Doctoralia</div><div class="oauth-btn-desc">Sincroniza agendamentos e avaliações</div></div>
+        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
+      </button>
+      <button class="oauth-btn" onclick="toast('Asaas em breve!','💳')">
+        <div class="oauth-btn-ico" style="background:#E8F5E9"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="#43A047" stroke-width="1.5"/><line x1="2" y1="10" x2="22" y2="10" stroke="#43A047" stroke-width="1.5"/></svg></div>
+        <div class="oauth-btn-info"><div class="oauth-btn-nome">Asaas — Cobranças & Pagamentos</div><div class="oauth-btn-desc">PIX, boleto e cartão automáticos</div></div>
+        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
+      </button>
+      <button class="oauth-btn" onclick="toast('TikTok em breve!','🎵')">
+        <div class="oauth-btn-ico" style="background:#000"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="oauth-btn-info"><div class="oauth-btn-nome">TikTok — Ads + Orgânico</div><div class="oauth-btn-desc">Métricas de vídeos e campanhas</div></div>
+        <span class="oauth-btn-st" style="background:rgba(107,114,128,.1);color:#6B7280">Em breve</span>
+      </button>
+    </div>
+
+    <!-- DADOS DA CLÍNICA -->
+    <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Dados & Configurações</div>
     <div class="cfg-sec">
       <div class="cfg-sec-h">💬 WhatsApp — Evolution API</div>
       <div class="grid2-form">
@@ -943,17 +1128,17 @@ let CONVS=[
 ];
 let CRM_COLS=[
   {id:'pc',nome:'Primeiro Contato',cor:'#2563EB',bg:'#EFF6FF',cards:[
-    {id:'k1',nome:'Lead Novo',tag:'WhatsApp',tagCor:'bk-ok',resp:'IA',data:'agora',val:''},
-    {id:'k2',nome:'Contato Instagram',tag:'Instagram',tagCor:'bk-p',resp:'Ana',data:'ontem',val:''},
+    {id:'k1',nome:'Lead Novo',tag:'WhatsApp',tagCor:'bk-ok',resp:'IA',data:'agora',val:'',wa:'5511933333333'},
+    {id:'k2',nome:'Contato Instagram',tag:'Instagram',tagCor:'bk-p',resp:'Ana',data:'ontem',val:'',wa:'5511944444444'},
   ]},
   {id:'ea',nome:'Em Atendimento',cor:'#7C3AED',bg:'#F5F3FF',cards:[
-    {id:'k3',nome:'Teste 1',tag:'WhatsApp',tagCor:'bk-ok',resp:'Carlos',data:'seg',val:'R$4.800'},
+    {id:'k3',nome:'Teste 1',tag:'WhatsApp',tagCor:'bk-ok',resp:'Carlos',data:'seg',val:'R$4.800',wa:'5511911111111'},
   ]},
   {id:'pe',nome:'Proposta Enviada',cor:'#D97706',bg:'#FFFBEB',cards:[
-    {id:'k4',nome:'Teste 2',tag:'Indicação',tagCor:'bk-b',resp:'Carlos',data:'ter',val:'R$3.200'},
+    {id:'k4',nome:'Teste 2',tag:'Indicação',tagCor:'bk-b',resp:'Carlos',data:'ter',val:'R$3.200',wa:'5511922222222'},
   ]},
   {id:'ag',nome:'Agendado',cor:'#059669',bg:'#ECFDF5',cards:[
-    {id:'k5',nome:'Indicado Silva',tag:'Google',tagCor:'bk-b',resp:'Ana',data:'qua',val:''},
+    {id:'k5',nome:'Indicado Silva',tag:'Google',tagCor:'bk-b',resp:'Ana',data:'qua',val:'',wa:''},
   ]},
   {id:'fc',nome:'Fechado ✓',cor:'#059669',bg:'#ECFDF5',cards:[]},
   {id:'pd',nome:'Perdido',cor:'#DC2626',bg:'#FEF2F2',cards:[]},
@@ -1113,15 +1298,53 @@ function goAI(sub,el){
 function toggleSb(){document.getElementById('sb1').classList.toggle('min');}
 
 /* ── AGENDA ── */
+let agView='dia';
+function setAgView(v,el){agView=v;document.querySelectorAll('.ag-view-btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');['dia','semana','mes'].forEach(x=>document.getElementById('ag-view-content-'+x).style.display=x===v?'block':'none');renderAgenda();}
 function renderDashAgenda(){
   const el=document.getElementById('dash-agenda');if(!el)return;
   el.innerHTML=AGENDA.slice(0,4).map(a=>`<div class="ag-item"><div class="ag-hora">${a.hora}</div><div class="ag-cor" style="background:${a.cor}"></div><div class="ag-info"><div class="ag-nome">${a.nome}</div><div class="ag-proc">${a.proc} · ${a.prof}</div></div><span class="ag-st ${a.status==='confirmado'?'ags-ok':a.status==='faltou'?'ags-r':'ags-w'}">${a.status}</span></div>`).join('');
 }
 function renderAgenda(){
   const d=new Date();d.setDate(d.getDate()+agOffset);
-  const el=document.getElementById('ag-lbl');if(el)el.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const lbl=document.getElementById('ag-lbl');if(lbl)lbl.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const diahd=document.getElementById('ag-dia-hd');if(diahd)diahd.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+  if(agView==='dia')renderAgendaDia(d);
+  else if(agView==='semana')renderAgendaLista();
+  else renderAgendaMes(d);
+}
+function renderAgendaDia(d){
+  const horas=document.getElementById('ag-horas');const slots=document.getElementById('ag-slots');
+  if(!horas||!slots)return;
+  const hs=Array.from({length:12},(_,i)=>i+7);
+  horas.innerHTML=hs.map(h=>`<div class="ag-hora-row"><span class="ag-hora-lbl">${h}:00</span></div>`).join('');
+  slots.innerHTML=hs.map(h=>`<div style="height:60px;border-bottom:1px solid var(--bd2)"></div>`).join('');
+  slots.style.position='relative';slots.style.height=(hs.length*60)+'px';
+  AGENDA.forEach(a=>{
+    const hh=parseInt(a.hora.split(':')[0]);if(hh<7||hh>18)return;
+    const top=(hh-7)*60+4;const ev=document.createElement('div');
+    ev.className='ag-slot-event';ev.style.cssText=`top:${top}px;height:52px;background:${a.cor};`;
+    ev.innerHTML=`<strong>${a.hora}</strong> ${a.nome}<div style="font-size:10px;opacity:.85">${a.proc} · ${a.prof}</div>`;
+    ev.onclick=()=>toast(`${a.nome} — ${a.proc}  — ${a.status}`,'📅');
+    slots.appendChild(ev);
+  });
+}
+function renderAgendaLista(){
   const tbody=document.getElementById('ag-tbody');if(!tbody)return;
-  tbody.innerHTML=AGENDA.map(a=>`<tr><td><strong>${a.hora}</strong></td><td>${a.nome}</td><td>${a.proc}</td><td>${a.prof}</td><td><span class="badge ${a.status==='confirmado'?'bk-ok':a.status==='faltou'?'bk-r':'bk-w'}"><span class="bk-dot"></span>${a.status}</span></td><td style="display:flex;gap:5px"><button style="background:var(--ok-l);border:1px solid var(--ok);color:var(--ok);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700" onclick="toast('Confirmado!','✅')">✓ Confirmado</button><button style="background:var(--er-l);border:1px solid var(--er);color:var(--er);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700" onclick="toast('Marcado como faltou','⚠️')">✗ Faltou</button></td></tr>`).join('');
+  tbody.innerHTML=AGENDA.map(a=>`<tr><td><strong>${a.hora}</strong></td><td>${a.nome}</td><td>${a.proc}</td><td>${a.prof}</td><td><span class="badge ${a.status==='confirmado'?'bk-ok':a.status==='faltou'?'bk-r':'bk-w'}"><span class="bk-dot"></span>${a.status}</span></td><td style="display:flex;gap:5px"><button style="background:var(--ok-l);border:1px solid var(--ok);color:var(--ok);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700" onclick="toast('Confirmado!','✅')">✓ Conf.</button><button style="background:var(--er-l);border:1px solid var(--er);color:var(--er);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700" onclick="toast('Faltou','⚠️')">✗ Faltou</button></td></tr>`).join('');
+}
+function renderAgendaMes(d){
+  const grid=document.getElementById('ag-mes-grid');if(!grid)return;
+  const ano=d.getFullYear(),mes=d.getMonth();
+  const primeiro=new Date(ano,mes,1);const diasNoMes=new Date(ano,mes+1,0).getDate();
+  const inicioSemana=primeiro.getDay();const hoje=new Date();
+  let cells='';
+  for(let i=0;i<inicioSemana;i++)cells+=`<div class="ag-mes-cell" style="background:var(--bd2)"></div>`;
+  for(let dia=1;dia<=diasNoMes;dia++){
+    const isHoje=hoje.getDate()===dia&&hoje.getMonth()===mes&&hoje.getFullYear()===ano;
+    const evs=AGENDA.slice(0,dia%3);
+    cells+=`<div class="ag-mes-cell"><div class="ag-mes-num${isHoje?' today':''}">${dia}</div>${evs.map(a=>`<div class="ag-mes-ev" style="background:${a.cor}">${a.hora} ${a.nome}</div>`).join('')}</div>`;
+  }
+  grid.innerHTML=cells;
 }
 function agNav(d){agOffset+=d;renderAgenda();}
 function criarAgendamento(){
@@ -1195,7 +1418,7 @@ function updateIABtn(){const btn=document.getElementById('ia-toggle');if(!btn)re
 /* ── CRM ── */
 function renderKanban(filtro){
   const board=document.getElementById('kanban-board');if(!board)return;
-  board.innerHTML=CRM_COLS.map(col=>`<div class="kanban-col"><div class="kanban-col-hd" style="background:${col.bg};border-color:${col.cor}20"><span class="kanban-col-nome" style="color:${col.cor}">${col.nome}</span><span class="kanban-col-n" style="background:${col.cor}20;color:${col.cor}">${col.cards.length}</span></div><div class="kanban-cards">${col.cards.map(c=>`<div class="kcard" onclick="toast('Lead: ${c.nome}','👤')"><div class="kcard-nome">${c.nome}</div><div class="kcard-meta"><span class="badge ${c.tagCor}">${c.tag}</span>${c.val?`<span style="font-size:10px;font-weight:700;color:var(--ok)">${c.val}</span>`:''}</div><div class="kcard-footer"><div class="kcard-resp"><div class="kcard-av">${c.resp.charAt(0)}</div>${c.resp}</div><div class="kcard-data">${c.data}</div></div></div>`).join('')}<button class="add-card" onclick="openModal('modal-lead')">+ Adicionar</button></div></div>`).join('');
+  board.innerHTML=CRM_COLS.map(col=>`<div class="kanban-col"><div class="kanban-col-hd" style="background:${col.bg};border-color:${col.cor}20"><span class="kanban-col-nome" style="color:${col.cor}">${col.nome}</span><span class="kanban-col-n" style="background:${col.cor}20;color:${col.cor}">${col.cards.length}</span></div><div class="kanban-cards">${col.cards.map(c=>`<div class="kcard"><div class="kcard-nome">${c.nome}</div><div class="kcard-meta"><span class="badge ${c.tagCor}">${c.tag}</span>${c.val?`<span style="font-size:10px;font-weight:700;color:var(--ok)">${c.val}</span>`:''}</div>${c.wa?`<div style="font-size:10px;color:var(--t3);margin-top:4px;display:flex;align-items:center;gap:4px"><svg width="10" height="10" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5"/></svg>${c.wa}</div>`:''}  <div class="kcard-footer"><div class="kcard-resp"><div class="kcard-av">${c.resp.charAt(0)}</div>${c.resp}</div><div style="display:flex;gap:4px">${c.wa?`<button style="background:#E8FFF0;border:1px solid #25D36630;color:#25D366;border-radius:5px;padding:3px 7px;font-size:9px;font-weight:700" onclick="window.open('https://wa.me/${c.wa}','_blank')">WhatsApp</button>`:''}  <span style="font-size:10px;color:var(--t3)">${c.data}</span></div></div></div>`).join('')}<button class="add-card" onclick="openModal('modal-lead')">+ Adicionar</button></div></div>`).join('');
 }
 function filterKanban(q){
   CRM_COLS.forEach(col=>{col._filtered=col.cards.filter(c=>c.nome.toLowerCase().includes(q.toLowerCase()));});
@@ -1421,6 +1644,7 @@ function criarPlano(){
   renderPlanos();closeModal('modal-plano');toast(`Plano "${nome}" criado!`,'✅');
   document.getElementById('plano-nome').value='';
 }
+function toggleCfg(id){const b=document.getElementById('body-'+id);if(b)b.classList.toggle('open');}
 function setFinTab(el){document.querySelectorAll('.fin-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');}
 
 /* ── MODAIS ── */
