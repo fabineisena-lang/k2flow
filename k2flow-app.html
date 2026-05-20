@@ -1627,24 +1627,21 @@ function renderWA(){
         .map((c)=>{
           const jid = c.remoteJid||c.id||'';
           if(jid.includes('g.us')) return null; /* ignora grupos */
-          const num = jid.split('@')[0].split(':')[0].replace(/\D/g,'');
-          const nome = c.pushName||c.name||c.verifiedName||c.notify||num||'Contato';
-          const lastMsg = c.lastMessage||c.messages?.[0]||{};
-          const ultima =
-            lastMsg.conversation ||
-            lastMsg.extendedTextMessage?.text ||
-            lastMsg.imageMessage?.caption ||
-            (lastMsg.audioMessage ? '🎤 Áudio' : '') ||
-            (lastMsg.documentMessage ? '📄 Documento' : '') ||
-            c.lastMessageText || c.text || '💬 Mensagem';
-          const ts = lastMsg.messageTimestamp||c.lastMessageTimestamp||c.updatedAt||c.t||0;
-          const hora = ts ? new Date(Number(ts)*1000).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
+          /* @lid = ID interno do WhatsApp, não é número real */
+          /* Prioriza pushName, depois tenta pegar número do JID */
+          const isLid = jid.includes('@lid');
+          const rawNum = jid.split('@')[0].split(':')[0];
+          /* Número real só se não for @lid */
+          const num = isLid ? '' : rawNum.replace(/\D/g,'');
+          const nome = c.pushName||c.name||c.verifiedName||c.notify||'';
           return {
-            id:'wa-'+(num||jid.replace(/\W/g,'')),
-            jid, nome, num, hora,
-            ultima: String(ultima).substring(0,80),
+            id:'wa-'+(rawNum||jid.replace(/\W/g,'')),
+            jid, nome: nome||num||rawNum,
+            num, hora: '',
+            ultima: '💬 Mensagem',
             status:'aberta', ia:false, msgs:[],
-            unread: c.unreadCount||c.unreadMessages||0
+            unread: c.unreadCount||c.unreadMessages||0,
+            _rawNum: rawNum
           };
         }).filter(Boolean);
 
@@ -1670,20 +1667,29 @@ function renderWA(){
 
       renderConvList(reais);
 
-      /* Busca nomes dos contatos para substituir números */
+      /* Busca contatos para resolver nomes e números reais dos @lid */
       evCall('contact/findContacts/'+inst,'POST',{ where:{} })
-        .then(contatos=>{
-          const lista = Array.isArray(contatos) ? contatos
-            : (contatos?.data||contatos?.contacts||[]);
+        .then(resp=>{
+          const lista = Array.isArray(resp) ? resp
+            : (resp?.data||resp?.contacts||Object.values(resp||{}));
           if(!lista.length) return;
-          const mapa = {};
+          /* Monta mapa por remoteJid e por número */
+          const mapaJid={}, mapaNum={};
           lista.forEach(c=>{
-            const num=(c.remoteJid||c.id||'').split('@')[0].split(':')[0].replace(/\D/g,'');
-            if(num) mapa[num]=c.pushName||c.name||c.verifiedName||c.notify||'';
+            const jid=c.remoteJid||c.id||'';
+            const num=jid.split('@')[0].split(':')[0].replace(/\D/g,'');
+            const nome=c.pushName||c.name||c.verifiedName||c.notify||'';
+            const phone=c.phone||c.number||num||'';
+            if(jid) mapaJid[jid]=nome;
+            if(num) mapaNum[num]={nome, phone};
           });
           CONVS.forEach(conv=>{
-            if(mapa[conv.num] && mapa[conv.num].length>1){
-              conv.nome=mapa[conv.num];
+            /* Resolve nome */
+            const nomeResolvido = mapaJid[conv.jid]||mapaNum[conv._rawNum]?.nome||'';
+            if(nomeResolvido) conv.nome=nomeResolvido;
+            /* Resolve número real se era @lid */
+            if(!conv.num && mapaNum[conv._rawNum]?.phone){
+              conv.num=mapaNum[conv._rawNum].phone.replace(/\D/g,'');
             }
           });
           renderConvList(CONVS);
