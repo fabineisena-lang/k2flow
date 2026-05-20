@@ -1586,9 +1586,9 @@ function renderWA(){
     <div style="font-size:10px;color:var(--t3);margin-top:4px">instância: ${inst}</div>
   </div>`;
 
-  /* Evolution API v2: tenta /chat/findChats primeiro, depois /chat/findChats com where */
-  evCall('chat/findChats/'+inst, 'POST', { where:{ remoteJid:{ contains:'s.whatsapp.net' } }, limit:50 })
-    .then(res=>{
+  /* Usa fetchChats que retorna números reais (não @lid) */
+  evCall('chat/findChats/'+inst, 'POST', { limit:50 })
+    .then(async res=>{
       console.log('[K2 Flow] findChats raw:', JSON.stringify(res).substring(0,500));
 
       /* Suporte a todos os formatos possíveis da Evolution API */
@@ -1652,8 +1652,34 @@ function renderWA(){
         return;
       }
 
-      CONVS = reais;
-      sincronizarCRM(reais);
+      /* Primeiro busca contatos para resolver @lid → número real */
+      let mapaContatos = {};
+      try {
+        const resp = await evCall('contact/findContacts/'+inst,'POST',{ where:{} });
+        const lista = Array.isArray(resp) ? resp : (resp?.data||resp?.contacts||Object.values(resp||{}));
+        lista.forEach(c=>{
+          const jid = c.remoteJid||c.id||'';
+          const pushName = c.pushName||c.name||c.verifiedName||c.notify||'';
+          const phone = (c.phone||jid.split('@')[0]).replace(/\D/g,'');
+          mapaContatos[jid] = { nome: pushName, phone };
+          /* Índice também pelo número sem país */
+          if(phone) mapaContatos[phone] = { nome: pushName, phone };
+        });
+      } catch(e){ console.warn('findContacts falhou:', e.message); }
+
+      const reaisComNome = reais.map(c=>{
+        const resolvido = mapaContatos[c.jid] || mapaContatos[c._rawNum] || {};
+        if(resolvido.nome) c.nome = resolvido.nome;
+        if(resolvido.phone && !c.num) c.num = resolvido.phone;
+        /* Se ainda é @lid sem nome, mostra rawNum formatado */
+        if(!c.nome || /^\d{8,}$/.test(c.nome)){
+          c.nome = resolvido.nome || c._rawNum || c.num || 'Contato';
+        }
+        return c;
+      });
+
+      CONVS = reaisComNome;
+      sincronizarCRM(reaisComNome);
 
       const totalUnread = reais.reduce((s,c)=>s+(c.unread||0),0);
       const nb=document.getElementById('nb-wa');
@@ -1665,36 +1691,7 @@ function renderWA(){
         setTimeout(()=>loadStatus.style.display='none',3000);
       }
 
-      renderConvList(reais);
-
-      /* Busca contatos para resolver nomes e números reais dos @lid */
-      evCall('contact/findContacts/'+inst,'POST',{ where:{} })
-        .then(resp=>{
-          const lista = Array.isArray(resp) ? resp
-            : (resp?.data||resp?.contacts||Object.values(resp||{}));
-          if(!lista.length) return;
-          /* Monta mapa por remoteJid e por número */
-          const mapaJid={}, mapaNum={};
-          lista.forEach(c=>{
-            const jid=c.remoteJid||c.id||'';
-            const num=jid.split('@')[0].split(':')[0].replace(/\D/g,'');
-            const nome=c.pushName||c.name||c.verifiedName||c.notify||'';
-            const phone=c.phone||c.number||num||'';
-            if(jid) mapaJid[jid]=nome;
-            if(num) mapaNum[num]={nome, phone};
-          });
-          CONVS.forEach(conv=>{
-            /* Resolve nome */
-            const nomeResolvido = mapaJid[conv.jid]||mapaNum[conv._rawNum]?.nome||'';
-            if(nomeResolvido) conv.nome=nomeResolvido;
-            /* Resolve número real se era @lid */
-            if(!conv.num && mapaNum[conv._rawNum]?.phone){
-              conv.num=mapaNum[conv._rawNum].phone.replace(/\D/g,'');
-            }
-          });
-          renderConvList(CONVS);
-          renderCli();
-        }).catch(()=>{});
+      renderConvList(CONVS);
     })
     .catch(e=>{
       const msg=e.message||String(e);
