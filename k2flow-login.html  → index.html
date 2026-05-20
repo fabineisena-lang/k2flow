@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K2 Flow — WhatsApp | CRM | IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#F26419;
+  --brand-l:rgba(242,100,25,.12);
+  --brand-b:rgba(242,100,25,.25);
+  --dark:#0D1117;
+  --dark2:#161B22;
+  --dark3:#21262D;
+  --r:12px;--rs:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--dark);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+input,button{font-family:inherit}
+
+/* BG */
+.bg-art{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bg-blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.07}
+.bg-blob-1{width:600px;height:600px;background:#F26419;top:-200px;right:-150px;animation:blobF 20s ease-in-out infinite}
+.bg-blob-2{width:400px;height:400px;background:#2563EB;bottom:-150px;left:-100px;animation:blobF 26s ease-in-out infinite reverse}
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.bg-line{position:absolute;background:linear-gradient(90deg,transparent,rgba(242,100,25,.18),transparent);height:1px;width:100%;animation:scan 9s linear infinite}
+@keyframes blobF{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(18px,-28px) scale(1.04)}66%{transform:translate(-12px,18px) scale(.97)}}
+@keyframes scan{from{top:-2px;opacity:0}10%{opacity:1}90%{opacity:1}to{top:100%;opacity:0}}
+
+/* WRAP */
+.login-wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:24px}
+.card{
+  background:rgba(22,27,34,.96);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:22px;padding:44px 38px;
+  backdrop-filter:blur(24px);
+  animation:cardIn .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+
+/* BRAND */
+.brand{display:flex;align-items:center;gap:13px;margin-bottom:36px}
+.brand-ico{
+  width:44px;height:44px;background:var(--brand);
+  border-radius:11px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;position:relative;
+  box-shadow:0 6px 22px rgba(242,100,25,.4);
+}
+.brand-ico-txt{font-family:'Barlow',sans-serif;font-weight:900;font-size:19px;color:#fff;letter-spacing:-1px;line-height:1}
+.brand-ico-arr{position:absolute;bottom:5px;right:5px;width:11px;height:11px}
+.brand-words{display:flex;flex-direction:column}
+.brand-name{font-family:'Barlow',sans-serif;font-weight:800;font-size:22px;color:#fff;letter-spacing:-0.4px;line-height:1}
+.brand-name em{color:var(--brand);font-style:normal}
+.brand-tag{display:flex;align-items:center;gap:6px;margin-top:4px}
+.brand-tag span{font-size:10.5px;font-weight:500;color:rgba(255,255,255,.32);letter-spacing:.02em}
+.brand-tag .sep{font-size:9px;color:rgba(255,255,255,.14)}
+
+/* TITLES */
+.login-h{font-family:'Barlow',sans-serif;font-weight:800;font-size:27px;color:#fff;letter-spacing:-0.4px;line-height:1.15;margin-bottom:7px}
+.login-s{font-size:13.5px;color:rgba(255,255,255,.36);margin-bottom:30px;line-height:1.55}
+.login-s strong{color:rgba(242,100,25,.75);font-weight:600}
+
+/* FIELDS */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px}
+.inp{
+  width:100%;background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(255,255,255,.09);
+  border-radius:var(--rs);padding:13px 15px;
+  color:#fff;font-size:14px;outline:none;transition:all .2s;
+}
+.inp:focus{border-color:var(--brand);background:rgba(242,100,25,.06);box-shadow:0 0 0 4px rgba(242,100,25,.12)}
+.inp::placeholder{color:rgba(255,255,255,.18)}
+.pwd-wrap{position:relative}
+.pwd-wrap .inp{padding-right:46px}
+.pwd-btn{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:rgba(255,255,255,.22);cursor:pointer;
+  padding:5px;display:flex;align-items:center;transition:color .15s;
+}
+.pwd-btn:hover{color:var(--brand)}
+
+/* BTN */
+.btn-login{
+  width:100%;background:var(--brand);color:#fff;border:none;
+  border-radius:var(--rs);padding:14px;
+  font-family:'Barlow',sans-serif;font-weight:700;font-size:15px;letter-spacing:.2px;
+  cursor:pointer;margin-top:6px;position:relative;overflow:hidden;
+  transition:all .22s;
+}
+.btn-login:hover{background:#d95515;box-shadow:0 8px 26px rgba(242,100,25,.38);transform:translateY(-1px)}
+.btn-login:active{transform:translateY(0)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-loader{display:none;width:19px;height:19px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+.btn-login.loading .btn-txt{display:none}
+.btn-login.loading .btn-loader{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ERROR */
+.err{
+  background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.22);
+  border-radius:var(--rs);padding:11px 14px;
+  font-size:13px;color:#FCA5A5;
+  margin-bottom:18px;display:none;
+  align-items:center;gap:9px;
+  animation:shake .3s ease;
+}
+.err.show{display:flex}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* FOOTER */
+.foot{margin-top:26px;text-align:center;font-size:12px;color:rgba(255,255,255,.18)}
+.foot a{color:rgba(242,100,25,.65);text-decoration:none;font-weight:600}
+.foot a:hover{color:var(--brand)}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0}
+.divider-line{flex:1;height:1px;background:rgba(255,255,255,.06)}
+.divider-txt{font-size:11px;color:rgba(255,255,255,.18)}
+
+/* VERSION */
+.ver{position:fixed;bottom:18px;right:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:99px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.18)}
+
+@media(max-width:460px){.card{padding:32px 24px;border-radius:16px}.login-wrap{padding:16px}}
+</style>
+</head>
+<body>
+
+<div class="bg-art">
+  <div class="bg-grid"></div>
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-line" style="animation-delay:0s"></div>
+  <div class="bg-line" style="animation-delay:4.5s"></div>
+</div>
+
+<div class="login-wrap">
+  <div class="card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-ico">
+        <span class="brand-ico-txt">K2</span>
+        <svg class="brand-ico-arr" viewBox="0 0 11 11" fill="none">
+          <path d="M2 9L9 2M6 2L9 2L9 5" stroke="rgba(255,255,255,.45)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-words">
+        <div class="brand-name">K2 <em>Flow</em></div>
+        <div class="brand-tag">
+          <span>WhatsApp</span>
+          <span class="sep">|</span>
+          <span>CRM</span>
+          <span class="sep">|</span>
+          <span>IA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Títulos -->
+    <div class="login-h">Bem-vindo de volta</div>
+    <div class="login-s">Acesse sua conta e gerencie <strong>clientes, agenda e automações</strong> em um único lugar.</div>
+
+    <!-- Erro -->
+    <div class="err" id="err">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#FCA5A5" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#FCA5A5" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="err-txt">E-mail ou senha incorretos.</span>
+    </div>
+
+    <!-- Form -->
+    <form onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>E-mail</label>
+        <input class="inp" type="email" id="f-email" placeholder="seu@email.com.br" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <div class="pwd-wrap">
+          <input class="inp" type="password" id="f-senha" placeholder="••••••••" required autocomplete="current-password">
+          <button type="button" class="pwd-btn" onclick="togglePwd()">
+            <svg id="eye-on" width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+            <svg id="eye-off" width="18" height="18" fill="none" viewBox="0 0 24 24" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="btn">
+        <span class="btn-txt">Entrar no K2 Flow</span>
+        <div class="btn-loader"></div>
+      </button>
+    </form>
+
+    <div class="foot">
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-txt">precisa de ajuda?</span>
+        <div class="divider-line"></div>
+      </div>
+      Problemas para acessar? <a href="mailto:suporte@k2company.com.br">Fale com o suporte</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="ver">K2 Flow v1.0</div>
+
+<script>
+const CFG = {
+  supabase_url: 'https://xlxquingaqgselwfoyki.supabase.co',
+  supabase_anon: 'sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX',
+  master_email:  'admin@k2company.com.br',
+  master_pass:   'K2Master@2024!',
+  route_master:  '/master.html',
+  route_app:     '/app.html',
+};
+
+function togglePwd(){
+  const i=document.getElementById('f-senha');
+  const on=document.getElementById('eye-on');
+  const off=document.getElementById('eye-off');
+  if(i.type==='password'){i.type='text';on.style.display='none';off.style.display='block'}
+  else{i.type='password';on.style.display='block';off.style.display='none'}
+}
+
+function showErr(msg){
+  const b=document.getElementById('err');
+  document.getElementById('err-txt').textContent=msg;
+  b.classList.add('show');
+}
+function hideErr(){document.getElementById('err').classList.remove('show')}
+
+function setLoad(on){
+  const b=document.getElementById('btn');
+  b.classList.toggle('loading',on);
+  b.disabled=on;
+}
+
+async function handleLogin(e){
+  e.preventDefault();
+  hideErr();
+  const email=document.getElementById('f-email').value.trim();
+  const senha=document.getElementById('f-senha').value;
+  if(!email||!senha){showErr('Preencha e-mail e senha.');return}
+  setLoad(true);
+  try{
+    // Verificar se é master
+    if(email===CFG.master_email && senha===CFG.master_pass){
+      await delay(500);
+      localStorage.setItem('k2_role','master');
+      localStorage.setItem('k2_email',email);
+      localStorage.setItem('k2_at',Date.now());
+      window.location.href=CFG.route_master;
+      return;
+    }
+    // Login Supabase (cliente)
+    const r=await fetch(`${CFG.supabase_url}/auth/v1/token?grant_type=password`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':CFG.supabase_anon},
+      body:JSON.stringify({email,password:senha}),
+    });
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error==='invalid_grant'?'E-mail ou senha incorretos.':d.error_description||'Erro ao autenticar.');
+    localStorage.setItem('k2_role','cliente');
+    localStorage.setItem('k2_token',d.access_token);
+    localStorage.setItem('k2_refresh',d.refresh_token);
+    localStorage.setItem('k2_email',email);
+    localStorage.setItem('k2_at',Date.now());
+    await delay(300);
+    window.location.href=CFG.route_app;
+  }catch(err){
+    showErr(err.message||'Erro inesperado. Tente novamente.');
+  }finally{setLoad(false)}
+}
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms))}
+
+// Sessão ativa? Redireciona direto
+(function checkSession(){
+  const role=localStorage.getItem('k2_role');
+  const at=Number(localStorage.getItem('k2_at')||0);
+  if(role && Date.now()-at < 8*3600*1000){
+    window.location.href=role==='master'?CFG.route_master:CFG.route_app;
+  }
+})();
+</script>
+</body>
+</html>
