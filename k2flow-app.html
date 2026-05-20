@@ -1127,6 +1127,30 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     </div>
     <!-- IA -->
     <div class="cfg-sec">
+      <div class="cfg-sec-h">📅 Google Calendar</div>
+      <div style="background:var(--bl-l);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#1D4ED8;margin-bottom:12px;line-height:1.7">
+        <strong>Como configurar:</strong><br>
+        1. <a href="https://console.cloud.google.com" target="_blank" style="color:#1D4ED8">console.cloud.google.com</a> → Crie projeto → Ative <strong>Google Calendar API</strong><br>
+        2. Credenciais → Criar → OAuth 2.0 → Aplicativo Web<br>
+        3. Em "URIs de redirecionamento" adicione: <code style="background:rgba(37,99,235,.1);padding:1px 5px;border-radius:3px">${window.location.origin}${window.location.pathname}</code><br>
+        4. Cole o Client ID abaixo e clique Salvar → Conectar Google
+      </div>
+      <div class="grid2-form">
+        <div class="field"><label>Client ID OAuth 2.0</label><input class="inp" id="cfg-gcal-client-id" placeholder="445939...apps.googleusercontent.com"></div>
+        <div class="field"><label>Calendar ID (opcional)</label><input class="inp" id="cfg-gcal-id" placeholder="seu@gmail.com ou primary"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-prim" onclick="salvarGCal()">Salvar configuração</button>
+        <button class="btn-sec" style="display:flex;align-items:center;gap:5px" onclick="conectarGoogle()">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Conectar Google
+        </button>
+        <button class="btn-sec" onclick="gcalSincronizar()">↺ Sincronizar</button>
+      </div>
+      <div id="gcal-status-cfg" style="margin-top:8px;font-size:11px;color:var(--t3)"></div>
+    </div>
+    <!-- IA -->
+    <div class="cfg-sec">
       <div class="cfg-sec-h">🤖 IA — Claude API</div>
       <div class="field"><label>Chave API Claude (Anthropic)</label><input class="inp" id="cfg-ai-key" type="password" placeholder="sk-ant-api03-..."></div>
       <div class="field"><label>Personalidade do agente</label><textarea class="inp" rows="3" id="cfg-ai-persona" placeholder="Olá! Sou assistente virtual da Clínica... Como posso ajudar?"></textarea></div>
@@ -1210,10 +1234,27 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
 <div class="modal-bg" id="modal-ag">
   <div class="modal"><div class="modal-h">Novo Agendamento</div><div class="modal-s">Agendar consulta ou procedimento</div>
-    <div class="field"><label>Cliente</label><select class="inp-sel" id="ag-cli-sel"><option>Teste 1</option><option>Teste 2</option></select></div>
-    <div class="grid2-form"><div class="field"><label>Data</label><input class="inp" type="date" id="ag-data"></div><div class="field"><label>Horário</label><input class="inp" type="time" id="ag-hora" value="09:00"></div></div>
-    <div class="grid2-form"><div class="field"><label>Serviço</label><select class="inp-sel" id="ag-serv"><option>Consulta</option><option>Limpeza</option><option>Ortodontia</option><option>Implante</option><option>Clareamento</option></select></div><div class="field"><label>Profissional</label><select class="inp-sel" id="ag-prof"><option>Dr. Carlos</option><option>Dra. Ana</option></select></div></div>
-    <div class="modal-acts"><button class="btn-cancel" onclick="closeModal('modal-ag')">Cancelar</button><button class="btn-ok" onclick="criarAgendamento()">Agendar</button></div>
+    <div class="field">
+      <label>Cliente</label>
+      <select class="inp-sel" id="ag-cli-sel"></select>
+    </div>
+    <div class="grid2-form">
+      <div class="field"><label>Data</label><input class="inp" type="date" id="ag-data" onchange="atualizarHorariosLivres()"></div>
+      <div class="field"><label>Profissional</label><select class="inp-sel" id="ag-prof" onchange="atualizarHorariosLivres()"><option>Dr. Carlos</option><option>Dra. Ana</option></select></div>
+    </div>
+    <div class="field">
+      <label>Horário disponível</label>
+      <div id="ag-slots-livres" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+      <input type="hidden" id="ag-hora">
+    </div>
+    <div class="field"><label>Serviço</label><select class="inp-sel" id="ag-serv"><option>Consulta / Avaliação</option><option>Limpeza</option><option>Ortodontia</option><option>Implante</option><option>Clareamento</option><option>Cirurgia</option><option>Emergência</option></select></div>
+    <div id="ag-gcal-info" style="display:none;background:var(--bl-l);border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:#1D4ED8;margin-top:4px">
+      📅 Será criado automaticamente no Google Calendar
+    </div>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal('modal-ag')">Cancelar</button>
+      <button class="btn-ok" onclick="criarAgendamento()">Agendar</button>
+    </div>
   </div>
 </div>
 
@@ -1318,12 +1359,18 @@ let CRM_COLS=[
   {id:'pd',nome:'Perdido',cor:'#DC2626',bg:'#FEF2F2',cards:[]},
 ];
 let AGENDA=[
-  {hora:'08:00',nome:'Teste 1',proc:'Limpeza',prof:'Dr. Carlos',status:'confirmado',cor:'#2563EB'},
-  {hora:'09:30',nome:'Teste 2',proc:'Implante',prof:'Dr. Carlos',status:'agendado',cor:'#F26419'},
-  {hora:'11:00',nome:'Paciente Demo',proc:'Ortodontia',prof:'Dra. Ana',status:'confirmado',cor:'#059669'},
-  {hora:'14:30',nome:'Lead Demo',proc:'Avaliação',prof:'Dr. Carlos',status:'agendado',cor:'#7C3AED'},
-  {hora:'16:00',nome:'Indicado',proc:'Consulta',prof:'Dra. Ana',status:'aguardando',cor:'#D97706'},
+  {id:'ag1',hora:'08:00',data:new Date().toISOString().split('T')[0],nome:'Teste 1',proc:'Limpeza',prof:'Dr. Carlos',status:'confirmado',cor:'#2563EB',wa:'5511911111111',gcalId:''},
+  {id:'ag2',hora:'09:30',data:new Date().toISOString().split('T')[0],nome:'Teste 2',proc:'Implante',prof:'Dr. Carlos',status:'agendado',cor:'#F26419',wa:'5511922222222',gcalId:''},
+  {id:'ag3',hora:'11:00',data:new Date().toISOString().split('T')[0],nome:'Paciente Demo',proc:'Ortodontia',prof:'Dra. Ana',status:'confirmado',cor:'#059669',wa:'',gcalId:''},
+  {id:'ag4',hora:'14:30',data:new Date().toISOString().split('T')[0],nome:'Lead Demo',proc:'Avaliação',prof:'Dr. Carlos',status:'agendado',cor:'#7C3AED',wa:'',gcalId:''},
+  {id:'ag5',hora:'16:00',data:new Date().toISOString().split('T')[0],nome:'Indicado',proc:'Consulta',prof:'Dra. Ana',status:'aguardando',cor:'#D97706',wa:'',gcalId:''},
 ];
+
+/* Google Calendar config */
+let GCAL_TOKEN=''; /* OAuth token */
+let GCAL_CALENDAR_ID='primary';
+let GCAL_CONNECTED=false;
+const HORARIOS_DISPONIVEIS=['07:00','08:00','09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
 let ORCAMENTOS=[
   {id:'o1',num:'001',desc:'Tratamento Ortodôntico',cli:'Teste 1',valor:'R$4.800',status:'aguardando',data:'18/05/2026'},
   {id:'o2',num:'002',desc:'Implante Unitário',cli:'Teste 2',valor:'R$3.200',status:'aprovado',data:'15/05/2026'},
@@ -1389,6 +1436,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   checkAuth();
   carregarConfig();
   carregarCRM();
+  carregarGCal();
   renderDashAgenda();
   renderAgenda();
   renderWA();
@@ -1560,18 +1608,210 @@ function criarAgendamento(){
   const serv=document.getElementById('ag-serv').value;
   const prof=document.getElementById('ag-prof').value;
   if(!data||!hora){toast('Preencha data e horário','⚠️');return;}
-  AGENDA.push({hora,nome:cli,proc:serv,prof,status:'agendado',cor:'#7C3AED'});
+  /* Verifica conflito de horário */
+  const conflito=AGENDA.find(a=>a.data===data&&a.hora===hora&&a.prof===prof&&a.status!=='cancelado');
+  if(conflito){toast(`${prof} já tem agendamento às ${hora}!`,'⚠️');return;}
+  const novo={id:'ag-'+Date.now(),hora,data,nome:cli,proc:serv,prof,status:'agendado',cor:'#7C3AED',wa:'',gcalId:''};
+  AGENDA.push(novo);
   renderAgenda();renderDashAgenda();
-  closeModal('modal-ag');toast(`Agendamento criado — ${cli} às ${hora}`,'✅');
+  closeModal('modal-ag');
+  toast(`Agendamento criado — ${cli} às ${hora}`,'✅');
+  /* Sincroniza com Google Calendar se conectado */
+  if(GCAL_CONNECTED) gcalCriarEvento(novo);
 }
+
+/* ── GOOGLE CALENDAR INTEGRATION ── */
 function conectarGoogle(){
-  toast('Conectando com Google Calendar...','🔄');
-  setTimeout(()=>{
-    document.getElementById('gcal-txt').textContent='✅ Google Calendar conectado';
+  const calId=localStorage.getItem('k2cfg_gcal-id')||'';
+  const apiKey=localStorage.getItem('k2cfg_gcal-key')||'';
+  if(!calId||!apiKey){
+    toast('Configure Google Calendar em Configurações primeiro','⚠️');
+    goPage('cfg',null);
+    return;
+  }
+  gcalTestar(calId,apiKey);
+}
+
+async function gcalTestar(calId,apiKey){
+  toast('Conectando Google Calendar...','🔄');
+  try{
+    const hoje=new Date().toISOString();
+    const r=await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?maxResults=50&timeMin=${hoje}&key=${apiKey}`,
+      {headers:{Accept:'application/json'}}
+    );
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    GCAL_CONNECTED=true;
+    GCAL_CALENDAR_ID=calId;
+    localStorage.setItem('k2cfg_gcal-connected','1');
+    document.getElementById('gcal-txt').textContent='✅ Google Calendar';
     document.getElementById('gcal-btn').style.background='var(--ok-l)';
     document.getElementById('gcal-btn').style.color='var(--ok)';
     toast('Google Calendar conectado!','✅');
-  },2000);
+    /* Importa eventos do Google Calendar */
+    gcalImportarEventos(data.items||[]);
+  }catch(e){
+    toast('Erro Google Calendar: '+e.message,'❌');
+  }
+}
+
+function gcalImportarEventos(items){
+  items.forEach(ev=>{
+    if(!ev.start?.dateTime) return;
+    const dt=new Date(ev.start.dateTime);
+    const data=dt.toISOString().split('T')[0];
+    const hora=dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    const jaExiste=AGENDA.find(a=>a.gcalId===ev.id);
+    if(!jaExiste){
+      AGENDA.push({
+        id:'gcal-'+ev.id, hora, data,
+        nome:ev.summary||'Agendamento',
+        proc:ev.description||'Consulta',
+        prof:'Dr. Carlos',
+        status:'agendado', cor:'#4285F4',
+        wa:'', gcalId:ev.id
+      });
+    }
+  });
+  AGENDA.sort((a,b)=>a.hora.localeCompare(b.hora));
+  renderAgenda();renderDashAgenda();
+  toast(`${items.length} eventos importados do Google Calendar`,'📅');
+}
+
+async function gcalCriarEvento(ag){
+  const calId=localStorage.getItem('k2cfg_gcal-id')||'primary';
+  const apiKey=localStorage.getItem('k2cfg_gcal-key')||'';
+  if(!apiKey){return;}
+  const [h,m]=ag.hora.split(':');
+  const inicio=new Date(`${ag.data}T${ag.hora}:00`);
+  const fim=new Date(inicio.getTime()+60*60*1000);
+  const evento={
+    summary:`${ag.nome} — ${ag.proc}`,
+    description:`Profissional: ${ag.prof}\nAgendado via K2 Flow`,
+    start:{dateTime:inicio.toISOString(),timeZone:'America/Sao_Paulo'},
+    end:{dateTime:fim.toISOString(),timeZone:'America/Sao_Paulo'},
+    reminders:{useDefault:false,overrides:[{method:'email',minutes:60},{method:'popup',minutes:30}]}
+  };
+  try{
+    const r=await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=${apiKey}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(evento)}
+    );
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const ev=await r.json();
+    ag.gcalId=ev.id;
+    toast('Evento criado no Google Calendar!','📅');
+  }catch(e){
+    console.warn('gcalCriarEvento erro:',e.message);
+  }
+}
+
+async function gcalSincronizar(){
+  const calId=localStorage.getItem('k2cfg_gcal-id')||'';
+  const apiKey=localStorage.getItem('k2cfg_gcal-key')||'';
+  if(!calId||!apiKey){toast('Configure Google Calendar primeiro','⚠️');return;}
+  toast('Sincronizando Google Calendar...','🔄');
+  try{
+    const hoje=new Date(); hoje.setHours(0,0,0,0);
+    const fim=new Date(hoje); fim.setDate(fim.getDate()+30);
+    const r=await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?maxResults=100&timeMin=${hoje.toISOString()}&timeMax=${fim.toISOString()}&key=${apiKey}`,
+      {headers:{Accept:'application/json'}}
+    );
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    gcalImportarEventos(data.items||[]);
+  }catch(e){
+    toast('Erro na sincronização: '+e.message,'❌');
+  }
+}
+
+function atualizarHorariosLivres(){
+  const data=document.getElementById('ag-data').value;
+  const prof=document.getElementById('ag-prof').value;
+  const wrap=document.getElementById('ag-slots-livres');if(!wrap)return;
+  if(!data){wrap.innerHTML='<span style="font-size:11px;color:var(--t3)">Selecione uma data</span>';return;}
+  const livres=gcalHorariosLivres(data,prof);
+  if(!livres.length){
+    wrap.innerHTML='<span style="font-size:11px;color:var(--er)">Nenhum horário disponível neste dia</span>';
+    return;
+  }
+  document.getElementById('ag-hora').value=livres[0];
+  wrap.innerHTML=livres.map(h=>`
+    <button onclick="selecionarHorario(this,'${h}')"
+      style="padding:5px 10px;border-radius:6px;border:1.5px solid var(--bd);background:var(--light2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s"
+      class="slot-btn">${h}</button>
+  `).join('');
+  /* Seleciona o primeiro */
+  const primeiro=wrap.querySelector('.slot-btn');
+  if(primeiro) selecionarHorario(primeiro,livres[0]);
+  /* Mostra info Google Calendar */
+  const gcalInfo=document.getElementById('ag-gcal-info');
+  if(gcalInfo) gcalInfo.style.display=GCAL_CONNECTED?'block':'none';
+}
+
+function selecionarHorario(btn, hora){
+  document.querySelectorAll('.slot-btn').forEach(b=>{
+    b.style.background='var(--light2)';
+    b.style.borderColor='var(--bd)';
+    b.style.color='var(--t1)';
+  });
+  btn.style.background='var(--brand)';
+  btn.style.borderColor='var(--brand)';
+  btn.style.color='#fff';
+  document.getElementById('ag-hora').value=hora;
+}
+
+function salvarGCal(){
+  const id=document.getElementById('cfg-gcal-id').value.trim();
+  const key=document.getElementById('cfg-gcal-key').value.trim();
+  if(!id||!key){toast('Preencha Calendar ID e API Key','⚠️');return;}
+  localStorage.setItem('k2cfg_gcal-id',id);
+  localStorage.setItem('k2cfg_gcal-key',key);
+  gcalTestar(id,key).then(()=>{
+    const el=document.getElementById('gcal-status-cfg');
+    if(el) el.textContent='✅ Google Calendar conectado e sincronizado';
+  });
+}
+
+function carregarGCal(){
+  const id=localStorage.getItem('k2cfg_gcal-id')||'';
+  const key=localStorage.getItem('k2cfg_gcal-key')||'';
+  const elId=document.getElementById('cfg-gcal-id');
+  const elKey=document.getElementById('cfg-gcal-key');
+  if(elId) elId.value=id;
+  if(elKey) elKey.value=key;
+  if(id&&key){
+    GCAL_CONNECTED=true;
+    GCAL_CALENDAR_ID=id;
+    const el=document.getElementById('gcal-status-cfg');
+    if(el) el.textContent='✅ Configurado — clique em Sincronizar para atualizar';
+    const btn=document.getElementById('gcal-btn');
+    if(btn){
+      btn.querySelector('span').textContent='✅ Google Calendar';
+      btn.style.background='var(--ok-l)';btn.style.color='var(--ok)';
+    }
+  }
+}
+  /* Popular dropdown de clientes */
+  const sel=document.getElementById('ag-cli-sel');
+  if(sel){
+    sel.innerHTML=`<option value="">Selecione o cliente...</option>`
+      +CLIENTES.map(c=>`<option value="${c.nome}" data-wa="${c.wa}">${c.nome}</option>`).join('');
+    if(nomeCliente){
+      for(const opt of sel.options){
+        if(opt.value===nomeCliente){opt.selected=true;break;}
+      }
+    }
+  }
+  /* Data padrão = hoje */
+  const agData=document.getElementById('ag-data');
+  if(agData) agData.value=new Date().toISOString().split('T')[0];
+  /* Sincroniza Google Calendar antes de abrir */
+  if(GCAL_CONNECTED) gcalSincronizar();
+  atualizarHorariosLivres();
+  openModal('modal-ag');
 }
 
 /* ── WHATSAPP REAL — via n8n proxy ── */
@@ -3102,6 +3342,181 @@ function conectarMetaOAuth(){
     el.style.color='var(--ok)';
   });
   toast('Meta (Facebook + Instagram + Ads) conectado!','✅');
+}
+
+/* ══════════════════════════════════════
+   GOOGLE CALENDAR — OAUTH 2.0 via Popup
+   ══════════════════════════════════════ */
+
+function conectarGoogle(){
+  const clientId=localStorage.getItem('k2cfg_gcal-client-id')||'';
+  if(!clientId){
+    toast('Configure o Client ID do Google em Configurações → Google Calendar','⚠️');
+    goPage('cfg',null);
+    return;
+  }
+  gcalOAuthPopup(clientId);
+}
+
+function gcalOAuthPopup(clientId){
+  const redirect=encodeURIComponent(window.location.origin+window.location.pathname);
+  const scope=encodeURIComponent('https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events');
+  const url=`https://accounts.google.com/o/oauth2/v2/auth`
+    +`?client_id=${clientId}`
+    +`&redirect_uri=${redirect}`
+    +`&response_type=token`
+    +`&scope=${scope}`
+    +`&prompt=consent`;
+
+  const w=window.open(url,'gcal_oauth','width=500,height=600,left=400,top=100');
+
+  /* Ouve o token quando o popup retorna */
+  const check=setInterval(()=>{
+    try{
+      if(!w||w.closed){clearInterval(check);return;}
+      const hash=w.location.hash;
+      if(hash&&hash.includes('access_token')){
+        clearInterval(check);
+        w.close();
+        const params=new URLSearchParams(hash.replace('#',''));
+        const token=params.get('access_token');
+        const expireIn=parseInt(params.get('expires_in')||'3600');
+        if(token){
+          GCAL_TOKEN=token;
+          GCAL_CONNECTED=true;
+          localStorage.setItem('k2cfg_gcal-token',token);
+          localStorage.setItem('k2cfg_gcal-expires',Date.now()+expireIn*1000);
+          gcalTokenObtido(token);
+        }
+      }
+    }catch(e){/* cross-origin — aguarda */}
+  },500);
+}
+
+async function gcalTokenObtido(token){
+  toast('Google conectado! Carregando eventos...','📅');
+  const btn=document.getElementById('gcal-btn');
+  if(btn){
+    btn.querySelector('span').textContent='✅ Google Calendar';
+    btn.style.background='var(--ok-l)';btn.style.color='var(--ok)';
+  }
+  /* Atualiza botão Configurações */
+  document.querySelectorAll('[id="google-st"]').forEach(el=>{
+    el.textContent='✅ Conectado';
+    el.style.background='var(--ok-l)';el.style.color='var(--ok)';
+  });
+  await gcalCarregarEventos(token);
+}
+
+async function gcalCarregarEventos(token){
+  token=token||GCAL_TOKEN||localStorage.getItem('k2cfg_gcal-token')||'';
+  if(!token){toast('Conecte o Google Calendar primeiro','⚠️');return;}
+
+  const calId=localStorage.getItem('k2cfg_gcal-id')||'primary';
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const fim=new Date(hoje); fim.setDate(fim.getDate()+30);
+
+  try{
+    const r=await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events`
+      +`?maxResults=100&singleEvents=true&orderBy=startTime`
+      +`&timeMin=${hoje.toISOString()}&timeMax=${fim.toISOString()}`,
+      {headers:{Authorization:'Bearer '+token}}
+    );
+    if(r.status===401){
+      /* Token expirado */
+      GCAL_TOKEN='';localStorage.removeItem('k2cfg_gcal-token');
+      toast('Sessão Google expirada — reconecte','⚠️');
+      gcalAtualizarBotao(false);return;
+    }
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    gcalImportarEventos(data.items||[]);
+  }catch(e){
+    toast('Erro Google Calendar: '+e.message,'❌');
+  }
+}
+
+async function gcalCriarEvento(ag){
+  const token=GCAL_TOKEN||localStorage.getItem('k2cfg_gcal-token')||'';
+  if(!token){return;}
+  const calId=localStorage.getItem('k2cfg_gcal-id')||'primary';
+  const inicio=new Date(`${ag.data}T${ag.hora}:00`);
+  const fim=new Date(inicio.getTime()+60*60*1000);
+  const evento={
+    summary:`${ag.nome} — ${ag.proc}`,
+    description:`Profissional: ${ag.prof}\nAgendado via K2 Flow\nWhatsApp: ${ag.wa||''}`,
+    start:{dateTime:inicio.toISOString(),timeZone:'America/Sao_Paulo'},
+    end:{dateTime:fim.toISOString(),timeZone:'America/Sao_Paulo'},
+    reminders:{useDefault:false,overrides:[{method:'email',minutes:60},{method:'popup',minutes:15}]}
+  };
+  try{
+    const r=await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events`,
+      {method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(evento)}
+    );
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const ev=await r.json();
+    ag.gcalId=ev.id;
+    toast('✅ Evento criado no Google Calendar!','📅');
+  }catch(e){
+    console.warn('gcalCriarEvento erro:',e.message);
+  }
+}
+
+function gcalAtualizarBotao(conectado){
+  const btn=document.getElementById('gcal-btn');
+  const sp=document.getElementById('gcal-txt');
+  if(!btn||!sp)return;
+  if(conectado){
+    sp.textContent='✅ Google Calendar';
+    btn.style.background='var(--ok-l)';btn.style.color='var(--ok)';
+  } else {
+    sp.textContent='Google Calendar';
+    btn.style.background='';btn.style.color='';
+  }
+}
+
+async function gcalSincronizar(){
+  const token=GCAL_TOKEN||localStorage.getItem('k2cfg_gcal-token')||'';
+  if(!token){
+    toast('Conecte o Google Calendar primeiro','⚠️');
+    return;
+  }
+  toast('Sincronizando...','🔄');
+  await gcalCarregarEventos(token);
+}
+
+function carregarGCal(){
+  const clientId=localStorage.getItem('k2cfg_gcal-client-id')||'';
+  const calId=localStorage.getItem('k2cfg_gcal-id')||'';
+  const token=localStorage.getItem('k2cfg_gcal-token')||'';
+  const expires=parseInt(localStorage.getItem('k2cfg_gcal-expires')||'0');
+
+  const elCid=document.getElementById('cfg-gcal-client-id');
+  const elCal=document.getElementById('cfg-gcal-id');
+  if(elCid) elCid.value=clientId;
+  if(elCal) elCal.value=calId;
+
+  if(token && expires>Date.now()){
+    GCAL_TOKEN=token;
+    GCAL_CONNECTED=true;
+    gcalAtualizarBotao(true);
+    gcalCarregarEventos(token);
+    const el=document.getElementById('gcal-status-cfg');
+    if(el) el.textContent='✅ Google Calendar conectado';
+  }
+}
+
+function salvarGCal(){
+  const clientId=document.getElementById('cfg-gcal-client-id')?.value.trim()||'';
+  const calId=document.getElementById('cfg-gcal-id')?.value.trim()||'primary';
+  if(!clientId){toast('Informe o Client ID do Google','⚠️');return;}
+  localStorage.setItem('k2cfg_gcal-client-id',clientId);
+  localStorage.setItem('k2cfg_gcal-id',calId);
+  toast('Configuração salva! Clique em Conectar','✅');
+  const el=document.getElementById('gcal-status-cfg');
+  if(el) el.textContent='Configurado — clique em Conectar Google abaixo';
 }
 
 /* ── AUTH ── */
