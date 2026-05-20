@@ -802,7 +802,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     <div class="n8n-connect-box">
       <div class="n8n-connect-h"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 12h6M15 12h6M12 3v6M12 15v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Conexão com n8n</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
-        <div style="flex:1"><label style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">URL do n8n</label><input class="inp" id="n8n-url" value="https://n8n.vps1170.panel.speedfy.host" placeholder="https://seu-n8n.com"></div>
+        <div style="flex:1"><label style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">URL do n8n</label><input class="inp" id="n8n-url" value="https://n8n-n8n.k8wm1v.easypanel.host" placeholder="https://seu-n8n.com"></div>
         <div style="flex:1"><label style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">API Key</label><input class="inp" id="n8n-key" type="password" placeholder="n8n_api_..."></div>
         <button class="btn-prim" style="flex-shrink:0;align-self:flex-end" onclick="conectarN8n()">Conectar</button>
         <button class="btn-sec" style="flex-shrink:0;align-self:flex-end" onclick="window.open(document.getElementById('n8n-url').value,'_blank')">Abrir editor →</button>
@@ -901,7 +901,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
           <span class="cfg-int-badge" id="badge-n8n" style="background:var(--brand-l);color:var(--brand)">Configurar</span>
         </div>
         <div class="cfg-int-body" id="body-n8n">
-          <div class="field" style="margin-bottom:10px"><label>URL do n8n</label><input class="inp" id="cfg-n8n-url" value="https://n8n.vps1170.panel.speedfy.host" placeholder="https://..."></div>
+          <div class="field" style="margin-bottom:10px"><label>URL do n8n</label><input class="inp" id="cfg-n8n-url" value="https://n8n-n8n.k8wm1v.easypanel.host" placeholder="https://..."></div>
           <div class="field" style="margin-bottom:10px"><label>API Key</label><input class="inp" id="cfg-n8n-key" type="password" placeholder="n8n_api_..."></div>
           <div style="display:flex;gap:8px">
             <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="toast('n8n conectado!','✅')">Conectar</button>
@@ -1242,7 +1242,7 @@ function carregarConfig(){
   if(!localStorage.getItem('k2cfg_ev-apikey')||localStorage.getItem('k2cfg_ev-apikey')==='BD06CAA569F1-44CE-B980-D83AC96F6F33'){localStorage.setItem('k2cfg_ev-apikey','BD06CAA569F1-44CE-B980-D83AC96F6F33');}
   if(!localStorage.getItem('k2cfg_ev-inst')){localStorage.setItem('k2cfg_ev-inst','AmandaCS');}
   if(localStorage.getItem('k2cfg_ev-url') && !localStorage.getItem('k2cfg_ev-url').includes('easypanel') && !localStorage.getItem('k2cfg_ev-url').includes('145.223')){localStorage.removeItem('k2cfg_ev-url');}
-  const defaults={'ev-url':'/ev-api','ev-apikey':'BD06CAA569F1-44CE-B980-D83AC96F6F33','ev-inst':'AmandaCS','cfg-ai-key':'','cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?','gemini-key':'','cfg-n8n-url':'https://n8n.vps1170.panel.speedfy.host','cfg-n8n-key':'','cfg-nome':'','cfg-tel':'','cfg-end':'','cfg-open':'08:00','cfg-close':'18:00','cfg-link':''};
+  const defaults={'ev-url':'/ev-api','ev-apikey':'BD06CAA569F1-44CE-B980-D83AC96F6F33','ev-inst':'AmandaCS','cfg-ai-key':'','cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?','gemini-key':'','cfg-n8n-url':'https://n8n-n8n.k8wm1v.easypanel.host','cfg-n8n-key':'','cfg-nome':'','cfg-tel':'','cfg-end':'','cfg-open':'08:00','cfg-close':'18:00','cfg-link':''};
   Object.keys(defaults).forEach(k=>{const saved=localStorage.getItem('k2cfg_'+k);const el=document.getElementById(k);if(el)el.value=saved!==null?saved:defaults[k];});
   if(localStorage.getItem('k2cfg_google')==='1'){const el=document.getElementById('google-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
   if(localStorage.getItem('k2cfg_meta')==='1'){const el=document.getElementById('meta-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
@@ -1658,169 +1658,71 @@ function salvarDados(){
   toast('Dados da clínica salvos!','✅');
 }
 function testarConexaoWA(){
-  const url=(localStorage.getItem('k2cfg_ev-url')||document.getElementById('ev-url').value||EV_URL_DEFAULT).trim();
-  const key=(localStorage.getItem('k2cfg_ev-apikey')||document.getElementById('ev-apikey').value||'').trim();
-  const inst=(localStorage.getItem('k2cfg_ev-inst')||document.getElementById('ev-inst').value||'').trim();
-  if(!key||!inst){toast('Salve as configurações antes de testar','⚠️');return;}
-  toast('Testando conexão...','🔄');
-  fetch(`${url}/instance/connectionState/${inst}`,{headers:{'apikey':key}})
-    .then(r=>r.json())
+  const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
+  toast('Testando...','🔄');
+  evCall('instance/connectionState/'+inst)
     .then(d=>{
-      const connected=d.instance?.state==='open'||d.state==='open';
+      const ok=d.instance?.state==='open'||d.state==='open';
       const box=document.getElementById('wa-status-box');
       box.style.display='block';
-      box.innerHTML=`<div class="al ${connected?'al-ok':'al-r'}">${connected?'✅ WhatsApp conectado e funcionando!':'❌ WhatsApp desconectado — escaneie o QR Code'}</div>`;
-      toast(connected?'WhatsApp conectado!':'Desconectado — faça o QR Code',connected?'✅':'❌');
-    })
-    .catch(()=>{toast('Erro ao conectar — verifique URL e API Key','❌');});
+      box.innerHTML='<div class="al '+(ok?'al-ok':'al-r')+'">'+(ok?'✅ WhatsApp conectado! Instância: '+inst:'❌ Desconectado — clique em QR Code')+'</div>';
+      toast(ok?'✅ Conectado!':'❌ Desconectado',ok?'✅':'❌');
+    }).catch(e=>{toast('Erro: '+e.message,'❌');});
 }
 function gerarQRCode(){
-  const url=(localStorage.getItem('k2cfg_ev-url')||EV_URL_DEFAULT).trim().replace(/\/+$/,'');
-  const key=(localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT).trim();
-  const inst=(localStorage.getItem('k2cfg_ev-inst')||document.getElementById('ev-inst').value||'').trim();
-  if(!inst){toast('Informe o nome da instância e salve','⚠️');document.getElementById('body-wa').classList.add('open');return;}
-  const box=document.getElementById('qr-box');box.style.display='block';
+  const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
+  const box=document.getElementById('qr-box');
+  box.style.display='block';
   document.getElementById('qr-dot').style.background='#D97706';
   document.getElementById('qr-st-txt').textContent='Conectando...';
-  document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:var(--t3);text-align:center;padding:20px">Aguarde...</div>';
-  const headers={'apikey':key,'Content-Type':'application/json'};
-  /* Tenta primeiro buscar QR de instância existente */
-  fetch(`${url}/instance/connect/${inst}`,{headers})
-    .then(r=>r.json())
+  document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:rgba(255,255,255,.5);text-align:center;padding:24px">Aguarde...</div>';
+  evCall('instance/connectionState/'+inst)
     .then(d=>{
-      const base64=d.base64||d.qrcode?.base64||d.qr?.base64;
-      if(base64){
-        const src=base64.startsWith('data:')?base64:`data:image/png;base64,${base64}`;
-        document.getElementById('qr-img-wrap').innerHTML=`<img src="${src}" style="width:170px;height:170px;border-radius:8px" alt="QR Code">`;
-        document.getElementById('qr-st-txt').textContent='Escaneie com o WhatsApp';
-        pollWAStatus(url,key,inst);
-      } else if(d.instance?.state==='open'||d.state==='open'){
+      const state=d.instance?.state||d.state||'';
+      if(state==='open'){
         document.getElementById('qr-dot').style.background='var(--ok)';
-        document.getElementById('qr-st-txt').textContent='✅ Já conectado!';
-        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:40px;padding:30px">✅</div>';
+        document.getElementById('qr-st-txt').textContent='✅ WhatsApp Conectado!';
+        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:48px;padding:30px">✅</div>';
         toast('WhatsApp já está conectado!','✅');
+        renderWA();
       } else {
-        /* Cria instância nova */
-        criarInstanciaEQR(url,key,inst,headers);
+        evCall('instance/connect/'+inst)
+          .then(d=>{
+            const b64=d.base64||d.qrcode?.base64||d.qr?.base64;
+            if(b64){
+              const src=b64.startsWith('data:')?b64:'data:image/png;base64,'+b64;
+              document.getElementById('qr-img-wrap').innerHTML='<img src="'+src+'" style="width:170px;height:170px;border-radius:8px">';
+              document.getElementById('qr-st-txt').textContent='Escaneie com o WhatsApp';
+              pollWAStatus(inst);
+            } else {
+              document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:10px;color:#fca5a5;padding:16px;text-align:center">Resposta: '+JSON.stringify(d).substring(0,200)+'</div>';
+            }
+          }).catch(e=>{
+            document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:11px;color:#fca5a5;padding:16px;text-align:center">Erro: '+e.message+'<br><br>Verifique se o workflow<br>ev-proxy está ativo no n8n</div>';
+          });
       }
-    })
-    .catch(err=>{
-      console.error('connect err:',err);
-      criarInstanciaEQR(url,key,inst,headers);
+    }).catch(e=>{
+      document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:11px;color:#fca5a5;padding:16px;text-align:center">n8n inacessível<br>'+e.message+'</div>';
+      toast('Erro n8n: '+e.message,'❌');
     });
 }
-
-function criarInstanciaEQR(url,key,inst,headers){
-  fetch(`${url}/instance/create`,{method:'POST',headers,body:JSON.stringify({instanceName:inst,qrcode:true,integration:'WHATSAPP-BAILEYS'})})
-    .then(r=>r.json())
-    .then(d=>{
-      const base64=d.qrcode?.base64||d.base64;
-      if(base64){
-        const src=base64.startsWith('data:')?base64:`data:image/png;base64,${base64}`;
-        document.getElementById('qr-img-wrap').innerHTML=`<img src="${src}" style="width:170px;height:170px;border-radius:8px" alt="QR Code">`;
-        document.getElementById('qr-st-txt').textContent='Escaneie com o WhatsApp';
-        pollWAStatus(url,key,inst);
-      } else if(d.instance?.state==='open'){
-        document.getElementById('qr-dot').style.background='var(--ok)';
-        document.getElementById('qr-st-txt').textContent='✅ Conectado!';
-        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:40px;padding:30px">✅</div>';
-      } else {
-        document.getElementById('qr-img-wrap').innerHTML=`<div style="font-size:11px;color:#999;text-align:center;padding:20px">Erro: ${JSON.stringify(d).substring(0,120)}</div>`;
-        toast('Verifique a URL e a API Key','❌');
-      }
-    })
-    .catch(err=>{
-      const msg=err.message||'Erro de rede';
-      document.getElementById('qr-img-wrap').innerHTML=`<div style="font-size:11px;color:#fca5a5;text-align:center;padding:20px">Erro: ${msg}<br><br>URL: ${url}<br>Inst: ${inst}</div>`;
-      toast('Erro: '+msg,'❌');
-      console.error('EV API Error:',err,url,inst);
-    });
-}
-
-function pollWAStatus(url,key,inst){
+function pollWAStatus(inst){
+  inst=inst||'AmandaCS';
   let n=0;
   const t=setInterval(()=>{
     n++;
-    fetch(`${url}/instance/connectionState/${inst}`,{headers:{'apikey':key}})
-      .then(r=>r.json()).then(s=>{
-        const st=s.instance?.state||s.state||s.connection;
-        if(st==='open'||st==='connected'){
+    evCall('instance/connectionState/'+inst)
+      .then(s=>{
+        const st=s.instance?.state||s.state||'';
+        if(st==='open'){
           clearInterval(t);
           document.getElementById('qr-dot').style.background='var(--ok)';
           document.getElementById('qr-st-txt').textContent='✅ WhatsApp conectado!';
-          document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:40px;padding:30px">✅</div>';
-          toast('WhatsApp conectado com sucesso!','✅');
+          document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:48px;padding:30px">✅</div>';
+          toast('WhatsApp conectado!','✅');
           renderWA();
         }
       }).catch(()=>{});
     if(n>40)clearInterval(t);
   },3000);
 }
-function conectarGoogleOAuth(){
-  toast('Redirecionando para o Google...','🔄');
-  setTimeout(()=>{
-    document.getElementById('google-st').textContent='✅ Conectado';
-    document.getElementById('google-st').style.background='var(--ok-l)';
-    document.getElementById('google-st').style.color='var(--ok)';
-    toast('Google conectado! Calendar, Analytics e GMN disponíveis.','✅');
-  },2000);
-}
-function conectarMetaOAuth(){
-  toast('Redirecionando para o Facebook...','🔄');
-  setTimeout(()=>{
-    document.getElementById('meta-st').textContent='✅ Conectado';
-    document.getElementById('meta-st').style.background='var(--ok-l)';
-    document.getElementById('meta-st').style.color='var(--ok)';
-    localStorage.setItem('k2cfg_meta','1');
-    toast('Meta conectado! Facebook, Instagram e Ads disponíveis.','✅');
-  },2000);
-}
-
-/* ── FUNCIONÁRIOS ── */
-function renderFuncs(){
-  const tbody=document.getElementById('func-tbody');if(!tbody)return;
-  tbody.innerHTML=FUNCS.map(f=>`<tr><td><strong>${f.nome}</strong></td><td>${f.email}</td><td><span class="badge ${f.perfil==='Admin'?'bk-r':'bk-b'}">${f.perfil}</span></td><td><span class="badge bk-ok"><span class="bk-dot"></span>${f.status}</span></td><td><button class="btn-sec btn-sm" onclick="toast('Editando...','✏️')">Editar</button></td></tr>`).join('');
-}
-function criarFunc(){
-  const nome=document.getElementById('func-nome').value.trim();
-  if(!nome){toast('Informe o nome','⚠️');return;}
-  FUNCS.push({nome,email:document.getElementById('func-email').value,perfil:document.getElementById('func-perfil').value,status:'ativo'});
-  renderFuncs();closeModal('modal-func');toast(`Funcionário "${nome}" adicionado!`,'✅');
-  document.getElementById('func-nome').value='';
-}
-function renderPlanos(){
-  const tbody=document.getElementById('planos-tbody');if(!tbody)return;
-  tbody.innerHTML=PLANOS_CLI.map(p=>`<tr><td><strong>${p.nome}</strong></td><td>${p.valor}</td><td>${p.dur}</td><td><span class="badge bk-ok"><span class="bk-dot"></span>${p.status}</span></td><td><button class="btn-sec btn-sm" onclick="toast('Editando...','✏️')">Editar</button></td></tr>`).join('');
-}
-function criarPlano(){
-  const nome=document.getElementById('plano-nome').value.trim();
-  if(!nome){toast('Informe o nome do plano','⚠️');return;}
-  PLANOS_CLI.push({nome,valor:document.getElementById('plano-valor').value||'—',dur:document.getElementById('plano-dur').value||'—',tipo:document.getElementById('plano-tipo').value,status:'ativo'});
-  renderPlanos();closeModal('modal-plano');toast(`Plano "${nome}" criado!`,'✅');
-  document.getElementById('plano-nome').value='';
-}
-function toggleCfg(id){const b=document.getElementById('body-'+id);if(b)b.classList.toggle('open');}
-function setFinTab(el){document.querySelectorAll('.fin-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');}
-
-/* ── MODAIS ── */
-function openModal(id){const el=document.getElementById(id);if(el)el.classList.add('show');}
-function closeModal(id){const el=document.getElementById(id);if(el)el.classList.remove('show');}
-document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('show');}));
-
-/* ── TOAST ── */
-let toastTimer;
-function toast(msg,ico='✅'){
-  const el=document.getElementById('toast');
-  document.getElementById('toast-txt').textContent=msg;
-  document.getElementById('toast-ico').textContent=ico;
-  el.classList.add('show');clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),3000);
-}
-
-/* ── MASTER / AUTH ── */
-function voltarMaster(){['k2_impersonando','k2_tenant_id','k2_tenant_nome','k2_tenant_nicho'].forEach(k=>localStorage.removeItem(k));window.location.href='/master.html';}
-function logout(){['k2_role','k2_token','k2_refresh','k2_email','k2_at','k2_impersonando','k2_tenant_id','k2_tenant_nome'].forEach(k=>localStorage.removeItem(k));window.location.href='/index.html';}
-
-document.getElementById('btn-prim').style.display='flex';
-</script>
-</body></html>
