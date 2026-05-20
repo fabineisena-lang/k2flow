@@ -835,10 +835,10 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
         </div>
         <div class="cfg-int-body" id="body-wa">
           <div class="grid2-form" style="margin-bottom:10px">
-            <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="http://..." value="http://145.223.29.155:8080"></div>
+            <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://..." value="/ev-api"></div>
             <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="429683C4..."></div>
           </div>
-          <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica"></div>
+          <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="AmandaCS"></div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn-prim" style="font-size:12px;padding:7px 14px" onclick="salvarEvolution()">Salvar</button>
             <button class="btn-sec" style="font-size:12px;padding:7px 14px" onclick="testarConexaoWA()">Testar</button>
@@ -946,10 +946,10 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     <div class="cfg-sec">
       <div class="cfg-sec-h">💬 WhatsApp — Evolution API</div>
       <div class="grid2-form">
-        <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="http://145.223.29.155:8080" value="http://145.223.29.155:8080"></div>
+        <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://appk2-evolution-api.k8wm1v.easypanel.host" value="/ev-api"></div>
         <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="SUA_API_KEY_GLOBAL"></div>
       </div>
-      <div class="field"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica"></div>
+      <div class="field"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="AmandaCS"></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn-prim" onclick="salvarEvolution()">Salvar configuração</button>
         <button class="btn-sec" onclick="testarConexaoWA()">Testar conexão</button>
@@ -1101,7 +1101,8 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 <script>
 const SB_URL='https://xlxquingaqgselwfoyki.supabase.co';
 const SB_KEY='sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
-const EV_URL_DEFAULT='http://appk2-evolution-api.k8wm1v.easypanel.host';
+const EV_URL_DEFAULT='/ev-api';
+const EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33';
 
 let hubAtivo=null,iaOn=true,currentConv=null,agOffset=0;
 
@@ -1232,7 +1233,16 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 function carregarConfig(){
-  const defaults={'ev-url':'http://appk2-evolution-api.k8wm1v.easypanel.host','ev-apikey':'429683C4C977415CAAFCCE10F7D57E11','ev-inst':'','cfg-ai-key':'','cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?','gemini-key':'','cfg-n8n-url':'https://n8n.vps1170.panel.speedfy.host','cfg-n8n-key':'','cfg-nome':'','cfg-tel':'','cfg-end':'','cfg-open':'08:00','cfg-close':'18:00','cfg-link':''};
+  /* garante URL correta — limpa qualquer URL HTTP salva incorretamente */
+  /* credenciais corretas hardcoded */
+  localStorage.setItem('k2cfg_ev-url','/ev-api');
+  localStorage.setItem('k2cfg_ev-apikey','BD06CAA569F1-44CE-B980-D83AC96F6F33');
+  localStorage.setItem('k2cfg_ev-inst','AmandaCS');
+  localStorage.setItem('k2cfg_ev-url','/ev-api');
+  if(!localStorage.getItem('k2cfg_ev-apikey')||localStorage.getItem('k2cfg_ev-apikey')==='BD06CAA569F1-44CE-B980-D83AC96F6F33'){localStorage.setItem('k2cfg_ev-apikey','BD06CAA569F1-44CE-B980-D83AC96F6F33');}
+  if(!localStorage.getItem('k2cfg_ev-inst')){localStorage.setItem('k2cfg_ev-inst','AmandaCS');}
+  if(localStorage.getItem('k2cfg_ev-url') && !localStorage.getItem('k2cfg_ev-url').includes('easypanel') && !localStorage.getItem('k2cfg_ev-url').includes('145.223')){localStorage.removeItem('k2cfg_ev-url');}
+  const defaults={'ev-url':'/ev-api','ev-apikey':'BD06CAA569F1-44CE-B980-D83AC96F6F33','ev-inst':'AmandaCS','cfg-ai-key':'','cfg-ai-persona':'Olá! Sou assistente virtual da Clínica. Como posso ajudar?','gemini-key':'','cfg-n8n-url':'https://n8n.vps1170.panel.speedfy.host','cfg-n8n-key':'','cfg-nome':'','cfg-tel':'','cfg-end':'','cfg-open':'08:00','cfg-close':'18:00','cfg-link':''};
   Object.keys(defaults).forEach(k=>{const saved=localStorage.getItem('k2cfg_'+k);const el=document.getElementById(k);if(el)el.value=saved!==null?saved:defaults[k];});
   if(localStorage.getItem('k2cfg_google')==='1'){const el=document.getElementById('google-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
   if(localStorage.getItem('k2cfg_meta')==='1'){const el=document.getElementById('meta-st');if(el){el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';}}
@@ -1665,52 +1675,86 @@ function testarConexaoWA(){
     .catch(()=>{toast('Erro ao conectar — verifique URL e API Key','❌');});
 }
 function gerarQRCode(){
-  const url=(localStorage.getItem('k2cfg_ev-url')||document.getElementById('ev-url').value||EV_URL_DEFAULT).trim();
-  const key=(localStorage.getItem('k2cfg_ev-apikey')||document.getElementById('ev-apikey').value||'').trim();
+  const url=(localStorage.getItem('k2cfg_ev-url')||EV_URL_DEFAULT).trim().replace(/\/+$/,'');
+  const key=(localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT).trim();
   const inst=(localStorage.getItem('k2cfg_ev-inst')||document.getElementById('ev-inst').value||'').trim();
-  if(!key||!inst){toast('Salve a configuração primeiro','⚠️');return;}
-  const box=document.getElementById('qr-box');
-  box.style.display='block';
+  if(!inst){toast('Informe o nome da instância e salve','⚠️');document.getElementById('body-wa').classList.add('open');return;}
+  const box=document.getElementById('qr-box');box.style.display='block';
   document.getElementById('qr-dot').style.background='#D97706';
-  document.getElementById('qr-st-txt').textContent='Gerando QR Code...';
-  document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:var(--t3);text-align:center">Gerando...<br>Aguarde</div>';
-  /* Tenta criar instância e buscar QR */
-  fetch(`${url}/instance/create`,{method:'POST',headers:{'apikey':key,'Content-Type':'application/json'},body:JSON.stringify({instanceName:inst,qrcode:true})})
+  document.getElementById('qr-st-txt').textContent='Conectando...';
+  document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:var(--t3);text-align:center;padding:20px">Aguarde...</div>';
+  const headers={'apikey':key,'Content-Type':'application/json'};
+  /* Tenta primeiro buscar QR de instância existente */
+  fetch(`${url}/instance/connect/${inst}`,{headers})
     .then(r=>r.json())
     .then(d=>{
-      if(d.qrcode?.base64){
-        document.getElementById('qr-img-wrap').innerHTML=`<img src="${d.qrcode.base64}" style="width:170px;height:170px;border-radius:8px" alt="QR Code">`;
+      const base64=d.base64||d.qrcode?.base64||d.qr?.base64;
+      if(base64){
+        const src=base64.startsWith('data:')?base64:`data:image/png;base64,${base64}`;
+        document.getElementById('qr-img-wrap').innerHTML=`<img src="${src}" style="width:170px;height:170px;border-radius:8px" alt="QR Code">`;
         document.getElementById('qr-st-txt').textContent='Escaneie com o WhatsApp';
-        /* Poll para verificar conexão */
-        let attempts=0;
-        const poll=setInterval(()=>{
-          attempts++;
-          fetch(`${url}/instance/connectionState/${inst}`,{headers:{'apikey':key}})
-            .then(r=>r.json()).then(s=>{
-              if(s.instance?.state==='open'||s.state==='open'){
-                clearInterval(poll);
-                document.getElementById('qr-dot').style.background='var(--ok)';
-                document.getElementById('qr-st-txt').textContent='✅ WhatsApp conectado!';
-                document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:36px">✅</div>';
-                toast('WhatsApp conectado com sucesso!','✅');
-              }
-            }).catch(()=>{});
-          if(attempts>30)clearInterval(poll);
-        },3000);
-      } else if(d.instance?.state==='open'){
+        pollWAStatus(url,key,inst);
+      } else if(d.instance?.state==='open'||d.state==='open'){
         document.getElementById('qr-dot').style.background='var(--ok)';
         document.getElementById('qr-st-txt').textContent='✅ Já conectado!';
-        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:36px">✅</div>';
+        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:40px;padding:30px">✅</div>';
         toast('WhatsApp já está conectado!','✅');
       } else {
-        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:#999;text-align:center">Não foi possível gerar o QR.<br>Verifique a API Key.</div>';
-        toast('Erro ao gerar QR — verifique a API Key','❌');
+        /* Cria instância nova */
+        criarInstanciaEQR(url,key,inst,headers);
       }
     })
-    .catch(()=>{
-      document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:12px;color:#999;text-align:center">Evolution API offline.<br>Verifique a URL.</div>';
-      toast('Evolution API offline','❌');
+    .catch(err=>{
+      console.error('connect err:',err);
+      criarInstanciaEQR(url,key,inst,headers);
     });
+}
+
+function criarInstanciaEQR(url,key,inst,headers){
+  fetch(`${url}/instance/create`,{method:'POST',headers,body:JSON.stringify({instanceName:inst,qrcode:true,integration:'WHATSAPP-BAILEYS'})})
+    .then(r=>r.json())
+    .then(d=>{
+      const base64=d.qrcode?.base64||d.base64;
+      if(base64){
+        const src=base64.startsWith('data:')?base64:`data:image/png;base64,${base64}`;
+        document.getElementById('qr-img-wrap').innerHTML=`<img src="${src}" style="width:170px;height:170px;border-radius:8px" alt="QR Code">`;
+        document.getElementById('qr-st-txt').textContent='Escaneie com o WhatsApp';
+        pollWAStatus(url,key,inst);
+      } else if(d.instance?.state==='open'){
+        document.getElementById('qr-dot').style.background='var(--ok)';
+        document.getElementById('qr-st-txt').textContent='✅ Conectado!';
+        document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:40px;padding:30px">✅</div>';
+      } else {
+        document.getElementById('qr-img-wrap').innerHTML=`<div style="font-size:11px;color:#999;text-align:center;padding:20px">Erro: ${JSON.stringify(d).substring(0,120)}</div>`;
+        toast('Verifique a URL e a API Key','❌');
+      }
+    })
+    .catch(err=>{
+      const msg=err.message||'Erro de rede';
+      document.getElementById('qr-img-wrap').innerHTML=`<div style="font-size:11px;color:#fca5a5;text-align:center;padding:20px">Erro: ${msg}<br><br>URL: ${url}<br>Inst: ${inst}</div>`;
+      toast('Erro: '+msg,'❌');
+      console.error('EV API Error:',err,url,inst);
+    });
+}
+
+function pollWAStatus(url,key,inst){
+  let n=0;
+  const t=setInterval(()=>{
+    n++;
+    fetch(`${url}/instance/connectionState/${inst}`,{headers:{'apikey':key}})
+      .then(r=>r.json()).then(s=>{
+        const st=s.instance?.state||s.state||s.connection;
+        if(st==='open'||st==='connected'){
+          clearInterval(t);
+          document.getElementById('qr-dot').style.background='var(--ok)';
+          document.getElementById('qr-st-txt').textContent='✅ WhatsApp conectado!';
+          document.getElementById('qr-img-wrap').innerHTML='<div style="font-size:40px;padding:30px">✅</div>';
+          toast('WhatsApp conectado com sucesso!','✅');
+          renderWA();
+        }
+      }).catch(()=>{});
+    if(n>40)clearInterval(t);
+  },3000);
 }
 function conectarGoogleOAuth(){
   toast('Redirecionando para o Google...','🔄');
