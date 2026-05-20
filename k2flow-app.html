@@ -2955,8 +2955,8 @@ const EV_ACTION_MAP = {
 
 async function waProxy(action, extraPayload){
   const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
-  /* Usa o webhook /AmandaCS que JÁ EXISTE e funciona */
   const proxyUrl = n8nUrl + '/webhook/AmandaCS';
+  const evUrl  = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
   const evKey  = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
   const inst   = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
 
@@ -2966,6 +2966,7 @@ async function waProxy(action, extraPayload){
   const body = {
     method:   map.method,
     endpoint: map.ep(inst),
+    evUrl:    evUrl,        /* ← OBRIGATÓRIO para o n8n montar a URL correta */
     apikey:   evKey,
     payload:  extraPayload || {}
   };
@@ -2977,16 +2978,17 @@ async function waProxy(action, extraPayload){
   });
   if(!r.ok) throw new Error('n8n HTTP ' + r.status + ' — ' + r.statusText);
   const json = await r.json();
-  /* O webhook /AmandaCS retorna a resposta direto sem wrapper */
   return json;
 }
 
 /* evCall por compatibilidade — roteia para waProxy */
 async function evCall(endpoint, method, body){
-  const inst = (localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS').trim();
+  const inst  = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
+  const evUrl = (localStorage.getItem('k2cfg_ev-url')   || EV_URL_DEFAULT).replace(/\/+$/,'');
+  const evKey = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
   const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
   const proxyUrl = n8nUrl + '/webhook/AmandaCS';
-  const evKey = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+
   /* Detecta action pelo endpoint */
   let action = null;
   for(const [act, cfg] of Object.entries(EV_ACTION_MAP)){
@@ -2996,11 +2998,18 @@ async function evCall(endpoint, method, body){
     }
   }
   if(action) return waProxy(action, body);
-  /* Fallback genérico */
+
+  /* Fallback genérico — inclui evUrl */
   const r = await fetch(proxyUrl, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ method: method||'GET', endpoint, apikey: evKey, payload: body||{} })
+    body: JSON.stringify({
+      method:   method||'GET',
+      endpoint: endpoint,
+      evUrl:    evUrl,      /* ← OBRIGATÓRIO */
+      apikey:   evKey,
+      payload:  body||{}
+    })
   });
   if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
