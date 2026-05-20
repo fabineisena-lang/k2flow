@@ -2661,7 +2661,7 @@ function diagClear(){
 
 async function diagStep(step){
   const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
-  const proxyUrl = n8nUrl + '/webhook/AmandaCS';
+  const proxyUrl = n8nUrl + '/webhook/' + inst;
   const evKey  = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
   const inst   = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
 
@@ -2932,7 +2932,7 @@ function closeModal(id){
 /* Função principal — chama n8n proxy */
 /* ══════════════════════════════════════════════
    WHATSAPP API — via webhook /AmandaCS (já existe no n8n)
-   Formato: POST /webhook/AmandaCS
+   Formato: POST /webhook/{instancia}
    Body: { method, endpoint, apikey, payload }
    ══════════════════════════════════════════════ */
 
@@ -2953,10 +2953,10 @@ const EV_ACTION_MAP = {
 
 async function waProxy(action, extraPayload){
   const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
-  const proxyUrl = n8nUrl + '/webhook/AmandaCS';
   const evUrl  = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
   const evKey  = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
   const inst   = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
+  const proxyUrl = n8nUrl + '/webhook/' + inst;
 
   const map = EV_ACTION_MAP[action];
   if(!map) throw new Error('Ação desconhecida: ' + action);
@@ -2985,7 +2985,7 @@ async function evCall(endpoint, method, body){
   const evUrl = (localStorage.getItem('k2cfg_ev-url')   || EV_URL_DEFAULT).replace(/\/+$/,'');
   const evKey = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
   const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
-  const proxyUrl = n8nUrl + '/webhook/AmandaCS';
+  const proxyUrl = n8nUrl + '/webhook/' + inst;
 
   /* Detecta action pelo endpoint */
   let action = null;
