@@ -1953,127 +1953,129 @@ function diagClear(){
 }
 
 async function diagStep(step){
-  const url = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
-  const key = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
-  const inst = localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS';
+  const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
+  const proxyUrl = n8nUrl + '/webhook/AmandaCS';
+  const evKey  = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  const inst   = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
 
   diagSetStep(step,'running','Testando...');
-  diagLog(`Iniciando teste: ${step}`, 'info');
+  diagLog(`Iniciando: ${step}`, 'info');
+  diagLog(`Proxy n8n: ${proxyUrl}`, 'raw');
+  diagLog(`Instância: ${inst}`, 'raw');
 
   try {
     if(step==='proxy'){
-      diagLog(`Fazendo GET ${url}/instance/fetchInstances`, 'info');
-      const r = await fetch(url+'/instance/fetchInstances', {
-        headers: {'apikey': key},
-        signal: AbortSignal.timeout(8000)
+      /* Testa se o webhook /AmandaCS responde */
+      diagLog(`POST ${proxyUrl} → endpoint: instance/fetchInstances`, 'info');
+      const r = await fetch(proxyUrl, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ method:'GET', endpoint:'instance/fetchInstances', apikey: evKey, payload:{} }),
+        signal: AbortSignal.timeout(10000)
       });
-      diagLog(`HTTP Status: ${r.status} ${r.statusText}`, r.ok ? 'ok' : 'err');
-      const xDeny = r.headers.get('x-deny-reason');
-      if(xDeny) diagLog(`BLOQUEADO pelo proxy: ${xDeny}`, 'err');
-      if(r.ok){
-        diagSetStep('proxy','ok',`Proxy OK — HTTP ${r.status}`);
-        diagLog('Proxy nginx → Evolution API funcionando!', 'ok');
-      } else {
-        diagSetStep('proxy','fail',`HTTP ${r.status} — verifique o nginx`);
-        diagLog(`Falha no proxy. Status: ${r.status}`, 'err');
+      diagLog(`HTTP ${r.status} ${r.statusText}`, r.ok?'ok':'err');
+      if(!r.ok){
+        diagSetStep('proxy','fail',`n8n retornou HTTP ${r.status}`);
+        diagLog(`AÇÃO: No n8n, verifique se o workflow com webhook /AmandaCS está ATIVO e publicado (não só salvo).`, 'err');
+        diagLog(`URL testada: ${proxyUrl}`, 'warn');
+        return;
       }
+      const d = await r.json();
+      diagLog(`Resposta: ${JSON.stringify(d).substring(0,200)}`, 'raw');
+      diagSetStep('proxy','ok',`n8n proxy OK ✓`);
+      diagLog('Webhook /AmandaCS respondendo!', 'ok');
 
     } else if(step==='auth'){
-      diagLog(`GET ${url}/instance/fetchInstances com apikey`, 'info');
-      const r = await fetch(url+'/instance/fetchInstances', {
-        headers: {'apikey': key},
-        signal: AbortSignal.timeout(8000)
-      });
-      const body = await r.json().catch(()=>({}));
-      diagLog(`Resposta: ${JSON.stringify(body).substring(0,200)}`, 'raw');
-      if(r.status===401 || body?.message?.includes('unauthorized') || body?.status===401){
-        diagSetStep('auth','fail','API Key inválida ou sem permissão');
+      diagLog(`Testando autenticação → fetchInstances`, 'info');
+      const d = await waProxy('fetchInstances');
+      diagLog(`Resposta: ${JSON.stringify(d).substring(0,300)}`, 'raw');
+      const instances = Array.isArray(d) ? d : (d.data||[]);
+      if(d?.status===401 || JSON.stringify(d).includes('unauthorized')){
+        diagSetStep('auth','fail','API Key inválida');
         diagLog('API Key rejeitada. Verifique em Configurações.', 'err');
-      } else if(r.ok || Array.isArray(body)){
-        diagSetStep('auth','ok','API Key válida ✓');
-        diagLog('API Key aceita pela Evolution API!', 'ok');
       } else {
-        diagSetStep('auth','fail',`Resposta inesperada: ${r.status}`);
-        diagLog(`Status: ${r.status} — ${JSON.stringify(body).substring(0,100)}`, 'warn');
+        diagSetStep('auth','ok',`API Key válida — ${Array.isArray(instances)?instances.length:'?'} instância(s)`);
+        diagLog(`Auth OK.`, 'ok');
       }
 
     } else if(step==='instance'){
-      diagLog(`GET ${url}/instance/fetchInstances`, 'info');
-      const r = await fetch(url+'/instance/fetchInstances', {
-        headers: {'apikey': key},
-        signal: AbortSignal.timeout(8000)
-      });
-      const instances = await r.json().catch(()=>[]);
-      diagLog(`Instâncias encontradas: ${JSON.stringify(instances).substring(0,300)}`, 'raw');
-      const found = Array.isArray(instances)
-        ? instances.some(i => (i.instance?.instanceName||i.name||i.instanceName||'') === inst)
-        : false;
+      diagLog(`Verificando se instância "${inst}" existe`, 'info');
+      const d = await waProxy('fetchInstances');
+      const arr = Array.isArray(d) ? d : (d.data||[]);
+      diagLog(`Instâncias: ${JSON.stringify(arr).substring(0,400)}`, 'raw');
+      const found = arr.some(i =>
+        (i.instance?.instanceName||i.name||i.instanceName||'').toLowerCase() === inst.toLowerCase()
+      );
       if(found){
-        diagSetStep('instance','ok',`Instância "${inst}" encontrada!`);
-        diagLog(`Instância "${inst}" existe na Evolution API.`, 'ok');
+        diagSetStep('instance','ok',`Instância "${inst}" existe ✓`);
+        diagLog(`Instância encontrada!`, 'ok');
       } else {
-        diagSetStep('instance','fail',`Instância "${inst}" NÃO encontrada`);
-        diagLog(`Instâncias disponíveis: ${Array.isArray(instances)?instances.map(i=>i.instance?.instanceName||i.name||i.instanceName).join(', '):'(nenhuma)'}`, 'warn');
-        diagLog(`AÇÃO: Crie a instância "${inst}" na Evolution API ou corrija o nome em Configurações.`, 'err');
+        diagSetStep('instance','fail',`"${inst}" não existe — criando agora`);
+        diagLog(`Disponíveis: ${arr.map(i=>i.instance?.instanceName||i.name||i.instanceName).join(', ')||'(nenhuma)'}`, 'warn');
+        diagLog(`Criando instância "${inst}"...`, 'info');
+        const created = await waProxy('createInstance');
+        diagLog(`Create: ${JSON.stringify(created).substring(0,200)}`, 'raw');
+        diagSetStep('instance','ok',`Instância "${inst}" criada!`);
+        diagLog(`Instância criada! Clique em "Gerar QR Code".`, 'ok');
+        const b64 = created?.qrcode?.base64 || created?.base64;
+        if(b64){
+          const src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,'+b64;
+          document.getElementById('diag-qr-area').style.display='block';
+          document.getElementById('diag-qr-img').innerHTML=`<img src="${src}" style="width:170px;height:170px;border-radius:8px">`;
+          document.getElementById('diag-qr-txt').textContent='QR gerado na criação — escaneie agora!';
+          document.getElementById('diag-qr-dot').style.background='#25D366';
+          diagLog(`QR Code na criação! Escaneie agora.`,'ok');
+        }
       }
 
     } else if(step==='state'){
-      diagLog(`GET ${url}/instance/connectionState/${inst}`, 'info');
-      const r = await fetch(url+'/instance/connectionState/'+inst, {
-        headers: {'apikey': key},
-        signal: AbortSignal.timeout(8000)
-      });
-      const d = await r.json().catch(()=>({}));
+      diagLog(`GET connectionState/${inst}`, 'info');
+      const d = await waProxy('connectionState');
       diagLog(`Resposta completa: ${JSON.stringify(d)}`, 'raw');
-      const state = d.instance?.state || d.state || d.connectionStatus || '';
-      diagLog(`Estado detectado: "${state}"`, state==='open'?'ok':'warn');
+      const state = d.instance?.state || d.state || d.connectionStatus || d.status || '';
+      diagLog(`Estado: "${state}"`, state==='open'?'ok':'warn');
       if(state==='open'){
         diagSetStep('state','ok','✅ WhatsApp CONECTADO!');
         diagSetStatus('ok','WhatsApp Conectado ✅');
-        diagLog('WhatsApp conectado! Pode usar normalmente.', 'ok');
-      } else if(state==='close' || state==='closed'){
-        diagSetStep('state','fail','Desconectado — precisa escanear QR Code');
+        diagLog('WhatsApp online!', 'ok');
+      } else if(state==='close'||state==='closed'){
+        diagSetStep('state','fail','Desconectado — gere o QR Code');
         diagSetStatus('fail','Desconectado');
-        diagLog('WhatsApp desconectado. Clique em "Gerar QR Code" e escaneie.', 'err');
+        diagLog('Instância existe mas não conectada. Clique em "Gerar QR Code".', 'err');
       } else if(state==='connecting'){
-        diagSetStep('state','running','Conectando... aguarde');
+        diagSetStep('state','running','Conectando...');
         diagSetStatus('connecting','Conectando...');
-        diagLog('WhatsApp está tentando conectar. Aguarde alguns segundos.', 'warn');
+        diagLog('Aguarde, conectando...', 'warn');
       } else {
-        diagSetStep('state','fail',`Estado: "${state||'desconhecido'}" — verifique a instância`);
-        diagSetStatus('fail',state||'Desconhecido');
-        diagLog(`Estado inesperado: "${state}" — pode precisar criar/reconectar a instância.`, 'warn');
+        diagSetStep('state','fail',`Estado: "${state||'desconhecido'}"`);
+        diagSetStatus('fail', state||'Desconhecido');
+        diagLog(`Estado inesperado. Se count=0 no QR, use "Recriar Instância".`, 'warn');
       }
 
     } else if(step==='send'){
-      const testNum = localStorage.getItem('k2cfg_ev-inst-num') || prompt('Número para teste (ex: 5511999999999):','5511999999999');
-      if(!testNum){diagLog('Envio cancelado — nenhum número informado.','warn');diagSetStep('send','','—');return;}
-      localStorage.setItem('k2cfg_ev-inst-num', testNum);
-      diagLog(`POST ${url}/message/sendText/${inst} → número ${testNum}`, 'info');
-      const r = await fetch(url+'/message/sendText/'+inst, {
-        method:'POST',
-        headers:{'apikey':key,'Content-Type':'application/json'},
-        body: JSON.stringify({number:testNum, text:'✅ Teste K2 Flow — '+new Date().toLocaleTimeString('pt-BR')}),
-        signal: AbortSignal.timeout(10000)
-      });
-      const d = await r.json().catch(()=>({}));
+      const testNum = localStorage.getItem('k2cfg_test-num') || prompt('Número (ex: 5511999999999):','5511999999999');
+      if(!testNum){diagLog('Cancelado.','warn');diagSetStep('send','','—');return;}
+      localStorage.setItem('k2cfg_test-num', testNum);
+      diagLog(`Enviando para ${testNum}`, 'info');
+      const d = await waProxy('sendText', { number: testNum, text: '✅ Teste K2 Flow — '+new Date().toLocaleTimeString('pt-BR') });
       diagLog(`Resposta: ${JSON.stringify(d).substring(0,300)}`, 'raw');
-      if(r.ok && (d.key||d.status||d.messageId)){
-        diagSetStep('send','ok','Mensagem enviada com sucesso!');
-        diagLog('Mensagem de teste enviada! Verifique o WhatsApp.', 'ok');
+      if(d?.key || d?.status === 'PENDING' || d?.messageId || d?.id){
+        diagSetStep('send','ok','Mensagem enviada!');
+        diagLog('Mensagem enviada com sucesso!', 'ok');
       } else {
-        diagSetStep('send','fail',`Erro ao enviar: ${d.message||d.error||r.status}`);
-        diagLog(`Falha no envio: ${JSON.stringify(d).substring(0,200)}`, 'err');
+        diagSetStep('send','fail','Falha — veja raw acima');
+        diagLog(`Detalhe: ${JSON.stringify(d).substring(0,200)}`, 'err');
       }
     }
-  } catch(e) {
-    const msg = e.name==='AbortError' ? 'Timeout (8s) — servidor não respondeu'
-              : e.name==='TypeError' && e.message.includes('fetch') ? 'Não foi possível conectar — proxy inacessível ou CORS bloqueando'
+  } catch(e){
+    const msg = e.name==='AbortError' ? 'Timeout 20s — n8n não respondeu'
+              : e.message.includes('Failed to fetch') ? `n8n inacessível — ${proxyUrl} não responde`
               : e.message;
-    diagSetStep(step,'fail',msg);
-    diagLog(`ERRO ${step}: ${msg}`, 'err');
-    if(msg.includes('proxy') || msg.includes('fetch')){
-      diagLog('Dica: Verifique se o nginx está rodando e o proxy /ev-api está configurado.', 'warn');
+    diagSetStep(step,'fail', msg);
+    diagLog(`ERRO: ${msg}`, 'err');
+    if(msg.includes('inacess')||msg.includes('fetch')||msg.includes('Failed')){
+      diagLog(`Verifique: 1) n8n está rodando? 2) Workflow com webhook /AmandaCS está ATIVO?`, 'warn');
+      diagLog(`URL: ${proxyUrl}`, 'warn');
     }
   }
 }
@@ -2090,58 +2092,52 @@ async function diagRunAll(){
 }
 
 async function diagQR(){
-  const url = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
-  const key = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
-  const inst = localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS';
+  const inst = (localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS').trim();
   const qrArea = document.getElementById('diag-qr-area');
   qrArea.style.display = 'block';
   document.getElementById('diag-qr-dot').style.background = '#D97706';
   document.getElementById('diag-qr-txt').textContent = 'Verificando estado...';
   document.getElementById('diag-qr-img').innerHTML = '<span style="font-size:12px;color:#888">Aguarde...</span>';
-  diagLog('Verificando estado da instância antes do QR...', 'info');
+  diagLog('Verificando estado via n8n proxy...', 'info');
   try {
-    const stateR = await fetch(url+'/instance/connectionState/'+inst, {
-      headers:{'apikey':key}, signal:AbortSignal.timeout(8000)
-    });
-    const stateD = await stateR.json().catch(()=>({}));
-    const state = stateD.instance?.state || stateD.state || '';
-    diagLog(`Estado atual: "${state}"`, 'raw');
+    /* 1. Checa estado atual */
+    const stateD = await waProxy('connectionState');
+    diagLog(`Estado: ${JSON.stringify(stateD)}`, 'raw');
+    const state = stateD.instance?.state || stateD.state || stateD.connectionStatus || '';
     if(state==='open'){
       document.getElementById('diag-qr-dot').style.background = '#34D399';
       document.getElementById('diag-qr-txt').textContent = '✅ WhatsApp já está conectado!';
       document.getElementById('diag-qr-img').innerHTML = '<div style="font-size:56px">✅</div>';
-      diagLog('WhatsApp já conectado — QR Code não necessário!', 'ok');
+      diagLog('WhatsApp já conectado!', 'ok');
       diagSetStatus('ok','WhatsApp Conectado ✅');
       return;
     }
-    diagLog(`Solicitando QR Code: POST ${url}/instance/connect/${inst}`, 'info');
-    const r = await fetch(url+'/instance/connect/'+inst, {
-      method:'GET',
-      headers:{'apikey':key},
-      signal: AbortSignal.timeout(15000)
-    });
-    const d = await r.json().catch(()=>({}));
-    diagLog(`Resposta QR: ${JSON.stringify(d).substring(0,400)}`, 'raw');
-    const b64 = d.base64 || d.qrcode?.base64 || d.qr?.base64 || d.qrcode || d.code;
-    if(b64 && b64.length > 100){
+    /* 2. Solicita QR via connectQR */
+    diagLog(`Solicitando QR Code via n8n → connectQR`, 'info');
+    const d = await waProxy('connectQR');
+    diagLog(`Resposta QR: ${JSON.stringify(d).substring(0,500)}`, 'raw');
+    /* Evolution API v2 retorna: { pairingCode, code, base64, count } */
+    const b64 = d.base64 || d.qrcode?.base64 || d.qr?.base64 || d.qrcode;
+    if(b64 && b64.length > 50){
       const src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,'+b64;
       document.getElementById('diag-qr-img').innerHTML = `<img src="${src}" style="width:170px;height:170px;border-radius:8px">`;
       document.getElementById('diag-qr-txt').textContent = 'Escaneie com o WhatsApp';
+      document.getElementById('diag-qr-dot').style.background = '#25D366';
       diagLog('QR Code gerado! Escaneie agora.', 'ok');
       diagSetStatus('connecting','Aguardando scan...');
+      /* 3. Polling de conexão */
       let n=0;
       const poll = setInterval(async()=>{
         n++;
         try{
-          const s = await fetch(url+'/instance/connectionState/'+inst,{headers:{'apikey':key}});
-          const sd = await s.json().catch(()=>({}));
-          const st = sd.instance?.state||sd.state||'';
+          const sd = await waProxy('connectionState');
+          const st = sd.instance?.state||sd.state||sd.connectionStatus||'';
           if(st==='open'){
             clearInterval(poll);
             document.getElementById('diag-qr-dot').style.background='#34D399';
             document.getElementById('diag-qr-txt').textContent='✅ Conectado!';
             document.getElementById('diag-qr-img').innerHTML='<div style="font-size:56px">✅</div>';
-            diagLog('WhatsApp conectado com sucesso!','ok');
+            diagLog('WhatsApp conectado!','ok');
             diagSetStatus('ok','WhatsApp Conectado ✅');
             diagSetStep('state','ok','✅ WhatsApp CONECTADO!');
             renderWA();
@@ -2149,17 +2145,48 @@ async function diagQR(){
         }catch(e){}
         if(n>40) clearInterval(poll);
       },3000);
+    } else if(d.count===0){
+      /* Instance existe mas está em loop — precisa recriar */
+      document.getElementById('diag-qr-txt').textContent = 'Instância em loop — recriando...';
+      diagLog('count=0: instância em loop de reconexão. Solução: logout + delete + recriar.', 'err');
+      diagLog('Execute no n8n: action=logout, depois action=createInstance com o mesmo nome.', 'warn');
+      document.getElementById('diag-qr-img').innerHTML = `
+        <div style="font-size:11px;color:#FCA5A5;padding:12px;text-align:center;line-height:1.6">
+          <strong>count: 0</strong><br>Instância em loop.<br>
+          <button onclick="diagRecreateInstance()" style="margin-top:8px;background:#DC2626;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700">🔄 Recriar Instância</button>
+        </div>`;
     } else {
-      document.getElementById('diag-qr-txt').textContent = 'Erro ao gerar QR';
-      document.getElementById('diag-qr-img').innerHTML = `<div style="font-size:11px;color:#DC2626;padding:12px;text-align:center">Sem base64 na resposta.<br>Chave: ${Object.keys(d).join(', ')||'(vazio)'}</div>`;
-      diagLog(`QR sem base64. Campos retornados: ${Object.keys(d).join(', ')||'(resposta vazia)'}`, 'err');
-      diagLog('Verifique se a instância existe e está no estado "close".', 'warn');
+      document.getElementById('diag-qr-txt').textContent = 'Sem QR — veja o log';
+      document.getElementById('diag-qr-img').innerHTML = `<div style="font-size:11px;color:#FCA5A5;padding:12px;text-align:center">Campos: ${Object.keys(d).join(', ')||'(vazio)'}</div>`;
+      diagLog(`Sem base64. Retorno: ${JSON.stringify(d).substring(0,200)}`, 'err');
     }
-  } catch(e) {
-    const msg = e.name==='AbortError' ? 'Timeout — servidor não respondeu em 15s' : e.message;
-    document.getElementById('diag-qr-txt').textContent = 'Erro: '+msg;
-    diagLog('Erro ao gerar QR: '+msg, 'err');
+  } catch(e){
+    const msg = e.message.includes('Failed to fetch')||e.message.includes('inacess') ?
+      'n8n inacessível. Confirme que o workflow está ativo e a URL está correta em Configurações → n8n.' : e.message;
+    document.getElementById('diag-qr-txt').textContent = 'Erro: '+msg.substring(0,60);
+    diagLog('Erro QR: '+msg, 'err');
   }
+}
+
+async function diagRecreateInstance(){
+  const inst = (localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS').trim();
+  diagLog(`Fazendo logout e recriando instância "${inst}"...`, 'warn');
+  try {
+    await waProxy('logout').catch(()=>{});
+    await new Promise(r=>setTimeout(r,1500));
+    const created = await waProxy('createInstance');
+    diagLog(`Recriada: ${JSON.stringify(created).substring(0,200)}`, 'raw');
+    const b64 = created?.qrcode?.base64 || created?.base64;
+    if(b64){
+      const src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,'+b64;
+      document.getElementById('diag-qr-img').innerHTML=`<img src="${src}" style="width:170px;height:170px;border-radius:8px">`;
+      document.getElementById('diag-qr-txt').textContent='QR gerado! Escaneie agora.';
+      document.getElementById('diag-qr-dot').style.background='#25D366';
+      diagLog('Instância recriada com QR Code! Escaneie agora.','ok');
+    } else {
+      diagLog('Recriada mas sem QR na resposta. Clique em "Gerar QR Code" novamente.','warn');
+    }
+  } catch(e){ diagLog('Erro ao recriar: '+e.message,'err'); }
 }
 
 /* ── TOAST ── */
@@ -2190,14 +2217,71 @@ function closeModal(id){
 }
 
 /* ── EVOLUTION API CALL ── */
-async function evCall(endpoint,method,body){
-  method=method||'GET';
-  const url=(localStorage.getItem('k2cfg_ev-url')||EV_URL_DEFAULT).replace(/\/+$/,'');
-  const key=localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT;
-  const opts={method,headers:{'apikey':key,'Content-Type':'application/json'}};
-  if(body)opts.body=JSON.stringify(body);
-  const r=await fetch(url+'/'+endpoint,opts);
-  if(!r.ok)throw new Error('HTTP '+r.status+' '+r.statusText);
+/* ══════════════════════════════════════════════
+   WHATSAPP API — via n8n Proxy (sem CORS)
+   O frontend NUNCA chama a Evolution API direto.
+   Todas as chamadas passam pelo n8n webhook.
+   ══════════════════════════════════════════════ */
+
+/* Função principal — chama n8n proxy */
+/* ══════════════════════════════════════════════
+   WHATSAPP API — via webhook /AmandaCS (já existe no n8n)
+   Formato: POST /webhook/AmandaCS
+   Body: { method, endpoint, apikey, payload }
+   ══════════════════════════════════════════════ */
+
+/* Mapa de ação → endpoint + method da Evolution API */
+const EV_ACTION_MAP = {
+  fetchInstances:  { method:'GET',    ep: ()=>'instance/fetchInstances' },
+  createInstance:  { method:'POST',   ep: (inst)=>'instance/create' },
+  connectionState: { method:'GET',    ep: (inst)=>`instance/connectionState/${inst}` },
+  connectQR:       { method:'GET',    ep: (inst)=>`instance/connect/${inst}` },
+  sendText:        { method:'POST',   ep: (inst)=>`message/sendText/${inst}` },
+  logout:          { method:'DELETE', ep: (inst)=>`instance/logout/${inst}` },
+};
+
+async function waProxy(action, extraPayload){
+  const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
+  /* Usa o webhook /AmandaCS que JÁ EXISTE e funciona */
+  const proxyUrl = n8nUrl + '/webhook/AmandaCS';
+  const evKey  = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  const inst   = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
+
+  const map = EV_ACTION_MAP[action];
+  if(!map) throw new Error('Ação desconhecida: ' + action);
+
+  const body = {
+    method:   map.method,
+    endpoint: map.ep(inst),
+    apikey:   evKey,
+    payload:  extraPayload || {}
+  };
+
+  const r = await fetch(proxyUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(20000)
+  });
+  if(!r.ok) throw new Error('n8n HTTP ' + r.status + ' — ' + r.statusText);
+  const json = await r.json();
+  /* O webhook /AmandaCS retorna a resposta direto sem wrapper */
+  return json;
+}
+
+/* evCall por compatibilidade */
+async function evCall(endpoint, method, body){
+  const inst = (localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS').trim();
+  const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
+  const proxyUrl = n8nUrl + '/webhook/AmandaCS';
+  const evKey = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  const r = await fetch(proxyUrl, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ method: method||'GET', endpoint, apikey: evKey, payload: body||{} }),
+    signal: AbortSignal.timeout(20000)
+  });
+  if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
 }
 
