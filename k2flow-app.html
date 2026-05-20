@@ -1586,8 +1586,8 @@ function renderWA(){
     <div style="font-size:10px;color:var(--t3);margin-top:4px">instância: ${inst}</div>
   </div>`;
 
-  /* Usa fetchChats que retorna números reais (não @lid) */
-  evCall('chat/findChats/'+inst, 'POST', { limit:50 })
+  /* Busca chats com números reais via messages endpoint */
+  evCall('message/findMessages/'+inst, 'POST', { where:{ key:{ fromMe: true } }, limit:50 })
     .then(async res=>{
       console.log('[K2 Flow] findChats raw:', JSON.stringify(res).substring(0,500));
 
@@ -1626,19 +1626,19 @@ function renderWA(){
         .slice(0,60)
         .map((c)=>{
           const jid = c.remoteJid||c.id||'';
-          if(jid.includes('g.us')) return null; /* ignora grupos */
-          /* @lid = ID interno do WhatsApp, não é número real */
-          /* Prioriza pushName, depois tenta pegar número do JID */
-          const isLid = jid.includes('@lid');
-          const rawNum = jid.split('@')[0].split(':')[0];
-          /* Número real só se não for @lid */
-          const num = isLid ? '' : rawNum.replace(/\D/g,'');
-          const nome = c.pushName||c.name||c.verifiedName||c.notify||'';
+          if(jid.includes('g.us')) return null;
+          /* v2.3.7: remoteJidAlt tem o número real quando remoteJid é @lid */
+          const jidReal = c.remoteJidAlt || (jid.includes('@lid') ? null : jid);
+          const numReal = jidReal ? jidReal.split('@')[0].replace(/\D/g,'') : '';
+          const rawNum  = jid.split('@')[0].split(':')[0];
+          const num     = numReal || rawNum.replace(/\D/g,'');
+          const nome    = c.pushName||c.name||c.verifiedName||c.notify||'';
           return {
-            id:'wa-'+(rawNum||jid.replace(/\W/g,'')),
-            jid, nome: nome||num||rawNum,
-            num, hora: '',
-            ultima: '💬 Mensagem',
+            id: 'wa-'+(numReal||rawNum),
+            jid, jidReal: jidReal||jid,
+            nome: nome||num||rawNum,
+            num, hora:'',
+            ultima:'💬 Mensagem',
             status:'aberta', ia:false, msgs:[],
             unread: c.unreadCount||c.unreadMessages||0,
             _rawNum: rawNum
@@ -1791,7 +1791,7 @@ function openConv(id){
   }
 
   evCall('chat/findMessages/'+inst, 'POST', {
-    where:{ key:{ remoteJid: currentConv.jid||currentConv.num+'@s.whatsapp.net' } },
+    where:{ key:{ remoteJid: currentConv.jidReal||currentConv.jid||currentConv.num+'@s.whatsapp.net' } },
     limit: 40
   }).then(res=>{
     const msgs = Array.isArray(res) ? res : (res.data?.messages?.records || res.messages?.records || res.records || res.data || []);
@@ -1964,7 +1964,7 @@ async function pararGravacao(){
 async function waEnviarAudio(b64){
   if(!currentConv){toast('Selecione uma conversa','⚠️');return;}
   const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
-  const num=currentConv.num||currentConv.jid?.split('@')[0];
+  const num=currentConv.num||(currentConv.jidReal||currentConv.jid||'').split('@')[0];
   toast('Enviando áudio...','📤');
   const hora=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
   /* Adiciona localmente */
@@ -2014,7 +2014,7 @@ function blobParaBase64(blob){
 
 async function waSend(){
   if(!currentConv){toast('Selecione uma conversa','⚠️');return;}
-  const num=currentConv.num||currentConv.jid?.split('@')[0];
+  const num=currentConv.num||(currentConv.jidReal||currentConv.jid||'').split('@')[0];
   const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
   const hora=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 
