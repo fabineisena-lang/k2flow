@@ -1274,7 +1274,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 <script>
 const SB_URL='https://xlxquingaqgselwfoyki.supabase.co';
 const SB_KEY='sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
-const EV_URL_DEFAULT='https://appk2-evolution-api.k8wm1v.easypanel.host';
+const EV_URL_DEFAULT='/ev-api';
 const EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33';
 
 let hubAtivo=null,iaOn=true,currentConv=null,agOffset=0;
@@ -1409,7 +1409,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 function carregarConfig(){
   /* Só seta defaults se o campo ainda não foi salvo pelo usuário */
   const defaults={
-    'ev-url':'https://appk2-evolution-api.k8wm1v.easypanel.host',
+    'ev-url':'/ev-api',
     'ev-apikey':'BD06CAA569F1-44CE-B980-D83AC96F6F33',
     'ev-inst':'AmandaCS',
     'cfg-ai-key':'',
@@ -2952,64 +2952,42 @@ const EV_ACTION_MAP = {
 };
 
 async function waProxy(action, extraPayload){
-  const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
-  const evUrl  = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
-  const evKey  = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
-  const inst   = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
-  const proxyUrl = n8nUrl + '/webhook/' + inst;
+  /* Chama Evolution API DIRETO via proxy nginx /ev-api — sem CORS, sem n8n */
+  const evUrl = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
+  const evKey = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
+  const inst  = (localStorage.getItem('k2cfg_ev-inst') || 'AmandaCS').trim();
 
   const map = EV_ACTION_MAP[action];
   if(!map) throw new Error('Ação desconhecida: ' + action);
 
-  const body = {
-    method:   map.method,
-    endpoint: map.ep(inst),
-    evUrl:    evUrl,        /* ← OBRIGATÓRIO para o n8n montar a URL correta */
-    apikey:   evKey,
-    payload:  extraPayload || {}
+  const opts = {
+    method: map.method,
+    headers: { 'apikey': evKey, 'Content-Type': 'application/json' }
   };
+  if(extraPayload && Object.keys(extraPayload).length > 0){
+    opts.body = JSON.stringify(extraPayload);
+  }
 
-  const r = await fetch(proxyUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if(!r.ok) throw new Error('n8n HTTP ' + r.status + ' — ' + r.statusText);
-  const json = await r.json();
-  return json;
+  const r = await fetch(evUrl + '/' + map.ep(inst), opts);
+  if(!r.ok) throw new Error('HTTP ' + r.status + ' ' + r.statusText);
+  return r.json();
 }
 
-/* evCall por compatibilidade — roteia para waProxy */
+/* evCall direto na Evolution API via proxy nginx */
 async function evCall(endpoint, method, body){
-  const inst  = (localStorage.getItem('k2cfg_ev-inst')  || 'AmandaCS').trim();
-  const evUrl = (localStorage.getItem('k2cfg_ev-url')   || EV_URL_DEFAULT).replace(/\/+$/,'');
+  const evUrl = (localStorage.getItem('k2cfg_ev-url') || EV_URL_DEFAULT).replace(/\/+$/,'');
   const evKey = localStorage.getItem('k2cfg_ev-apikey') || EV_KEY_DEFAULT;
-  const n8nUrl = (localStorage.getItem('k2cfg_cfg-n8n-url') || 'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
-  const proxyUrl = n8nUrl + '/webhook/' + inst;
 
-  /* Detecta action pelo endpoint */
-  let action = null;
-  for(const [act, cfg] of Object.entries(EV_ACTION_MAP)){
-    const ep = cfg.ep(inst);
-    if(endpoint === ep || endpoint.startsWith(ep.split('/').slice(0,2).join('/'))){
-      action = act; break;
-    }
+  const opts = {
+    method: method || 'GET',
+    headers: { 'apikey': evKey, 'Content-Type': 'application/json' }
+  };
+  if(body && Object.keys(body).length > 0){
+    opts.body = JSON.stringify(body);
   }
-  if(action) return waProxy(action, body);
 
-  /* Fallback genérico — inclui evUrl */
-  const r = await fetch(proxyUrl, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      method:   method||'GET',
-      endpoint: endpoint,
-      evUrl:    evUrl,      /* ← OBRIGATÓRIO */
-      apikey:   evKey,
-      payload:  body||{}
-    })
-  });
-  if(!r.ok) throw new Error('HTTP '+r.status);
+  const r = await fetch(evUrl + '/' + endpoint, opts);
+  if(!r.ok) throw new Error('HTTP ' + r.status);
   return r.json();
 }
 
