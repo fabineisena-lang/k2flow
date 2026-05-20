@@ -1311,67 +1311,25 @@ const EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33';
 let hubAtivo=null,iaOn=true,currentConv=null,agOffset=0;
 
 /* ── DADOS DEMO ── */
-let CLIENTES=[
-  {id:1,nome:'Teste 1',wa:'5511911111111',email:'teste1@k2flow.com.br',origem:'Instagram',ultima:'2026-05-10',status:'ativo',cpf:'000.000.001-01'},
-  {id:2,nome:'Teste 2',wa:'5511922222222',email:'teste2@k2flow.com.br',origem:'Indicação',ultima:'2026-05-01',status:'ativo',cpf:'000.000.002-02'},
-];
-let CONVS=[
-  {id:'c1',nome:'Teste 1',num:'5511911111111',status:'aberta',ia:true,hora:'08:12',ultima:'Quero remarcar minha consulta',msgs:[
-    {dir:'in',txt:'Olá! Bom dia!',hora:'08:10',ia:false,tipo:'text'},
-    {dir:'out',txt:'Olá! Bom dia! Como posso ajudar você hoje?',hora:'08:10',ia:true,tipo:'text'},
-    {dir:'in',txt:'Quero remarcar minha consulta de quinta-feira',hora:'08:12',ia:false,tipo:'text'},
-    {dir:'out',txt:'Claro! Temos horários disponíveis na quarta às 10h ou sexta às 14h. Qual prefere?',hora:'08:12',ia:true,tipo:'text'},
-  ]},
-  {id:'c2',nome:'Teste 2',num:'5511922222222',status:'aberta',ia:false,hora:'07:45',ultima:'Qual o valor do implante?',msgs:[
-    {dir:'in',txt:'Bom dia! Gostaria de saber o valor do implante.',hora:'07:44',ia:false,tipo:'text'},
-    {dir:'out',txt:'Bom dia! O implante unitário começa em R$3.200. Posso agendar uma avaliação gratuita para você?',hora:'07:45',ia:true,tipo:'text'},
-    {dir:'in',txt:'[Áudio 0:08]',hora:'07:46',ia:false,tipo:'audio'},
-  ]},
-  {id:'c3',nome:'Lead Novo',num:'5511933333333',status:'aberta',ia:true,hora:'agora',ultima:'Vi no Instagram, quero saber mais!',msgs:[
-    {dir:'in',txt:'Oi! Vi o perfil de vocês no Instagram. Quero saber mais sobre os tratamentos!',hora:'agora',ia:false,tipo:'text'},
-  ]},
-];
+let CLIENTES=[];
+let CONVS=[];
 let CRM_COLS=[
-  {id:'pc',nome:'Primeiro Contato',cor:'#2563EB',bg:'#EFF6FF',cards:[
-    {id:'k1',nome:'Lead Novo',tag:'WhatsApp',tagCor:'bk-ok',resp:'IA',data:'agora',val:'',wa:'5511933333333'},
-    {id:'k2',nome:'Contato Instagram',tag:'Instagram',tagCor:'bk-p',resp:'Ana',data:'ontem',val:'',wa:'5511944444444'},
-  ]},
-  {id:'ea',nome:'Em Atendimento',cor:'#7C3AED',bg:'#F5F3FF',cards:[
-    {id:'k3',nome:'Teste 1',tag:'WhatsApp',tagCor:'bk-ok',resp:'Carlos',data:'seg',val:'R$4.800',wa:'5511911111111'},
-  ]},
-  {id:'pe',nome:'Proposta Enviada',cor:'#D97706',bg:'#FFFBEB',cards:[
-    {id:'k4',nome:'Teste 2',tag:'Indicação',tagCor:'bk-b',resp:'Carlos',data:'ter',val:'R$3.200',wa:'5511922222222'},
-  ]},
-  {id:'ag',nome:'Agendado',cor:'#059669',bg:'#ECFDF5',cards:[
-    {id:'k5',nome:'Indicado Silva',tag:'Google',tagCor:'bk-b',resp:'Ana',data:'qua',val:'',wa:''},
-  ]},
+  {id:'pc',nome:'Primeiro Contato',cor:'#2563EB',bg:'#EFF6FF',cards:[]},
+  {id:'ea',nome:'Em Atendimento',cor:'#7C3AED',bg:'#F5F3FF',cards:[]},
+  {id:'pe',nome:'Proposta Enviada',cor:'#D97706',bg:'#FFFBEB',cards:[]},
+  {id:'ag',nome:'Agendado',cor:'#059669',bg:'#ECFDF5',cards:[]},
   {id:'fc',nome:'Fechado ✓',cor:'#059669',bg:'#ECFDF5',cards:[]},
   {id:'pd',nome:'Perdido',cor:'#DC2626',bg:'#FEF2F2',cards:[]},
 ];
-let AGENDA=[
-  {id:'ag1',hora:'08:00',data:new Date().toISOString().split('T')[0],nome:'Teste 1',proc:'Limpeza',prof:'Dr. Carlos',status:'confirmado',cor:'#2563EB',wa:'5511911111111',gcalId:''},
-  {id:'ag2',hora:'09:30',data:new Date().toISOString().split('T')[0],nome:'Teste 2',proc:'Implante',prof:'Dr. Carlos',status:'agendado',cor:'#F26419',wa:'5511922222222',gcalId:''},
-  {id:'ag3',hora:'11:00',data:new Date().toISOString().split('T')[0],nome:'Paciente Demo',proc:'Ortodontia',prof:'Dra. Ana',status:'confirmado',cor:'#059669',wa:'',gcalId:''},
-  {id:'ag4',hora:'14:30',data:new Date().toISOString().split('T')[0],nome:'Lead Demo',proc:'Avaliação',prof:'Dr. Carlos',status:'agendado',cor:'#7C3AED',wa:'',gcalId:''},
-  {id:'ag5',hora:'16:00',data:new Date().toISOString().split('T')[0],nome:'Indicado',proc:'Consulta',prof:'Dra. Ana',status:'aguardando',cor:'#D97706',wa:'',gcalId:''},
-];
+let AGENDA=[];
 
 /* Google Calendar config */
-let GCAL_TOKEN=''; /* OAuth token */
+let GCAL_TOKEN='';
 let GCAL_CALENDAR_ID='primary';
 let GCAL_CONNECTED=false;
 const HORARIOS_DISPONIVEIS=['07:00','08:00','09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
-let ORCAMENTOS=[
-  {id:'o1',num:'001',desc:'Tratamento Ortodôntico',cli:'Teste 1',valor:'R$4.800',status:'aguardando',data:'18/05/2026'},
-  {id:'o2',num:'002',desc:'Implante Unitário',cli:'Teste 2',valor:'R$3.200',status:'aprovado',data:'15/05/2026'},
-];
-let TASKS=[
-  {id:'t1',nome:'Reel Institucional Semana 21',cli:'Teste 1',status:'Em Produção',stCor:'#DBEAFE',stTxt:'#1D4ED8',resp:'Fabinei',prio:'Alta',prioCor:'#DC2626',data:'20/05'},
-  {id:'t2',nome:'Post Imóvel — Destaque',cli:'Teste 1',status:'Aprov. Interna',stCor:'#FEF3C7',stTxt:'#92400E',resp:'Luisa',prio:'Média',prioCor:'#D97706',data:'19/05'},
-  {id:'t3',nome:'Campanha Black Friday — Criativos',cli:'Teste 2',status:'Briefing',stCor:'#F3F4F6',stTxt:'#374151',resp:'Carlos',prio:'Média',prioCor:'#D97706',data:'25/05'},
-  {id:'t4',nome:'Vídeo Tour Virtual — Casa 34',cli:'Teste 2',status:'Em Revisão',stCor:'#FEF3C7',stTxt:'#92400E',resp:'Ana',prio:'Alta',prioCor:'#DC2626',data:'21/05'},
-  {id:'t5',nome:'Identidade Visual — Atualização 2026',cli:'Teste 1',status:'Ajustes Cliente',stCor:'#FEE2E2',stTxt:'#991B1B',resp:'Carlos',prio:'Alta',prioCor:'#DC2626',data:'24/05'},
-];
+let ORCAMENTOS=[];
+let TASKS=[];
 let FUNCS=[
   {nome:'Admin Master',email:'admin@k2company.com.br',perfil:'Admin',status:'ativo'},
   {nome:'Dr. Carlos',email:'carlos@clinica.com.br',perfil:'Profissional',status:'ativo'},
