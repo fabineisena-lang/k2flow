@@ -1128,26 +1128,16 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     <!-- IA -->
     <div class="cfg-sec">
       <div class="cfg-sec-h">📅 Google Calendar</div>
-      <div style="background:var(--bl-l);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#1D4ED8;margin-bottom:12px;line-height:1.7">
-        <strong>Como configurar:</strong><br>
-        1. <a href="https://console.cloud.google.com" target="_blank" style="color:#1D4ED8">console.cloud.google.com</a> → Crie projeto → Ative <strong>Google Calendar API</strong><br>
-        2. Credenciais → Criar → OAuth 2.0 → Aplicativo Web<br>
-        3. Em "URIs de redirecionamento" adicione: <code style="background:rgba(37,99,235,.1);padding:1px 5px;border-radius:3px">${window.location.origin}${window.location.pathname}</code><br>
-        4. Cole o Client ID abaixo e clique Salvar → Conectar Google
-      </div>
-      <div class="grid2-form">
-        <div class="field"><label>Client ID OAuth 2.0</label><input class="inp" id="cfg-gcal-client-id" placeholder="445939...apps.googleusercontent.com"></div>
-        <div class="field"><label>Calendar ID (opcional)</label><input class="inp" id="cfg-gcal-id" placeholder="seu@gmail.com ou primary"></div>
+      <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#065F46;margin-bottom:12px;line-height:1.7">
+        ✅ <strong>Conectado via n8n</strong> — O Google Calendar já está autenticado no n8n. Clique em "Sincronizar" para carregar os eventos da Agência K2 e agenda pessoal diretamente na Agenda do K2 Flow.
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-prim" onclick="salvarGCal()">Salvar configuração</button>
-        <button class="btn-sec" style="display:flex;align-items:center;gap:5px" onclick="conectarGoogle()">
+        <button class="btn-prim" style="display:flex;align-items:center;gap:6px" onclick="gcalCarregarEventos()">
           <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Conectar Google
+          Sincronizar Google Calendar
         </button>
-        <button class="btn-sec" onclick="gcalSincronizar()">↺ Sincronizar</button>
       </div>
-      <div id="gcal-status-cfg" style="margin-top:8px;font-size:11px;color:var(--t3)"></div>
+      <div id="gcal-status-cfg" style="margin-top:8px;font-size:11px;color:var(--t3)">Clique em Sincronizar para carregar os eventos</div>
     </div>
     <!-- IA -->
     <div class="cfg-sec">
@@ -3408,115 +3398,80 @@ async function gcalTokenObtido(token){
   await gcalCarregarEventos(token);
 }
 
-async function gcalCarregarEventos(token){
-  token=token||GCAL_TOKEN||localStorage.getItem('k2cfg_gcal-token')||'';
-  if(!token){toast('Conecte o Google Calendar primeiro','⚠️');return;}
+async function gcalCarregarEventos(){
+  const n8nUrl=(localStorage.getItem('k2cfg_cfg-n8n-url')||'https://n8n-n8n.k8wm1v.easypanel.host').replace(/\/+$/,'');
+  const endpoint=n8nUrl+'/webhook/k2-agenda?dias=30';
 
-  const calId=localStorage.getItem('k2cfg_gcal-id')||'primary';
-  const hoje=new Date(); hoje.setHours(0,0,0,0);
-  const fim=new Date(hoje); fim.setDate(fim.getDate()+30);
-
-  try{
-    const r=await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events`
-      +`?maxResults=100&singleEvents=true&orderBy=startTime`
-      +`&timeMin=${hoje.toISOString()}&timeMax=${fim.toISOString()}`,
-      {headers:{Authorization:'Bearer '+token}}
-    );
-    if(r.status===401){
-      /* Token expirado */
-      GCAL_TOKEN='';localStorage.removeItem('k2cfg_gcal-token');
-      toast('Sessão Google expirada — reconecte','⚠️');
-      gcalAtualizarBotao(false);return;
-    }
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const data=await r.json();
-    gcalImportarEventos(data.items||[]);
-  }catch(e){
-    toast('Erro Google Calendar: '+e.message,'❌');
-  }
-}
-
-async function gcalCriarEvento(ag){
-  const token=GCAL_TOKEN||localStorage.getItem('k2cfg_gcal-token')||'';
-  if(!token){return;}
-  const calId=localStorage.getItem('k2cfg_gcal-id')||'primary';
-  const inicio=new Date(`${ag.data}T${ag.hora}:00`);
-  const fim=new Date(inicio.getTime()+60*60*1000);
-  const evento={
-    summary:`${ag.nome} — ${ag.proc}`,
-    description:`Profissional: ${ag.prof}\nAgendado via K2 Flow\nWhatsApp: ${ag.wa||''}`,
-    start:{dateTime:inicio.toISOString(),timeZone:'America/Sao_Paulo'},
-    end:{dateTime:fim.toISOString(),timeZone:'America/Sao_Paulo'},
-    reminders:{useDefault:false,overrides:[{method:'email',minutes:60},{method:'popup',minutes:15}]}
-  };
-  try{
-    const r=await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events`,
-      {method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(evento)}
-    );
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const ev=await r.json();
-    ag.gcalId=ev.id;
-    toast('✅ Evento criado no Google Calendar!','📅');
-  }catch(e){
-    console.warn('gcalCriarEvento erro:',e.message);
-  }
-}
-
-function gcalAtualizarBotao(conectado){
   const btn=document.getElementById('gcal-btn');
   const sp=document.getElementById('gcal-txt');
-  if(!btn||!sp)return;
-  if(conectado){
-    sp.textContent='✅ Google Calendar';
-    btn.style.background='var(--ok-l)';btn.style.color='var(--ok)';
-  } else {
-    sp.textContent='Google Calendar';
-    btn.style.background='';btn.style.color='';
+  if(sp) sp.textContent='🔄 Carregando...';
+
+  try{
+    const r=await fetch(endpoint);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    const eventos=data.eventos||[];
+
+    if(eventos.length===0){
+      toast('Nenhum evento no Google Calendar','📅');
+      if(sp) sp.textContent='📅 Google Calendar (vazio)';
+      return;
+    }
+
+    /* Importa eventos para AGENDA */
+    let novos=0;
+    eventos.forEach(ev=>{
+      const jaExiste=AGENDA.find(a=>a.gcalId===ev.gcalId);
+      if(!jaExiste){
+        AGENDA.push({
+          id:'gcal-'+ev.id, hora:ev.hora, data:ev.data,
+          nome:ev.nome, proc:ev.proc||'Consulta',
+          prof:ev.prof||'Dr. Carlos',
+          status:ev.status||'agendado',
+          cor:ev.cor||'#4285F4',
+          wa:ev.wa||'', gcalId:ev.gcalId
+        });
+        novos++;
+      }
+    });
+
+    AGENDA.sort((a,b)=>a.data.localeCompare(b.data)||a.hora.localeCompare(b.hora));
+    GCAL_CONNECTED=true;
+    renderAgenda();renderDashAgenda();
+
+    /* Atualiza botão */
+    if(btn){ btn.style.background='var(--ok-l)'; btn.style.color='var(--ok)'; }
+    if(sp) sp.textContent=`✅ Google Calendar (${eventos.length})`;
+
+    /* Atualiza status em Configurações */
+    const el=document.getElementById('gcal-status-cfg');
+    if(el) el.innerHTML=`✅ <strong>${eventos.length}</strong> eventos sincronizados — ${novos} novos`;
+    document.querySelectorAll('[id="google-st"]').forEach(e=>{
+      e.textContent='✅ Conectado'; e.style.background='var(--ok-l)'; e.style.color='var(--ok)';
+    });
+
+    toast(`📅 ${eventos.length} eventos do Google Calendar carregados!`,'✅');
+
+  }catch(e){
+    if(sp) sp.textContent='Google Calendar';
+    toast('Erro Google Calendar: '+e.message,'❌');
+    const el=document.getElementById('gcal-status-cfg');
+    if(el) el.textContent='❌ Erro: '+e.message;
   }
 }
 
-async function gcalSincronizar(){
-  const token=GCAL_TOKEN||localStorage.getItem('k2cfg_gcal-token')||'';
-  if(!token){
-    toast('Conecte o Google Calendar primeiro','⚠️');
-    return;
-  }
-  toast('Sincronizando...','🔄');
-  await gcalCarregarEventos(token);
-}
+async function gcalSincronizar(){ await gcalCarregarEventos(); }
+
+function conectarGoogle(){ gcalCarregarEventos(); }
 
 function carregarGCal(){
-  const clientId=localStorage.getItem('k2cfg_gcal-client-id')||'';
-  const calId=localStorage.getItem('k2cfg_gcal-id')||'';
-  const token=localStorage.getItem('k2cfg_gcal-token')||'';
-  const expires=parseInt(localStorage.getItem('k2cfg_gcal-expires')||'0');
-
-  const elCid=document.getElementById('cfg-gcal-client-id');
-  const elCal=document.getElementById('cfg-gcal-id');
-  if(elCid) elCid.value=clientId;
-  if(elCal) elCal.value=calId;
-
-  if(token && expires>Date.now()){
-    GCAL_TOKEN=token;
-    GCAL_CONNECTED=true;
-    gcalAtualizarBotao(true);
-    gcalCarregarEventos(token);
-    const el=document.getElementById('gcal-status-cfg');
-    if(el) el.textContent='✅ Google Calendar conectado';
-  }
+  /* Só carrega campos de config — a sincronização é feita pelo botão */
+  const el=document.getElementById('gcal-status-cfg');
+  if(el) el.textContent='Clique em "Sincronizar Google Calendar" para carregar os eventos';
 }
 
 function salvarGCal(){
-  const clientId=document.getElementById('cfg-gcal-client-id')?.value.trim()||'';
-  const calId=document.getElementById('cfg-gcal-id')?.value.trim()||'primary';
-  if(!clientId){toast('Informe o Client ID do Google','⚠️');return;}
-  localStorage.setItem('k2cfg_gcal-client-id',clientId);
-  localStorage.setItem('k2cfg_gcal-id',calId);
-  toast('Configuração salva! Clique em Conectar','✅');
-  const el=document.getElementById('gcal-status-cfg');
-  if(el) el.textContent='Configurado — clique em Conectar Google abaixo';
+  toast('Use o botão "Sincronizar Google Calendar" para carregar os eventos','ℹ️');
 }
 
 /* ── AUTH ── */
