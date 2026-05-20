@@ -665,19 +665,19 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- WHATSAPP -->
   <div class="page page-wa-layout" id="page-wa" style="padding:0">
-
-    <!-- TABS -->
-    <div style="display:flex;border-bottom:1px solid var(--bd);background:var(--light2);flex-shrink:0;padding:0 16px">
-      <button class="wa-tab on" id="watab-conv" onclick="setWATab('conv')">💬 Conversas</button>
-      <button class="wa-tab" id="watab-diag" onclick="setWATab('diag')">🔧 Diagnóstico & Conexão</button>
-    </div>
-
-    <!-- PAINEL CONVERSAS -->
-    <div id="wa-panel-conv" style="flex:1;display:flex;overflow:hidden;padding:12px">
+    <div style="flex:1;display:flex;overflow:hidden;padding:12px">
       <div class="wa-wrap">
         <div class="wa-list">
-          <div class="wa-list-hd"><div class="wa-list-title">Conversas</div><span class="ia-badge" id="wa-ia-badge">IA Ativa</span></div>
+          <div class="wa-list-hd">
+            <div class="wa-list-title">Conversas</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="ia-badge" id="wa-ia-badge">IA Ativa</span>
+              <button onclick="renderWA()" title="Atualizar conversas" style="background:transparent;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1" id="wa-refresh-btn">↺</button>
+            </div>
+          </div>
           <div class="wa-search"><input class="wa-search-inp" type="text" placeholder="Buscar conversa..." oninput="filterConvs(this.value)"></div>
+          <!-- Status de carregamento -->
+          <div id="wa-load-status" style="display:none;padding:8px 14px;font-size:11px;color:var(--t3);border-bottom:1px solid var(--bd2)"></div>
           <div class="wa-convs" id="wa-conv-list"></div>
         </div>
         <div class="wa-chat" id="wa-chat">
@@ -692,157 +692,30 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
               </div>
             </div>
             <div class="wa-msgs" id="wa-msgs"></div>
-
-            <!-- INPUT AREA COMPLETA COM MÍDIA -->
             <div class="wa-input-area" id="wa-input-area">
-              <!-- Botão de arquivo (imagem/PDF/doc) -->
               <input type="file" id="wa-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" style="display:none" onchange="waFileSelected(this)">
               <button class="wa-attach" title="Enviar arquivo" onclick="document.getElementById('wa-file-input').click()">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
-
-              <!-- Input de imagem separado -->
               <input type="file" id="wa-img-input" accept="image/*" style="display:none" onchange="waImgSelected(this)">
               <button class="wa-attach" title="Enviar imagem" onclick="document.getElementById('wa-img-input').click()" style="color:#2563EB">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><polyline points="21 15 16 10 5 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               </button>
-
-              <!-- Textarea texto -->
               <textarea class="wa-inp" id="wa-inp" rows="1" placeholder="Digite sua mensagem..." onkeydown="waEnter(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,90)+'px'"></textarea>
-
-              <!-- Botão gravar áudio (segura para gravar) -->
-              <button class="wa-mic" id="wa-mic-btn" title="Segure para gravar áudio"
-                onmousedown="iniciarGravacao()" onmouseup="pararGravacao()"
-                ontouchstart="iniciarGravacao()" ontouchend="pararGravacao()">
+              <button class="wa-mic" id="wa-mic-btn" title="Segure para gravar áudio" onmousedown="iniciarGravacao()" onmouseup="pararGravacao()" ontouchstart="iniciarGravacao()" ontouchend="pararGravacao()">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" stroke-width="1.5"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               </button>
-
-              <!-- Botão enviar -->
-              <button class="wa-send" onclick="waSend()" title="Enviar">
+              <button class="wa-send" onclick="waSend()">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
               </button>
             </div>
-
-            <!-- Preview de arquivo selecionado -->
-            <div id="wa-file-preview" style="display:none;padding:8px 16px;background:var(--bd2);border-top:1px solid var(--bd);display:flex;align-items:center;gap:10px">
+            <div id="wa-file-preview" style="display:none;padding:8px 16px;background:var(--bd2);border-top:1px solid var(--bd);align-items:center;gap:10px">
               <span id="wa-file-preview-nome" style="font-size:12px;color:var(--t2);flex:1"></span>
               <button onclick="cancelarArquivo()" style="background:transparent;border:none;color:var(--er);font-size:18px;line-height:1">×</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- PAINEL DIAGNÓSTICO -->
-    <div id="wa-panel-diag" style="display:none;flex:1;overflow-y:auto;padding:16px;flex-direction:column;gap:14px">
-
-      <!-- STATUS CARD -->
-      <div style="background:var(--dark);border-radius:12px;padding:18px 20px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-          <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px">
-            <span style="width:10px;height:10px;border-radius:50%;background:#6B7280;display:inline-block" id="diag-dot"></span>
-            Status da Conexão
-          </div>
-          <span id="diag-estado" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(107,114,128,.2);color:#9CA3AF">Não verificado</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
-          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px">
-            <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">URL / Proxy</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600;word-break:break-all" id="diag-url">—</div>
-          </div>
-          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px">
-            <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Instância</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600" id="diag-inst">—</div>
-          </div>
-          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px">
-            <div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">API Key</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600" id="diag-key">—</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="diagRunAll()" style="background:var(--brand);border:none;color:#fff;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px">▶ Executar Diagnóstico Completo</button>
-          <button onclick="diagQR()" style="background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25D366;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:700">📱 Gerar QR Code</button>
-          <button onclick="diagClear()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);border-radius:8px;padding:9px 14px;font-size:12px">🗑 Limpar log</button>
-        </div>
-      </div>
-
-      <!-- QR CODE BOX -->
-      <div id="diag-qr-area" style="display:none;background:var(--dark);border-radius:12px;padding:20px;text-align:center">
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px">
-          <span style="width:10px;height:10px;border-radius:50%;background:#D97706" id="diag-qr-dot"></span>
-          <span style="font-size:13px;font-weight:600;color:#fff" id="diag-qr-txt">Aguardando...</span>
-        </div>
-        <div style="background:#fff;width:190px;height:190px;border-radius:10px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center" id="diag-qr-img">
-          <span style="font-size:12px;color:#888">Gerando...</span>
-        </div>
-        <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.7">
-          Abra o WhatsApp → <strong style="color:rgba(255,255,255,.7)">Dispositivos Conectados</strong> → Escanear QR Code
-        </div>
-      </div>
-
-      <!-- STEPS -->
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Testes em etapas</div>
-
-        <div class="diag-step" id="dstep-proxy">
-          <div class="diag-step-ico" id="dico-proxy">⏳</div>
-          <div style="flex:1">
-            <div class="diag-step-title">1. Proxy nginx → Evolution API</div>
-            <div class="diag-step-sub" id="dsub-proxy">Verifica se o proxy /ev-api está respondendo</div>
-          </div>
-          <button onclick="diagStep('proxy')" class="diag-run-btn">Testar</button>
-        </div>
-
-        <div class="diag-step" id="dstep-auth">
-          <div class="diag-step-ico" id="dico-auth">⏳</div>
-          <div style="flex:1">
-            <div class="diag-step-title">2. Autenticação API Key</div>
-            <div class="diag-step-sub" id="dsub-auth">Verifica se a API Key está correta e autorizada</div>
-          </div>
-          <button onclick="diagStep('auth')" class="diag-run-btn">Testar</button>
-        </div>
-
-        <div class="diag-step" id="dstep-instance">
-          <div class="diag-step-ico" id="dico-instance">⏳</div>
-          <div style="flex:1">
-            <div class="diag-step-title">3. Instância existe</div>
-            <div class="diag-step-sub" id="dsub-instance">Verifica se a instância "AmandaCS" existe na Evolution API</div>
-          </div>
-          <button onclick="diagStep('instance')" class="diag-run-btn">Testar</button>
-        </div>
-
-        <div class="diag-step" id="dstep-state">
-          <div class="diag-step-ico" id="dico-state">⏳</div>
-          <div style="flex:1">
-            <div class="diag-step-title">4. Estado da conexão WhatsApp</div>
-            <div class="diag-step-sub" id="dsub-state">Verifica se o WhatsApp está conectado (open/close/qr)</div>
-          </div>
-          <button onclick="diagStep('state')" class="diag-run-btn">Testar</button>
-        </div>
-
-        <div class="diag-step" id="dstep-send">
-          <div class="diag-step-ico" id="dico-send">⏳</div>
-          <div style="flex:1">
-            <div class="diag-step-title">5. Envio de mensagem de teste</div>
-            <div class="diag-step-sub" id="dsub-send">Envia "Teste K2 Flow" para o próprio número configurado</div>
-          </div>
-          <button onclick="diagStep('send')" class="diag-run-btn">Testar</button>
-        </div>
-      </div>
-
-      <!-- CONSOLE LOG -->
-      <div style="background:var(--dark);border-radius:12px;overflow:hidden">
-        <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;border-radius:50%;background:#FF5F57"></div>
-          <div style="width:10px;height:10px;border-radius:50%;background:#FEBC2E"></div>
-          <div style="width:10px;height:10px;border-radius:50%;background:#28C840"></div>
-          <span style="font-size:11px;color:rgba(255,255,255,.25);margin-left:6px;font-family:monospace">Console — K2 Flow WhatsApp Diagnostic</span>
-        </div>
-        <div id="diag-log" style="padding:12px 14px;font-family:monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.5);min-height:160px;max-height:320px;overflow-y:auto">
-          <span style="color:rgba(255,255,255,.2)">Aguardando diagnóstico... clique em "Executar Diagnóstico Completo"</span>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -858,20 +731,57 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
   <!-- CLIENTES -->
   <div class="page content" id="page-clientes">
-    <div style="display:flex;gap:8px;margin-bottom:14px">
-      <input class="inp" style="flex:1;max-width:280px" type="text" placeholder="Buscar cliente..." oninput="filterCli(this.value)">
-      <select class="inp-sel" style="width:auto" onchange="filterCli('')"><option value="">Todos</option><option value="ativo">Ativos</option><option value="inativo">Inativos</option></select>
+    <!-- Filtros -->
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+      <input class="inp" style="flex:1;max-width:260px" type="text" placeholder="Buscar por nome, WhatsApp..." oninput="filterCli(this.value)" id="cli-search">
+      <select class="inp-sel" style="width:auto" onchange="filterCliStatus(this.value)" id="cli-status-filter">
+        <option value="">Todos os status</option>
+        <option value="ativo">Ativo</option>
+        <option value="inativo">Inativo</option>
+      </select>
+      <button class="btn-sec" id="cli-filter-all" onclick="setCliCRMFilter('')" style="font-size:11px;padding:6px 10px;background:var(--brand);color:#fff;border-color:var(--brand)">Todos</button>
+      <button class="btn-sec" onclick="setCliCRMFilter('Primeiro Contato')" style="font-size:11px;padding:6px 10px">1º Contato</button>
+      <button class="btn-sec" onclick="setCliCRMFilter('Em Atendimento')" style="font-size:11px;padding:6px 10px">Em Atendimento</button>
+      <button class="btn-sec" onclick="setCliCRMFilter('Proposta Enviada')" style="font-size:11px;padding:6px 10px">Proposta</button>
+      <button class="btn-sec" onclick="setCliCRMFilter('Fechado ✓')" style="font-size:11px;padding:6px 10px">Fechados</button>
+      <button class="btn-prim" onclick="openModal('modal-cli')" style="margin-left:auto">+ Novo Cliente</button>
     </div>
-    <div class="tbl-wrap"><table><thead><tr><th>Cliente</th><th>WhatsApp</th><th>Origem</th><th>Última visita</th><th>Status</th><th>Ações</th></tr></thead><tbody id="cli-tbody"></tbody></table></div>
+    <!-- Contador -->
+    <div style="font-size:11px;color:var(--t3);margin-bottom:10px" id="cli-counter">0 clientes</div>
+    <!-- Tabela -->
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Cliente</th>
+          <th>WhatsApp</th>
+          <th>Origem</th>
+          <th>Última mensagem</th>
+          <th>Etapa CRM</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr></thead>
+        <tbody id="cli-tbody"></tbody>
+      </table>
+    </div>
   </div>
 
   <!-- ORÇAMENTOS -->
   <div class="page content" id="page-orca">
-    <div style="display:flex;gap:8px;margin-bottom:14px">
-      <button class="btn-prim" onclick="openModal('modal-orca')">+ Novo Orçamento</button>
-      <button class="btn-sec">Importar modelo</button>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+      <button class="btn-prim" onclick="abrirModalOrca()">+ Novo Orçamento</button>
+      <select class="inp-sel" style="width:auto;max-width:220px" onchange="filterOrcaStatus(this.value)">
+        <option value="">Todos os status</option>
+        <option value="aguardando">Aguardando</option>
+        <option value="aprovado">Aprovados</option>
+        <option value="recusado">Recusados</option>
+      </select>
     </div>
-    <div class="tbl-wrap"><table><thead><tr><th>Orçamento</th><th>Cliente</th><th>Valor</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody id="orca-tbody"></tbody></table></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Orçamento</th><th>Cliente</th><th>WhatsApp</th><th>Valor</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+        <tbody id="orca-tbody"></tbody>
+      </table>
+    </div>
   </div>
 
   <!-- WORK HUB PAGE -->
@@ -1155,6 +1065,65 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
         <div class="qr-hint">Abra o WhatsApp no celular<br>Vá em <strong>Configurações → Dispositivos conectados</strong><br>Escaneie o QR Code acima</div>
       </div>
       <div id="wa-status-box" style="margin-top:12px;display:none"></div>
+
+      <!-- DIAGNÓSTICO INTEGRADO -->
+      <div style="margin-top:14px;border-top:1px solid var(--bd);padding-top:14px">
+        <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">🔧 Diagnóstico & Conexão</div>
+
+        <!-- Alerta URL n8n -->
+        <div style="background:var(--bl-l);border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#1D4ED8;margin-bottom:10px;line-height:1.6">
+          <strong>⚠️ Importante:</strong> No n8n, o node HTTP Request do workflow AmandaCS precisa ter a URL como:<br>
+          <code style="background:rgba(37,99,235,.1);padding:2px 6px;border-radius:4px;font-size:11px">={{ $json.body.evUrl }}/{{ $json.body.endpoint }}</code><br>
+          Se estiver hardcoded para appk2-evolution-api, as conversas não vão aparecer.
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <button onclick="diagRunAll()" style="background:var(--dark);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:11.5px;font-weight:700">▶ Diagnóstico completo</button>
+          <button onclick="diagQR()" style="background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#059669;border-radius:7px;padding:7px 14px;font-size:11.5px;font-weight:700">📱 Gerar QR Code</button>
+          <button onclick="diagClear()" style="background:transparent;border:1px solid var(--bd);border-radius:7px;padding:7px 12px;font-size:11px;color:var(--t3)">Limpar</button>
+        </div>
+
+        <!-- Status dots -->
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+          <div class="diag-step" id="dstep-proxy" style="padding:8px 12px"><div class="diag-step-ico" id="dico-proxy" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">1. n8n proxy</div><div class="diag-step-sub" id="dsub-proxy" style="font-size:10px">Webhook /AmandaCS respondendo</div></div><button onclick="diagStep('proxy')" class="diag-run-btn">Testar</button></div>
+          <div class="diag-step" id="dstep-auth" style="padding:8px 12px"><div class="diag-step-ico" id="dico-auth" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">2. API Key</div><div class="diag-step-sub" id="dsub-auth" style="font-size:10px">Autenticação na Evolution API</div></div><button onclick="diagStep('auth')" class="diag-run-btn">Testar</button></div>
+          <div class="diag-step" id="dstep-instance" style="padding:8px 12px"><div class="diag-step-ico" id="dico-instance" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">3. Instância</div><div class="diag-step-sub" id="dsub-instance" style="font-size:10px">Verifica se a instância existe</div></div><button onclick="diagStep('instance')" class="diag-run-btn">Testar</button></div>
+          <div class="diag-step" id="dstep-state" style="padding:8px 12px"><div class="diag-step-ico" id="dico-state" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">4. WhatsApp conectado</div><div class="diag-step-sub" id="dsub-state" style="font-size:10px">Estado: open / close / qr</div></div><button onclick="diagStep('state')" class="diag-run-btn">Testar</button></div>
+          <div class="diag-step" id="dstep-send" style="padding:8px 12px"><div class="diag-step-ico" id="dico-send" style="font-size:14px">⏳</div><div style="flex:1"><div class="diag-step-title" style="font-size:11.5px">5. Envio de teste</div><div class="diag-step-sub" id="dsub-send" style="font-size:10px">Envia mensagem para confirmar</div></div><button onclick="diagStep('send')" class="diag-run-btn">Testar</button></div>
+        </div>
+
+        <!-- QR Box -->
+        <div id="diag-qr-area" style="display:none;background:var(--dark);border-radius:10px;padding:16px;text-align:center;margin-bottom:10px">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
+            <span style="width:8px;height:8px;border-radius:50%;background:#D97706;display:inline-block" id="diag-qr-dot"></span>
+            <span style="font-size:12px;font-weight:600;color:#fff" id="diag-qr-txt">Aguardando...</span>
+          </div>
+          <div style="background:#fff;width:170px;height:170px;border-radius:8px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center" id="diag-qr-img"><span style="font-size:11px;color:#888">Gerando...</span></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4)">WhatsApp → Dispositivos conectados → Escanear</div>
+        </div>
+
+        <!-- Console -->
+        <div style="background:var(--dark);border-radius:8px;overflow:hidden">
+          <div style="padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.25);font-family:monospace;display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:#FF5F57;display:inline-block"></span>
+            <span style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;display:inline-block"></span>
+            <span style="width:8px;height:8px;border-radius:50%;background:#28C840;display:inline-block"></span>
+            Console
+          </div>
+          <div id="diag-log" style="padding:10px 12px;font-family:monospace;font-size:11px;line-height:1.8;color:rgba(255,255,255,.45);min-height:100px;max-height:220px;overflow-y:auto">
+            <span style="color:rgba(255,255,255,.2)">Clique em "Diagnóstico completo"</span>
+          </div>
+        </div>
+
+        <!-- Status global -->
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+          <span style="width:10px;height:10px;border-radius:50%;background:#6B7280;display:inline-block" id="diag-dot"></span>
+          <span id="diag-estado" style="font-size:12px;font-weight:600;color:var(--t2)">Não verificado</span>
+          <span style="font-size:11px;color:var(--t3)" id="diag-url" style="display:none"></span>
+        </div>
+        <input type="hidden" id="diag-inst">
+        <input type="hidden" id="diag-key">
+      </div>
     </div>
     <!-- IA -->
     <div class="cfg-sec">
@@ -1259,10 +1228,20 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
 <div class="modal-bg" id="modal-orca">
   <div class="modal"><div class="modal-h">Novo Orçamento</div><div class="modal-s">Criar proposta para o cliente</div>
-    <div class="field"><label>Cliente</label><select class="inp-sel" id="orca-cli"><option>Teste 1</option><option>Teste 2</option></select></div>
-    <div class="field"><label>Modelo base</label><select class="inp-sel" id="orca-modelo"><option>Tratamento Ortodôntico</option><option>Implante Unitário</option><option>Clareamento</option><option>Limpeza + Avaliação</option><option>Personalizado</option></select></div>
-    <div class="grid2-form"><div class="field"><label>Valor total</label><input class="inp" type="text" id="orca-valor" placeholder="R$ 0,00"></div><div class="field"><label>Validade</label><input class="inp" type="date" id="orca-val"></div></div>
-    <div class="modal-acts"><button class="btn-cancel" onclick="closeModal('modal-orca')">Cancelar</button><button class="btn-ok" onclick="criarOrca()">Criar Orçamento</button></div>
+    <div class="field">
+      <label>Cliente</label>
+      <select class="inp-sel" id="orca-cli"></select>
+    </div>
+    <div class="field"><label>Descrição / Serviço</label><input class="inp" type="text" id="orca-desc" placeholder="Ex: Implante Unitário, Ortodontia Completa..."></div>
+    <div class="grid2-form">
+      <div class="field"><label>Valor total</label><input class="inp" type="text" id="orca-valor" placeholder="R$ 0,00"></div>
+      <div class="field"><label>Validade</label><input class="inp" type="date" id="orca-val"></div>
+    </div>
+    <div class="field"><label>Observações (opcional)</label><textarea class="inp" rows="2" id="orca-obs" placeholder="Condições de pagamento, detalhes..."></textarea></div>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal('modal-orca')">Cancelar</button>
+      <button class="btn-ok" onclick="criarOrca()">Criar e Enviar via WhatsApp</button>
+    </div>
   </div>
 </div>
 
@@ -1416,6 +1395,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderKanban();
   renderCli();
   renderOrcamentos();
+  populateOrcaClientes();
   renderFuncs();
   renderPlanos();
   renderN8n();
@@ -1595,70 +1575,99 @@ function conectarGoogle(){
 }
 
 /* ── WHATSAPP REAL — via n8n proxy ── */
-let _waLoading = false;
-
 function renderWA(){
   const el=document.getElementById('wa-conv-list');if(!el)return;
   const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
+  const loadStatus=document.getElementById('wa-load-status');
 
-  /* Mostra skeleton de loading */
-  el.innerHTML=`<div style="padding:16px;text-align:center;color:rgba(255,255,255,.3);font-size:12px">
-    <div style="margin-bottom:6px">🔄 Carregando conversas reais...</div>
-    <div style="font-size:10px;opacity:.6">instância: ${inst}</div>
+  el.innerHTML=`<div style="padding:20px;text-align:center">
+    <div style="font-size:22px;margin-bottom:8px">🔄</div>
+    <div style="font-size:12px;color:var(--t2);font-weight:600">Carregando conversas...</div>
+    <div style="font-size:10px;color:var(--t3);margin-top:4px">instância: ${inst}</div>
   </div>`;
 
   evCall('chat/findChats/'+inst)
     .then(res=>{
-      /* Suporte a { data: [...] } ou [...] direto */
-      const raw = Array.isArray(res) ? res : (res.data || res.chats || []);
+      /* Log para debug */
+      console.log('[K2 Flow] findChats raw:', res);
+
+      /* Suporte a todos os formatos possíveis da Evolution API */
+      let raw = [];
+      if(Array.isArray(res)) raw = res;
+      else if(Array.isArray(res?.data)) raw = res.data;
+      else if(Array.isArray(res?.chats)) raw = res.chats;
+      else if(typeof res === 'object' && res !== null){
+        /* Pode ser objeto indexado */
+        const vals = Object.values(res);
+        if(vals.length && typeof vals[0] === 'object') raw = vals;
+      }
+
       if(!raw.length){
-        el.innerHTML=`<div style="padding:16px;text-align:center;color:rgba(255,255,255,.3);font-size:12px">
-          Nenhuma conversa encontrada na instância ${inst}
+        el.innerHTML=`<div style="padding:20px;text-align:center">
+          <div style="font-size:11px;color:var(--wa);font-weight:600;margin-bottom:6px">⚠️ Nenhuma conversa retornada</div>
+          <div style="font-size:10px;color:var(--t3);line-height:1.6">
+            Possíveis causas:<br>
+            1. URL do n8n hardcoded (veja Configurações → Diagnóstico)<br>
+            2. Instância "${inst}" não tem conversas<br>
+            3. Resposta: ${JSON.stringify(res).substring(0,80)}
+          </div>
+          <button onclick="renderWA()" style="margin-top:10px;background:var(--brand);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700">↺ Tentar novamente</button>
         </div>`;
         return;
       }
+
       /* Mapeia para formato interno */
       const reais = raw
-        .filter(c=>c.id && !c.id.includes('g.us')) /* filtra grupos */
-        .slice(0,40)
-        .map((c,i)=>{
-          const num = (c.id||'').split('@')[0];
-          const nome = c.pushName||c.name||c.verifiedName||num||'Contato';
-          const ultima = c.lastMessage?.conversation
-            || c.lastMessage?.extendedTextMessage?.text
-            || c.lastMessage?.imageMessage?.caption
-            || (c.lastMessage?.audioMessage ? '🎤 Áudio' : '')
-            || (c.lastMessage?.documentMessage ? '📄 Documento' : '')
-            || 'Nova mensagem';
-          const ts = c.lastMessage?.messageTimestamp||c.updatedAt||0;
-          const hora = ts ? new Date(ts*1000).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
+        .filter(c=> c && (c.id||c.remoteJid) && !((c.id||c.remoteJid)||'').includes('g.us'))
+        .slice(0,50)
+        .map((c)=>{
+          const jid = c.id||c.remoteJid||'';
+          const num = jid.split('@')[0].split(':')[0];
+          const nome = c.pushName||c.name||c.verifiedName||c.notify||num||'Contato';
+          const lastMsg = c.lastMessage||c.messages?.[0]||{};
+          const ultima =
+            lastMsg.conversation ||
+            lastMsg.extendedTextMessage?.text ||
+            lastMsg.imageMessage?.caption ||
+            (lastMsg.audioMessage ? '🎤 Áudio' : '') ||
+            (lastMsg.documentMessage ? '📄 Documento' : '') ||
+            c.lastMessageText || c.text || 'Nova mensagem';
+          const ts = lastMsg.messageTimestamp||c.lastMessageTimestamp||c.updatedAt||0;
+          const hora = ts ? new Date(Number(ts)*1000).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
           return {
-            id: 'wa-'+num,
-            jid: c.id,
-            nome, num, hora, ultima,
-            status: 'aberta', ia: false, msgs: [],
-            unread: c.unreadCount||0
+            id:'wa-'+num, jid, nome, num, hora,
+            ultima: ultima.toString().substring(0,80),
+            status:'aberta', ia:false, msgs:[],
+            unread: c.unreadCount||c.unreadMessages||0
           };
         });
 
-      /* Atualiza lista global */
-      CONVS = reais;
+      if(!reais.length){
+        el.innerHTML=`<div style="padding:16px;text-align:center;font-size:11px;color:var(--t3)">
+          Somente grupos encontrados ou contatos sem mensagem.<br>Total recebido: ${raw.length}
+        </div>`;
+        return;
+      }
 
-      /* Sincroniza no CRM automaticamente */
+      CONVS = reais;
       sincronizarCRM(reais);
 
-      /* Atualiza badge */
       const totalUnread = reais.reduce((s,c)=>s+(c.unread||0),0);
-      const nb = document.getElementById('nb-wa');
-      if(nb) nb.textContent = totalUnread || reais.length;
+      const nb=document.getElementById('nb-wa');
+      if(nb) nb.textContent=totalUnread||reais.length;
 
-      /* Renderiza lista */
-      el.innerHTML = reais.map(c=>`
+      if(loadStatus){
+        loadStatus.style.display='block';
+        loadStatus.innerHTML=`✅ ${reais.length} conversas carregadas`;
+        setTimeout(()=>loadStatus.style.display='none',3000);
+      }
+
+      el.innerHTML=reais.map(c=>`
         <div class="wci" id="wci-${c.id}" onclick="openConv('${c.id}')">
           <div class="wc-av" style="background:var(--bl-l);color:var(--bl)">${c.nome.charAt(0).toUpperCase()}</div>
           <div class="wc-info">
             <div class="wc-nome">${c.nome}</div>
-            <div class="wc-msg">${c.ultima.substring(0,50)}</div>
+            <div class="wc-msg">${c.ultima}</div>
           </div>
           <div class="wc-meta">
             <div class="wc-hora">${c.hora}</div>
@@ -1667,15 +1676,16 @@ function renderWA(){
         </div>`).join('');
     })
     .catch(e=>{
-      /* Fallback: mostra dados demo com aviso */
-      el.innerHTML=`<div style="padding:10px 14px;background:rgba(220,38,38,.1);border-bottom:1px solid rgba(220,38,38,.2);font-size:11px;color:#fca5a5">
-        ⚠️ Erro ao carregar conversas reais: ${e.message}
-      </div>`+CONVS.map(c=>`
-        <div class="wci" id="wci-${c.id}" onclick="openConv('${c.id}')">
-          <div class="wc-av" style="background:var(--bl-l);color:var(--bl)">${c.nome.charAt(0).toUpperCase()}</div>
-          <div class="wc-info"><div class="wc-nome">${c.nome}</div><div class="wc-msg">${c.ultima}</div></div>
-          <div class="wc-meta"><div class="wc-hora">${c.hora}</div></div>
-        </div>`).join('');
+      const msg=e.message||String(e);
+      el.innerHTML=`<div style="padding:16px">
+        <div style="background:var(--er-l);border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:12px;font-size:11px;color:#991B1B;line-height:1.6;margin-bottom:10px">
+          <strong>❌ Erro ao carregar conversas</strong><br>${msg}
+        </div>
+        <div style="font-size:10px;color:var(--t3);line-height:1.6;margin-bottom:10px">
+          Verifique em <strong>Configurações → WhatsApp → Diagnóstico completo</strong>
+        </div>
+        <button onclick="renderWA()" style="background:var(--brand);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;width:100%">↺ Tentar novamente</button>
+      </div>`;
     });
 }
 
@@ -1685,24 +1695,25 @@ function sincronizarCRM(convs){
   if(!col) return;
   let novos = 0;
   convs.forEach(c=>{
-    const jaExiste = CRM_COLS.some(col=>col.cards.some(k=>k.wa===c.num||k.nome===c.nome));
-    if(!jaExiste && c.num){
+    const jaExisteCRM = CRM_COLS.some(col=>col.cards.some(k=>k.wa===c.num||k.nome===c.nome));
+    if(!jaExisteCRM && c.num){
       col.cards.unshift({
         id:'wa-crm-'+c.num,
-        nome: c.nome,
-        tag: 'WhatsApp', tagCor: 'bk-ok',
-        resp: 'IA', data: 'agora',
-        val: '', wa: c.num
+        nome: c.nome, tag: 'WhatsApp', tagCor: 'bk-ok',
+        resp: 'IA', data: 'agora', val: '', wa: c.num
       });
       novos++;
     }
+    /* Adiciona também em CLIENTES se não existir */
+    adicionarClienteSeNovo(c.nome, c.num, 'WhatsApp');
   });
   if(novos>0){
     renderKanban();
     const nb=document.getElementById('nb-crm');
     if(nb) nb.textContent=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
     salvarCRM();
-    toast(`${novos} lead(s) novo(s) adicionado(s) ao CRM`,'👥');
+    renderCli();
+    toast(`${novos} lead(s) novo(s) adicionado(s) ao CRM e Clientes`,'👥');
   }
 }
 
@@ -2103,33 +2114,281 @@ function carregarCRM(){
 }
 
 /* ── CLIENTES ── */
-function renderCli(filtro){
-  const tbody=document.getElementById('cli-tbody');if(!tbody)return;
-  const list=filtro?CLIENTES.filter(c=>c.nome.toLowerCase().includes((filtro||'').toLowerCase())||c.status===filtro):CLIENTES;
-  if(!list.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)">Nenhum cliente encontrado</td></tr>';return;}
-  tbody.innerHTML=list.map(c=>`<tr><td><div style="font-weight:600">${c.nome}</div><div style="font-size:11px;color:var(--t3)">${c.email}</div></td><td>${c.wa}</td><td>${c.origem}</td><td>${new Date(c.ultima).toLocaleDateString('pt-BR')}</td><td><span class="badge ${c.status==='ativo'?'bk-ok':'bk-g'}"><span class="bk-dot"></span>${c.status}</span></td><td style="display:flex;gap:5px"><button style="background:var(--brand-l);border:1px solid var(--brand-b);color:var(--brand);border-radius:5px;padding:5px 8px;font-size:10px;font-weight:700" onclick="window.open('https://wa.me/${c.wa}','_blank')">WhatsApp</button><button style="background:transparent;border:1px solid var(--bd);border-radius:5px;padding:5px 8px;font-size:10px" onclick="openModal('modal-ag')">Agendar</button></td></tr>`).join('');
+/* ── CLIENTES ── */
+let _cliCRMFilter='', _cliStatusFilter='', _cliSearch='';
+
+function getCRMEtapa(wa){
+  for(const col of CRM_COLS){
+    const found=col.cards.find(c=>c.wa===wa||c.wa===wa?.replace(/\D/g,''));
+    if(found) return col.nome;
+  }
+  return '';
 }
-function filterCli(q){renderCli(q);}
+
+const CRM_ETAPA_CORES = {
+  'Primeiro Contato':  'bk-b',
+  'Em Atendimento':    'bk-p',
+  'Proposta Enviada':  'bk-w',
+  'Agendado':          'bk-ok',
+  'Fechado ✓':         'bk-ok',
+  'Perdido':           'bk-r',
+};
+
+function renderCli(){
+  const tbody=document.getElementById('cli-tbody');if(!tbody)return;
+  let list=[...CLIENTES];
+
+  /* Aplica filtros */
+  if(_cliSearch) list=list.filter(c=>
+    c.nome.toLowerCase().includes(_cliSearch.toLowerCase())||
+    (c.wa||'').includes(_cliSearch)||
+    (c.email||'').toLowerCase().includes(_cliSearch.toLowerCase())
+  );
+  if(_cliStatusFilter) list=list.filter(c=>c.status===_cliStatusFilter);
+  if(_cliCRMFilter) list=list.filter(c=>getCRMEtapa(c.wa)===_cliCRMFilter);
+
+  const counter=document.getElementById('cli-counter');
+  if(counter) counter.textContent=list.length+' cliente(s)';
+
+  if(!list.length){
+    tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)">Nenhum cliente encontrado</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML=list.map(c=>{
+    const etapa=getCRMEtapa(c.wa);
+    const etapaCor=CRM_ETAPA_CORES[etapa]||'bk-g';
+    const ultimaFmt = c.ultima_msg || (c.ultima?new Date(c.ultima).toLocaleDateString('pt-BR'):'—');
+    return`<tr>
+      <td>
+        <div style="font-weight:600;color:var(--t1)">${c.nome}</div>
+        <div style="font-size:11px;color:var(--t3)">${c.email||'—'}</div>
+      </td>
+      <td>
+        <a href="https://wa.me/${c.wa}" target="_blank" style="color:#25D366;font-weight:600;text-decoration:none;font-size:12px">
+          ${c.wa?'+'+c.wa:'—'}
+        </a>
+      </td>
+      <td><span class="badge bk-b" style="font-size:10px">${c.origem||'—'}</span></td>
+      <td style="font-size:12px;color:var(--t2)">${ultimaFmt}</td>
+      <td>${etapa?`<span class="badge ${etapaCor}"><span class="bk-dot"></span>${etapa}</span>`:'<span style="font-size:11px;color:var(--t3)">—</span>'}</td>
+      <td><span class="badge ${c.status==='ativo'?'bk-ok':'bk-g'}"><span class="bk-dot"></span>${c.status||'ativo'}</span></td>
+      <td>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          <button style="background:#E8FFF0;border:1px solid #25D36640;color:#25D366;border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700"
+            onclick="abrirConvCliente('${c.wa}')">💬 Chat</button>
+          <button style="background:var(--brand-l);border:1px solid var(--brand-b);color:var(--brand);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700"
+            onclick="abrirOrcaParaCliente('${c.nome}','${c.wa}')">💰 Orçamento</button>
+          <button style="background:transparent;border:1px solid var(--bd);border-radius:5px;padding:4px 8px;font-size:10px"
+            onclick="openModal('modal-ag')">📅 Agendar</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterCli(q){ _cliSearch=q; renderCli(); }
+function filterCliStatus(v){ _cliStatusFilter=v; renderCli(); }
+function setCliCRMFilter(v){
+  _cliCRMFilter=v;
+  document.querySelectorAll('#page-clientes .btn-sec, #page-clientes .btn-prim').forEach(b=>{
+    if(b.id==='cli-filter-all'||b.textContent.trim()==='Todos') b.style.cssText='font-size:11px;padding:6px 10px'+(v===''?';background:var(--brand);color:#fff;border-color:var(--brand)':'');
+  });
+  renderCli();
+}
+
+function abrirConvCliente(wa){
+  /* Navega para WhatsApp e abre a conversa do cliente */
+  goPage('wa',document.querySelector('.ni[onclick*="goPage(\'wa\'"]'));
+  setTimeout(()=>{
+    const conv=CONVS.find(c=>c.num===wa||(wa&&c.num?.includes(wa.slice(-8))));
+    if(conv) openConv(conv.id);
+  },500);
+}
+
+function abrirOrcaParaCliente(nome, wa){
+  abrirModalOrca(nome, wa);
+}
+
 function criarCliente(){
   const nome=document.getElementById('cli-nome').value.trim();
   if(!nome){toast('Informe o nome','⚠️');return;}
-  CLIENTES.push({id:Date.now(),nome,wa:document.getElementById('cli-wa').value,email:document.getElementById('cli-email').value,origem:document.getElementById('cli-origem').value,ultima:new Date().toISOString().split('T')[0],status:'ativo'});
-  renderCli();closeModal('modal-cli');toast(`Cliente "${nome}" cadastrado!`,'✅');
+  const cli={
+    id:Date.now(), nome,
+    wa:document.getElementById('cli-wa').value.replace(/\D/g,''),
+    email:document.getElementById('cli-email').value,
+    origem:document.getElementById('cli-origem').value,
+    ultima:new Date().toISOString().split('T')[0],
+    status:'ativo'
+  };
+  CLIENTES.push(cli);
+  renderCli();
+  populateOrcaClientes();
+  closeModal('modal-cli');
+  toast(`Cliente "${nome}" cadastrado!`,'✅');
   document.getElementById('cli-nome').value='';
+  /* Adiciona ao CRM se não existir */
+  const col=CRM_COLS.find(c=>c.id==='pc');
+  if(col && cli.wa){
+    const jaExiste=CRM_COLS.some(c=>c.cards.some(k=>k.wa===cli.wa));
+    if(!jaExiste){
+      col.cards.unshift({id:'k-cli-'+cli.id,nome,tag:cli.origem,tagCor:'bk-ok',resp:'—',data:'agora',val:'',wa:cli.wa});
+      renderKanban();salvarCRM();
+    }
+  }
+}
+
+/* Adiciona cliente ao array CLIENTES quando vem do WhatsApp/CRM */
+function adicionarClienteSeNovo(nome, wa, origem){
+  if(!wa) return;
+  const jaExiste=CLIENTES.some(c=>c.wa===wa||c.wa===wa.replace(/\D/g,''));
+  if(!jaExiste){
+    CLIENTES.push({
+      id:Date.now(), nome, wa:wa.replace(/\D/g,''),
+      email:'', origem:origem||'WhatsApp',
+      ultima:new Date().toLocaleDateString('pt-BR'),
+      ultima_msg: new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
+      status:'ativo'
+    });
+    populateOrcaClientes();
+  }
 }
 
 /* ── ORÇAMENTOS ── */
+function populateOrcaClientes(){
+  const sel=document.getElementById('orca-cli');if(!sel)return;
+  sel.innerHTML=`<option value="">Selecione o cliente...</option>`
+    +CLIENTES.map(c=>`<option value="${c.id}" data-wa="${c.wa}" data-nome="${c.nome}">${c.nome}${c.wa?' · +'+c.wa:''}</option>`).join('');
+}
+
+function abrirModalOrca(nomePresel, waPresel){
+  populateOrcaClientes();
+  if(nomePresel){
+    /* Pré-seleciona o cliente */
+    const sel=document.getElementById('orca-cli');
+    for(const opt of sel.options){
+      if(opt.getAttribute('data-nome')===nomePresel||opt.getAttribute('data-wa')===waPresel){
+        opt.selected=true;break;
+      }
+    }
+  }
+  openModal('modal-orca');
+}
+
+let _orcaStatusFilter='';
+function filterOrcaStatus(v){ _orcaStatusFilter=v; renderOrcamentos(); }
+
 function renderOrcamentos(){
   const tbody=document.getElementById('orca-tbody');if(!tbody)return;
-  tbody.innerHTML=ORCAMENTOS.map(o=>`<tr><td><strong>#${o.num}</strong> — ${o.desc}</td><td>${o.cli}</td><td style="font-weight:600;color:var(--ok)">${o.valor}</td><td><span class="badge ${o.status==='aprovado'?'bk-ok':o.status==='recusado'?'bk-r':'bk-w'}"><span class="bk-dot"></span>${o.status}</span></td><td>${o.data}</td><td style="display:flex;gap:5px"><button class="btn-sec btn-sm" onclick="toast('Enviado por WhatsApp!','📱')">WhatsApp</button><button class="btn-sec btn-sm" onclick="toast('PDF gerado!','📄')">PDF</button></td></tr>`).join('');
+  let list=_orcaStatusFilter?ORCAMENTOS.filter(o=>o.status===_orcaStatusFilter):ORCAMENTOS;
+  if(!list.length){
+    tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)">Nenhum orçamento encontrado</td></tr>`;
+    return;
+  }
+  tbody.innerHTML=list.map(o=>`<tr>
+    <td><strong>#${o.num}</strong><div style="font-size:11px;color:var(--t3)">${o.desc}</div></td>
+    <td><strong>${o.cli}</strong></td>
+    <td style="font-size:11px;color:var(--t3)">${o.wa?'+'+o.wa:'—'}</td>
+    <td style="font-weight:700;color:var(--ok)">${o.valor}</td>
+    <td><span class="badge ${o.status==='aprovado'?'bk-ok':o.status==='recusado'?'bk-r':'bk-w'}"><span class="bk-dot"></span>${o.status}</span></td>
+    <td style="font-size:12px;color:var(--t2)">${o.data}</td>
+    <td>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        ${o.wa?`<button style="background:#E8FFF0;border:1px solid #25D36640;color:#25D366;border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700"
+          onclick="enviarOrcaWA('${o.id}')">📲 Enviar</button>`:''}
+        <button style="background:transparent;border:1px solid var(--bd);border-radius:5px;padding:4px 8px;font-size:10px"
+          onclick="gerarTextoOrca('${o.id}')">📋 Copiar</button>
+        <button style="background:var(--ok-l);border:1px solid var(--ok);color:var(--ok);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700"
+          onclick="alterarStatusOrca('${o.id}','aprovado')">✓ Aprovar</button>
+      </div>
+    </td>
+  </tr>`).join('');
 }
+
 function criarOrca(){
-  const cli=document.getElementById('orca-cli').value;
-  const modelo=document.getElementById('orca-modelo').value;
-  const valor=document.getElementById('orca-valor').value||'R$0';
+  const sel=document.getElementById('orca-cli');
+  const opt=sel.options[sel.selectedIndex];
+  if(!opt||!opt.value){toast('Selecione um cliente','⚠️');return;}
+  const cliNome=opt.getAttribute('data-nome')||opt.text.split('·')[0].trim();
+  const cliWa=opt.getAttribute('data-wa')||'';
+  const desc=document.getElementById('orca-desc').value.trim();
+  const valor=document.getElementById('orca-valor').value.trim();
+  const val=document.getElementById('orca-val').value;
+  const obs=document.getElementById('orca-obs').value.trim();
+  if(!desc||!valor){toast('Preencha o serviço e o valor','⚠️');return;}
   const num=String(ORCAMENTOS.length+1).padStart(3,'0');
-  ORCAMENTOS.push({id:'o'+Date.now(),num,desc:modelo,cli,valor,status:'aguardando',data:new Date().toLocaleDateString('pt-BR')});
-  renderOrcamentos();closeModal('modal-orca');toast(`Orçamento #${num} criado!`,'✅');
+  const orca={
+    id:'o'+Date.now(), num, desc, cli:cliNome, wa:cliWa, valor,
+    validade:val, obs, status:'aguardando',
+    data:new Date().toLocaleDateString('pt-BR')
+  };
+  ORCAMENTOS.push(orca);
+  renderOrcamentos();
+  closeModal('modal-orca');
+  toast(`Orçamento #${num} criado!`,'✅');
+  /* Oferece envio imediato */
+  if(cliWa){
+    setTimeout(()=>{
+      if(confirm(`Enviar orçamento para ${cliNome} via WhatsApp agora?`)) enviarOrcaWA(orca.id);
+    },400);
+  }
+  /* Limpa campos */
+  document.getElementById('orca-desc').value='';
+  document.getElementById('orca-valor').value='';
+  document.getElementById('orca-obs').value='';
+}
+
+function gerarTextoOrca(id){
+  const o=ORCAMENTOS.find(x=>x.id===id);if(!o)return;
+  const txt=`*Orçamento K2 Flow #${o.num}*\n\n`
+    +`👤 Cliente: ${o.cli}\n`
+    +`📋 Serviço: ${o.desc}\n`
+    +`💰 Valor: ${o.valor}\n`
+    +(o.validade?`📅 Válido até: ${new Date(o.validade).toLocaleDateString('pt-BR')}\n`:'')
+    +(o.obs?`\n📝 ${o.obs}\n`:'')
+    +`\nPara aceitar ou tirar dúvidas, responda esta mensagem. ✅`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+  toast('Texto copiado!','📋');
+  return txt;
+}
+
+async function enviarOrcaWA(id){
+  const o=ORCAMENTOS.find(x=>x.id===id);if(!o||!o.wa)return;
+  const inst=(localStorage.getItem('k2cfg_ev-inst')||'AmandaCS').trim();
+  const txt=gerarTextoOrca(id);
+  toast('Enviando orçamento via WhatsApp...','📲');
+  try{
+    await evCall('message/sendText/'+inst,'POST',{number:o.wa,text:txt});
+    toast(`Orçamento #${o.num} enviado para ${o.cli}!`,'✅');
+    /* Atualiza a conversa no WhatsApp */
+    const conv=CONVS.find(c=>c.num===o.wa);
+    if(conv){ conv.msgs.push({dir:'out',txt,hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),ia:false,tipo:'text'}); }
+  }catch(e){
+    toast('Erro: '+e.message,'❌');
+    /* Fallback: abre wa.me */
+    window.open(`https://wa.me/${o.wa}?text=${encodeURIComponent(txt)}`, '_blank');
+  }
+}
+
+function alterarStatusOrca(id, status){
+  const o=ORCAMENTOS.find(x=>x.id===id);if(!o)return;
+  o.status=status;
+  renderOrcamentos();
+  toast(`Orçamento #${o.num} marcado como ${status}!`,'✅');
+  /* Se aprovado, move no CRM para Agendado */
+  if(status==='aprovado'&&o.wa){
+    const col=CRM_COLS.find(c=>c.id==='ag');
+    const colAtual=CRM_COLS.find(c=>c.cards.some(k=>k.wa===o.wa));
+    if(col&&colAtual&&colAtual.id!=='ag'&&colAtual.id!=='fc'){
+      const idx=colAtual.cards.findIndex(k=>k.wa===o.wa);
+      if(idx>-1){
+        const [card]=colAtual.cards.splice(idx,1);
+        col.cards.unshift({...card,val:o.valor});
+        renderKanban();salvarCRM();
+        toast(`${o.cli} movido para "Agendado" no CRM!`,'🎯');
+      }
+    }
+  }
 }
 
 /* ── WORK HUB ── */
