@@ -1765,25 +1765,7 @@ function salvarGCal(){
   });
 }
 
-function carregarGCal(){
-  const id=localStorage.getItem('k2cfg_gcal-id')||'';
-  const key=localStorage.getItem('k2cfg_gcal-key')||'';
-  const elId=document.getElementById('cfg-gcal-id');
-  const elKey=document.getElementById('cfg-gcal-key');
-  if(elId) elId.value=id;
-  if(elKey) elKey.value=key;
-  if(id&&key){
-    GCAL_CONNECTED=true;
-    GCAL_CALENDAR_ID=id;
-    const el=document.getElementById('gcal-status-cfg');
-    if(el) el.textContent='✅ Configurado — clique em Sincronizar para atualizar';
-    const btn=document.getElementById('gcal-btn');
-    if(btn){
-      btn.querySelector('span').textContent='✅ Google Calendar';
-      btn.style.background='var(--ok-l)';btn.style.color='var(--ok)';
-    }
-  }
-}
+function abrirModalAgendamento(waNum, nomeCliente){
   /* Popular dropdown de clientes */
   const sel=document.getElementById('ag-cli-sel');
   if(sel){
