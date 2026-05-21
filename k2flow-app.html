@@ -120,6 +120,7 @@ button{cursor:pointer}
 /* ── PAGES ── */
 .page{display:none;flex:1;flex-direction:column;overflow:hidden;animation:pgIn .18s ease;min-height:0}
 .page.on{display:flex}
+.page.content{overflow-y:auto !important}
 @keyframes pgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 /* ── STATS ── */
@@ -594,21 +595,13 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   <div class="page on content" id="page-dash">
 
     <!-- Header com filtros -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Dashboard</div>
-        <div style="font-size:11px;color:var(--t3)">Visão geral do seu negócio</div>
-      </div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:10px">
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
           <button class="fin-per-btn on" id="dash-per-btn-7" onclick="setDashPeriodo(7,this)">7D</button>
           <button class="fin-per-btn" onclick="setDashPeriodo(30,this)" style="border-left:1px solid var(--bd)">30D</button>
           <button class="fin-per-btn" onclick="setDashPeriodo(90,this)" style="border-left:1px solid var(--bd)">90D</button>
         </div>
-        <button class="btn-prim" onclick="openActionModal()" style="font-size:11px">
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <span id="btn-prim-txt">Novo Agendamento</span>
-        </button>
       </div>
     </div>
 
@@ -1240,19 +1233,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   </div>
 
   <!-- RELATÓRIOS -->
-  <div class="page content" id="page-relatorios">
-
-    <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Relatórios Operacionais</div>
-        <div style="font-size:11px;color:var(--t3)">Saúde geral da operação · atualizado agora</div>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn-prim" onclick="atualizarRelatorios()" style="font-size:11px">↻ Atualizar</button>
-        <button class="btn-sec" onclick="gerarRelatorioGeral()" style="font-size:11px">📤 Exportar</button>
-      </div>
-    </div>
+  <div class="page content" id="page-relatorios" style="overflow-y:auto">
 
     <!-- Score geral -->
     <div style="background:var(--dark);border-radius:14px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
@@ -1264,7 +1245,6 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
         <div style="font-size:13px;font-weight:700;color:var(--brand);margin-bottom:6px" id="rel-score-titulo">Calculando...</div>
         <div style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.6" id="rel-score-desc">Analisando todos os módulos da operação...</div>
       </div>
-      <button onclick="analisarOperacaoIA()" style="background:var(--brand);border:none;color:#fff;border-radius:8px;padding:10px 18px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer">🤖 Análise IA</button>
     </div>
 
     <!-- Grid de alertas -->
@@ -1409,11 +1389,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   <div class="page content" id="page-financeiro">
 
     <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Financeiro</div>
-        <div style="font-size:11px;color:var(--t3)" id="fin-header-data">Controle suas receitas, despesas e contas</div>
-      </div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:14px;flex-wrap:wrap;gap:8px">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
           <button class="fin-per-btn on" onclick="setFinPeriodo(1,this)">1M</button>
@@ -1716,11 +1692,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   <!-- N8N -->
   <div class="page content" id="page-n8n">
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">n8n · Fluxos de Automação</div>
-        <div style="font-size:11px;color:var(--t3)">Gerencie seus workflows e automações</div>
-      </div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:10px">
       <div style="display:flex;gap:8px">
         <button class="btn-sec" onclick="window.open('https://n8n-n8n.k8wm1v.easypanel.host','_blank')" style="font-size:11px">⚡ Abrir editor n8n →</button>
         <button class="btn-prim" onclick="toast('Sincronizando workflows...','🔄');renderN8n()" style="font-size:11px">↻ Sincronizar</button>
@@ -2523,7 +2495,7 @@ const PAGE_META={
   automacoes:{title:'Automações',sub:'Mensagens e fluxos automáticos',btn:'',modal:''},
   n8n:{title:'n8n · Fluxos',sub:'Workflows e automações ativas',btn:'',modal:''},
   ads:{title:'Campanhas & Ads',sub:'Meta Ads + Google Ads · performance completa',btn:'+ Campanha',modal:''},
-  relatorios:{title:'Relatórios Operacionais',sub:'Saúde geral da operação em tempo real',btn:'↻ Atualizar',modal:''},
+  relatorios:{title:'Relatórios Operacionais',sub:'Saúde geral da operação em tempo real',btn:'↻ Atualizar',modal:'',extraBtn:'<button class="btn-sec btn-sm" onclick="gerarRelatorioGeral()">📤 Exportar</button>'},
   config:{title:'Configurações',sub:'Personalize sua experiência no K2 Flow',btn:'',modal:''},
   hub:{title:'Work Hub',sub:'Central de tarefas e produção',btn:'Nova Tarefa',modal:'modal-task'},
   sh:{title:'Social Hub',sub:'Gestão de redes sociais',btn:'Novo Post',modal:''},
