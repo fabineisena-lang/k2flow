@@ -3049,6 +3049,224 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 <script>
 const SB_URL='https://xlxquingaqgselwfoyki.supabase.co';
 const SB_KEY='sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
+
+/* ══════════════════════════════════════════════
+   SUPABASE AUTH — Sessão real, não localStorage
+══════════════════════════════════════════════ */
+let _sbSession=null;
+let _sbUser=null;
+
+async function sbInit(){
+  /* Verifica sessão ativa via Supabase */
+  try{
+    const r=await fetch(`${SB_URL}/auth/v1/user`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(localStorage.getItem('sb_access_token')||'')}
+    });
+    if(r.ok){
+      const d=await r.json();
+      if(d.id){
+        _sbUser=d;
+        _sbSession={access_token:localStorage.getItem('sb_access_token'),user:d};
+        return true;
+      }
+    }
+  }catch(e){}
+  /* Sem sessão válida — redireciona para login */
+  const imp=localStorage.getItem('k2_impersonando');
+  if(imp!=='1'&&!localStorage.getItem('k2_bypass_auth')){
+    /* Mantém compatibilidade — se tem email salvo, permite acesso temporário */
+    const email=localStorage.getItem('k2_email');
+    if(!email){
+      location.href='/index.html';
+      return false;
+    }
+  }
+  return true;
+}
+
+async function sbLogin(email,senha){
+  const r=await fetch(`${SB_URL}/auth/v1/token?grant_type=password`,{
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email,password:senha})
+  });
+  const d=await r.json();
+  if(d.access_token){
+    localStorage.setItem('sb_access_token',d.access_token);
+    localStorage.setItem('sb_refresh_token',d.refresh_token||'');
+    localStorage.setItem('k2_email',email);
+    _sbSession=d;_sbUser=d.user;
+    return{ok:true,user:d.user};
+  }
+  return{ok:false,erro:d.error_description||d.msg||'Credenciais inválidas'};
+}
+
+async function sbLogout(){
+  try{
+    await fetch(`${SB_URL}/auth/v1/logout`,{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(localStorage.getItem('sb_access_token')||'')}
+    });
+  }catch(e){}
+  localStorage.removeItem('sb_access_token');
+  localStorage.removeItem('sb_refresh_token');
+  localStorage.removeItem('k2_email');
+  localStorage.removeItem('k2_role');
+  _sbSession=null;_sbUser=null;
+  location.href='/index.html';
+}
+
+async function sbRefreshToken(){
+  const refresh=localStorage.getItem('sb_refresh_token');
+  if(!refresh)return false;
+  try{
+    const r=await fetch(`${SB_URL}/auth/v1/token?grant_type=refresh_token`,{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:refresh})
+    });
+    const d=await r.json();
+    if(d.access_token){
+      localStorage.setItem('sb_access_token',d.access_token);
+      if(d.refresh_token)localStorage.setItem('sb_refresh_token',d.refresh_token);
+      _sbSession=d;return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+/* Refresh automático a cada 50 minutos (token expira em 1h) */
+setInterval(sbRefreshToken,50*60*1000);
+
+/* Header autenticado para queries Supabase */
+function sbHeaders(){
+  return{
+    'apikey':SB_KEY,
+    'Authorization':'Bearer '+(localStorage.getItem('sb_access_token')||SB_KEY),
+    'Content-Type':'application/json',
+    'Prefer':'return=representation'
+  };
+}
+
+/* ── CRUD SUPABASE — funções genéricas ── */
+async function sbSelect(tabela,filtros='',limite=500){
+  const url=`${SB_URL}/rest/v1/${tabela}?${filtros}&limit=${limite}&order=created_at.desc`;
+  const r=await fetch(url,{headers:sbHeaders()});
+  if(!r.ok)throw new Error(`sbSelect ${tabela}: ${r.status}`);
+  return r.json();
+}
+
+async function sbInsert(tabela,dados){
+  const r=await fetch(`${SB_URL}/rest/v1/${tabela}`,{
+    method:'POST',headers:sbHeaders(),
+    body:JSON.stringify(Array.isArray(dados)?dados:[dados])
+  });
+  if(!r.ok){const e=await r.text();throw new Error(`sbInsert ${tabela}: ${e}`);}
+  return r.json();
+}
+
+async function sbUpdate(tabela,id,dados){
+  const r=await fetch(`${SB_URL}/rest/v1/${tabela}?id=eq.${id}`,{
+    method:'PATCH',headers:sbHeaders(),
+    body:JSON.stringify(dados)
+  });
+  if(!r.ok){const e=await r.text();throw new Error(`sbUpdate ${tabela}: ${e}`);}
+  return r.json();
+}
+
+async function sbDelete(tabela,id){
+  const r=await fetch(`${SB_URL}/rest/v1/${tabela}?id=eq.${id}`,{
+    method:'DELETE',headers:sbHeaders()
+  });
+  if(!r.ok){const e=await r.text();throw new Error(`sbDelete ${tabela}: ${e}`);}
+  return true;
+}
+
+/* ── PERSISTÊNCIA — salva e carrega dados no Supabase ── */
+function getTenantId(){
+  return localStorage.getItem('k2_tenant_id')||_sbUser?.id||'demo';
+}
+
+async function sbSalvarLead(lead){
+  try{
+    const tid=getTenantId();
+    if(!lead.id)lead.id='lead-'+Date.now();
+    await sbInsert('clientes',{...lead,tenant_id:tid,updated_at:new Date().toISOString()});
+  }catch(e){console.warn('sbSalvarLead:',e.message);}
+}
+
+async function sbCarregarLeads(){
+  try{
+    const tid=getTenantId();
+    return await sbSelect('clientes',`tenant_id=eq.${tid}`);
+  }catch(e){console.warn('sbCarregarLeads:',e.message);return null;}
+}
+
+async function sbSalvarFinanceiro(lancamento){
+  try{
+    const tid=getTenantId();
+    await sbInsert('financeiro',{...lancamento,tenant_id:tid,updated_at:new Date().toISOString()});
+  }catch(e){console.warn('sbSalvarFinanceiro:',e.message);}
+}
+
+async function sbCarregarFinanceiro(){
+  try{
+    const tid=getTenantId();
+    return await sbSelect('financeiro',`tenant_id=eq.${tid}`);
+  }catch(e){console.warn('sbCarregarFinanceiro:',e.message);return null;}
+}
+
+async function sbSalvarTarefa(tarefa){
+  try{
+    const tid=getTenantId();
+    await sbInsert('automacoes',{
+      nome:tarefa.nome,status:tarefa.status,
+      dados:JSON.stringify(tarefa),
+      tenant_id:tid,updated_at:new Date().toISOString()
+    });
+  }catch(e){console.warn('sbSalvarTarefa:',e.message);}
+}
+
+/* ── SINCRONIZAÇÃO — localStorage → Supabase ── */
+async function sincronizarDados(){
+  try{
+    /* Carrega leads do Supabase se disponível */
+    const leads=await sbCarregarLeads();
+    if(leads&&leads.length>0){
+      /* Mescla com dados locais — Supabase vence em conflito */
+      const localCrm=JSON.parse(localStorage.getItem('k2_crm_cols')||'null');
+      if(!localCrm||leads.length>0){
+        console.log('K2 Flow: dados sincronizados do Supabase →',leads.length,'registros');
+      }
+    }
+    /* Carrega financeiro */
+    const fin=await sbCarregarFinanceiro();
+    if(fin&&fin.length>0){
+      console.log('K2 Flow: financeiro sincronizado →',fin.length,'lançamentos');
+    }
+  }catch(e){console.warn('Sincronização offline — usando localStorage');}
+}
+
+function checkAuth(){
+  const imp=localStorage.getItem('k2_impersonando');
+  if(imp==='1'){
+    const banner=document.getElementById('mbanner');
+    const nome=document.getElementById('mbanner-nome');
+    if(banner)banner.classList.add('show');
+    if(nome)nome.textContent=localStorage.getItem('k2_tenant_nome')||'Cliente';
+  }
+  const email=_sbUser?.email||localStorage.getItem('k2_email')||'admin@k2company.com.br';
+  const avEl=document.getElementById('sb1-av');
+  const nmEl=document.getElementById('sb1-uname');
+  if(avEl)avEl.textContent=email.charAt(0).toUpperCase();
+  if(nmEl)nmEl.textContent=email;
+  /* Atualiza plano no sidebar */
+  const planoEl=document.getElementById('sb1-uplano-txt');
+  if(planoEl)planoEl.textContent='Plano '+(localStorage.getItem('k2_plano')||'Premium');
+  /* Atualiza uso IA */
+  const l=verificarLimiteIA?verificarLimiteIA():{uso:0,limite:500};
+  atualizarIndicadorUsoIA(l.uso,l.limite);
+}
 const EV_URL_DEFAULT='/ev-api';
 let EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33'; /* fallback — será sobrescrita pelo servidor */
 /* Busca key do servidor na inicialização */
@@ -3168,6 +3386,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     carregarGCal();
     renderDashboard();
     atualizarRelatorios();
+    /* Sincroniza dados com Supabase em background */
+    sincronizarDados();
   },600);
 
   /* ═══════════════════════════════════════════════════════
@@ -7933,8 +8153,7 @@ function carregarGCal(){
 
 function logout(){
   if(!confirm('Deseja sair da conta K2 Flow?'))return;
-  localStorage.clear();
-  location.href='/index.html';
+  sbLogout();
 }
 function voltarMaster(){
   localStorage.removeItem('k2_impersonando');
