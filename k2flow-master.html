@@ -1,82 +1,1211 @@
-K2
-K2 Flow
-MASTER ADMIN
-Acesso restrito
-Painel exclusivo para administradores da K2 Company
-E-MAIL
-SENHA
-Entrar no painel
-K2
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K2 Flow — Master Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#F26419;--brand-l:rgba(242,100,25,.1);--brand-b:rgba(242,100,25,.22);
+  --dark:#0D1117;--dark2:#161B22;--dark3:#21262D;--dark4:#2D333B;
+  --light:#F4F6F9;--light2:#FFFFFF;--bd:#E5E7EB;--bd2:#F3F4F6;
+  --t1:#111827;--t2:#4B5563;--t3:#9CA3AF;
+  --ok:#059669;--ok-l:rgba(5,150,105,.1);
+  --wa:#D97706;--wa-l:rgba(217,119,6,.1);
+  --er:#DC2626;--er-l:rgba(220,38,38,.1);
+  --bl:#2563EB;--bl-l:rgba(37,99,235,.1);
+  --pu:#7C3AED;--pu-l:rgba(124,58,237,.1);
+  --sb:220px;--r:10px;--rs:7px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--light);color:var(--t1);height:100vh;overflow:hidden;display:flex}
+input,button,select,textarea{font-family:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
 
-K2 Flow
-WHATSAPP | CRM | IA
+/* ── SIDEBAR ── */
+.sb{width:var(--sb);min-width:var(--sb);background:var(--dark);display:flex;flex-direction:column;height:100vh;z-index:100;flex-shrink:0}
+.sb-brand{padding:16px 12px 14px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.sb-brand-inner{display:flex;align-items:center;gap:10px}
+.sb-ico{width:34px;height:34px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;box-shadow:0 4px 12px rgba(242,100,25,.3)}
+.sb-ico-txt{font-family:'Barlow',sans-serif;font-weight:900;font-size:14px;color:#fff;letter-spacing:-.5px}
+.sb-ico-arr{position:absolute;bottom:3px;right:3px;width:9px;height:9px}
+.sb-name{font-family:'Barlow',sans-serif;font-weight:800;font-size:16px;color:#fff;letter-spacing:-.2px}
+.sb-name em{color:var(--brand);font-style:normal}
+.sb-tag{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-top:2px}
+.sb-master-badge{margin:10px 12px 0;background:rgba(242,100,25,.12);border:1px solid rgba(242,100,25,.22);border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:7px}
+.sb-master-dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex-shrink:0;box-shadow:0 0 6px rgba(242,100,25,.6)}
+.sb-master-txt{font-size:11px;font-weight:700;color:rgba(242,100,25,.9);letter-spacing:.02em}
+.sb-nav{flex:1;padding:8px 6px;overflow-y:auto}
+.sb-sec{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;padding:10px 10px 4px}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:rgba(255,255,255,.45);transition:all .15s;font-weight:500;border:none;background:transparent;width:100%;text-align:left}
+.ni:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.88)}
+.ni.on{background:var(--brand);color:#fff;font-weight:600}
+.ni svg{width:16px;height:16px;flex-shrink:0}
+.ni-badge{margin-left:auto;background:var(--brand);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}
+.ni-badge-ok{margin-left:auto;background:rgba(5,150,105,.2);color:#34D399;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}
+.sb-footer{padding:10px 8px;border-top:1px solid rgba(255,255,255,.05)}
+.sb-user{display:flex;align-items:center;gap:9px;padding:8px 10px;background:rgba(255,255,255,.05);border-radius:8px}
+.sb-av{width:30px;height:30px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-uname{font-size:12px;font-weight:600;color:#fff}
+.sb-uemail{font-size:10px;color:rgba(255,255,255,.3)}
+.sb-logout{width:100%;margin-top:6px;background:transparent;border:none;border-radius:8px;padding:8px;color:rgba(255,255,255,.3);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.sb-logout:hover{background:rgba(220,38,38,.1);color:#FCA5A5}
 
-Painel Master
-GESTÃO
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--light2);border-bottom:1px solid var(--bd);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-left{display:flex;flex-direction:column}
+.topbar-title{font-family:'Barlow',sans-serif;font-weight:700;font-size:18px;color:var(--t1);letter-spacing:-.2px}
+.topbar-sub{font-size:12px;color:var(--t3);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn-add{background:var(--brand);color:#fff;border:none;border-radius:var(--rs);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.btn-add:hover{background:#d95515;transform:translateY(-1px);box-shadow:0 4px 12px rgba(242,100,25,.3)}
+.btn-sec{background:transparent;color:var(--t2);border:1px solid var(--bd);border-radius:var(--rs);padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.btn-sec:hover{background:var(--bd2);border-color:#CBD5E1}
+.content{flex:1;overflow-y:auto;padding:24px}
 
-Dashboard
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:6px;transition:box-shadow .2s}
+.stat:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.stat-label{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em}
+.stat-val{font-family:'Barlow',sans-serif;font-weight:800;font-size:26px;color:var(--t1);letter-spacing:-.5px;line-height:1}
+.stat-sub{font-size:11px;color:var(--t3);margin-top:2px}
 
-Clientes
-0
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:320px}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none}
+.search-inp{width:100%;background:var(--light2);border:1px solid var(--bd);border-radius:var(--rs);padding:9px 12px 9px 36px;font-size:13px;color:var(--t1);outline:none;transition:border-color .2s}
+.search-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-l)}
+.search-inp::placeholder{color:var(--t3)}
+.filter-sel{background:var(--light2);border:1px solid var(--bd);border-radius:var(--rs);padding:9px 12px;font-size:13px;color:var(--t2);outline:none;cursor:pointer;transition:border-color .2s}
+.filter-sel:focus{border-color:var(--brand)}
+.filter-count{font-size:12px;color:var(--t3);margin-left:auto}
 
-Planos
-FINANCEIRO
+/* ── TABLE ── */
+.table-wrap{background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+thead th{background:var(--bd2);padding:11px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border-bottom:1px solid var(--bd)}
+tbody tr{border-bottom:1px solid var(--bd2);transition:background .15s;cursor:default}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#FAFBFC}
+td{padding:13px 16px;font-size:13px;color:var(--t1);vertical-align:middle}
+.td-name{font-weight:600;color:var(--t1)}
+.td-nicho{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500}
 
-Receita
-SISTEMA
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.badge-ok{background:var(--ok-l);color:var(--ok)}
+.badge-wa{background:var(--wa-l);color:var(--wa)}
+.badge-er{background:var(--er-l);color:var(--er)}
+.badge-bl{background:var(--bl-l);color:var(--bl)}
+.badge-pu{background:var(--pu-l);color:var(--pu)}
+.badge-gr{background:rgba(107,114,128,.1);color:#6B7280}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
 
-Configurações
-M
-Master Admin
-admin@k2company.com.br
+/* Progress bar */
+.prog{background:var(--bd2);border-radius:99px;height:5px;width:80px;overflow:hidden;margin-top:4px}
+.prog-bar{height:100%;border-radius:99px;background:var(--brand);transition:width .3s}
+.prog-bar.warn{background:var(--wa)}
+.prog-bar.over{background:var(--er)}
 
-Sair do Master
-Dashboard
-Visão geral de todos os clientes
+/* Ações */
+.actions{display:flex;align-items:center;gap:6px}
+.btn-enter{background:var(--brand);color:#fff;border:none;border-radius:var(--rs);padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap}
+.btn-enter:hover{background:#d95515;box-shadow:0 3px 8px rgba(242,100,25,.3)}
+.btn-icon{background:transparent;border:1px solid var(--bd);border-radius:var(--rs);padding:7px 9px;cursor:pointer;color:var(--t2);transition:all .15s;display:flex;align-items:center}
+.btn-icon:hover{background:var(--bd2);border-color:#CBD5E1}
+.btn-icon.danger:hover{background:var(--er-l);border-color:var(--er);color:var(--er)}
+.btn-icon.success:hover{background:var(--ok-l);border-color:var(--ok);color:var(--ok)}
+.btn-icon.copy:hover{background:var(--bl-l);border-color:var(--bl);color:var(--bl)}
 
-Novo Cliente
-TOTAL
-—
-clientes cadastrados
-ATIVOS
-—
-com licença válida
-TRIAL
-—
-período gratuito
-SUSPENSOS
-—
-inadimplentes
-MRR ESTIMADO
-—
-receita mensal equiv.
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+.modal-bg.show{display:flex}
+.modal{background:var(--light2);border-radius:16px;padding:32px;width:100%;max-width:480px;box-shadow:0 24px 48px rgba(0,0,0,.15);animation:modalIn .25s cubic-bezier(.16,1,.3,1)}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.modal-h{font-family:'Barlow',sans-serif;font-weight:800;font-size:20px;color:var(--t1);margin-bottom:4px}
+.modal-s{font-size:13px;color:var(--t3);margin-bottom:24px}
+.modal-field{margin-bottom:16px}
+.modal-label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;display:block}
+.modal-sel,.modal-inp{width:100%;background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:11px 13px;font-size:14px;color:var(--t1);outline:none;transition:border-color .2s}
+.modal-sel:focus,.modal-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-l)}
+.modal-textarea{width:100%;background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:11px 13px;font-size:14px;color:var(--t1);outline:none;resize:vertical;min-height:80px;transition:border-color .2s}
+.modal-textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-l)}
+.modal-actions{display:flex;gap:10px;margin-top:24px;justify-content:flex-end}
+.btn-cancel{background:transparent;border:1px solid var(--bd);border-radius:var(--rs);padding:10px 18px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s}
+.btn-cancel:hover{background:var(--bd2)}
+.btn-confirm{background:var(--brand);border:none;border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.btn-confirm:hover{background:#d95515}
 
-          Todos os status
-          Ativo
-          Trial
-          Suspenso
-          Cancelado
-        
-          Todos os planos
-          Starter
-          Pro
-          Premium
-        
-          Todos os nichos
-          Odontologia
-          Loja / Varejo
-          Estética
-          Serviços
-        
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;border-radius:10px;padding:12px 18px;font-size:13px;font-weight:500;z-index:2000;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.16,1,.3,1);max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-ico{font-size:16px;flex-shrink:0}
 
-CLIENTE / NICHO
-PLANO
-STATUS
-LICENÇA
-USO IA
-WHATSAPP
-AÇÕES
+/* ── EMPTY ── */
+.empty{padding:60px 24px;text-align:center;color:var(--t3)}
+.empty-ico{font-size:40px;margin-bottom:12px}
+.empty-txt{font-size:14px;font-weight:500}
+.empty-sub{font-size:13px;margin-top:4px}
 
-Carregando clientes...
-✅
-Operação realizada.
+/* ── LOADING ── */
+.loading-row td{text-align:center;padding:40px;color:var(--t3)}
+.spinner{width:20px;height:20px;border:2px solid var(--bd);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SOON PAGE ── */
+.soon-page{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;color:var(--t3);padding:40px}
+.soon-ico{width:56px;height:56px;border-radius:14px;background:var(--brand-l);border:1px solid var(--brand-b);display:flex;align-items:center;justify-content:center}
+.soon-h{font-family:'Barlow',sans-serif;font-weight:800;font-size:20px;color:var(--t1)}
+.soon-s{font-size:14px;color:var(--t3);text-align:center;max-width:340px}
+
+/* ── FINANCEIRO PAGE ── */
+.mrr-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.mrr-card{background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);padding:20px}
+.mrr-card-label{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.mrr-card-val{font-family:'Barlow',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.5px}
+.mrr-breakdown{background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.mrr-breakdown-h{padding:14px 20px;border-bottom:1px solid var(--bd);font-weight:600;font-size:14px}
+.mrr-row{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--bd2)}
+.mrr-row:last-child{border-bottom:none}
+
+@media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.sb{display:none}}
+
+/* ── LOGIN OVERLAY ── */
+.login-overlay{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;align-items:center;justify-content:center}
+.login-box{width:100%;max-width:400px;padding:40px;animation:modalIn .4s cubic-bezier(.16,1,.3,1)}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.login-ico{width:44px;height:44px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Barlow',sans-serif;font-weight:900;font-size:16px;color:#fff;box-shadow:0 4px 16px rgba(242,100,25,.4);flex-shrink:0}
+.login-brand{font-family:'Barlow',sans-serif;font-weight:800;font-size:22px;color:#fff}
+.login-brand em{color:var(--brand);font-style:normal}
+.login-tag{font-size:10px;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.login-h{font-family:'Barlow',sans-serif;font-weight:800;font-size:24px;color:#fff;margin-bottom:6px}
+.login-s{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:28px}
+.login-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;display:block}
+.login-inp{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:12px 14px;font-size:14px;color:#fff;outline:none;transition:border-color .2s;margin-bottom:14px}
+.login-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-l)}
+.login-inp::placeholder{color:rgba(255,255,255,.2)}
+.login-btn{width:100%;background:var(--brand);color:#fff;border:none;border-radius:var(--rs);padding:13px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:6px;font-family:'DM Sans',sans-serif}
+.login-btn:hover{background:#d95515;box-shadow:0 4px 16px rgba(242,100,25,.4)}
+.login-err{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);border-radius:var(--rs);padding:10px 14px;font-size:13px;color:#FCA5A5;margin-bottom:14px;display:none}
+.login-err.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-ico">K2</div>
+      <div>
+        <div class="login-brand">K2 <em>Flow</em></div>
+        <div class="login-tag">Master Admin</div>
+      </div>
+    </div>
+    <div class="login-h">Acesso restrito</div>
+    <div class="login-s">Painel exclusivo para administradores da K2 Company</div>
+    <div class="login-err" id="login-err">E-mail ou senha incorretos.</div>
+    <label class="login-label">E-mail</label>
+    <input class="login-inp" type="email" id="l-email" placeholder="admin@k2company.com.br" autocomplete="username">
+    <label class="login-label">Senha</label>
+    <input class="login-inp" type="password" id="l-senha" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Entrar no painel</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-brand">
+    <div class="sb-brand-inner">
+      <div class="sb-ico">
+        <span class="sb-ico-txt">K2</span>
+        <svg class="sb-ico-arr" viewBox="0 0 10 10" fill="none">
+          <path d="M2 8L8 2M5 2L8 2L8 5" stroke="rgba(255,255,255,.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="sb-name">K2 <em>Flow</em></div>
+        <div class="sb-tag">WhatsApp | CRM | IA</div>
+      </div>
+    </div>
+    <div class="sb-master-badge">
+      <div class="sb-master-dot"></div>
+      <span class="sb-master-txt">Painel Master</span>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-sec">Gestão</div>
+    <button class="ni on" onclick="navGo('dashboard',this)">
+      <svg fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      Dashboard
+    </button>
+    <button class="ni" onclick="navGo('clientes',this)">
+      <svg fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Clientes
+      <span class="ni-badge" id="sb-total">0</span>
+    </button>
+    <button class="ni" onclick="navGo('planos',this)">
+      <svg fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Planos
+    </button>
+
+    <div class="sb-sec">Financeiro</div>
+    <button class="ni" onclick="navGo('financeiro',this)">
+      <svg fill="none" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Receita
+    </button>
+
+    <div class="sb-sec">Sistema</div>
+    <button class="ni" onclick="navGo('config',this)">
+      <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="1.5"/></svg>
+      Configurações
+    </button>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-av" id="sb-av">M</div>
+      <div>
+        <div class="sb-uname" id="sb-uname">Master Admin</div>
+        <div class="sb-uemail" id="sb-uemail">admin@k2company.com.br</div>
+      </div>
+    </div>
+    <button class="sb-logout" onclick="logout()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Sair do Master
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <div class="topbar-sub" id="page-sub">Visão geral de todos os clientes</div>
+    </div>
+    <div class="topbar-right" id="topbar-right">
+      <button class="btn-add" onclick="openModal('modal-add')">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Novo Cliente
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content" id="main-content">
+
+    <!-- ─── PAGE: DASHBOARD (default) ─── -->
+    <div id="page-dashboard">
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Total</div>
+          <div class="stat-val" id="st-total">—</div>
+          <div class="stat-sub">clientes cadastrados</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Ativos</div>
+          <div class="stat-val" id="st-ativos" style="color:var(--ok)">—</div>
+          <div class="stat-sub">com licença válida</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Trial</div>
+          <div class="stat-val" id="st-trial" style="color:var(--wa)">—</div>
+          <div class="stat-sub">período gratuito</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Suspensos</div>
+          <div class="stat-val" id="st-susp" style="color:var(--er)">—</div>
+          <div class="stat-sub">inadimplentes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">MRR Estimado</div>
+          <div class="stat-val" id="st-mrr" style="color:var(--brand);font-size:20px">—</div>
+          <div class="stat-sub">receita mensal equiv.</div>
+        </div>
+      </div>
+
+      <!-- FILTER -->
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <svg class="search-ico" width="15" height="15" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input class="search-inp" type="text" placeholder="Buscar cliente..." id="search" oninput="filterTable()">
+        </div>
+        <select class="filter-sel" id="f-status" onchange="filterTable()">
+          <option value="">Todos os status</option>
+          <option value="ativo">Ativo</option>
+          <option value="trial">Trial</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+        <select class="filter-sel" id="f-plano" onchange="filterTable()">
+          <option value="">Todos os planos</option>
+          <option value="starter">Starter</option>
+          <option value="pro">Pro</option>
+          <option value="premium">Premium</option>
+        </select>
+        <select class="filter-sel" id="f-nicho" onchange="filterTable()">
+          <option value="">Todos os nichos</option>
+          <option value="odonto">Odontologia</option>
+          <option value="loja">Loja / Varejo</option>
+          <option value="estetica">Estética</option>
+          <option value="servicos">Serviços</option>
+        </select>
+        <span class="filter-count" id="filter-count"></span>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente / Nicho</th>
+                <th>Plano</th>
+                <th>Status</th>
+                <th>Licença</th>
+                <th>Uso IA</th>
+                <th>WhatsApp</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr class="loading-row">
+                <td colspan="7"><div class="spinner"></div><br><span style="font-size:12px;margin-top:8px;display:block">Carregando clientes...</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /page-dashboard -->
+
+    <!-- ─── PAGE: CLIENTES ─── -->
+    <div id="page-clientes" style="display:none">
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <svg class="search-ico" width="15" height="15" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input class="search-inp" type="text" placeholder="Buscar cliente..." id="search2" oninput="filterTable2()">
+        </div>
+        <span class="filter-count" id="filter-count2"></span>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente / Nicho</th>
+                <th>Plano</th>
+                <th>Status</th>
+                <th>Licença</th>
+                <th>Uso IA</th>
+                <th>WhatsApp</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody2"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /page-clientes -->
+
+    <!-- ─── PAGE: PLANOS ─── -->
+    <div id="page-planos" style="display:none">
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat">
+          <div class="stat-label">Starter</div>
+          <div class="stat-val" style="color:var(--bl)" id="cnt-starter">0</div>
+          <div class="stat-sub">R$ 97/mês · R$ 582/sem</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Pro</div>
+          <div class="stat-val" style="color:var(--pu)" id="cnt-pro">0</div>
+          <div class="stat-sub">R$ 197/mês · R$ 1.182/sem</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Premium</div>
+          <div class="stat-val" style="color:var(--wa)" id="cnt-premium">0</div>
+          <div class="stat-sub">R$ 299/mês · R$ 1.794/sem</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div style="padding:20px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-weight:600;font-size:14px">Tabela de planos</div>
+        </div>
+        <table>
+          <thead><tr><th>Plano</th><th>Valor Mensal</th><th>Valor Semestral</th><th>WhatsApp</th><th>IA mensal</th><th>Google Calendar</th><th>Meta Pixel</th><th>Doctoralia</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-bl">Starter</span></td>
+              <td>R$ 97</td><td>R$ 582</td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td>500 msgs</td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td><span class="badge badge-gr">—</span></td>
+              <td><span class="badge badge-gr">—</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-pu">Pro</span></td>
+              <td>R$ 197</td><td>R$ 1.182</td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td>2.000 msgs</td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td><span class="badge badge-gr">—</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-wa">Premium</span></td>
+              <td>R$ 299</td><td>R$ 1.794</td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td>10.000 msgs</td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td><span class="badge badge-ok">✓</span></td>
+              <td><span class="badge badge-ok">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /page-planos -->
+
+    <!-- ─── PAGE: FINANCEIRO ─── -->
+    <div id="page-financeiro" style="display:none">
+      <div class="mrr-cards">
+        <div class="mrr-card">
+          <div class="mrr-card-label">MRR Estimado</div>
+          <div class="mrr-card-val" id="fin-mrr" style="color:var(--brand)">R$ 0</div>
+          <div class="stat-sub" style="margin-top:6px">receita mensal equivalente</div>
+        </div>
+        <div class="mrr-card">
+          <div class="mrr-card-label">Receita Semestral</div>
+          <div class="mrr-card-val" id="fin-sem" style="color:var(--ok)">R$ 0</div>
+          <div class="stat-sub" style="margin-top:6px">valor real cobrado (×6)</div>
+        </div>
+        <div class="mrr-card">
+          <div class="mrr-card-label">Clientes Ativos</div>
+          <div class="mrr-card-val" id="fin-ativos" style="color:var(--t1)">0</div>
+          <div class="stat-sub" style="margin-top:6px">gerando receita</div>
+        </div>
+      </div>
+      <div class="mrr-breakdown">
+        <div class="mrr-breakdown-h">Breakdown por plano (clientes ativos)</div>
+        <div class="mrr-row">
+          <div style="font-size:13px;font-weight:600">Starter — R$ 97/mês</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="fin-starter-qtd" style="font-size:12px;color:var(--t3)">0 clientes</span>
+            <span id="fin-starter-val" style="font-size:14px;font-weight:600;color:var(--bl)">R$ 0</span>
+          </div>
+        </div>
+        <div class="mrr-row">
+          <div style="font-size:13px;font-weight:600">Pro — R$ 197/mês</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="fin-pro-qtd" style="font-size:12px;color:var(--t3)">0 clientes</span>
+            <span id="fin-pro-val" style="font-size:14px;font-weight:600;color:var(--pu)">R$ 0</span>
+          </div>
+        </div>
+        <div class="mrr-row">
+          <div style="font-size:13px;font-weight:600">Premium — R$ 299/mês</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="fin-prem-qtd" style="font-size:12px;color:var(--t3)">0 clientes</span>
+            <span id="fin-prem-val" style="font-size:14px;font-weight:600;color:var(--wa)">R$ 0</span>
+          </div>
+        </div>
+        <div class="mrr-row" style="background:var(--bd2)">
+          <div style="font-size:14px;font-weight:700">Total MRR</div>
+          <span id="fin-total" style="font-size:18px;font-weight:800;color:var(--brand)">R$ 0</span>
+        </div>
+      </div>
+    </div><!-- /page-financeiro -->
+
+    <!-- ─── PAGE: CONFIG ─── -->
+    <div id="page-config" style="display:none">
+      <div class="table-wrap" style="padding:28px 32px">
+        <div style="max-width:560px">
+          <div style="font-family:'Barlow',sans-serif;font-weight:800;font-size:18px;margin-bottom:4px">Configurações do sistema</div>
+          <div style="font-size:13px;color:var(--t3);margin-bottom:28px">Parâmetros globais do K2 Flow</div>
+
+          <div style="margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">URL do sistema</div>
+            <div style="background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:11px 13px;font-size:13px;color:var(--t2);font-family:monospace">crm.k2company.com.br</div>
+          </div>
+
+          <div style="margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Supabase Project</div>
+            <div style="background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:11px 13px;font-size:13px;color:var(--t2);font-family:monospace">xlxquingaqgselwfoyki.supabase.co</div>
+          </div>
+
+          <div style="margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Trial padrão (dias)</div>
+            <input class="modal-inp" type="number" value="7" style="max-width:120px">
+          </div>
+
+          <div style="padding:16px;background:var(--wa-l);border:1px solid rgba(217,119,6,.2);border-radius:var(--rs)">
+            <div style="font-size:13px;font-weight:600;color:var(--wa);margin-bottom:4px">⚠️ Ação necessária</div>
+            <div style="font-size:12px;color:var(--t2)">Configure RLS no Supabase para proteger a tabela <b>tenants</b>. Acesse o dashboard e adicione policy de SELECT apenas para master_admins autenticados.</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /page-config -->
+
+  </div><!-- /content -->
+</main>
+
+<!-- MODAL: Trocar Plano -->
+<div class="modal-bg" id="modal-plano">
+  <div class="modal">
+    <div class="modal-h">Alterar Plano</div>
+    <div class="modal-s" id="modal-plano-sub">Selecione o novo plano para este cliente.</div>
+    <div class="modal-field">
+      <label class="modal-label">Plano</label>
+      <select class="modal-sel" id="modal-plano-sel">
+        <option value="starter">Starter — R$ 97/mês</option>
+        <option value="pro">Pro — R$ 197/mês</option>
+        <option value="premium">Premium — R$ 299/mês</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Observação interna (opcional)</label>
+      <textarea class="modal-textarea" id="modal-plano-obs" placeholder="Ex: cliente pediu upgrade, negociação especial..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-plano')">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmarPlano()">Salvar alteração</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Suspender / Ativar -->
+<div class="modal-bg" id="modal-status">
+  <div class="modal">
+    <div class="modal-h" id="modal-status-h">Suspender Conta</div>
+    <div class="modal-s" id="modal-status-sub">Informe o motivo da suspensão.</div>
+    <div class="modal-field">
+      <label class="modal-label">Motivo</label>
+      <textarea class="modal-textarea" id="modal-status-motivo" placeholder="Ex: inadimplência, violação dos termos..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-status')">Cancelar</button>
+      <button class="btn-confirm" id="modal-status-btn" onclick="confirmarStatus()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Novo Cliente -->
+<div class="modal-bg" id="modal-add">
+  <div class="modal">
+    <div class="modal-h">Novo Cliente</div>
+    <div class="modal-s">Cadastrar manualmente um novo tenant no K2 Flow.</div>
+    <div class="modal-field">
+      <label class="modal-label">Nome da empresa / clínica</label>
+      <input class="modal-inp" type="text" id="add-nome" placeholder="Ex: Clínica Sorriso">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="modal-field">
+        <label class="modal-label">Nicho</label>
+        <select class="modal-sel" id="add-nicho">
+          <option value="odonto">Odontologia</option>
+          <option value="loja">Loja / Varejo</option>
+          <option value="estetica">Estética</option>
+          <option value="servicos">Serviços</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Plano inicial</label>
+        <select class="modal-sel" id="add-plano">
+          <option value="trial">Trial (7 dias)</option>
+          <option value="starter">Starter</option>
+          <option value="pro">Pro</option>
+          <option value="premium">Premium</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">E-mail do admin</label>
+      <input class="modal-inp" type="email" id="add-email" placeholder="admin@clinica.com.br">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">WhatsApp (com DDD)</label>
+      <input class="modal-inp" type="text" id="add-whatsapp" placeholder="5511999999999">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-add')">Cancelar</button>
+      <button class="btn-confirm" onclick="criarCliente()">Criar cliente</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-ico" id="toast-ico">✅</span>
+  <span id="toast-txt">Operação realizada.</span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════ */
+const SB_URL = 'https://xlxquingaqgselwfoyki.supabase.co';
+const SB_KEY = 'sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
+const APP_URL = 'https://crm.k2company.com.br/k2flow-app.html'; // FIX: URL correta do app
+const MASTER_EMAIL = 'admin@k2company.com.br';
+
+const PLANO_VALOR = { starter: 97, pro: 197, premium: 299, trial: 0 };
+const NICHO_LABEL = { odonto:'Odontologia', loja:'Loja / Varejo', estetica:'Estética', servicos:'Serviços' };
+
+let allTenants = [];
+let selectedTenantId = null;
+let selectedAction = null;
+let currentPage = 'dashboard';
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
+  loadUserInfo();
+  loadTenants();
+});
+
+/* ═══════════════════════════════════════
+   AUTH — login integrado no arquivo
+═══════════════════════════════════════ */
+// Credenciais master (trocar por validação Supabase quando disponível)
+const MASTER_CREDENTIALS = [
+  { email: 'admin@k2company.com.br', senha: 'K2Flow@2025' },
+  { email: 'mateus@k2company.com.br', senha: 'K2Flow@2025' },
+];
+
+function checkAuth() {
+  const role = localStorage.getItem('k2_role');
+  const at   = Number(localStorage.getItem('k2_at') || 0);
+  const valid = role === 'master' && (Date.now() - at < 8 * 3600 * 1000);
+  const overlay = document.getElementById('login-overlay');
+  if (valid) {
+    overlay.style.display = 'none';
+  } else {
+    overlay.style.display = 'flex';
+    // Foca no campo de e-mail
+    setTimeout(() => document.getElementById('l-email').focus(), 100);
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const senha = document.getElementById('l-senha').value;
+  const errEl = document.getElementById('login-err');
+  errEl.classList.remove('show');
+
+  // 1. Tenta autenticar no Supabase
+  try {
+    const res = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: senha })
+    });
+    const data = await res.json();
+    if (data.access_token) {
+      // Verifica se é master_admin
+      const meRes = await fetch(`${SB_URL}/rest/v1/master_admins?email=eq.${encodeURIComponent(email)}&select=id,email&limit=1`, {
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${data.access_token}` }
+      });
+      const meData = await meRes.json();
+      if (meData && meData.length > 0) {
+        sessionStart(email, data.access_token, data.refresh_token);
+        return;
+      }
+    }
+  } catch (e) { /* fallback abaixo */ }
+
+  // 2. Fallback: credenciais locais (para demo / primeiro acesso)
+  const match = MASTER_CREDENTIALS.find(c => c.email === email && c.senha === senha);
+  if (match) {
+    sessionStart(email, '', '');
+    return;
+  }
+
+  errEl.textContent = 'E-mail ou senha incorretos.';
+  errEl.classList.add('show');
+  document.getElementById('l-senha').value = '';
+  document.getElementById('l-senha').focus();
+}
+
+function sessionStart(email, token, refresh) {
+  localStorage.setItem('k2_role', 'master');
+  localStorage.setItem('k2_email', email);
+  localStorage.setItem('k2_token', token);
+  localStorage.setItem('k2_refresh', refresh);
+  localStorage.setItem('k2_at', Date.now());
+  document.getElementById('login-overlay').style.display = 'none';
+  loadUserInfo();
+  loadTenants();
+}
+
+function loadUserInfo() {
+  const email = localStorage.getItem('k2_email') || MASTER_EMAIL;
+  const inicial = email.charAt(0).toUpperCase();
+  document.getElementById('sb-av').textContent = inicial;
+  document.getElementById('sb-uemail').textContent = email;
+}
+
+/* ═══════════════════════════════════════
+   SUPABASE API
+═══════════════════════════════════════ */
+async function sbFetch(path, opts = {}) {
+  const token = localStorage.getItem('k2_token') || '';
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${token || SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation',
+      ...opts.headers
+    },
+    ...opts
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Erro ${res.status}`);
+  }
+  return res.status === 204 ? null : res.json();
+}
+
+/* ═══════════════════════════════════════
+   CARREGAR TENANTS
+═══════════════════════════════════════ */
+async function loadTenants() {
+  try {
+    const data = await sbFetch('tenants?select=*,planos(nome,valor_semestral)&order=criado_em.desc');
+    allTenants = data || [];
+    if (!allTenants.length) allTenants = getDemoData();
+  } catch (e) {
+    allTenants = getDemoData();
+  }
+  renderAll();
+}
+
+function renderAll() {
+  renderStats(allTenants);
+  renderTable(allTenants);
+  renderTable2(allTenants);
+  renderFinanceiro(allTenants);
+  renderPlanos(allTenants);
+  document.getElementById('sb-total').textContent = allTenants.length;
+}
+
+/* ═══════════════════════════════════════
+   DADOS DEMO
+═══════════════════════════════════════ */
+function getDemoData() {
+  return [
+    { id:'demo-1', nome:'Clínica Sorriso Alphaville', nicho:'odonto', plano_nome:'pro', status:'ativo', licenca_fim:'2025-11-20', uso_mensagens_ia:340, ev_instancia:'clinica-sorriso', criado_em:'2025-05-01' },
+    { id:'demo-2', nome:'Loja Fashion Store', nicho:'loja', plano_nome:'starter', status:'trial', trial_ate:'2025-05-27', uso_mensagens_ia:12, ev_instancia:null, criado_em:'2025-05-14' },
+    { id:'demo-3', nome:'Dr. Lima Implantes', nicho:'odonto', plano_nome:'premium', status:'suspenso', licenca_fim:'2025-04-30', uso_mensagens_ia:0, ev_instancia:'drlima', criado_em:'2025-03-10' },
+    { id:'demo-4', nome:'Studio Bela Pele', nicho:'estetica', plano_nome:'starter', status:'ativo', licenca_fim:'2025-10-15', uso_mensagens_ia:89, ev_instancia:'bela-pele', criado_em:'2025-04-20' },
+  ];
+}
+
+/* ═══════════════════════════════════════
+   STATS (dashboard)
+═══════════════════════════════════════ */
+function renderStats(data) {
+  const ativos = data.filter(t => t.status === 'ativo').length;
+  const trial  = data.filter(t => t.status === 'trial').length;
+  const susp   = data.filter(t => t.status === 'suspenso' || t.status === 'cancelado').length;
+  const mrr    = data.filter(t => t.status === 'ativo').reduce((s, t) => s + (PLANO_VALOR[t.plano_nome] || 0), 0);
+
+  document.getElementById('st-total').textContent = data.length;
+  document.getElementById('st-ativos').textContent = ativos;
+  document.getElementById('st-trial').textContent = trial;
+  document.getElementById('st-susp').textContent = susp;
+  document.getElementById('st-mrr').textContent = mrr > 0 ? `R$${mrr.toLocaleString('pt-BR')}` : 'R$0';
+}
+
+/* ═══════════════════════════════════════
+   TABLE RENDER (reutilizável)
+═══════════════════════════════════════ */
+function buildRows(data) {
+  if (!data.length) {
+    return `<tr><td colspan="7"><div class="empty"><div class="empty-ico">🏢</div><div class="empty-txt">Nenhum cliente encontrado</div><div class="empty-sub">Tente ajustar os filtros ou cadastre um novo cliente.</div></div></td></tr>`;
+  }
+  return data.map(t => {
+    const statusBadge = {
+      ativo:     `<span class="badge badge-ok"><span class="badge-dot"></span>Ativo</span>`,
+      trial:     `<span class="badge badge-wa"><span class="badge-dot"></span>Trial</span>`,
+      suspenso:  `<span class="badge badge-er"><span class="badge-dot"></span>Suspenso</span>`,
+      cancelado: `<span class="badge badge-gr"><span class="badge-dot"></span>Cancelado</span>`,
+    }[t.status] || `<span class="badge badge-gr">${t.status}</span>`;
+
+    const planoBadge = {
+      starter: `<span class="badge badge-bl">Starter</span>`,
+      pro:     `<span class="badge badge-pu">Pro</span>`,
+      premium: `<span class="badge badge-wa">Premium</span>`,
+      trial:   `<span class="badge badge-gr">Trial</span>`,
+    }[t.plano_nome] || `<span class="badge badge-gr">${t.plano_nome || '—'}</span>`;
+
+    const licFim = t.licenca_fim
+      ? new Date(t.licenca_fim).toLocaleDateString('pt-BR')
+      : (t.trial_ate ? `Trial até ${new Date(t.trial_ate).toLocaleDateString('pt-BR')}` : '—');
+    const diasLic = t.licenca_fim ? Math.ceil((new Date(t.licenca_fim) - new Date()) / 86400000) : null;
+    const licAlerta = diasLic !== null && diasLic < 15 && diasLic >= 0
+      ? `<div style="font-size:10px;color:var(--wa);margin-top:2px">⚠️ Vence em ${diasLic}d</div>`
+      : (diasLic !== null && diasLic < 0 ? `<div style="font-size:10px;color:var(--er);margin-top:2px">Vencida</div>` : '');
+
+    const limiteIA = { starter: 500, pro: 2000, premium: 10000, trial: 100 }[t.plano_nome] || 100;
+    const usoIA = t.uso_mensagens_ia || 0;
+    const percIA = Math.min(100, Math.round(usoIA / limiteIA * 100));
+    const barClass = percIA >= 90 ? 'over' : percIA >= 70 ? 'warn' : '';
+
+    const waStatus = t.ev_instancia
+      ? `<span class="badge badge-ok" style="font-size:10px"><span class="badge-dot"></span>Conectado</span>`
+      : `<span class="badge badge-gr" style="font-size:10px">Desconectado</span>`;
+
+    const isSusp = t.status === 'suspenso' || t.status === 'cancelado';
+    const isDemo = String(t.id).startsWith('demo-');
+
+    return `
+    <tr data-id="${t.id}" data-nome="${t.nome}" data-nicho="${t.nicho||''}" data-status="${t.status}" data-plano="${t.plano_nome||''}">
+      <td>
+        <div class="td-name">${t.nome}${isDemo ? ' <span style="font-size:10px;color:var(--t3)">(demo)</span>' : ''}</div>
+        <div class="td-nicho">${NICHO_LABEL[t.nicho] || t.nicho || '—'}</div>
+      </td>
+      <td>${planoBadge}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div style="font-size:12px;color:var(--t2)">${licFim}</div>
+        ${licAlerta}
+      </td>
+      <td>
+        <div style="font-size:12px;color:var(--t2)">${usoIA.toLocaleString('pt-BR')} / ${limiteIA.toLocaleString('pt-BR')}</div>
+        <div class="prog"><div class="prog-bar ${barClass}" style="width:${percIA}%"></div></div>
+      </td>
+      <td>${waStatus}</td>
+      <td>
+        <div class="actions">
+          <button class="btn-enter" onclick="entrarConta('${t.id}','${t.nome}','${t.nicho||''}')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Entrar
+          </button>
+          <button class="btn-icon copy" title="Copiar link de acesso" onclick="copiarLink('${t.id}','${t.nome}')">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <button class="btn-icon" title="Alterar plano" onclick="abrirPlano('${t.id}','${t.nome}','${t.plano_nome||'starter'}')">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn-icon ${isSusp ? 'success' : 'danger'}" title="${isSusp ? 'Ativar conta' : 'Suspender conta'}" onclick="abrirStatus('${t.id}','${t.nome}','${t.status}')">
+            ${isSusp
+              ? `<svg width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+              : `<svg width="14" height="14" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`
+            }
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTable(data) {
+  document.getElementById('filter-count').textContent = `${data.length} resultado${data.length !== 1 ? 's' : ''}`;
+  document.getElementById('tbody').innerHTML = buildRows(data);
+}
+
+function renderTable2(data) {
+  document.getElementById('filter-count2').textContent = `${data.length} resultado${data.length !== 1 ? 's' : ''}`;
+  document.getElementById('tbody2').innerHTML = buildRows(data);
+}
+
+/* ═══════════════════════════════════════
+   FINANCEIRO
+═══════════════════════════════════════ */
+function renderFinanceiro(data) {
+  const ativos = data.filter(t => t.status === 'ativo');
+  const mrr = ativos.reduce((s, t) => s + (PLANO_VALOR[t.plano_nome] || 0), 0);
+  const sem = mrr * 6;
+
+  const starters = ativos.filter(t => t.plano_nome === 'starter');
+  const pros     = ativos.filter(t => t.plano_nome === 'pro');
+  const prems    = ativos.filter(t => t.plano_nome === 'premium');
+
+  document.getElementById('fin-mrr').textContent    = `R$ ${mrr.toLocaleString('pt-BR')}`;
+  document.getElementById('fin-sem').textContent    = `R$ ${sem.toLocaleString('pt-BR')}`;
+  document.getElementById('fin-ativos').textContent = ativos.length;
+
+  document.getElementById('fin-starter-qtd').textContent = `${starters.length} cliente${starters.length !== 1 ? 's' : ''}`;
+  document.getElementById('fin-pro-qtd').textContent     = `${pros.length} cliente${pros.length !== 1 ? 's' : ''}`;
+  document.getElementById('fin-prem-qtd').textContent    = `${prems.length} cliente${prems.length !== 1 ? 's' : ''}`;
+
+  document.getElementById('fin-starter-val').textContent = `R$ ${(starters.length * 97).toLocaleString('pt-BR')}`;
+  document.getElementById('fin-pro-val').textContent     = `R$ ${(pros.length * 197).toLocaleString('pt-BR')}`;
+  document.getElementById('fin-prem-val').textContent    = `R$ ${(prems.length * 299).toLocaleString('pt-BR')}`;
+  document.getElementById('fin-total').textContent       = `R$ ${mrr.toLocaleString('pt-BR')}`;
+}
+
+/* ═══════════════════════════════════════
+   PLANOS
+═══════════════════════════════════════ */
+function renderPlanos(data) {
+  document.getElementById('cnt-starter').textContent = data.filter(t => t.plano_nome === 'starter').length;
+  document.getElementById('cnt-pro').textContent     = data.filter(t => t.plano_nome === 'pro').length;
+  document.getElementById('cnt-premium').textContent = data.filter(t => t.plano_nome === 'premium').length;
+}
+
+/* ═══════════════════════════════════════
+   FILTROS
+═══════════════════════════════════════ */
+function filterTable() {
+  const q  = document.getElementById('search').value.toLowerCase();
+  const st = document.getElementById('f-status').value;
+  const pl = document.getElementById('f-plano').value;
+  const ni = document.getElementById('f-nicho').value;
+  const filtered = allTenants.filter(t => {
+    const nome = (t.nome || '').toLowerCase();
+    if (q && !nome.includes(q)) return false;
+    if (st && t.status !== st) return false;
+    if (pl && t.plano_nome !== pl) return false;
+    if (ni && t.nicho !== ni) return false;
+    return true;
+  });
+  renderTable(filtered);
+}
+
+function filterTable2() {
+  const q = document.getElementById('search2').value.toLowerCase();
+  const filtered = allTenants.filter(t => (t.nome||'').toLowerCase().includes(q));
+  renderTable2(filtered);
+}
+
+/* ═══════════════════════════════════════
+   COPIAR LINK DE ACESSO
+═══════════════════════════════════════ */
+function copiarLink(id, nome) {
+  const url = `${APP_URL}?tenant=${id}`;
+  navigator.clipboard.writeText(url).then(() => {
+    toast(`Link de acesso copiado para ${nome}`, '🔗');
+  }).catch(() => {
+    prompt('Copie o link de acesso:', url);
+  });
+}
+
+/* ═══════════════════════════════════════
+   ENTRAR NA CONTA (Impersonação)
+═══════════════════════════════════════ */
+function entrarConta(id, nome, nicho) {
+  localStorage.setItem('k2_impersonando', '1');
+  localStorage.setItem('k2_tenant_id', id);
+  localStorage.setItem('k2_tenant_nome', nome);
+  localStorage.setItem('k2_tenant_nicho', nicho);
+  localStorage.setItem('k2_impersonate_at', Date.now());
+  toast(`Entrando na conta: ${nome}`, '🔐');
+  // FIX: URL correta do app do cliente
+  setTimeout(() => { window.location.href = APP_URL; }, 800);
+}
+
+/* ═══════════════════════════════════════
+   MODAIS
+═══════════════════════════════════════ */
+function abrirPlano(id, nome, planoAtual) {
+  selectedTenantId = id;
+  document.getElementById('modal-plano-sub').textContent = `Cliente: ${nome}`;
+  document.getElementById('modal-plano-sel').value = planoAtual;
+  document.getElementById('modal-plano-obs').value = '';
+  openModal('modal-plano');
+}
+
+async function confirmarPlano() {
+  const plano = document.getElementById('modal-plano-sel').value;
+  try {
+    await sbFetch(`tenants?id=eq.${selectedTenantId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ plano_nome: plano })
+    });
+    await loadTenants();
+    closeModal('modal-plano');
+    toast('Plano atualizado com sucesso!', '✅');
+  } catch (e) {
+    const t = allTenants.find(x => x.id === selectedTenantId);
+    if (t) { t.plano_nome = plano; renderAll(); }
+    closeModal('modal-plano');
+    toast('Plano atualizado (demo)', '✅');
+  }
+}
+
+function abrirStatus(id, nome, statusAtual) {
+  selectedTenantId = id;
+  const isSusp = statusAtual === 'suspenso' || statusAtual === 'cancelado';
+  selectedAction = isSusp ? 'ativar' : 'suspender';
+  document.getElementById('modal-status-h').textContent = isSusp ? 'Reativar Conta' : 'Suspender Conta';
+  document.getElementById('modal-status-sub').textContent = `Cliente: ${nome}`;
+  document.getElementById('modal-status-motivo').placeholder = isSusp ? 'Motivo da reativação...' : 'Motivo da suspensão...';
+  document.getElementById('modal-status-btn').textContent = isSusp ? 'Reativar' : 'Suspender';
+  document.getElementById('modal-status-btn').style.background = isSusp ? 'var(--ok)' : 'var(--er)';
+  openModal('modal-status');
+}
+
+async function confirmarStatus() {
+  const novoStatus = selectedAction === 'ativar' ? 'ativo' : 'suspenso';
+  try {
+    await sbFetch(`tenants?id=eq.${selectedTenantId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: novoStatus })
+    });
+    await loadTenants();
+  } catch (e) {
+    const t = allTenants.find(x => x.id === selectedTenantId);
+    if (t) { t.status = novoStatus; renderAll(); }
+  }
+  closeModal('modal-status');
+  toast(selectedAction === 'ativar' ? 'Conta reativada!' : 'Conta suspensa!', selectedAction === 'ativar' ? '✅' : '⛔');
+}
+
+async function criarCliente() {
+  const nome     = document.getElementById('add-nome').value.trim();
+  const nicho    = document.getElementById('add-nicho').value;
+  const plano    = document.getElementById('add-plano').value;
+  const email    = document.getElementById('add-email').value.trim();
+  const whatsapp = document.getElementById('add-whatsapp').value.trim();
+
+  if (!nome || !email) { toast('Preencha nome e e-mail.', '⚠️'); return; }
+
+  const licFim = plano !== 'trial'
+    ? new Date(Date.now() + 180 * 86400000).toISOString().split('T')[0]
+    : null;
+  const trialAte = plano === 'trial'
+    ? new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0]
+    : null;
+
+  const novo = {
+    nome, nicho, plano_nome: plano,
+    status: plano === 'trial' ? 'trial' : 'ativo',
+    email, whatsapp, uso_mensagens_ia: 0,
+    licenca_fim: licFim, trial_ate: trialAte,
+    criado_em: new Date().toISOString()
+  };
+
+  try {
+    const res = await sbFetch('tenants', { method: 'POST', body: JSON.stringify(novo) });
+    await loadTenants();
+    toast(`Cliente "${nome}" cadastrado! Copie o link de acesso.`, '🏢');
+    closeModal('modal-add');
+    // Auto-copia link se tiver ID
+    if (res && res[0] && res[0].id) {
+      setTimeout(() => copiarLink(res[0].id, nome), 800);
+    }
+  } catch (e) {
+    novo.id = 'demo-' + Date.now();
+    allTenants.unshift(novo);
+    renderAll();
+    closeModal('modal-add');
+    toast(`Cliente "${nome}" cadastrado! (demo)`, '🏢');
+  }
+
+  // Limpar form
+  ['add-nome','add-email','add-whatsapp'].forEach(id => document.getElementById(id).value = '');
+}
+
+/* ═══════════════════════════════════════
+   MODAL HELPERS (FIX: sem duplicata)
+═══════════════════════════════════════ */
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('show');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('show');
+}
+
+/* ═══════════════════════════════════════
+   NAVEGAÇÃO (FIX: renderiza páginas reais)
+═══════════════════════════════════════ */
+const PAGE_TITLES = {
+  dashboard:  ['Dashboard',      'Visão geral de todos os clientes'],
+  clientes:   ['Clientes',       'Lista completa de tenants'],
+  planos:     ['Planos',         'Configuração de planos e preços'],
+  financeiro: ['Receita',        'Faturamento e MRR estimado'],
+  config:     ['Configurações',  'Configurações do sistema master'],
+};
+
+const PAGE_BTNS = {
+  dashboard:  `<button class="btn-add" onclick="openModal('modal-add')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Novo Cliente</button>`,
+  clientes:   `<button class="btn-add" onclick="openModal('modal-add')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Novo Cliente</button>`,
+  financeiro: `<button class="btn-sec" onclick="exportarCSV()"><svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Exportar CSV</button>`,
+  planos:     '',
+  config:     '',
+};
+
+function navGo(page, el) {
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  if (el) el.classList.add('on');
+
+  const [title, sub] = PAGE_TITLES[page] || [page, ''];
+  document.getElementById('page-title').textContent = title;
+  document.getElementById('page-sub').textContent = sub;
+  document.getElementById('topbar-right').innerHTML = PAGE_BTNS[page] || '';
+
+  // Esconde todas as páginas
+  ['dashboard','clientes','planos','financeiro','config'].forEach(p => {
+    const el = document.getElementById(`page-${p}`);
+    if (el) el.style.display = 'none';
+  });
+
+  // Mostra a página selecionada
+  const pageEl = document.getElementById(`page-${page}`);
+  if (pageEl) pageEl.style.display = 'block';
+
+  currentPage = page;
+}
+
+/* ═══════════════════════════════════════
+   EXPORTAR CSV
+═══════════════════════════════════════ */
+function exportarCSV() {
+  const header = 'Nome,Nicho,Plano,Status,Email,WhatsApp,Criado em\n';
+  const rows = allTenants.map(t =>
+    `"${t.nome}","${t.nicho||''}","${t.plano_nome||''}","${t.status}","${t.email||''}","${t.whatsapp||''}","${t.criado_em||''}"`
+  ).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `k2flow-clientes-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  toast('CSV exportado!', '📊');
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+let toastTimer;
+function toast(msg, ico = '✅') {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-txt').textContent = msg;
+  document.getElementById('toast-ico').textContent = ico;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+/* ═══════════════════════════════════════
+   LOGOUT
+═══════════════════════════════════════ */
+function logout() {
+  if (!confirm('Sair do painel Master?')) return;
+  ['k2_role','k2_token','k2_refresh','k2_email','k2_at'].forEach(k => localStorage.removeItem(k));
+  document.getElementById('login-overlay').style.display = 'flex';
+  document.getElementById('l-email').value = '';
+  document.getElementById('l-senha').value = '';
+  setTimeout(() => document.getElementById('l-email').focus(), 100);
+}
+
+/* Fechar modais clicando fora */
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('show'); });
+});
+</script>
+</body>
+</html>
