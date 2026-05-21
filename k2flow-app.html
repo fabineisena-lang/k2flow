@@ -283,7 +283,9 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 .bk-g{background:rgba(107,114,128,.1);color:#6B7280}
 .bk-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
 
-/* ── WORK HUB (ClickUp style) ── */
+/* ── WORK HUB (ClickUp style) — hide old sb2 when active ── */
+body.hub-ativo .sb2{display:none!important;width:0!important;min-width:0!important}
+body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!important}
 .wh-layout{display:flex;flex:1;overflow:hidden}
 .wh-sidebar{width:200px;border-right:1px solid var(--bd);background:var(--light2);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 .wh-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
@@ -315,7 +317,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 .sh-plat-btn{margin-top:10px;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;border:none;transition:all .15s;width:100%}
 .sh-connected{background:var(--ok-l);color:var(--ok)}
 .sh-disconnected{background:var(--brand-l);color:var(--brand)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wh-cal-day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal-day-hd{text-align:center;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;padding:6px 0}
 .cal-day{background:var(--light2);border:1px solid var(--bd);border-radius:6px;padding:6px;min-height:80px;position:relative}
 .cal-day.today{border-color:var(--brand);background:var(--brand-l)}
@@ -566,11 +568,90 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   .cfg-row{flex-wrap:wrap;gap:8px}
 }
 
-/* ── WA TABS ── */
+/* ── NOTIFICAÇÕES ── */
+.notif-card{background:var(--light);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;position:relative;transition:all .15s}
+.notif-card.urgente{border-left:3px solid var(--er);border-radius:0 10px 10px 0}
+.notif-card.atencao{border-left:3px solid var(--wa);border-radius:0 10px 10px 0}
+.notif-card.ok{border-left:3px solid var(--ok);border-radius:0 10px 10px 0}
+.notif-card-h{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
+.notif-card-titulo{font-size:12px;font-weight:700;color:var(--t1)}
+.notif-card-modulo{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;flex-shrink:0}
+.notif-card-msg{font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:10px}
+.notif-card-footer{display:flex;gap:7px}
+.notif-btn-exec{background:var(--ok-l);border:1px solid var(--ok-b);color:var(--ok);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+.notif-btn-exec:hover{background:var(--ok);color:#fff}
+.notif-btn-fechar{background:transparent;border:1px solid var(--bd);color:var(--t3);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer}
+.notif-btn-ver{background:var(--brand-l);border:1px solid var(--brand-b);color:var(--brand);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer}
+@keyframes bell-ring{0%,100%{transform:rotate(0)}20%{transform:rotate(18deg)}40%{transform:rotate(-16deg)}60%{transform:rotate(12deg)}80%{transform:rotate(-8deg)}}
+.bell-ring{animation:bell-ring .7s ease-in-out}
+/* ── CLAUDE CHAT ── */
+.claude-msg-user{align-self:flex-end;background:var(--brand);color:#fff;border-radius:12px 12px 0 12px;padding:9px 13px;font-size:12.5px;max-width:85%;line-height:1.5}
+.claude-msg-ai{align-self:flex-start;background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);border-radius:12px 12px 12px 0;padding:9px 13px;font-size:12.5px;max-width:90%;line-height:1.6;border:1px solid rgba(255,255,255,.08)}
+.claude-msg-thinking{align-self:flex-start;color:rgba(255,255,255,.3);font-size:11px;padding:4px 0;font-style:italic}
+.claude-sug{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);border-radius:99px;padding:4px 12px;font-size:10.5px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.claude-sug:hover{background:rgba(242,100,25,.15);border-color:var(--brand-b);color:var(--brand)}
+
+@media(max-width:640px){
+  #claude-chat-panel{width:calc(100vw - 24px);right:12px;bottom:70px;height:480px}
+  #claude-chat-btn{bottom:70px;right:12px}
+  #notif-panel{width:calc(100vw - 24px);right:12px;top:56px}
+}
 .wa-tab{padding:12px 18px;font-size:12.5px;font-weight:600;border:none;background:transparent;color:var(--t3);border-bottom:2px solid transparent;transition:all .15s;cursor:pointer}
 .wa-tab.on{color:var(--brand);border-bottom-color:var(--brand)}
 .wa-tab:hover{color:var(--t1)}
 .page-wa-layout.on{flex-direction:column!important;overflow:hidden!important;height:100%}
+
+/* ── WORK HUB — ClickUp Style ── */
+#wh-sb.collapsed{width:44px!important;min-width:44px!important}
+#wh-sb.collapsed .wh-sb-lbl,#wh-sb.collapsed .wh-sb-sec,#wh-sb.collapsed .wh-sb-expand-only{display:none!important}
+#wh-sb.collapsed .wh-sb-item{justify-content:center;padding:8px 4px}
+.wh-sb-sec{font-size:9px;font-weight:700;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;padding:8px 8px 3px;white-space:nowrap}
+.wh-sb-lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}
+.wh-sb-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;font-size:12px;color:rgba(255,255,255,.42);transition:all .12s;border:none;background:transparent;width:100%;cursor:pointer}
+.wh-sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85)}
+.wh-sb-item.on{background:rgba(255,255,255,.1);color:#fff;font-weight:600}
+.wh-sb-add{color:rgba(255,255,255,.25);font-size:11px}
+.wh-sb-add:hover{color:rgba(255,255,255,.55)}
+.wh-filter-btn{background:transparent;border:none;border-radius:6px;padding:6px 10px;font-size:12px;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .12s}
+.wh-filter-btn:hover{background:var(--bd2)}
+.wh-task-row{display:flex;align-items:center;border-bottom:1px solid var(--bd2);transition:background .1s;cursor:pointer;min-height:36px;user-select:none}
+.wh-task-row:hover{background:#F8FAFC}
+.wh-task-row.drag-over{background:var(--brand-l);border-top:2px solid var(--brand)}
+.wh-task-name-cell{flex:1;display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:12.5px;min-width:0}
+.wh-task-cell{padding:7px 12px;font-size:12px;white-space:nowrap;border-left:1px solid var(--bd2);color:var(--t2);flex-shrink:0}
+.wh-check{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--t3);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.wh-check:hover{border-color:var(--ok)}
+.wh-check.done{background:var(--ok);border-color:var(--ok)}
+.wh-col-hd{display:flex;border-bottom:1.5px solid var(--bd);background:var(--bd2);position:sticky;top:0;z-index:2}
+.wh-col-cell{padding:7px 12px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;border-left:1px solid var(--bd);white-space:nowrap}
+.wh-status-header{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:11px;font-weight:700;cursor:pointer;background:var(--bd2);border-bottom:1px solid var(--bd);position:sticky;top:32px;z-index:1}
+.wh-add-row{padding:6px 12px;font-size:12px;color:var(--t3);cursor:pointer;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--bd2);transition:all .12s}
+.wh-add-row:hover{color:var(--brand);background:var(--brand-l)}
+.wh-kanban-col{min-width:250px;display:flex;flex-direction:column;gap:6px}
+.wh-kanban-hd{display:flex;align-items:center;gap:6px;padding:8px 4px;font-size:12px;font-weight:700}
+.wh-kanban-card{background:var(--light2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;cursor:grab;font-size:12.5px;transition:box-shadow .15s}
+.wh-kanban-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.wh-kanban-drop{border:2px dashed var(--brand);border-radius:8px;min-height:50px;margin-bottom:4px}
+
+/* ── SOCIAL HUB — MLabs Style ── */
+.sh-tab{padding:0 16px;font-size:11px;font-weight:700;letter-spacing:.05em;border:none;background:transparent;color:var(--t3);border-bottom:2px solid transparent;transition:all .15s;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.sh-tab.on{color:var(--brand);border-bottom-color:var(--brand)}
+.sh-tab:hover{color:var(--t1)}
+.sh-canal-btn{width:36px;height:36px;border-radius:8px;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--light2);transition:all .15s;opacity:.45}
+.sh-canal-btn.on{border-color:var(--brand);background:var(--brand-l);opacity:1}
+.sh-canal-btn:hover{opacity:1}
+.sh-perfil-chip{background:var(--brand-l);border:1.5px solid var(--brand-b);color:var(--brand);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:600}
+.sh-perfil-add{background:transparent;border:1.5px dashed var(--bd);color:var(--t3);border-radius:99px;padding:5px 14px;font-size:12px;cursor:pointer}
+.sh-conta-card{background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px;transition:all .2s;cursor:pointer}
+.sh-conta-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06);transform:translateY(-1px)}
+.sh-conta-conectada{background:linear-gradient(135deg,#E1306C 0%,#833AB4 50%,#405DE6 100%);border:none}
+.sh-cal-cell{background:var(--light2);min-height:90px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:5px;cursor:pointer;transition:background .12s}
+.sh-cal-cell:hover{background:var(--brand-l)}
+.sh-post-dot{border-radius:3px;padding:2px 5px;font-size:10px;font-weight:600;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-insight-card{background:var(--light2);border:1px solid var(--bd);border-radius:var(--r);padding:18px}
+.sh-insight-metric{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--bd2);font-size:12px}
+.sh-insight-metric:last-child{border:none}
+.sh-insight-val{font-family:'Barlow',sans-serif;font-weight:700;font-size:16px}
 
 /* ── DIAGNOSTIC STEPS ── */
 .diag-step{display:flex;align-items:center;gap:12px;background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;transition:border-color .2s}
@@ -707,7 +788,15 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
   <div class="topbar">
     <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-sub" id="tb-sub">Visão geral da operação</div></div>
     <div class="tb-right">
-      <button class="btn-ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="notif-dot"></span></button>
+      <div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--dark2,#161B22);border-radius:6px;cursor:pointer" onclick="forcarAnaliseIA()" title="Forçar análise IA">
+        <div id="ia-status-dot" style="width:7px;height:7px;border-radius:50%;background:#9CA3AF;flex-shrink:0"></div>
+        <span id="ia-status-txt" style="font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap">IA aguardando</span>
+      </div>
+      <button class="btn-ico" id="notif-bell" onclick="toggleNotifPanel()" title="Notificações" style="position:relative">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="notif-dot" id="notif-dot" style="display:none"></span>
+        <span id="notif-count" style="position:absolute;top:-4px;right:-4px;background:var(--er);color:#fff;font-size:8px;font-weight:800;min-width:16px;height:16px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px">0</span>
+      </button>
       <button class="btn-prim" id="btn-prim" onclick="openActionModal()"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="btn-prim-txt">Novo Agendamento</span></button>
     </div>
   </div>
@@ -811,6 +900,24 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
         <div class="alert-list" id="dash-alertas-lista">
           <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Calculando alertas...</div>
         </div>
+      </div>
+    </div>
+
+    <!-- WIDGET IA — Monitoramento em tempo real -->
+    <div class="ai-box" style="margin-bottom:14px">
+      <div class="ai-box-h">
+        <div class="ai-box-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ai-box-title">Agente IA — Monitoramento K2 Flow</div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div id="ia-status-dot2" style="width:6px;height:6px;border-radius:50%;background:#9CA3AF"></div>
+            <span style="font-size:10px;color:rgba(255,255,255,.3)">Atualiza a cada 5 min</span>
+          </div>
+          <button onclick="forcarAnaliseIA()" style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25);color:#FCD34D;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer">↻ Analisar agora</button>
+        </div>
+      </div>
+      <div id="dash-ia-widget" class="ai-box-body">
+        Configure a API Key do Claude em <strong>Configurações → IA</strong> para ativar o monitoramento inteligente em tempo real.
       </div>
     </div>
 
@@ -1095,56 +1202,312 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
     </div>
   </div>
 
-  <!-- WORK HUB PAGE -->
-  <div class="page" id="page-hub">
-    <div class="wh-layout">
-      <div class="wh-sidebar">
-        <div style="padding:12px 14px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--bd)">Projetos</div>
-        <div class="wh-proj-item on" onclick="setWhProj(this,'Todos')"><div class="wh-proj-dot" style="background:var(--brand)"></div>Todos os projetos</div>
-        <div class="wh-proj-item" onclick="setWhProj(this,'Teste 1')"><div class="wh-proj-dot" style="background:#2563EB"></div>Teste 1</div>
-        <div class="wh-proj-item" onclick="setWhProj(this,'Teste 2')"><div class="wh-proj-dot" style="background:#059669"></div>Teste 2</div>
-        <div style="padding:12px 14px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;border-top:1px solid var(--bd);margin-top:8px">Status</div>
-        <div class="wh-proj-item" onclick="setWhProj(this,'Em Produção')"><div class="wh-proj-dot" style="background:#2563EB"></div>Em Produção</div>
-        <div class="wh-proj-item" onclick="setWhProj(this,'Revisão')"><div class="wh-proj-dot" style="background:#D97706"></div>Em Revisão</div>
-        <div class="wh-proj-item" onclick="setWhProj(this,'Aprovação')"><div class="wh-proj-dot" style="background:#7C3AED"></div>Aprovação</div>
-        <div class="wh-proj-item" onclick="setWhProj(this,'Concluído')"><div class="wh-proj-dot" style="background:#059669"></div>Concluído</div>
-      </div>
-      <div class="wh-main">
-        <div class="wh-topbar">
-          <div>
-            <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:15px;color:var(--t1)" id="wh-proj-title">Todos os projetos</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:2px" id="wh-sub-title">Visão Geral</div>
+  <!-- WORK HUB — ClickUp Style -->
+  <div class="page" id="page-hub" style="overflow:hidden;flex-direction:row">
+    <!-- Sidebar interna Work Hub — colapsável -->
+    <div id="wh-sb" style="width:220px;min-width:220px;background:var(--dark2);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:width .22s,min-width .22s">
+
+      <!-- Topo: logo + botão colapsar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 10px 8px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:7px;overflow:hidden" class="wh-sb-expand-only">
+          <div style="width:22px;height:22px;background:rgba(129,140,248,.25);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
-          <div style="display:flex;gap:6px">
-            <div class="wh-views">
-              <button class="wh-view-btn on" onclick="setWHView('lista',this)">≡ Lista</button>
-              <button class="wh-view-btn" onclick="setWHView('kanban',this)">⊞ Kanban</button>
-              <button class="wh-view-btn" onclick="setWHView('cal',this)">📅 Calendário</button>
-            </div>
-            <button class="btn-prim" style="font-size:12px;padding:6px 12px" onclick="openModal('modal-task')">+ Nova Tarefa</button>
-          </div>
+          <span style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap">Work Hub</span>
         </div>
-        <div class="task-table-wrap">
-          <div class="task-hd"><div>Tarefa</div><div>Cliente</div><div>Status</div><div>Responsável</div><div>Prioridade</div><div>Vcto</div></div>
-          <div id="wh-task-list"></div>
-          <button class="task-add" onclick="openModal('modal-task')">+ Criar nova tarefa</button>
+        <button onclick="whToggleSb()" title="Recolher" style="background:rgba(255,255,255,.07);border:none;border-radius:5px;width:24px;height:24px;cursor:pointer;color:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+          <svg id="wh-sb-ico" width="12" height="12" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Nav items -->
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:6px">
+        <div class="wh-sb-sec wh-sb-expand-only">Meu trabalho</div>
+        <button class="wh-sb-item on" id="whi-inbox" onclick="whGo('inbox',this)" title="Caixa de entrada">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="wh-sb-lbl">Caixa de entrada</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(220,38,38,.3);color:#FCA5A5;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-inbox-cnt">0</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('minhas',this)" title="Minhas tarefas">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="wh-sb-lbl">Minhas tarefas</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('hoje',this)" title="Hoje e atrasadas">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="wh-sb-lbl">Hoje e atrasadas</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('pessoal',this)" title="Lista pessoal">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/></svg>
+          <span class="wh-sb-lbl">Lista pessoal</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:rgba(255,255,255,.25)" id="wh-pes-cnt">0</span>
+        </button>
+        <button class="wh-sb-item" onclick="whToggleView('calendario');whGo('minhas',this)" title="Calendário Editorial">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="wh-sb-lbl">Calendário Editorial</span>
+        </button>
+
+        <div class="wh-sb-sec wh-sb-expand-only">Espaços</div>
+        <button class="wh-sb-item" onclick="whGo('demandas',this)" title="DEMANDAS">
+          <div style="width:10px;height:10px;border-radius:3px;background:#7C3AED;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">DEMANDAS</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('jornada',this)" title="JORNADA DO CLIENTE">
+          <div style="width:10px;height:10px;border-radius:3px;background:#F26419;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">JORNADA DO CLIENTE</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('producao',this)" title="PRODUÇÃO">
+          <div style="width:10px;height:10px;border-radius:3px;background:#2563EB;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">PRODUÇÃO</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('design',this)" title="DESIGN">
+          <div style="width:10px;height:10px;border-radius:3px;background:#059669;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">DESIGN</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('social-media',this)" title="Social Media">
+          <div style="width:10px;height:10px;border-radius:3px;background:#E1306C;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Social Media</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('trafego',this)" title="Tráfego Pago">
+          <div style="width:10px;height:10px;border-radius:3px;background:#F59E0B;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Tráfego Pago</span>
+        </button>
+        <button class="wh-sb-item wh-sb-add" onclick="openModal('modal-task')" title="Novo Espaço">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="wh-sb-lbl">Novo Espaço</span>
+        </button>
+
+        <div class="wh-sb-sec wh-sb-expand-only">Aprovação</div>
+        <button class="wh-sb-item" onclick="whGo('aprovacao-interna',this)" title="Aprovação Interna">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="wh-sb-lbl">Aprovação Interna</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('aprovacao-cliente',this)" title="Aprovação do Cliente">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.5"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="wh-sb-lbl">Aprovação do Cliente</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Work Hub -->
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0">
+      <!-- Topbar WH -->
+      <div style="background:var(--light2);border-bottom:1px solid var(--bd);padding:0 16px;height:46px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <div style="font-size:12px;color:var(--t3);white-space:nowrap" id="wh-breadcrumb">Minhas tarefas / <strong style="color:var(--t1)" id="wh-view-name">Atribuídas a mim</strong></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <button class="wh-filter-btn" onclick="whToggleView('lista')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Lista
+          </button>
+          <button class="wh-filter-btn" onclick="whToggleView('kanban')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="3" width="5" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="3" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            Kanban
+          </button>
+          <button class="wh-filter-btn" onclick="whToggleView('calendario')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+            Calendário
+          </button>
+          <div style="width:1px;height:20px;background:var(--bd)"></div>
+          <button class="wh-filter-btn" onclick="whFiltrar()">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Filtro
+          </button>
+          <button class="wh-filter-btn" onclick="whToggleFechadas()">Fechado</button>
+          <button class="btn-prim" style="font-size:11px;padding:6px 12px" onclick="openModal('modal-task')">+ Nova Tarefa</button>
         </div>
       </div>
+
+      <!-- Status filter bar -->
+      <div id="wh-status-bar" style="padding:8px 16px;border-bottom:1px solid var(--bd);background:var(--light2);display:flex;align-items:center;gap:8px;font-size:12px;flex-shrink:0">
+        <span style="color:var(--t3)">Grupo:</span>
+        <span style="background:rgba(242,100,25,.1);color:var(--brand);border-radius:99px;padding:2px 10px;font-size:11px;font-weight:600">Status</span>
+        <span style="background:var(--bd2);color:var(--t2);border-radius:99px;padding:2px 10px;font-size:11px">Subtarefas</span>
+      </div>
+
+      <!-- Content área -->
+      <div style="flex:1;overflow-y:auto" id="wh-content">
+        <div id="wh-lista-view" style="padding:0 16px 24px"></div>
+        <div id="wh-kanban-view" style="display:none;flex-direction:row;gap:14px;overflow-x:auto;min-height:calc(100vh - 200px);padding:16px"></div>
+        <div id="wh-cal-view" style="display:none;padding:16px"></div>
+      </div>
+    </div>
+
+    <!-- Task Detail Drawer -->
+    <div id="wh-task-drawer" style="width:0;min-width:0;background:var(--light2);border-left:1px solid var(--bd);display:flex;flex-direction:column;transition:width .25s;overflow:hidden;flex-shrink:0">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+        <span style="font-size:13px;font-weight:600;color:var(--t1)" id="drawer-task-nome">Tarefa</span>
+        <button onclick="fecharTaskDrawer()" style="background:none;border:none;cursor:pointer;color:var(--t3)">✕</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 16px" id="drawer-task-body"></div>
     </div>
   </div>
 
-  <!-- SOCIAL HUB PAGE -->
-  <div class="page content" id="page-sh">
-    <div class="sh-grid" id="sh-platforms"></div>
-    <div class="grid2">
-      <div class="card">
-        <div class="card-h">Posts da Semana</div>
-        <div id="sh-posts-list" style="display:flex;flex-direction:column;gap:8px"></div>
+  <!-- SOCIAL HUB — MLabs Style -->
+  <div class="page" id="page-sh" style="overflow:hidden;flex-direction:column">
+    <!-- Topbar Social Hub -->
+    <div style="background:var(--light2);border-bottom:1px solid var(--bd);padding:0;height:50px;display:flex;align-items:stretch;flex-shrink:0;overflow-x:auto">
+      <button class="sh-tab on" id="sh-t-dash" onclick="shGo('dash',this)">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        DASHBOARD
+      </button>
+      <button class="sh-tab" id="sh-t-agendar" onclick="shGo('agendar',this)">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+        AGENDAR POST
+      </button>
+      <button class="sh-tab" id="sh-t-cal" onclick="shGo('cal',this)">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="15" x2="10" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        CALENDÁRIO
+      </button>
+      <button class="sh-tab" id="sh-t-analytics" onclick="shGo('analytics',this)">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="20" x2="12" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="6" y1="20" x2="6" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        ANALYTICS
+      </button>
+      <button class="sh-tab" id="sh-t-aprovacao" onclick="shGo('aprovacao',this)">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        WORKFLOW
+        <span style="background:var(--er-l);color:var(--er);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:800;margin-left:4px" id="sh-aprov-cnt">0</span>
+      </button>
+    </div>
+
+    <!-- Conteúdo Social Hub -->
+    <div style="flex:1;overflow-y:auto" id="sh-content">
+
+      <!-- DASHBOARD social -->
+      <div id="sh-dash" style="padding:20px">
+        <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:14px">Contas sociais conectadas</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px" id="sh-contas-grid"></div>
+        <div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:14px">Insights rápidos</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px" id="sh-insights-grid"></div>
       </div>
-      <div class="card">
-        <div class="card-h">Métricas Rápidas</div>
-        <div id="sh-metrics" style="display:flex;flex-direction:column;gap:10px"></div>
+
+      <!-- AGENDAR POST -->
+      <div id="sh-agendar" style="display:none;height:100%">
+        <div style="display:grid;grid-template-columns:1fr 320px;height:100%;min-height:calc(100vh - 100px)">
+          <!-- Form -->
+          <div style="padding:20px;border-right:1px solid var(--bd);overflow-y:auto;display:flex;flex-direction:column;gap:18px">
+            <!-- Step 1: Perfis -->
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">1. Selecione perfis</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap" id="sh-perfis-list">
+                <div class="sh-perfil-chip on">BMW Jundiaí</div>
+                <button class="sh-perfil-add" onclick="">+ Adicionar perfil</button>
+              </div>
+            </div>
+            <!-- Step 2: Canais -->
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">2. Selecione canais</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap" id="sh-canais">
+                <button class="sh-canal-btn on" data-canal="instagram" onclick="shToggleCanal(this,'instagram')" title="Instagram">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="#E1306C" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/></svg>
+                </button>
+                <button class="sh-canal-btn" data-canal="facebook" onclick="shToggleCanal(this,'facebook')" title="Facebook">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="sh-canal-btn" data-canal="tiktok" onclick="shToggleCanal(this,'tiktok')" title="TikTok">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="sh-canal-btn" data-canal="linkedin" onclick="shToggleCanal(this,'linkedin')" title="LinkedIn">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" stroke="#0A66C2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="9" width="4" height="12" stroke="#0A66C2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4" cy="4" r="2" stroke="#0A66C2" stroke-width="1.8"/></svg>
+                </button>
+                <button class="sh-canal-btn" data-canal="x" onclick="shToggleCanal(this,'x')" title="X / Twitter">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4l16 16M4 20L20 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </button>
+                <button class="sh-canal-btn" data-canal="pinterest" onclick="shToggleCanal(this,'pinterest')" title="Pinterest">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.77 1.22-5.17 1.22-5.17s-.31-.62-.31-1.55c0-1.45.84-2.54 1.89-2.54.89 0 1.32.67 1.32 1.47 0 .9-.57 2.24-.87 3.48-.25 1.04.52 1.88 1.54 1.88 1.85 0 3.09-2.37 3.09-5.17 0-2.14-1.44-3.64-3.5-3.64-2.38 0-3.78 1.79-3.78 3.64 0 .72.28 1.49.62 1.91.07.08.08.15.06.24-.06.25-.2.82-.23.93-.04.15-.13.18-.3.11-1.12-.52-1.82-2.16-1.82-3.47 0-2.82 2.05-5.41 5.91-5.41 3.1 0 5.51 2.21 5.51 5.17 0 3.08-1.94 5.56-4.63 5.56-.9 0-1.75-.47-2.04-1.02l-.55 2.08c-.2.77-.74 1.73-1.1 2.31.83.26 1.71.4 2.62.4 5.52 0 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor" stroke-width="1.2"/></svg>
+                </button>
+              </div>
+            </div>
+            <!-- Step 3: Texto -->
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em">3. Texto do post</div>
+                <button onclick="shCriarLegendaIA()" style="background:rgba(242,100,25,.1);border:1px solid var(--brand-b);color:var(--brand);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">✦ Criar legenda — IA</button>
+              </div>
+              <textarea id="sh-post-txt" placeholder="Digite o seu texto..." oninput="shAtualizarPreview()" style="width:100%;background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:12px 14px;font-size:13px;min-height:120px;resize:vertical;outline:none;transition:border-color .2s;font-family:inherit;line-height:1.6"></textarea>
+              <div style="margin-top:8px">
+                <textarea id="sh-hashtags-txt" placeholder="Digite aqui as hashtags e assinatura..." style="width:100%;background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:10px 14px;font-size:12px;height:60px;resize:none;outline:none;font-family:inherit"></textarea>
+              </div>
+            </div>
+            <!-- Step 4: Mídias -->
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">4. Mídias</div>
+              <div id="sh-media-drop" onclick="document.getElementById('sh-media-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--brand)'" ondragleave="this.style.borderColor='var(--bd)'" ondrop="shHandleDrop(event)" style="border:2px dashed var(--bd);border-radius:var(--rs);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s">
+                <div style="font-size:22px;margin-bottom:8px">📎</div>
+                <div style="font-size:13px;font-weight:600;color:var(--t2)">Imagens, vídeos ou documentos</div>
+                <div style="font-size:11px;color:var(--t3);margin-top:4px">Envie arquivos ou arraste até aqui</div>
+                <input type="file" id="sh-media-input" multiple accept="image/*,video/*" style="display:none" onchange="shHandleFiles(this)">
+              </div>
+              <div id="sh-media-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+            </div>
+            <!-- Step 5: Data -->
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em">5. Data e horário</div>
+                <button onclick="shMelhoresHorarios()" style="background:rgba(242,100,25,.08);border:1px solid var(--brand-b);color:var(--brand);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">✦ Melhores horários — IA</button>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <input type="date" id="sh-data" style="background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:8px 12px;font-size:13px;outline:none;font-family:inherit">
+                <input type="time" id="sh-hora" style="background:var(--light);border:1.5px solid var(--bd);border-radius:var(--rs);padding:8px 12px;font-size:13px;outline:none;font-family:inherit">
+                <button onclick="shAddSlot()" style="background:transparent;border:1px solid var(--bd);color:var(--t2);border-radius:6px;padding:8px 12px;font-size:11px;cursor:pointer">+ Incluir mais dias</button>
+              </div>
+              <div id="sh-slots" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div style="display:flex;flex-direction:column;background:var(--bg);border-left:1px solid var(--bd)">
+            <div style="padding:12px 16px;border-bottom:1px solid var(--bd);font-size:12px;font-weight:600;color:var(--t2)">Preview</div>
+            <div style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px" id="sh-preview-area">
+              <div style="text-align:center;color:var(--t3);font-size:12px;padding:32px 0">Aguardando conteúdo.<br>Selecione canais e mídias para visualização.</div>
+            </div>
+            <!-- Footer -->
+            <div style="padding:12px 16px;border-top:1px solid var(--bd);background:var(--light2);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0">
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3)">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>1 / 1</span>
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <button onclick="shAddPost()" style="background:transparent;border:none;color:var(--brand);font-size:11px;font-weight:600;cursor:pointer">Adicionar post</button>
+              </div>
+              <div style="display:flex;gap:6px">
+                <button onclick="shEnviarAprovacao()" class="btn-sec" style="font-size:11px;padding:6px 12px">👍 Aprovação</button>
+                <button onclick="shPublicarAgora()" class="btn-sec" style="font-size:11px;padding:6px 12px">📤 Publicar agora</button>
+                <button onclick="shAgendar()" class="btn-prim" style="font-size:12px;padding:7px 16px">📅 Agendar</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- CALENDÁRIO EDITORIAL -->
+      <div id="sh-cal" style="display:none;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <button onclick="shCalNav(-1)" style="background:var(--bd2);border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px">‹</button>
+            <span style="font-size:15px;font-weight:700;font-family:'Barlow',sans-serif" id="sh-cal-mes">Maio 2026</span>
+            <button onclick="shCalNav(1)" style="background:var(--bd2);border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px">›</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-prim" style="font-size:11px;padding:6px 12px" onclick="shGo('agendar',document.getElementById('sh-t-agendar'))">+ Agendar Post</button>
+          </div>
+        </div>
+        <div id="sh-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--bd);border-radius:8px;overflow:hidden"></div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sh-analytics" style="display:none;padding:20px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:16px">Insights por plataforma</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px" id="sh-analytics-grid"></div>
+      </div>
+
+      <!-- WORKFLOW / APROVAÇÃO -->
+      <div id="sh-aprovacao" style="display:none;padding:20px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:16px">Posts aguardando aprovação</div>
+        <div id="sh-aprov-list" style="display:flex;flex-direction:column;gap:10px">
+          <div style="text-align:center;padding:40px;color:var(--t3);font-size:13px">Nenhum post aguardando aprovação.</div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1942,7 +2305,7 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
     <!-- Header -->
     <div style="margin-bottom:14px">
-      <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--t1)">Configurações</div>
+      
       <div style="font-size:11px;color:var(--t3)">Personalize sua experiência no K2 Flow</div>
     </div>
 
@@ -2547,6 +2910,70 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 
 <div class="toast" id="toast"><span id="toast-ico">✅</span><span id="toast-txt">OK</span></div>
 
+<!-- PAINEL DE NOTIFICAÇÕES IA -->
+<div id="notif-overlay" onclick="closeNotifPanel()" style="position:fixed;inset:0;z-index:800;display:none"></div>
+<div id="notif-panel" style="position:fixed;top:54px;right:16px;width:360px;max-height:80vh;background:var(--light2);border:1px solid var(--bd);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.15);z-index:801;display:none;flex-direction:column;overflow:hidden;animation:mIn .2s cubic-bezier(.16,1,.3,1)">
+  <div style="padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--t1)">Notificações IA</div>
+      <div style="font-size:11px;color:var(--t3)" id="notif-sub">Aguardando análise...</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="marcarTodasLidas()" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Limpar tudo</button>
+      <button onclick="closeNotifPanel()" style="background:none;border:none;cursor:pointer;color:var(--t3);padding:2px">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="notif-list" style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px">
+    <div style="text-align:center;padding:32px;color:var(--t3);font-size:12px">
+      Configure a API Key do Claude em Configurações → IA para ativar notificações inteligentes.
+    </div>
+  </div>
+</div>
+
+<!-- CHAT CLAUDE NO APP -->
+<div id="claude-chat-btn" onclick="toggleClaudeChat()" title="Pergunte ao Claude" style="position:fixed;bottom:76px;right:18px;width:50px;height:50px;background:var(--dark);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:700;transition:all .2s">
+  <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#F26419" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10h8M8 14h5" stroke="#F26419" stroke-width="1.5" stroke-linecap="round"/></svg>
+</div>
+
+<div id="claude-chat-panel" style="position:fixed;bottom:76px;right:18px;width:380px;height:520px;background:var(--dark);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.3);z-index:710;display:none;flex-direction:column;overflow:hidden;animation:mIn .25s cubic-bezier(.16,1,.3,1)">
+  <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px">🤖</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#fff">Claude — K2 Flow</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3)">Acesso completo aos dados da operação</div>
+      </div>
+    </div>
+    <button onclick="toggleClaudeChat()" style="background:rgba(255,255,255,.08);border:none;border-radius:6px;width:26px;height:26px;color:rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div id="claude-msgs" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px">
+    <div style="background:rgba(242,100,25,.1);border:1px solid rgba(242,100,25,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:rgba(255,255,255,.7);line-height:1.6">
+      Olá! Tenho acesso a todos os dados da sua operação. Posso:<br>
+      • Gerar relatórios de qualquer módulo<br>
+      • Analisar leads, finanças, WhatsApp<br>
+      • Sugerir ações baseadas nos dados<br>
+      • Responder perguntas sobre a operação<br><br>
+      <em style="color:rgba(255,255,255,.35)">Ex: "Quais leads estão parados há mais de 7 dias?" ou "Qual meu MRR esse mês?"</em>
+    </div>
+  </div>
+  <div id="claude-sugestoes" style="padding:0 12px 8px;display:flex;flex-wrap:wrap;gap:6px">
+    <button class="claude-sug" onclick="claudePerguntar(this.textContent)">📊 Resumo da operação</button>
+    <button class="claude-sug" onclick="claudePerguntar(this.textContent)">💬 WA sem resposta</button>
+    <button class="claude-sug" onclick="claudePerguntar(this.textContent)">💰 Situação financeira</button>
+    <button class="claude-sug" onclick="claudePerguntar(this.textContent)">📋 Tarefas atrasadas</button>
+  </div>
+  <div style="padding:10px 12px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;flex-shrink:0">
+    <input id="claude-inp" type="text" placeholder="Pergunte sobre sua operação..." onkeydown="if(event.key==='Enter')claudeEnviar()" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 12px;font-size:13px;color:#fff;outline:none">
+    <button onclick="claudeEnviar()" style="width:36px;height:36px;background:var(--brand);border:none;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
 <!-- MOBILE BOTTOM NAV -->
 <nav class="mob-nav" id="mob-nav">
   <button class="mob-nav-item on" id="mni-dash" onclick="mobNav('dash',this)">
@@ -2574,7 +3001,14 @@ td{padding:11px 16px;font-size:12.5px;color:var(--t1);vertical-align:middle}
 const SB_URL='https://xlxquingaqgselwfoyki.supabase.co';
 const SB_KEY='sb_publishable_JBOP19u43DwkX5YptY7_bg_EQJ8IWrX';
 const EV_URL_DEFAULT='/ev-api';
-const EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33';
+let EV_KEY_DEFAULT='BD06CAA569F1-44CE-B980-D83AC96F6F33'; /* fallback — será sobrescrita pelo servidor */
+/* Busca key do servidor na inicialização */
+(async function(){
+  try{
+    const r=await fetch('/ev-config',{method:'GET',headers:{'X-App':'k2flow'}});
+    if(r.ok){const d=await r.json();if(d.key)EV_KEY_DEFAULT=d.key;if(d.url)EV_URL_DEFAULT=d.url;}
+  }catch(e){/* usa fallback local */}
+})();
 
 let hubAtivo=null,iaOn=true,currentConv=null,agOffset=0;
 
@@ -2597,7 +3031,20 @@ let GCAL_CALENDAR_ID='primary';
 let GCAL_CONNECTED=false;
 const HORARIOS_DISPONIVEIS=['07:00','08:00','09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
 let ORCAMENTOS=[];
-let TASKS=[];
+let TASKS=JSON.parse(localStorage.getItem('k2_tasks')||'null')||[
+  {id:'t1',nome:'Criar proposta comercial BMW Jundiaí',status:'Agendado',prioridade:'alta',prazo:'2026-05-22',responsavel:'Fabinei',espaco:'demandas',lido:true,subtarefas:[{nome:'Briefing do cliente',done:true},{nome:'Definir escopo',done:false},{nome:'Enviar PDF',done:false}]},
+  {id:'t2',nome:'Post Instagram — lançamento produto',status:'Em Produção',prioridade:'alta',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
+  {id:'t3',nome:'Revisão do site K2 Company',status:'Revisão',prioridade:'media',prazo:'2026-05-23',responsavel:'Marcos',espaco:'design',lido:false,subtarefas:[]},
+  {id:'t4',nome:'Campanha Google Ads — Clínica Sorriso',status:'Aprovação',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação cliente',done:false}]},
+  {id:'t5',nome:'Relatório mensal Fashion Store',status:'Concluído',prioridade:'baixa',prazo:'2026-05-19',responsavel:'Pedro',espaco:'minhas',lido:true,subtarefas:[]},
+  {id:'t6',nome:'Identidade visual Studio Bela Pele',status:'Em Produção',prioridade:'media',prazo:'2026-05-25',responsavel:'Ana',espaco:'design',lido:true,subtarefas:[{nome:'Logo',done:true},{nome:'Paleta de cores',done:true},{nome:'Manual da marca',done:false}]},
+  {id:'t7',nome:'Story Instagram K2 Company — hoje',status:'Agendado',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'social-media',lido:false,subtarefas:[]},
+  {id:'t8',nome:'Briefing campanha Meta Ads — Dr. Lima',status:'Agendado',prioridade:'media',prazo:'2026-05-21',responsavel:'Marcos',espaco:'demandas',lido:false,subtarefas:[]},
+  {id:'t9',nome:'Edição de vídeo — reels semana',status:'Em Produção',prioridade:'alta',prazo:'2026-05-20',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
+  {id:'t10',nome:'Aprovação arte cliente BERNABÉ',status:'Aprovação',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'jornada',lido:false,subtarefas:[]},
+  {id:'t11',nome:'Planejamento conteúdo Junho',status:'Agendado',prioridade:'media',prazo:'2026-05-28',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
+  {id:'t12',nome:'Setup Evolution API — novo cliente',status:'Em Produção',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
+];
 let FUNCS=[
   {nome:'Admin Master',email:'admin@k2company.com.br',perfil:'Admin',status:'ativo'},
   {nome:'Dr. Carlos',email:'carlos@clinica.com.br',perfil:'Profissional',status:'ativo'},
@@ -2673,48 +3120,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     renderDashboard();
     atualizarRelatorios();
   },600);
-  /* Auto-refresh a cada 3 minutos */
+  /* Auto-refresh a cada 5 minutos com agente IA */
   setInterval(()=>{
     renderDashboard();
     renderWA();
-  },180000);
+    atualizarRelatorios();
+    rodarAgenteIA();
+  },300000);
+  /* Primeira análise IA após 3s */
+  setTimeout(rodarAgenteIA, 3000);
 });
 
 /* ── NAVEGAÇÃO PRINCIPAL — com auto-render por página ── */
-function goPage(page,el){
-  fecharHub();
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  const pg=document.getElementById('page-'+page);
-  if(pg)pg.classList.add('on');
-  if(el)el.classList.add('on');
-  const m=PAGE_META[page]||{title:page,sub:'',btn:'',modal:''};
-  document.getElementById('tb-title').textContent=m.title;
-  document.getElementById('tb-sub').textContent=m.sub;
-  const pb=document.getElementById('btn-prim');
-  document.getElementById('btn-prim-txt').textContent=m.btn;
-  pb.style.display=m.btn?'flex':'none';
-  window._currentModal=m.modal;
-  /* Auto-render da página ativa */
-  const renders={
-    'dash':()=>renderDashboard(),
-    'agenda':()=>{renderAgenda();renderDashAgenda();},
-    'wa':()=>renderWA(),
-    'crm':()=>renderKanban(),
-    'clientes':()=>renderCli(),
-    'orca':()=>renderOrcamentos(),
-    'financeiro':()=>renderFinanceiro(),
-    'ads':()=>{renderAds();preencherFiltroClientes();},
-    'relatorios':()=>atualizarRelatorios(),
-    'hub':()=>renderWHtasks(),
-    'sh':()=>renderSHPlatforms(),
-    'aigrowth':()=>renderAGE(),
-    'automacoes':()=>renderAGE(),
-    'config':()=>carregarConfig(),
-    'n8n':()=>renderN8n(),
-  };
-  if(renders[page]) setTimeout(renders[page],50);
-}
+
 
 function carregarConfig(){
   /* Só seta defaults se o campo ainda não foi salvo pelo usuário */
@@ -2756,6 +3174,7 @@ function checkAuth(){
 /* ── NAVEGAÇÃO PRINCIPAL ── */
 function goPage(page,el){
   fecharHub();
+  document.body.classList.remove('hub-ativo','sh-ativo');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   const pg=document.getElementById('page-'+page);
@@ -2768,6 +3187,25 @@ function goPage(page,el){
   document.getElementById('btn-prim-txt').textContent=m.btn;
   pb.style.display=m.btn?'flex':'none';
   window._currentModal=m.modal;
+  /* Auto-render + hub init */
+  const renders={
+    'dash':()=>renderDashboard(),
+    'agenda':()=>{renderAgenda();},
+    'wa':()=>renderWA(),
+    'crm':()=>renderKanban(),
+    'clientes':()=>renderCli(),
+    'orca':()=>renderOrcamentos(),
+    'financeiro':()=>renderFinanceiro(),
+    'ads':()=>{renderAds();preencherFiltroClientes();},
+    'relatorios':()=>atualizarRelatorios(),
+    'hub':()=>{window._hubInit&&window._hubInit('hub');},
+    'sh':()=>{window._hubInit&&window._hubInit('sh');},
+    'aigrowth':()=>renderAGE(),
+    'automacoes':()=>renderAGE(),
+    'config':()=>carregarConfig(),
+    'n8n':()=>renderN8n(),
+  };
+  if(renders[page])setTimeout(renders[page],50);
 }
 function openActionModal(){if(window._currentModal)openModal(window._currentModal);}
 
@@ -2811,10 +3249,22 @@ function resetSidebar(){
   if(sb1&&hubAtivo===null) sb1.classList.remove('min');
 }
 function goWH(sub,el){
-  document.querySelectorAll('#sb2-work .s2ni').forEach(n=>n.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('wh-sub-title').textContent=el.textContent.trim().replace(/\d+/g,'').trim();
-  renderWHtasks(sub);
+  const whMap={
+    visao:'minhas',minha:'minhas',atraso:'hoje','cal-edit':'calendario',
+    producao:'producao',design:'design','social-media':'social-media',
+    trafego:'trafego',audiovisual:'producao','aprov-int':'aprovacao-interna',
+    'aprov-cli':'aprovacao-cliente',postados:'pessoal',
+    'cli-1':'pessoal','cli-2':'pessoal','wh-rel':'minhas',
+    'wh-ia':'minhas','wh-auto':'minhas'
+  };
+  const space=whMap[sub]||'minhas';
+  _whCurrentSpace=space;
+  if(sub==='cal-edit')_whView='calendario';
+  else if(sub==='atraso')_whView='lista';
+  else _whView='lista';
+  const vnEl=document.getElementById('wh-view-name');
+  if(vnEl){const nomes={visao:'Visão geral',minha:'Minha área',atraso:'Hoje e atrasadas','cal-edit':'Calendário editorial',producao:'Produção',design:'Design','social-media':'Social media',trafego:'Tráfego pago','aprov-int':'Aprovação interna','aprov-cli':'Aprovação do cliente'};vnEl.textContent=nomes[sub]||sub;}
+  renderWHtasks();
 }
 function goSH(sub,el){
   document.querySelectorAll('#sb2-social .s2ni').forEach(n=>n.classList.remove('on'));
@@ -4107,19 +4557,20 @@ function alterarStatusOrca(id, status){
 }
 
 /* ── WORK HUB ── */
-function renderWHtasks(filter){
-  const el=document.getElementById('wh-task-list');if(!el)return;
-  const tasks=filter&&filter!=='visao'?TASKS:TASKS;
-  el.innerHTML=tasks.map(t=>`<div class="task-row"><div class="task-nome">${t.nome}</div><div><span class="badge bk-b" style="font-size:9px">${t.cli}</span></div><div><span class="task-st" style="background:${t.stCor};color:${t.stTxt}">${t.status}</span></div><div style="font-size:12px;color:var(--t2)">${t.resp}</div><div class="task-prio" style="color:${t.prioCor}">● ${t.prio}</div><div style="font-size:11px;color:var(--t3)">${t.data}</div></div>`).join('');
+function renderWHtasks_old(filter){
+  /* stub — nova versão mais abaixo */
+  const el=document.getElementById('wh-lista-view');
+  if(el){}/* usa nova função */
 }
-function setWHView(view,el){document.querySelectorAll('.wh-view-btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');toast(`Visão: ${view}`,'✅');}
-function setWhProj(el,proj){document.querySelectorAll('.wh-proj-item').forEach(i=>i.classList.remove('on'));el.classList.add('on');document.getElementById('wh-proj-title').textContent=proj;renderWHtasks();}
+function setWHView(view,el2){whToggleView(view);}
+function setWhProj(el,proj){}
 function criarTask(){
-  const nome=document.getElementById('task-nome').value.trim();
+  const nome=document.getElementById('task-nome')?.value?.trim();
   if(!nome){toast('Informe o título','⚠️');return;}
-  TASKS.push({id:'t'+Date.now(),nome,cli:document.getElementById('task-cli').value,status:'Briefing',stCor:'#F3F4F6',stTxt:'#374151',resp:'Fabinei',prio:document.getElementById('task-prio').value,prioCor:'#D97706',data:document.getElementById('task-data').value||'—'});
+  TASKS=TASKS||[];
+  TASKS.push({id:'t'+Date.now(),nome,status:'Agendado',prioridade:'none',prazo:document.getElementById('task-data')?.value||'',responsavel:'',espaco:_whCurrentSpace||'minhas',lido:false,subtarefas:[]});
   renderWHtasks();closeModal('modal-task');toast(`Tarefa "${nome}" criada!`,'✅');
-  document.getElementById('task-nome').value='';
+  const tnEl=document.getElementById('task-nome');if(tnEl)tnEl.value='';
 }
 
 /* ── SOCIAL HUB ── */
@@ -5492,41 +5943,6 @@ function avaliarAlerta(c){
   return false;
 }
 
-function renderTabelaCampanhas(lista){
-  const tbody=document.getElementById('ads-tbody');if(!tbody)return;
-  if(!lista.length){
-    tbody.innerHTML='<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--t3);font-size:12px">Nenhuma campanha — clique em "+ Campanha"</td></tr>';
-    return;
-  }
-  tbody.innerHTML=lista.map(c=>{
-    const cpl=c.leads>0?(c.investimento/c.leads):0;
-    const metaCpl=c.meta_cpl||100;
-    const cplAlto=cpl>metaCpl*1.3;
-    const roasBaixo=c.roas>0&&c.roas<1.5;
-    const ctr=c.impressoes>0?(c.cliques/c.impressoes*100):0;
-    const platCor=PLAT_CORES[c.plataforma]||'#888';
-    const platLabel=PLAT_LABELS[c.plataforma]||c.plataforma;
-    const statusCor=c.status==='ativa'?'bk-ok':c.status==='pausada'?'bk-w':'bk-r';
-    const alerta=avaliarAlerta(c);
-    return`<tr style="${alerta?'background:rgba(220,38,38,.04)':''}">
-      <td style="padding:10px 16px;font-weight:600">${alerta?'⚠️ ':''}<span style="font-size:12px">${c.cliente||'K2 Company'}</span></td>
-      <td style="padding:10px 12px"><div style="font-weight:600;font-size:12px">${c.nome}</div><div style="font-size:10px;color:var(--t3)">${c.objetivo||''}</div></td>
-      <td style="padding:10px 12px;text-align:center"><span style="background:${platCor}20;color:${platCor};border:1px solid ${platCor}40;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700">${platLabel}</span></td>
-      <td style="padding:10px 12px;text-align:right;font-weight:700">R$${Number(c.investimento||0).toLocaleString('pt-BR')}</td>
-      <td style="padding:10px 12px;text-align:right;color:var(--ok);font-weight:700">${c.leads||0}</td>
-      <td style="padding:10px 12px;text-align:right;font-weight:700;color:${cplAlto?'var(--er)':'var(--t1)'}">${cpl>0?'R$'+cpl.toFixed(0):'—'}</td>
-      <td style="padding:10px 12px;text-align:right;font-size:12px">${Number(c.cliques||0).toLocaleString('pt-BR')}</td>
-      <td style="padding:10px 12px;text-align:right;font-size:12px">${ctr>0?ctr.toFixed(2)+'%':'—'}</td>
-      <td style="padding:10px 12px;text-align:right;font-weight:700;color:${roasBaixo?'var(--er)':c.roas>=3?'var(--ok)':'var(--wa)'}">${c.roas?c.roas.toFixed(1)+'x':'—'}</td>
-      <td style="padding:10px 12px;text-align:center"><span class="badge ${statusCor}"><span class="bk-dot"></span>${c.status||'—'}</span></td>
-      <td style="padding:10px 12px;text-align:center;display:flex;gap:4px">
-        <button onclick="editarCampanha('${c.id}')" style="background:var(--bd2);border:1px solid var(--bd);border-radius:5px;padding:3px 8px;font-size:10px">✏️</button>
-        <button onclick="analisarCampanhaUnica('${c.id}')" style="background:var(--brand-l);border:1px solid var(--brand-b);color:var(--brand);border-radius:5px;padding:3px 8px;font-size:10px">🤖</button>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
 function renderGraficoAds(lista){
   /* Barras por cliente */
   const canvas=document.getElementById('ads-chart-barras');
@@ -5733,7 +6149,853 @@ function setDashPeriodo(d,btn){
   renderDashFinanceiro();
 }
 
+/* ══════════════════════════════════════════════════════
+   SISTEMA DE NOTIFICAÇÕES INTELIGENTES
+══════════════════════════════════════════════════════ */
+let _notifList=[];
+let _notifLidas=new Set(JSON.parse(localStorage.getItem('k2_notif_lidas')||'[]'));
+
+function toggleNotifPanel(){
+  const p=document.getElementById('notif-panel');
+  const o=document.getElementById('notif-overlay');
+  const aberto=p.style.display==='flex';
+  p.style.display=aberto?'none':'flex';
+  o.style.display=aberto?'none':'block';
+  if(!aberto){
+    /* Marca todas como vistas */
+    _notifList.forEach(n=>_notifLidas.add(n.id));
+    localStorage.setItem('k2_notif_lidas',JSON.stringify([..._notifLidas]));
+    atualizarBadgeNotif();
+  }
+}
+function closeNotifPanel(){
+  document.getElementById('notif-panel').style.display='none';
+  document.getElementById('notif-overlay').style.display='none';
+}
+function marcarTodasLidas(){
+  _notifList=[];
+  document.getElementById('notif-list').innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:12px">Tudo em dia 🎉</div>';
+  atualizarBadgeNotif();
+}
+function marcarExecutado(id){
+  _notifList=_notifList.filter(n=>n.id!==id);
+  const el=document.getElementById('notif-'+id);
+  if(el){el.style.opacity='0';el.style.transform='translateX(20px)';setTimeout(()=>el.remove(),250);}
+  atualizarBadgeNotif();
+  toast('Marcado como executado!','✅');
+}
+function fecharNotif(id){
+  _notifList=_notifList.filter(n=>n.id!==id);
+  const el=document.getElementById('notif-'+id);
+  if(el){el.style.opacity='0';setTimeout(()=>el.remove(),200);}
+  atualizarBadgeNotif();
+}
+function irParaModulo(page){
+  closeNotifPanel();
+  goPage(page,null);
+  document.querySelectorAll('.ni').forEach(n=>{
+    if(n.getAttribute('onclick')?.includes(`'${page}'`))n.classList.add('on');
+  });
+}
+function atualizarBadgeNotif(){
+  const naoLidas=_notifList.filter(n=>!_notifLidas.has(n.id)).length;
+  const badge=document.getElementById('notif-count');
+  const dot=document.getElementById('notif-dot');
+  if(naoLidas>0){
+    badge.textContent=naoLidas>9?'9+':naoLidas;
+    badge.style.display='flex';
+    dot.style.display='block';
+  }else{
+    badge.style.display='none';
+    dot.style.display='none';
+  }
+  const sub=document.getElementById('notif-sub');
+  if(sub)sub.textContent=`${_notifList.length} alertas ativos · ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+}
+function renderNotifList(){
+  const el=document.getElementById('notif-list');
+  if(!_notifList.length){
+    el.innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:12px">Tudo em dia 🎉</div>';
+    return;
+  }
+  const cor={urgente:'var(--er)',atencao:'var(--wa)',ok:'var(--ok)'};
+  const bg={urgente:'rgba(220,38,38,.1)',atencao:'rgba(217,119,6,.1)',ok:'rgba(5,150,105,.1)'};
+  const ico={urgente:'🔴',atencao:'🟡',ok:'🟢'};
+  const pageMap={WhatsApp:'wa',CRM:'crm',Orçamentos:'orca',Financeiro:'financeiro',Tarefas:'hub',Agenda:'agenda',Automações:'automacoes',Social:'sh',Campanhas:'ads'};
+  el.innerHTML=_notifList.map(n=>`
+    <div class="notif-card ${n.nivel}" id="notif-${n.id}" style="transition:all .25s">
+      <div class="notif-card-h">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:12px">${ico[n.nivel]||'⚪'}</span>
+          <span class="notif-card-titulo">${n.titulo}</span>
+        </div>
+        <span class="notif-card-modulo" style="background:${bg[n.nivel]};color:${cor[n.nivel]}">${n.modulo}</span>
+      </div>
+      <div class="notif-card-msg">${n.msg}</div>
+      <div class="notif-card-footer">
+        <button class="notif-btn-exec" onclick="marcarExecutado('${n.id}')">✓ Executado</button>
+        ${pageMap[n.modulo]?`<button class="notif-btn-ver" onclick="irParaModulo('${pageMap[n.modulo]}')">Ver →</button>`:''}
+        <button class="notif-btn-fechar" onclick="fecharNotif('${n.id}')">Fechar</button>
+      </div>
+    </div>`).join('');
+}
+function dispararNotificacoes(alertas){
+  if(!alertas||!alertas.length)return;
+  const novas=alertas.filter(a=>a.nivel==='urgente'||a.nivel==='atencao').map((a,i)=>({
+    id:`notif-${Date.now()}-${i}`,
+    nivel:a.nivel,modulo:a.modulo,
+    titulo:a.titulo||a.modulo,
+    msg:a.msg,ts:new Date()
+  }));
+  /* Remove duplicatas por módulo */
+  novas.forEach(n=>{
+    if(!_notifList.find(x=>x.modulo===n.modulo&&x.msg===n.msg))_notifList.unshift(n);
+  });
+  _notifList=_notifList.slice(0,20);
+  renderNotifList();
+  if(novas.length>0){
+    atualizarBadgeNotif();
+    /* Faz o sino piscar */
+    const bell=document.getElementById('notif-bell');
+    if(bell){bell.classList.add('bell-ring');setTimeout(()=>bell.classList.remove('bell-ring'),800);}
+  }
+}
+
+/* ══════════════════════════════════════════════
+   AGENTE IA COMPLETO — Monitora 15 módulos
+   Roda a cada 5 min — claude-haiku-4-5
+══════════════════════════════════════════════ */
+let _iaRodando=false;
+
+function coletarEstadoCompleto(){
+  const now=Date.now();
+  const d7=7*864e5;const d3=3*864e5;const d1=864e5;
+  /* WhatsApp */
+  const waAbertos=(CONVS||[]).filter(c=>c.status==='aberta').length;
+  const waSemResp7=(CONVS||[]).filter(c=>{
+    if(c.status!=='aberta')return false;
+    const ul=c.msgs?.length?c.msgs[c.msgs.length-1]:null;
+    return ul?(now-new Date(ul.ts||now).getTime())>d7:false;
+  }).length;
+  const waHoje=(CONVS||[]).filter(c=>{
+    const ul=c.msgs?.length?c.msgs[c.msgs.length-1]:null;
+    return ul?(now-new Date(ul.ts||now).getTime())<d1:false;
+  }).length;
+  /* CRM */
+  const crmTotal=(CRM_COLS||[]).reduce((s,c)=>s+c.cards.length,0);
+  const crmParados=(CRM_COLS||[]).reduce((s,c)=>s+c.cards.filter(k=>(now-new Date(k.criadoEm||now).getTime())>d7).length,0);
+  /* Orçamentos */
+  const orcPend=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length;
+  const orcSemResp=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando'&&(now-new Date(o.data||now).getTime())>d3).length;
+  const orcVal=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').reduce((s,o)=>s+Number(o.total||0),0);
+  /* Tarefas Work Hub */
+  const taskAtras=(TASKS||[]).filter(t=>t.status!=='Concluído'&&t.prazo&&new Date(t.prazo)<new Date()).length;
+  const taskHoje=(TASKS||[]).filter(t=>t.status!=='Concluído'&&t.prazo&&new Date(t.prazo).toDateString()===new Date().toDateString()).length;
+  const taskPend=(TASKS||[]).filter(t=>t.status!=='Concluído').length;
+  /* Financeiro */
+  const mrr=typeof calcMRR==='function'?calcMRR():0;
+  const receita=typeof calcReceitaMes==='function'?calcReceitaMes(mesAtual()):0;
+  const despesa=typeof calcDespesaMes==='function'?calcDespesaMes(mesAtual()):0;
+  const inadimp=typeof calcInadimplencia==='function'?calcInadimplencia():0;
+  const contrAtivos=(CONTRATOS_FIN||[]).filter(c=>c.status==='ativo').length;
+  /* Clientes */
+  const cliTotal=(CLIENTES||[]).length;
+  /* Campanhas */
+  const campAtivas=(CAMPANHAS||[]).filter(c=>c.status==='ativo').length;
+  const campBudgetBaixo=(CAMPANHAS||[]).filter(c=>c.status==='ativo'&&Number(c.saldo||0)<50).length;
+  /* n8n */
+  const automFalha=document.querySelectorAll('.n8n-st-off').length;
+  return {waAbertos,waSemResp7,waHoje,crmTotal,crmParados,orcPend,orcSemResp,orcVal,taskAtras,taskHoje,taskPend,mrr,receita,despesa,inadimp,contrAtivos,cliTotal,campAtivas,campBudgetBaixo,automFalha};
+}
+
+async function rodarAgenteIA(){
+  if(_iaRodando)return;
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey)return;
+  _iaRodando=true;
+  atualizarStatusIA('analisando');
+  const E=coletarEstadoCompleto();
+  const contexto=`Você é o agente de IA do K2 Flow. Analise e retorne JSON.
+Estado (${new Date().toLocaleString('pt-BR')}):
+WhatsApp: ${E.waAbertos} abertas | ${E.waSemResp7} sem resposta +7d | ${E.waHoje} ativas hoje
+CRM: ${E.crmTotal} leads | ${E.crmParados} parados +7d
+Orçamentos: ${E.orcPend} pendentes | ${E.orcSemResp} sem resposta +3d | R$${E.orcVal.toLocaleString('pt-BR')} em risco
+Tarefas: ${E.taskAtras} atrasadas | ${E.taskHoje} vencem hoje | ${E.taskPend} pendentes
+Financeiro: MRR R$${E.mrr.toLocaleString('pt-BR')} | Receita mês R$${E.receita.toLocaleString('pt-BR')} | Despesa R$${E.despesa.toLocaleString('pt-BR')} | Inadimp R$${E.inadimp.toLocaleString('pt-BR')}
+Clientes: ${E.cliTotal} | Contratos ativos: ${E.contrAtivos}
+Campanhas: ${E.campAtivas} ativas | ${E.campBudgetBaixo} com budget baixo
+Automações com falha: ${E.automFalha}
+Retorne SOMENTE este JSON sem markdown:
+{"score":<0-100>,"titulo":"<3-5 palavras>","resumo":"<1 frase>","alertas":[{"nivel":"urgente|atencao|ok","modulo":"<WhatsApp|CRM|Orçamentos|Financeiro|Tarefas|Campanhas|Automações>","titulo":"<título curto>","msg":"<ação concreta 1 frase>"}],"prioridade":"<1 ação agora>","projecao":"<projeção 1 frase>"}`;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,messages:[{role:'user',content:contexto}]})});
+    const data=await resp.json();
+    const txt=data.content?.[0]?.text||'{}';
+    const json=JSON.parse(txt.replace(/```json|```/g,'').trim());
+    aplicarAnaliseIA(json);
+    dispararNotificacoes(json.alertas);
+  }catch(e){atualizarStatusIA('erro');}
+  finally{_iaRodando=false;}
+}
+
+function aplicarAnaliseIA(j){
+  const elScore=document.getElementById('rel-score');
+  const elTit=document.getElementById('rel-score-titulo');
+  const elDesc=document.getElementById('rel-score-desc');
+  if(elScore)elScore.textContent=(j.score||'—')+'%';
+  if(elTit){elTit.textContent=j.titulo||'';elTit.style.color=j.score>=70?'#34D399':j.score>=50?'#FCD34D':'#FCA5A5';}
+  if(elDesc)elDesc.textContent=j.resumo||'';
+  const elDash=document.getElementById('dash-ia-widget');
+  if(elDash&&j.alertas){
+    const cor={urgente:'#FCA5A5',atencao:'#FCD34D',ok:'#34D399'};
+    const ico={urgente:'🔴',atencao:'🟡',ok:'🟢'};
+    elDash.innerHTML=`<div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:10px">Atualizado ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</div><div style="font-size:13px;font-weight:700;color:#FCD34D;margin-bottom:10px">🎯 ${j.prioridade||''}</div>${(j.alertas||[]).slice(0,5).map(a=>`<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="flex-shrink:0">${ico[a.nivel]||'⚪'}</span><div><span style="font-size:10px;font-weight:700;color:${cor[a.nivel]||'#fff'}">${a.modulo}</span><div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">${a.msg}</div></div></div>`).join('')}<div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:10px;font-style:italic">${j.projecao||''}</div>`;
+  }
+  const d2=document.getElementById('ia-status-dot2');
+  if(d2)d2.style.background='#34D399';
+  atualizarStatusIA('ok');
+}
+
+function atualizarStatusIA(estado){
+  const el=document.getElementById('ia-status-dot');
+  const txt=document.getElementById('ia-status-txt');
+  if(!el)return;
+  const map={analisando:['#FCD34D','Analisando...'],ok:['#34D399','IA ativa'],erro:['#FCA5A5','Erro na API Key']};
+  const[cor,label]=map[estado]||['#9CA3AF','Aguardando'];
+  el.style.background=cor;
+  const d2=document.getElementById('ia-status-dot2');
+  if(d2)d2.style.background=cor;
+  if(txt)txt.textContent=label;
+}
+
+function forcarAnaliseIA(){
+  _iaRodando=false;
+  rodarAgenteIA();
+  toast('Analisando toda a operação...','🤖');
+}
+
+/* ══════════════════════════════════════════════
+   CLAUDE CHAT — Assistente com domínio no app
+══════════════════════════════════════════════ */
+let _claudeChatOpen=false;
+let _claudeHistory=[];
+
+function toggleClaudeChat(){
+  _claudeChatOpen=!_claudeChatOpen;
+  const panel=document.getElementById('claude-chat-panel');
+  const btn=document.getElementById('claude-chat-btn');
+  panel.style.display=_claudeChatOpen?'flex':'none';
+  btn.style.display=_claudeChatOpen?'none':'flex';
+  if(_claudeChatOpen)setTimeout(()=>document.getElementById('claude-inp').focus(),100);
+}
+
+function claudePerguntar(pergunta){
+  document.getElementById('claude-inp').value=pergunta;
+  claudeEnviar();
+}
+
+async function claudeEnviar(){
+  const inp=document.getElementById('claude-inp');
+  const pergunta=inp.value.trim();
+  if(!pergunta)return;
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){
+    claudeAddMsg('Configure a API Key do Claude em Configurações → IA para usar o assistente.','ai');
+    return;
+  }
+  inp.value='';
+  document.getElementById('claude-sugestoes').style.display='none';
+  claudeAddMsg(pergunta,'user');
+  const thinking=claudeAddMsg('Analisando os dados da operação...','thinking');
+  /* Coleta contexto completo */
+  const E=coletarEstadoCompleto();
+  const ctx=`Você é o assistente integrado do K2 Flow, CRM para pequenas empresas brasileiras.
+Você tem acesso COMPLETO aos dados da operação em tempo real:
+- WhatsApp: ${E.waAbertos} conversas abertas | ${E.waSemResp7} sem resposta +7d
+- CRM: ${E.crmTotal} leads | ${E.crmParados} parados +7d
+- Orçamentos: ${E.orcPend} pendentes | R$${E.orcVal.toLocaleString('pt-BR')} em aberto | ${E.orcSemResp} sem resposta
+- Tarefas: ${E.taskAtras} atrasadas | ${E.taskHoje} vencem hoje | ${E.taskPend} pendentes
+- Financeiro: MRR R$${E.mrr.toLocaleString('pt-BR')} | Receita R$${E.receita.toLocaleString('pt-BR')} | Despesa R$${E.despesa.toLocaleString('pt-BR')} | Inadimplência R$${E.inadimp.toLocaleString('pt-BR')}
+- Clientes: ${E.cliTotal} | Contratos recorrentes: ${E.contrAtivos}
+- Campanhas: ${E.campAtivas} ativas | ${E.campBudgetBaixo} com budget baixo
+- Automações com falha: ${E.automFalha}
+Responda em português, seja direto e útil. Máx 3 parágrafos curtos.`;
+  _claudeHistory.push({role:'user',content:pergunta});
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:500,system:ctx,messages:_claudeHistory.slice(-10)})});
+    const data=await resp.json();
+    const resposta=data.content?.[0]?.text||'Não consegui analisar os dados.';
+    thinking.remove();
+    claudeAddMsg(resposta,'ai');
+    _claudeHistory.push({role:'assistant',content:resposta});
+    if(_claudeHistory.length>20)_claudeHistory=_claudeHistory.slice(-20);
+  }catch(e){
+    thinking.remove();
+    claudeAddMsg('Erro ao conectar. Verifique sua API Key em Configurações → IA.','ai');
+  }
+}
+
+function claudeAddMsg(txt,tipo){
+  const msgs=document.getElementById('claude-msgs');
+  const el=document.createElement('div');
+  el.className=tipo==='user'?'claude-msg-user':tipo==='thinking'?'claude-msg-thinking':'claude-msg-ai';
+  el.textContent=txt;
+  msgs.appendChild(el);
+  msgs.scrollTop=msgs.scrollHeight;
+  return el;
+}
+
+/* ══════════════════════════════════════════════════
+   WORK HUB — ClickUp Style
+══════════════════════════════════════════════════ */
+const WH_STATUS={
+  'Agendado':   {cor:'#7C3AED',bg:'rgba(124,58,237,.1)'},
+  'Em Produção':{cor:'#2563EB',bg:'rgba(37,99,235,.1)'},
+  'Revisão':    {cor:'#D97706',bg:'rgba(217,119,6,.1)'},
+  'Aprovação':  {cor:'#F26419',bg:'rgba(242,100,25,.1)'},
+  'Concluído':  {cor:'#059669',bg:'rgba(5,150,105,.1)'},
+  'Cancelado':  {cor:'#DC2626',bg:'rgba(220,38,38,.1)'},
+};
+const WH_PRIO={alta:{cor:'#DC2626',ico:'⚑'},media:{cor:'#D97706',ico:'⚑'},baixa:{cor:'#059669',ico:'⚑'},none:{cor:'#CBD5E1',ico:'⚑'}};
+let _whView='lista';
+let _whCurrentSpace='minhas';
+let _whDragTask=null;
+let _whShowFechadas=false;
+
+function whToggleSb(){
+  const sb=document.getElementById('wh-sb');
+  const ico=document.getElementById('wh-sb-ico');
+  sb.classList.toggle('collapsed');
+  const col=sb.classList.contains('collapsed');
+  if(ico)ico.innerHTML=col
+    ?'<polyline points="9 18 15 12 9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+    :'<polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+}
+
+function whGo(space,el){
+  document.querySelectorAll('.wh-sb-item').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  _whCurrentSpace=space;
+  const nomes={
+    inbox:'Caixa de entrada',minhas:'Atribuídas a mim',hoje:'Hoje e atrasadas',
+    pessoal:'Lista pessoal',demandas:'DEMANDAS',jornada:'JORNADA DO CLIENTE',
+    producao:'PRODUÇÃO',design:'DESIGN','social-media':'Social Media',
+    trafego:'Tráfego Pago','aprovacao-interna':'Aprovação Interna','aprovacao-cliente':'Aprovação do Cliente'
+  };
+  const vnEl=document.getElementById('wh-view-name');
+  if(vnEl)vnEl.textContent=nomes[space]||space;
+  renderWHtasks();
+}
+
+function whToggleView(v){
+  _whView=v;
+  document.getElementById('wh-lista-view').style.display=v==='lista'?'block':'none';
+  document.getElementById('wh-kanban-view').style.display=v==='kanban'?'flex':'none';
+  document.getElementById('wh-cal-view').style.display=v==='calendario'?'block':'none';
+  renderWHtasks();
+}
+
+function whFiltrar(){toast('Filtros avançados em breve','🔍');}
+function whToggleFechadas(){_whShowFechadas=!_whShowFechadas;renderWHtasks();}
+
+function renderWHtasks(){
+  let tasks=[...(TASKS||[])];
+  /* Filtra por espaço */
+  if(_whCurrentSpace==='hoje'){tasks=tasks.filter(t=>t.status!=='Concluído'&&t.prazo&&(new Date(t.prazo)<new Date()||new Date(t.prazo).toDateString()===new Date().toDateString()));}
+  else if(_whCurrentSpace==='inbox'){tasks=tasks.filter(t=>!t.lido);}
+  else if(_whCurrentSpace!=='minhas'&&_whCurrentSpace!=='pessoal'){tasks=tasks.filter(t=>(t.espaco||'').toLowerCase()===_whCurrentSpace);}
+  if(!_whShowFechadas)tasks=tasks.filter(t=>t.status!=='Cancelado');
+
+  if(_whView==='lista') renderWHLista(tasks);
+  else if(_whView==='kanban') renderWHKanban(tasks);
+  else renderWHCal(tasks);
+
+  /* Badge inbox */
+  const ibEl=document.getElementById('wh-inbox-cnt');if(ibEl)ibEl.textContent=(TASKS||[]).filter(t=>!t.lido).length;
+  const pesEl=document.getElementById('wh-pes-cnt');if(pesEl)pesEl.textContent=(TASKS||[]).length;
+}
+
+function renderWHLista(tasks){
+  const el=document.getElementById('wh-lista-view');
+  if(!el)return;
+  const grupos={};
+  tasks.forEach(t=>{const s=t.status||'Agendado';if(!grupos[s])grupos[s]=[];grupos[s].push(t);});
+  el.innerHTML=`
+    <div class="wh-col-hd">
+      <div class="wh-col-cell" style="flex:1;border-left:none">Nome</div>
+      <div class="wh-col-cell" style="width:120px">Responsável</div>
+      <div class="wh-col-cell" style="width:90px">Prioridade</div>
+      <div class="wh-col-cell" style="width:110px">Vencimento</div>
+    </div>
+    ${Object.entries(WH_STATUS).map(([status,{cor,bg}])=>{
+      const ts=(grupos[status]||[]);
+      return`<div class="wh-status-group" id="wh-grp-${status.replace(/ /g,'-')}">
+        <div class="wh-status-header" onclick="whToggleGrupo('${status}')">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="${cor}"><circle cx="5" cy="5" r="5"/></svg>
+          <span style="text-transform:uppercase;font-size:11px;color:${cor}">${status}</span>
+          <span style="background:${bg};color:${cor};border-radius:99px;padding:1px 8px;font-size:10px">${ts.length}</span>
+        </div>
+        <div id="wh-grp-body-${status.replace(/ /g,'-')}" ondragover="whDragOver(event,'${status}')" ondrop="whDrop(event,'${status}')">
+          ${ts.map(t=>whTaskRow(t)).join('')}
+          <div class="wh-add-row" onclick="whNovaTaskStatus('${status}')">
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Criar nova tarefa
+          </div>
+        </div>
+      </div>`;
+    }).join('')}`;
+}
+
+function whTaskRow(t){
+  const prio=WH_PRIO[t.prioridade||'none'];
+  const prazo=t.prazo?new Date(t.prazo):null;
+  const atrasada=prazo&&prazo<new Date()&&t.status!=='Concluído';
+  const prazoStr=prazo?prazo.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'—';
+  return`<div class="wh-task-row" draggable="true" data-id="${t.id}" ondragstart="whDragStart(event,'${t.id}')" onclick="whAbrirTask('${t.id}')">
+    <div class="wh-task-name-cell">
+      <div class="wh-check ${t.status==='Concluído'?'done':''}" onclick="event.stopPropagation();whToggleConcluido('${t.id}')"></div>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${t.status==='Concluído'?'var(--t3)':'var(--t1)'};text-decoration:${t.status==='Concluído'?'line-through':'none'}">${t.nome}</span>
+      ${t.subtarefas?.length?`<span style="font-size:10px;color:var(--t3);background:var(--bd2);border-radius:4px;padding:1px 5px">${t.subtarefas.filter(s=>s.done).length}/${t.subtarefas.length}</span>`:''}
+    </div>
+    <div class="wh-task-cell" style="width:120px;font-size:11px">${t.responsavel||'—'}</div>
+    <div class="wh-task-cell" style="width:90px;color:${prio.cor};font-size:11px;font-weight:600">${prio.ico} ${(t.prioridade||'').charAt(0).toUpperCase()+(t.prioridade||'nenhuma').slice(1)}</div>
+    <div class="wh-task-cell" style="width:110px;font-size:11px;color:${atrasada?'var(--er)':'var(--t2)'}">${prazoStr}</div>
+  </div>`;
+}
+
+function renderWHKanban(tasks){
+  const el=document.getElementById('wh-kanban-view');
+  el.style.display='flex';
+  el.innerHTML=Object.entries(WH_STATUS).map(([status,{cor,bg}])=>{
+    const ts=tasks.filter(t=>(t.status||'Agendado')===status);
+    return`<div class="wh-kanban-col" ondragover="event.preventDefault()" ondrop="whDrop(event,'${status}')">
+      <div class="wh-kanban-hd">
+        <div style="width:10px;height:10px;border-radius:50%;background:${cor}"></div>
+        <span style="color:${cor};text-transform:uppercase;font-size:11px">${status}</span>
+        <span style="margin-left:auto;background:${bg};color:${cor};border-radius:99px;padding:1px 7px;font-size:10px">${ts.length}</span>
+      </div>
+      ${ts.map(t=>`<div class="wh-kanban-card" draggable="true" data-id="${t.id}" ondragstart="whDragStart(event,'${t.id}')" onclick="whAbrirTask('${t.id}')">
+        <div style="font-size:12.5px;font-weight:500;color:var(--t1);margin-bottom:6px">${t.nome}</div>
+        ${t.prazo?`<div style="font-size:10px;color:var(--t3)">${new Date(t.prazo).toLocaleDateString('pt-BR')}</div>`:''}
+        ${t.responsavel?`<div style="font-size:10px;color:var(--t3);margin-top:4px">👤 ${t.responsavel}</div>`:''}
+      </div>`).join('')}
+      <button class="wh-add-row" style="border-radius:6px;border:none;width:100%;margin-top:4px" onclick="whNovaTaskStatus('${status}')">+ Adicionar</button>
+    </div>`;
+  }).join('');
+}
+
+function renderWHCal(tasks){
+  const el=document.getElementById('wh-cal-view');
+  const hoje=new Date();
+  const ano=hoje.getFullYear();const mes=hoje.getMonth();
+  const primeiro=new Date(ano,mes,1);const ultimo=new Date(ano,mes+1,0);
+  const inicio=primeiro.getDay();
+  const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  let html=`<div style="font-size:14px;font-weight:700;margin-bottom:12px">${meses[mes]} ${ano}</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+    ${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d=>`<div style="text-align:center;font-size:10px;font-weight:700;color:var(--t3);padding:6px 0">${d}</div>`).join('')}
+    ${Array.from({length:inicio}).map(()=>'<div></div>').join('')}
+    ${Array.from({length:ultimo.getDate()}).map((_,i)=>{
+      const dia=i+1;
+      const isHoje=dia===hoje.getDate()&&mes===hoje.getMonth()&&ano===hoje.getFullYear();
+      const diaStr=`${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+      const ts=tasks.filter(t=>t.prazo&&t.prazo.startsWith(diaStr));
+      return`<div class="wh-cal-day ${isHoje?'today':''}" ondrop="whDropCal(event,'${diaStr}')" ondragover="event.preventDefault()">
+        <div style="font-size:11px;font-weight:600;color:${isHoje?'var(--brand)':'var(--t2)'};margin-bottom:3px">${dia}</div>
+        ${ts.slice(0,3).map(t=>`<div class="wh-cal-task" draggable="true" data-id="${t.id}" ondragstart="whDragStart(event,'${t.id}')" onclick="event.stopPropagation();whAbrirTask('${t.id}')">${t.nome}</div>`).join('')}
+        ${ts.length>3?`<div style="font-size:9px;color:var(--t3)">+${ts.length-3}</div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`;
+  el.innerHTML=html;
+}
+
+function whDragStart(e,id){_whDragTask=id;e.dataTransfer.effectAllowed='move';}
+function whDragOver(e,status){e.preventDefault();}
+function whDrop(e,status){
+  e.preventDefault();
+  if(!_whDragTask)return;
+  const t=(TASKS||[]).find(x=>x.id===_whDragTask);
+  if(t){t.status=status;salvarTasks();renderWHtasks();toast(`Tarefa movida para ${status}`,'✓');}
+  _whDragTask=null;
+}
+function whDropCal(e,data){
+  e.preventDefault();
+  if(!_whDragTask)return;
+  const t=(TASKS||[]).find(x=>x.id===_whDragTask);
+  if(t){t.prazo=data;salvarTasks();renderWHtasks();toast('Prazo atualizado','📅');}
+  _whDragTask=null;
+}
+function salvarTasks(){try{localStorage.setItem('k2_tasks',JSON.stringify(TASKS));}catch(e){}}
+function whToggleConcluido(id){
+  const t=(TASKS||[]).find(x=>x.id===id);
+  if(!t)return;
+  t.status=t.status==='Concluído'?'Agendado':'Concluído';
+  salvarTasks();renderWHtasks();
+}
+function whToggleGrupo(status){
+  const el=document.getElementById('wh-grp-body-'+status.replace(/ /g,'-'));
+  if(el)el.style.display=el.style.display==='none'?'':'none';
+}
+function whNovaTaskStatus(status){
+  const nome=prompt(`Nova tarefa em "${status}":`)?.trim();
+  if(!nome)return;
+  const nova={id:'wh-'+Date.now(),nome,status,prioridade:'none',prazo:'',responsavel:'',espaco:_whCurrentSpace,lido:false,subtarefas:[]};
+  (TASKS=TASKS||[]).push(nova);
+  salvarTasks();renderWHtasks();
+}
+function whAbrirTask(id){
+  const t=(TASKS||[]).find(x=>x.id===id);if(!t)return;
+  t.lido=true;
+  const d=document.getElementById('wh-task-drawer');
+  d.style.width='360px';d.style.minWidth='360px';
+  document.getElementById('drawer-task-nome').textContent=t.nome;
+  const prio=WH_PRIO[t.prioridade||'none'];
+  document.getElementById('drawer-task-body').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div><label style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">Status</label>
+        <select onchange="whChangeStatus('${t.id}',this.value)" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:12px;width:100%">
+          ${Object.keys(WH_STATUS).map(s=>`<option ${t.status===s?'selected':''}>${s}</option>`).join('')}
+        </select></div>
+      <div><label style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">Prioridade</label>
+        <select onchange="whChangePrio('${t.id}',this.value)" style="background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:12px;width:100%">
+          <option value="none" ${t.prioridade==='none'?'selected':''}>Nenhuma</option>
+          <option value="baixa" ${t.prioridade==='baixa'?'selected':''}>Baixa</option>
+          <option value="media" ${t.prioridade==='media'?'selected':''}>Média</option>
+          <option value="alta" ${t.prioridade==='alta'?'selected':''}>Alta</option>
+        </select></div>
+      <div><label style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">Vencimento</label>
+        <input type="date" value="${t.prazo||''}" onchange="whChangePrazo('${t.id}',this.value)" style="width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:12px"></div>
+      <div><label style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">Responsável</label>
+        <input type="text" value="${t.responsavel||''}" placeholder="Nome..." onchange="whChangeResp('${t.id}',this.value)" style="width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:12px"></div>
+      <div><label style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px">Subtarefas</label>
+        <div id="sub-list">${(t.subtarefas||[]).map((s,i)=>`<div style="display:flex;align-items:center;gap:6px;padding:4px 0"><div class="wh-check ${s.done?'done':''}" onclick="whToggleSub('${t.id}',${i})"></div><span style="font-size:12px;${s.done?'text-decoration:line-through;color:var(--t3)':''}">${s.nome}</span></div>`).join('')}</div>
+        <div style="display:flex;gap:6px;margin-top:6px"><input id="nova-sub-inp" placeholder="Nova subtarefa..." style="flex:1;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px" onkeydown="if(event.key==='Enter')whAddSub('${t.id}')"><button onclick="whAddSub('${t.id}')" style="background:var(--brand);border:none;color:#fff;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">+</button></div>
+      </div>
+      <button onclick="whExcluirTask('${t.id}')" style="background:var(--er-l);border:1px solid var(--er-b);color:var(--er);border-radius:6px;padding:7px;font-size:12px;cursor:pointer;width:100%">🗑 Excluir tarefa</button>
+    </div>`;
+}
+function fecharTaskDrawer(){const d=document.getElementById('wh-task-drawer');d.style.width='0';d.style.minWidth='0';}
+function whChangeStatus(id,v){const t=(TASKS||[]).find(x=>x.id===id);if(t){t.status=v;salvarTasks();renderWHtasks();}}
+function whChangePrio(id,v){const t=(TASKS||[]).find(x=>x.id===id);if(t){t.prioridade=v;salvarTasks();renderWHtasks();}}
+function whChangePrazo(id,v){const t=(TASKS||[]).find(x=>x.id===id);if(t){t.prazo=v;salvarTasks();renderWHtasks();}}
+function whChangeResp(id,v){const t=(TASKS||[]).find(x=>x.id===id);if(t){t.responsavel=v;salvarTasks();}}
+function whAddSub(id){
+  const inp=document.getElementById('nova-sub-inp');
+  const nome=inp.value.trim();if(!nome)return;
+  const t=(TASKS||[]).find(x=>x.id===id);
+  if(t){t.subtarefas=t.subtarefas||[];t.subtarefas.push({nome,done:false});salvarTasks();whAbrirTask(id);}
+  inp.value='';
+}
+function whToggleSub(id,i){
+  const t=(TASKS||[]).find(x=>x.id===id);
+  if(t&&t.subtarefas[i]){t.subtarefas[i].done=!t.subtarefas[i].done;salvarTasks();whAbrirTask(id);}
+}
+function whExcluirTask(id){
+  if(!confirm('Excluir esta tarefa?'))return;
+  TASKS=(TASKS||[]).filter(x=>x.id!==id);salvarTasks();fecharTaskDrawer();renderWHtasks();toast('Tarefa excluída','🗑');
+}
+function setWHView(v,btn){whToggleView(v);}
+
+/* ══════════════════════════════════════════════════
+   SOCIAL HUB — MLabs Style
+══════════════════════════════════════════════════ */
+let SH_POSTS=JSON.parse(localStorage.getItem('k2_sh_posts')||'null')||[
+  {id:'sh1',texto:'🚀 K2 Flow chegou para revolucionar sua gestão! WhatsApp + CRM + IA em um único lugar.',data:'2026-05-20',hora:'18:00',canais:['instagram','facebook'],status:'agendado',plataforma:'Instagram'},
+  {id:'sh2',texto:'📊 Você sabia que 70% dos leads não são respondidos em menos de 1h? Com o K2 Flow, nunca mais isso acontece.',data:'2026-05-21',hora:'12:00',canais:['instagram'],status:'agendado',plataforma:'Instagram'},
+  {id:'sh3',texto:'💡 Dica do dia: Automatize seus lembretes de consulta e reduza faltas em até 80%!',data:'2026-05-22',hora:'09:00',canais:['facebook'],status:'agendado',plataforma:'Facebook'},
+  {id:'sh4',texto:'🎯 Case de sucesso: Clínica Sorriso aumentou 3x o número de agendamentos com K2 Flow.',data:'2026-05-23',hora:'15:00',canais:['instagram','facebook'],status:'agendado',plataforma:'Instagram'},
+  {id:'sh5',texto:'⚡ Nova funcionalidade: Agente IA que monitora sua operação 24h e te avisa quando algo precisa de atenção.',data:'2026-05-26',hora:'18:00',canais:['instagram'],status:'agendado',plataforma:'Instagram'},
+  {id:'sh6',texto:'Post publicado — Resultados K2 Company Abril 2026 🎉',data:'2026-05-15',hora:'10:00',canais:['instagram','facebook'],status:'publicado',plataforma:'Instagram'},
+];
+let _shCalMes=new Date();
+let _shCanaisSelecionados=new Set(['instagram']);
+
+const SH_CONTAS=[
+  {id:'ig',nome:'K2 Company',plat:'Instagram',ico:'instagram',conectada:true,cor:'linear-gradient(135deg,#E1306C,#833AB4,#405DE6)',seguidores:'2.4K',engajamento:'4.2%'},
+  {id:'fb',nome:'K2 Company',plat:'Facebook',ico:'facebook',conectada:true,cor:'#1877F2',seguidores:'1.8K',engajamento:'2.1%'},
+  {id:'gmn',nome:'K2 Company',plat:'Google Meu Negócio',ico:'google',conectada:false,cor:'#4285F4',seguidores:'—',engajamento:'—'},
+  {id:'tt',nome:'K2 Company',plat:'TikTok',ico:'tiktok',conectada:false,cor:'#010101',seguidores:'—',engajamento:'—'},
+  {id:'li',nome:'K2 Company',plat:'LinkedIn',ico:'linkedin',conectada:false,cor:'#0A66C2',seguidores:'—',engajamento:'—'},
+  {id:'pi',nome:'K2 Company',plat:'Pinterest',ico:'pinterest',conectada:false,cor:'#E60023',seguidores:'—',engajamento:'—'},
+  {id:'yt',nome:'K2 Company',plat:'YouTube',ico:'youtube',conectada:false,cor:'#FF0000',seguidores:'—',engajamento:'—'},
+  {id:'x',nome:'K2 Company',plat:'X / Twitter',ico:'x',conectada:false,cor:'#000',seguidores:'—',engajamento:'—'},
+];
+const SH_PLAT_CORES={instagram:'#E1306C',facebook:'#1877F2',tiktok:'#010101',linkedin:'#0A66C2',x:'#000',youtube:'#FF0000',pinterest:'#E60023',google:'#4285F4'};
+
+function shGo(aba,btn){
+  ['dash','agendar','cal','analytics','aprovacao'].forEach(a=>{
+    const el=document.getElementById('sh-'+a);
+    if(el)el.style.display='none';
+  });
+  document.querySelectorAll('.sh-tab').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('sh-'+aba);
+  if(el)el.style.display='block';
+  if(btn)btn.classList.add('on');
+  if(aba==='dash')renderSHDash();
+  else if(aba==='cal')renderSHCal();
+  else if(aba==='analytics')renderSHAnalytics();
+  else if(aba==='agendar'){
+    const hoje=new Date();
+    const dinp=document.getElementById('sh-data');if(dinp)dinp.value=hoje.toISOString().split('T')[0];
+    const hinp=document.getElementById('sh-hora');if(hinp)hinp.value='18:00';
+  }
+  else if(aba==='aprovacao'){
+    const ap=document.getElementById('sh-aprov-list');if(!ap)return;
+    const pend=(SH_POSTS||[]).filter(p=>p.status==='pendente-aprovacao');
+    ap.innerHTML=pend.length?pend.map(p=>`
+      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;margin-bottom:4px">${(p.texto||'Post').slice(0,80)}...</div>
+        <div style="font-size:11px;color:var(--t3)">${p.data} ${p.hora||''} · ${(p.canais||[]).join(', ')}</div></div>
+        <div style="display:flex;gap:6px">
+          <button onclick="shAprovarPost('${p.id}')" class="btn-prim" style="font-size:11px;padding:6px 12px">✓ Aprovar</button>
+          <button onclick="shReprovarPost('${p.id}')" class="btn-sec" style="font-size:11px;padding:6px 10px">✕</button>
+        </div>
+      </div>`).join('')
+      :'<div style="text-align:center;padding:40px;color:var(--t3);font-size:13px">Nenhum post aguardando aprovação 🎉</div>';
+  }
+}
+function shAprovarPost(id){const p=(SH_POSTS||[]).find(x=>x.id===id);if(p){p.status='agendado';localStorage.setItem('k2_sh_posts',JSON.stringify(SH_POSTS));shGo('aprovacao',null);toast('Post aprovado!','✅');}}
+function shReprovarPost(id){const p=(SH_POSTS||[]).find(x=>x.id===id);if(p){p.status='reprovado';localStorage.setItem('k2_sh_posts',JSON.stringify(SH_POSTS));shGo('aprovacao',null);toast('Post reprovado','❌');}}
+
+function renderSHDash(){
+  const grid=document.getElementById('sh-contas-grid');
+  if(!grid)return;
+  grid.innerHTML=SH_CONTAS.map(c=>`
+    <div class="sh-conta-card ${c.conectada?'sh-conta-conectada':''}" style="${c.conectada?'background:'+({instagram:'linear-gradient(135deg,#E1306C,#833AB4,#405DE6)',facebook:'#1877F2',google:'#4285F4'}[c.ico]||'#333')+';border:none':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:24px">${{instagram:'📸',facebook:'👤',google:'🔍',tiktok:'🎵',linkedin:'💼',pinterest:'📌',youtube:'▶️',x:'✖️'}[c.ico]||'🌐'}</div>
+        ${c.conectada?`<span style="background:rgba(255,255,255,.25);color:#fff;border-radius:99px;padding:2px 9px;font-size:10px;font-weight:800">✓ CONECTADO</span>`:``}
+      </div>
+      <div style="font-size:13px;font-weight:700;color:${c.conectada?'#fff':'var(--t1)'};margin-bottom:2px">${c.plat}</div>
+      <div style="font-size:11px;color:${c.conectada?'rgba(255,255,255,.6)':'var(--t3)'};margin-bottom:${c.conectada?10:12}px">K2 Company</div>
+      ${c.conectada?`
+        <div style="display:flex;gap:14px;padding-top:8px;border-top:1px solid rgba(255,255,255,.15)">
+          <div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:2px">Seguidores</div><div style="font-size:15px;font-weight:800;color:#fff">${c.seguidores}</div></div>
+          <div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:2px">Engajamento</div><div style="font-size:15px;font-weight:800;color:#fff">${c.engajamento}</div></div>
+          <div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:2px">Posts/mês</div><div style="font-size:15px;font-weight:800;color:#fff">${(SH_POSTS||[]).filter(p=>(p.canais||[]).includes(c.ico)).length}</div></div>
+        </div>`:
+        `<button class="sh-conta-btn" onclick="toast('Configure em Configurações → Integrações','⚙️')">Conectar conta</button>`}
+    </div>`).join('');
+
+  /* Resumo de posts agendados */
+  const ig=document.getElementById('sh-insights-grid');
+  if(!ig)return;
+  const agendados=(SH_POSTS||[]).filter(p=>p.status==='agendado');
+  ig.innerHTML=`
+    <div class="sh-insight-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">Posts agendados</div>
+      ${agendados.slice(0,4).map(p=>`
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd2)">
+          <div style="width:36px;height:36px;border-radius:8px;background:${SH_PLAT_CORES[p.canais?.[0]]||'var(--brand)'}22;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${p.canais?.[0]==='instagram'?'📸':p.canais?.[0]==='facebook'?'👤':'📱'}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.texto?.slice(0,45)||'Post'}</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px">${p.data} às ${p.hora||'—'}</div>
+          </div>
+          <span style="background:var(--ok-l);color:var(--ok);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;flex-shrink:0">✓ Agendado</span>
+        </div>`).join('')}
+      ${!agendados.length?'<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Nenhum post agendado</div>':''}
+      <button onclick="shGo(\'agendar\',document.getElementById(\'sh-t-agendar\'))" style="width:100%;margin-top:12px;background:var(--brand);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:700;cursor:pointer">+ Agendar novo post</button>
+    </div>
+    <div class="sh-insight-card" style="grid-column:span 2">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em">Insights rápidos — Instagram & Facebook</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        ${[{l:'Seguidores',v:'2.4K',p:'+128 este mês',c:'var(--ok)'},{l:'Alcance médio',v:'3.8K',p:'por post',c:'var(--bl)'},{l:'Engajamento',v:'4.2%',p:'acima da média',c:'var(--brand)'},{l:'Impressões',v:'18.2K',p:'últimos 30 dias',c:'var(--pu)'}].map(m=>`
+          <div style="background:var(--bg);border-radius:8px;padding:12px">
+            <div style="font-size:10px;color:var(--t3);margin-bottom:4px">${m.l}</div>
+            <div style="font-size:22px;font-weight:800;font-family:'Barlow',sans-serif;color:${m.c}">${m.v}</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:4px">${m.p}</div>
+          </div>`).join('')}
+      </div>
+      <div style="text-align:center;margin-top:14px;font-size:11px;color:var(--t3)">📊 Conecte suas contas via <strong>Configurações → Integrações</strong> para dados em tempo real</div>
+    </div>`;
+}
+
+function renderSHCal(){
+  const calMesEl=document.getElementById('sh-cal-mes');
+  if(!calMesEl)return;
+  const ano=_shCalMes.getFullYear(),mes=_shCalMes.getMonth();
+  const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  calMesEl.textContent=`${meses[mes]} ${ano}`;
+  const primeiro=new Date(ano,mes,1),ultimo=new Date(ano,mes+1,0);
+  const inicio=primeiro.getDay(),hoje=new Date();
+  const calGrid=document.getElementById('sh-cal-grid');if(!calGrid)return;
+  const cores=SH_PLAT_CORES;
+  let html=`
+    ${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d=>`<div style="background:var(--bd2);text-align:center;padding:8px 4px;font-size:10px;font-weight:700;color:var(--t3);border-bottom:1px solid var(--bd)">${d}</div>`).join('')}
+    ${Array.from({length:inicio}).map(()=>'<div style="background:var(--bg);min-height:90px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd)"></div>').join('')}
+    ${Array.from({length:ultimo.getDate()}).map((_,i)=>{
+      const dia=i+1;
+      const isHoje=dia===hoje.getDate()&&mes===hoje.getMonth()&&ano===hoje.getFullYear();
+      const diaStr=`${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+      const posts=(SH_POSTS||[]).filter(p=>p.data===diaStr);
+      return`<div class="sh-cal-cell${isHoje?' today':''}" ondragover="event.preventDefault();this.style.background='var(--brand-l)'" ondragleave="this.style.background=''" ondrop="shDropCal(event,'${diaStr}')" onclick="shClicarDia('${diaStr}')">
+        <div style="${isHoje?'width:20px;height:20px;background:var(--brand);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;margin-bottom:3px':'font-size:11px;font-weight:600;color:var(--t2);margin-bottom:3px'}">${dia}</div>
+        ${posts.slice(0,2).map(p=>`
+          <div class="sh-post-dot" draggable="true" ondragstart="shDragPost(event,'${p.id}')" style="background:${cores[p.canais?.[0]]||'var(--brand)'}18;color:${cores[p.canais?.[0]]||'var(--brand)'};" onclick="event.stopPropagation();shVerPost('${p.id}')" title="${p.texto||'Post'}">
+            ${p.hora?`<span style="font-size:9px;opacity:.7">${p.hora}</span> `:''}${(p.texto||'Post').slice(0,20)}
+          </div>`).join('')}
+        ${posts.length>2?`<div style="font-size:9px;color:var(--t3);padding:1px 3px">+${posts.length-2} mais</div>`:''}
+        <div style="position:absolute;bottom:3px;right:3px;opacity:0;transition:opacity .15s;font-size:10px;color:var(--brand)" class="sh-cal-add">+</div>
+      </div>`;
+    }).join('')}`;
+  calGrid.innerHTML=html;
+  calGrid.style.cssText='display:grid;grid-template-columns:repeat(7,1fr);gap:0;background:var(--bd);border:1px solid var(--bd);border-radius:8px;overflow:hidden;position:relative';
+}
+
+function renderSHAnalytics(){
+  const grid=document.getElementById('sh-analytics-grid');
+  if(!grid)return;
+  const metricas={
+    instagram:{nome:'Instagram',ico:'📸',cor:'#E1306C',seguidores:'2.4K',alcance:'3.8K',engajamento:'4.2%',impressoes:'18.2K',curtidas:'342',comentarios:'89',compartilhamentos:'56',salvamentos:'124',stories:'12',reels:'8'},
+    facebook:{nome:'Facebook',ico:'👤',cor:'#1877F2',seguidores:'1.8K',alcance:'2.1K',engajamento:'2.1%',impressoes:'9.4K',curtidas:'187',comentarios:'43',compartilhamentos:'92',salvamentos:'—',stories:'4',reels:'—'},
+  };
+  grid.innerHTML=Object.entries(metricas).map(([k,m])=>`
+    <div class="sh-insight-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bd2)">
+        <div style="font-size:24px">${m.ico}</div>
+        <div>
+          <div style="font-size:15px;font-weight:700">${m.nome}</div>
+          <div style="font-size:11px;color:var(--t3)">${m.seguidores} seguidores</div>
+        </div>
+        <span style="margin-left:auto;background:var(--ok-l);color:var(--ok);font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px">CONECTADO</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        ${[['Alcance médio',m.alcance,m.cor],['Engajamento',m.engajamento,m.cor],['Impressões',m.impressoes,'var(--t1)'],['Posts este mês',(SH_POSTS||[]).filter(p=>(p.canais||[]).includes(k)).length,'var(--t1)']].map(([l,v,c])=>`
+          <div style="background:var(--bg);border-radius:6px;padding:10px">
+            <div style="font-size:10px;color:var(--t3);margin-bottom:4px">${l}</div>
+            <div style="font-size:18px;font-weight:800;font-family:'Barlow',sans-serif;color:${c}">${v}</div>
+          </div>`).join('')}
+      </div>
+      <div style="font-size:11px;font-weight:600;color:var(--t2);margin-bottom:8px">Interações detalhadas</div>
+      ${[['❤️ Curtidas',m.curtidas],['💬 Comentários',m.comentarios],['🔁 Compartilhamentos',m.compartilhamentos],['🔖 Salvamentos',m.salvamentos],['📖 Stories',m.stories],['🎬 Reels',m.reels]].map(([l,v])=>`
+        <div class="sh-insight-metric"><span style="color:var(--t2)">${l}</span><span class="sh-insight-val" style="font-size:14px">${v}</span></div>`).join('')}
+      <div style="margin-top:12px;padding:10px;background:var(--brand-l);border:1px solid var(--brand-b);border-radius:8px;font-size:11px;color:var(--t2);text-align:center">
+        📊 Conecte via <strong>Configurações → Integrações</strong> para dados reais da API
+      </div>
+    </div>`).join('')+`
+    <div class="sh-insight-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px">Melhores horários para postar</div>
+      ${[['Segunda',['12h','18h','20h']],['Terça',['12h','19h']],['Quarta',['18h','21h']],['Quinta',['12h','18h','20h']],['Sexta',['12h','17h','19h']],['Sábado',['10h','14h']],['Domingo',['14h','18h']]].map(([dia,horas])=>`
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd2)">
+          <span style="font-size:12px;color:var(--t2);min-width:60px">${dia}</span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">${horas.map(h=>`<span style="background:var(--brand-l);color:var(--brand);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600">${h}</span>`).join('')}</div>
+        </div>`).join('')}
+      <div style="margin-top:10px;font-size:11px;color:var(--t3);text-align:center">Baseado em benchmarks de mercado para PMEs brasileiras</div>
+    </div>`;
+}
+
+function shCalNav(dir){_shCalMes=new Date(_shCalMes.getFullYear(),_shCalMes.getMonth()+dir,1);renderSHCal();}
+function shClicarDia(data){
+  shGo('agendar',document.getElementById('sh-t-agendar'));
+  document.getElementById('sh-data').value=data;
+}
+function shToggleCanal(btn,canal){btn.classList.toggle('on');if(btn.classList.contains('on'))_shCanaisSelecionados.add(canal);else _shCanaisSelecionados.delete(canal);shAtualizarPreview();}
+function shAtualizarPreview(){
+  const txt=document.getElementById('sh-post-txt')?.value||'';
+  const prev=document.getElementById('sh-preview-area');
+  if(!prev)return;
+  if(!txt&&!_shCanaisSelecionados.size){prev.innerHTML='<div style="text-align:center;color:var(--t3);font-size:12px;padding:32px 0">Aguardando conteúdo.</div>';return;}
+  prev.innerHTML=[..._shCanaisSelecionados].map(c=>`
+    <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;overflow:hidden">
+      <div style="background:${SH_PLAT_CORES[c]||'var(--brand)'};padding:6px 10px;display:flex;align-items:center;gap:6px">
+        <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:12px">K</div>
+        <span style="font-size:11px;font-weight:600;color:#fff">K2 Company</span>
+      </div>
+      <div style="padding:10px 12px;font-size:12.5px;color:var(--t1);line-height:1.5">${txt||'<em style="color:var(--t3)">Sem texto ainda</em>'}</div>
+    </div>`).join('');
+}
+function shHandleDrop(e){e.preventDefault();shHandleFiles2(e.dataTransfer.files);}
+function shHandleFiles(inp){shHandleFiles2(inp.files);}
+function shHandleFiles2(files){
+  const prev=document.getElementById('sh-media-preview');
+  Array.from(files).forEach(f=>{
+    const url=URL.createObjectURL(f);
+    const div=document.createElement('div');
+    div.style.cssText='position:relative;width:80px;height:80px;border-radius:6px;overflow:hidden;border:1px solid var(--bd)';
+    div.innerHTML=f.type.startsWith('video/')?`<video src="${url}" style="width:100%;height:100%;object-fit:cover"></video>`:`<img src="${url}" style="width:100%;height:100%;object-fit:cover">`;
+    prev.appendChild(div);
+  });
+}
+async function shCriarLegendaIA(){
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){toast('Configure a API Key do Claude em Configurações → IA','⚠️');return;}
+  const area=document.getElementById('sh-post-txt');
+  const atual=area.value;
+  area.value='✨ Gerando legenda com IA...';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,messages:[{role:'user',content:`Crie uma legenda profissional e engajadora para Instagram/Facebook para a empresa K2 Company (CRM e automação para PMEs). Tom: profissional mas acessível. Contexto: ${atual||'post sobre nossos serviços'}. Retorne APENAS a legenda, sem explicações.`}]})});
+    const d=await r.json();
+    area.value=d.content?.[0]?.text||atual;
+    shAtualizarPreview();
+  }catch(e){area.value=atual;toast('Erro na IA. Verifique a API Key.','❌');}
+}
+async function shMelhoresHorarios(){
+  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!apiKey){toast('Configure a API Key em Configurações → IA','⚠️');return;}
+  const canais=[..._shCanaisSelecionados].join(', ')||'Instagram';
+  toast(`Melhores horários para ${canais}: 18h-20h e 12h-13h (ter, qua, sex)— maior engajamento!`,'⏰');
+}
+function shAddPost(){toast('Post adicionado à sequência','✅');}
+function shEnviarAprovacao(){
+  const txt=document.getElementById('sh-post-txt').value.trim();
+  if(!txt){toast('Adicione um texto antes','⚠️');return;}
+  toast('Enviado para aprovação!','👍');
+  const cnt=document.getElementById('sh-aprov-cnt');
+  if(cnt)cnt.textContent=Number(cnt.textContent||0)+1;
+}
+function shPublicarAgora(){
+  const txt=document.getElementById('sh-post-txt').value.trim();
+  if(!txt){toast('Adicione um texto antes de publicar','⚠️');return;}
+  const post={id:'sh-'+Date.now(),texto:txt,data:new Date().toISOString().split('T')[0],hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),canais:[..._shCanaisSelecionados],status:'publicado'};
+  SH_POSTS.push(post);localStorage.setItem('k2_sh_posts',JSON.stringify(SH_POSTS));
+  document.getElementById('sh-post-txt').value='';
+  toast('Post publicado agora!','📤');
+}
+function shAgendar(){
+  const txt=document.getElementById('sh-post-txt').value.trim();
+  const data=document.getElementById('sh-data').value;
+  const hora=document.getElementById('sh-hora').value;
+  if(!txt){toast('Adicione um texto antes de agendar','⚠️');return;}
+  if(!data||!hora){toast('Selecione data e horário','⚠️');return;}
+  const post={id:'sh-'+Date.now(),texto:txt,data,hora,canais:[..._shCanaisSelecionados],status:'agendado'};
+  SH_POSTS.push(post);localStorage.setItem('k2_sh_posts',JSON.stringify(SH_POSTS));
+  document.getElementById('sh-post-txt').value='';
+  document.getElementById('sh-media-preview').innerHTML='';
+  toast(`Post agendado para ${new Date(data+'T'+hora).toLocaleString('pt-BR')}!`,'📅');
+}
+function shDragPost(e,id){e.dataTransfer.setData('text/plain',id);}
+function shDropCal(e,data){e.preventDefault();const id=e.dataTransfer.getData('text/plain');const p=SH_POSTS.find(x=>x.id===id);if(p){p.data=data;localStorage.setItem('k2_sh_posts',JSON.stringify(SH_POSTS));renderSHCal();toast('Post reagendado!','📅');}}
+function shVerPost(id){const p=SH_POSTS.find(x=>x.id===id);if(p)toast(`"${p.texto?.slice(0,50)}..." — ${p.hora||'sem horário'}`,'📄');}
+function renderSHPlatforms(){renderSHDash();}
+
+/* ══════════════════════════════════════════════
+   PAGE HUB — Fix page visibility on goPage
+══════════════════════════════════════════════ */
+const _goPageOrig=window.goPage||function(){};
+window._hubInit=function(page){
+  document.body.classList.remove('hub-ativo','sh-ativo');
+  if(page==='hub'){
+    document.body.classList.add('hub-ativo');
+    var hubPg=document.getElementById('page-hub');
+    if(hubPg)hubPg.style.display='flex';
+    TASKS=TASKS||JSON.parse(localStorage.getItem('k2_tasks')||'[]');
+    var lv=document.getElementById('wh-lista-view');if(lv)lv.style.display='block';
+    var kv=document.getElementById('wh-kanban-view');if(kv)kv.style.display='none';
+    var cv=document.getElementById('wh-cal-view');if(cv)cv.style.display='none';
+    setTimeout(function(){renderWHtasks();},80);
+  }
+  if(page==='sh'){
+    document.body.classList.add('sh-ativo');
+    var shPg=document.getElementById('page-sh');
+    if(shPg)shPg.style.display='flex';
+    setTimeout(function(){shGo('dash',document.getElementById('sh-t-dash'));},80);
+  }
+};
+
+
 function renderDashboard(){
+
   renderDashMeta();
   renderDashKPIs();
   renderDashFinanceiro();
@@ -6106,16 +7368,6 @@ function conectarMetaOAuth(){
    GOOGLE CALENDAR — OAUTH 2.0 via Popup
    ══════════════════════════════════════ */
 
-function conectarGoogle(){
-  const clientId=localStorage.getItem('k2cfg_gcal-client-id')||'';
-  if(!clientId){
-    toast('Configure o Client ID do Google em Configurações → Google Calendar','⚠️');
-    goPage('cfg',null);
-    return;
-  }
-  gcalOAuthPopup(clientId);
-}
-
 function gcalOAuthPopup(clientId){
   const redirect=encodeURIComponent(window.location.origin+window.location.pathname);
   const scope=encodeURIComponent('https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events');
@@ -6230,19 +7482,12 @@ async function gcalCarregarEventos(){
 
 async function gcalSincronizar(){ await gcalCarregarEventos(); }
 
-function conectarGoogle(){ gcalCarregarEventos(); }
-
 function carregarGCal(){
   /* Só carrega campos de config — a sincronização é feita pelo botão */
   const el=document.getElementById('gcal-status-cfg');
   if(el) el.textContent='Clique em "Sincronizar Google Calendar" para carregar os eventos';
 }
 
-function salvarGCal(){
-  toast('Use o botão "Sincronizar Google Calendar" para carregar os eventos','ℹ️');
-}
-
-/* ── AUTH ── */
 function logout(){
   if(!confirm('Deseja sair da conta K2 Flow?'))return;
   localStorage.clear();
