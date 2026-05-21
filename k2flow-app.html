@@ -701,7 +701,17 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <button class="ni" onclick="goPage('config',this)"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="1.5"/></svg><span class="ni-lbl">Configurações</span></button>
   </div>
   <div class="sb1-foot">
-    <div class="sb1-user"><div class="sb1-av" id="sb1-av">A</div><div class="sb1-uinfo"><div class="sb1-uname" id="sb1-uname">Admin</div><div class="sb1-uplano">Plano Premium</div></div></div>
+    <div class="sb1-user"><div class="sb1-av" id="sb1-av">A</div><div class="sb1-uinfo"><div class="sb1-uname" id="sb1-uname">Admin</div><div class="sb1-uplano" id="sb1-uplano-txt">Plano Premium</div></div></div>
+    <!-- Indicador de uso de IA -->
+    <div style="padding:6px 9px 4px" id="sb1-ia-uso-wrap">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="font-size:9px;color:rgba(255,255,255,.25)">IA este mês</span>
+        <span style="font-size:9px;color:rgba(255,255,255,.35);font-weight:600" id="ia-uso-txt">0/500 msgs</span>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden">
+        <div id="ia-uso-bar" style="height:100%;width:0%;background:#22C55E;border-radius:99px;transition:width .4s"></div>
+      </div>
+    </div>
     <button class="ni-foot"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ni-lbl">Suporte</span></button>
   </div>
 </aside>
@@ -2398,13 +2408,33 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
     <!-- ABA: NOTIFICAÇÕES -->
     <div id="cfg-aba-notificacoes" style="display:none;max-width:600px">
-      <div style="font-size:13px;font-weight:700;margin-bottom:14px">Alertas ativos</div>
+
+      <!-- NÚMERO MASTER PARA ALERTAS -->
+      <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:16px;border-left:3px solid var(--brand)">
+        <div style="font-size:12px;font-weight:700;margin-bottom:4px">📱 Receber alertas no WhatsApp</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:10px">Quando o sistema detectar algo crítico, você recebe uma mensagem neste número</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="inp" id="cfg-master-wa" type="tel" placeholder="5511999999999 (com código do país)" style="flex:1;font-size:13px" onchange="salvarNumMaster()">
+          <button class="btn-prim" style="font-size:12px;white-space:nowrap" onclick="testarAlertaMaster()">Testar agora</button>
+        </div>
+        <div style="font-size:10px;color:var(--t3);margin-top:6px">Formato: 55 + DDD + número. Ex: 5511999999999</div>
+      </div>
+
+      <!-- USO DE IA -->
+      <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:16px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:10px">🤖 Uso de IA este mês</div>
+        <div id="ia-uso-detalhe"></div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">Alertas ativos</div>
       <div class="cfg-sec">
+        <div class="cfg-row"><div><div class="cfg-row-lbl">WhatsApp desconectado</div><div class="cfg-row-sub">Alerta imediato + envia WA para master</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
         <div class="cfg-row"><div><div class="cfg-row-lbl">WhatsApp sem resposta +2h</div><div class="cfg-row-sub">Alerta quando cliente aguarda retorno</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
         <div class="cfg-row"><div><div class="cfg-row-lbl">Lead novo no CRM</div><div class="cfg-row-sub">Notifica quando entra novo lead</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-        <div class="cfg-row"><div><div class="cfg-row-lbl">Pagamento vencido</div><div class="cfg-row-sub">Alerta de inadimplência</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Pagamento vencido</div><div class="cfg-row-sub">Alerta de inadimplência + envia WA para master</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
         <div class="cfg-row"><div><div class="cfg-row-lbl">Tarefa em atraso</div><div class="cfg-row-sub">Aviso de tarefas no Work Hub</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
         <div class="cfg-row"><div><div class="cfg-row-lbl">Automação com falha</div><div class="cfg-row-sub">Erro em workflow n8n</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="cfg-row"><div><div class="cfg-row-lbl">Limite de IA ≥80%</div><div class="cfg-row-sub">Aviso antes de atingir o limite do plano</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
         <div class="cfg-row"><div><div class="cfg-row-lbl">Orçamento sem resposta +3 dias</div><div class="cfg-row-sub">Follow-up automático</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
       </div>
     </div>
@@ -2426,38 +2456,10 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <!-- ABA: INTEGRAÇÕES — cards visuais estilo DGFlow -->
     <div id="cfg-aba-integracoes" style="display:none">
 
-      <!-- ATIVAS -->
+      <!-- ATIVAS — renderizadas dinamicamente -->
       <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">✅ Conectadas</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px">
-
-        <div onclick="setCfgAba('whatsapp',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
-          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
-          <div style="font-size:26px;margin-bottom:6px">💬</div>
-          <div style="font-size:12px;font-weight:700">WhatsApp</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">Evolution API</div>
-        </div>
-
-        <div onclick="setCfgAba('whatsapp',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
-          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
-          <div style="font-size:26px;margin-bottom:6px">📅</div>
-          <div style="font-size:12px;font-weight:700">Google Calendar</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">via n8n</div>
-        </div>
-
-        <div onclick="setCfgAba('ia',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
-          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
-          <div style="font-size:26px;margin-bottom:6px">🤖</div>
-          <div style="font-size:12px;font-weight:700">Claude IA</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">Anthropic API</div>
-        </div>
-
-        <div onclick="setCfgAba('ia',null)" style="background:var(--light2);border:2px solid #22C55E40;border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative">
-          <span style="position:absolute;top:7px;right:7px;background:#22C55E20;color:#22C55E;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700">✓ Ativo</span>
-          <div style="font-size:26px;margin-bottom:6px">⚡</div>
-          <div style="font-size:12px;font-weight:700">n8n</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">Automações</div>
-        </div>
-      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px" id="int-conectadas-grid">
+        <!-- Preenchido por renderIntegracoesAtivas() --></div>
 
       <!-- REDES SOCIAIS & ADS -->
       <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">📱 Redes Sociais & Ads</div>
@@ -3154,18 +3156,191 @@ document.addEventListener('DOMContentLoaded',()=>{
     renderDashboard();
     atualizarRelatorios();
   },600);
-  /* Auto-refresh a cada 5 minutos com agente IA */
-  setInterval(()=>{
-    renderDashboard();
-    renderWA();
-    atualizarRelatorios();
-    rodarAgenteIA();
-  },300000);
-  /* Primeira análise IA após 3s */
-  setTimeout(rodarAgenteIA, 3000);
+
+  /* ═══════════════════════════════════════════════════════
+     ORQUESTRADOR K2 FLOW — Ciclo de 5 minutos
+     Verifica tudo, atualiza UI, envia alertas WhatsApp
+  ═══════════════════════════════════════════════════════ */
+  setInterval(()=>orquestradorK2(), 300000);
+  setTimeout(()=>orquestradorK2(), 4000);
 });
 
-/* ── NAVEGAÇÃO PRINCIPAL — com auto-render por página ── */
+/* ══════════════════════════════════════════════════════
+   LIMITES DE USO DE IA POR PLANO (mensagens/mês)
+══════════════════════════════════════════════════════ */
+const LIMITES_IA={
+  'starter':500,
+  'pro':2000,
+  'premium':10000,
+  'master':99999
+};
+
+function getPlanoAtual(){
+  const p=(localStorage.getItem('k2_plano')||'premium').toLowerCase();
+  if(p.includes('starter'))return'starter';
+  if(p.includes('pro'))return'pro';
+  if(p.includes('premium'))return'premium';
+  return'premium';
+}
+
+function getUsoIA(){
+  const mes=new Date().toISOString().slice(0,7); // YYYY-MM
+  const key='k2_ia_uso_'+mes;
+  return parseInt(localStorage.getItem(key)||'0');
+}
+
+function incrementarUsoIA(){
+  const mes=new Date().toISOString().slice(0,7);
+  const key='k2_ia_uso_'+mes;
+  const atual=parseInt(localStorage.getItem(key)||'0');
+  localStorage.setItem(key,atual+1);
+  return atual+1;
+}
+
+function verificarLimiteIA(){
+  const plano=getPlanoAtual();
+  const limite=LIMITES_IA[plano]||500;
+  const uso=getUsoIA();
+  const pct=Math.round((uso/limite)*100);
+  return{uso,limite,plano,pct,bloqueado:uso>=limite,alerta:pct>=80};
+}
+
+/* ══════════════════════════════════════════════════════
+   ORQUESTRADOR PRINCIPAL — roda a cada 5 minutos
+══════════════════════════════════════════════════════ */
+async function orquestradorK2(){
+  /* 1. Atualiza páginas sem reload */
+  renderDashboard();
+  if(document.getElementById('page-wa')?.classList.contains('on'))renderWA();
+  atualizarRelatorios();
+
+  /* 2. Coleta estado completo */
+  const alertas=[];
+  const E=coletarEstadoCompleto();
+  const limiteIA=verificarLimiteIA();
+  const agora=new Date();
+
+  /* 3. Verifica WhatsApp */
+  try{
+    const inst=localStorage.getItem('k2cfg_ev-inst')||'Comercialk2';
+    const key=localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT||'';
+    const r=await fetch(`/ev-api/instance/fetchInstances`,{headers:{'apikey':key},signal:AbortSignal.timeout(5000)});
+    if(r.ok){
+      const d=await r.json();
+      const instData=Array.isArray(d)?d.find(i=>(i.instance?.instanceName||i.name)===inst):null;
+      const estado=instData?.instance?.state||instData?.connectionStatus||'unknown';
+      const waOk=estado==='open';
+      localStorage.setItem('k2_wa_status',waOk?'conectado':'desconectado');
+      localStorage.setItem('k2_wa_verificado',agora.toISOString());
+      if(!waOk){
+        alertas.push({nivel:'urgente',titulo:'WhatsApp desconectado',msg:'Reconecte o WhatsApp em Configurações → WhatsApp',modulo:'WhatsApp',acao:'whatsapp',notificarMaster:true});
+        /* Atualiza indicador visual */
+        const dot=document.getElementById('ia-status-dot');
+        if(dot)dot.style.background='#EF4444';
+      }
+    }
+  }catch(e){}
+
+  /* 4. Verifica limite de IA */
+  if(limiteIA.alerta&&!limiteIA.bloqueado){
+    alertas.push({nivel:'atencao',titulo:`IA: ${limiteIA.pct}% do limite`,msg:`${limiteIA.uso}/${limiteIA.limite} msgs usadas este mês (plano ${limiteIA.plano})`,modulo:'IA',notificarMaster:false});
+  }
+  if(limiteIA.bloqueado){
+    alertas.push({nivel:'urgente',titulo:'Limite de IA atingido',msg:`Plano ${limiteIA.plano}: ${limiteIA.limite} msgs/mês esgotadas. Faça upgrade.`,modulo:'IA',notificarMaster:true});
+  }
+
+  /* 5. Verifica orçamentos sem resposta */
+  if(E.orcSemResp>0){
+    alertas.push({nivel:'atencao',titulo:`${E.orcSemResp} orçamento(s) sem resposta`,msg:'Orçamentos aguardando há mais de 3 dias',modulo:'Orçamentos',notificarMaster:false});
+  }
+
+  /* 6. Verifica inadimplência */
+  if(E.inadimp>0){
+    alertas.push({nivel:E.inadimp>500?'urgente':'atencao',titulo:`Inadimplência: R$${E.inadimp.toLocaleString('pt-BR')}`,msg:'Clientes com pagamento em atraso',modulo:'Financeiro',notificarMaster:E.inadimp>500});
+  }
+
+  /* 7. Verifica tarefas atrasadas */
+  if(E.taskAtras>3){
+    alertas.push({nivel:'atencao',titulo:`${E.taskAtras} tarefas atrasadas`,msg:'Tarefas com prazo vencido precisam de atenção',modulo:'Tarefas',notificarMaster:false});
+  }
+
+  /* 8. Verifica WA sem resposta há +7 dias */
+  if(E.waSemResp7>0){
+    alertas.push({nivel:'atencao',titulo:`${E.waSemResp7} conversa(s) sem resposta`,msg:'Clientes aguardando resposta há mais de 7 dias',modulo:'WhatsApp',notificarMaster:false});
+  }
+
+  /* 9. Dispara alertas no painel */
+  if(alertas.length>0){
+    dispararNotificacoes(alertas);
+    /* Atualiza widget IA se disponível */
+    const urgentes=alertas.filter(a=>a.nivel==='urgente');
+    if(urgentes.length>0)atualizarStatusIA('erro');
+    /* Envia WhatsApp para master se houver urgentes */
+    const paraMaster=alertas.filter(a=>a.notificarMaster);
+    if(paraMaster.length>0)enviarAlertaMasterWA(paraMaster);
+  }
+
+  /* 10. Roda análise IA completa */
+  rodarAgenteIA();
+
+  /* 11. Atualiza indicador de última sync */
+  const syncEl=document.getElementById('ia-status-txt');
+  if(syncEl&&alertas.filter(a=>a.nivel==='urgente').length===0){
+    syncEl.textContent='Sincronizado '+agora.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   ALERTA MASTER VIA WHATSAPP
+   Envia mensagem para o número do administrador
+══════════════════════════════════════════════════════ */
+async function enviarAlertaMasterWA(alertas){
+  const numMaster=localStorage.getItem('k2cfg_master-wa')||'';
+  if(!numMaster)return; /* Número não configurado */
+  const inst=localStorage.getItem('k2cfg_ev-inst')||'Comercialk2';
+  const evKey=localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT||'';
+  const tenant=localStorage.getItem('k2_tenant_nome')||'Seu sistema';
+  const agora=new Date().toLocaleString('pt-BR');
+  const msg=`🚨 *K2 Flow — Alerta*\n*${tenant}*\n${agora}\n\n`+
+    alertas.map(a=>`${a.nivel==='urgente'?'🔴':'🟡'} *${a.titulo}*\n${a.msg}`).join('\n\n')+
+    `\n\n_Acesse: crm.k2company.com.br_`;
+  try{
+    await fetch(`/ev-api/message/sendText/${inst}`,{
+      method:'POST',
+      headers:{'apikey':evKey,'Content-Type':'application/json'},
+      body:JSON.stringify({number:numMaster.replace(/\D/g,''),text:msg})
+    });
+  }catch(e){console.warn('Alerta master WA falhou:',e.message);}
+}
+
+/* ══════════════════════════════════════════════════════
+   CONTROLE DE USO DE IA — com limite por plano
+   Wrapper sobre chamarIA() que conta e bloqueia
+══════════════════════════════════════════════════════ */
+async function chamarIAComLimite(prompt,sistema,maxTokens){
+  const limite=verificarLimiteIA();
+  if(limite.bloqueado){
+    throw new Error(`Limite de IA atingido (${limite.uso}/${limite.limite} msgs/mês — Plano ${limite.plano}). Faça upgrade para continuar.`);
+  }
+  const resultado=await chamarIA(prompt,sistema,maxTokens);
+  const novoUso=incrementarUsoIA();
+  /* Atualiza indicador de uso no sidebar */
+  atualizarIndicadorUsoIA(novoUso,limite.limite);
+  return resultado;
+}
+
+function atualizarIndicadorUsoIA(uso,limite){
+  const pct=Math.min(100,Math.round((uso/limite)*100));
+  const el=document.getElementById('ia-uso-bar');
+  const txtEl=document.getElementById('ia-uso-txt');
+  if(el)el.style.width=pct+'%';
+  if(el)el.style.background=pct>=90?'#EF4444':pct>=70?'#F59E0B':'#22C55E';
+  if(txtEl)txtEl.textContent=`${uso}/${limite} msgs`;
+}
+
+/* ══════════════════════════════════════════════════════
+   NAVEGAÇÃO PRINCIPAL — com auto-render por página
+══════════════════════════════════════════════════════ */
 
 
 /* ══════════════════════════════════════════════
@@ -3234,6 +3409,45 @@ async function testarOpenAI(){
     const b=document.getElementById('badge-openai');if(b){b.textContent='✅ Conectado';b.className='cfg-int-badge bk-ok';}
   }catch(e){toast('Erro: '+e.message,'❌');}
 }
+function salvarNumMaster(){
+  const num=document.getElementById('cfg-master-wa')?.value?.trim().replace(/\D/g,'');
+  if(!num){toast('Informe o número com DDD','⚠️');return;}
+  localStorage.setItem('k2cfg_master-wa',num);
+  toast('Número salvo! Alertas críticos serão enviados via WhatsApp','✅');
+}
+
+async function testarAlertaMaster(){
+  const num=localStorage.getItem('k2cfg_master-wa')||document.getElementById('cfg-master-wa')?.value?.trim().replace(/\D/g,'');
+  if(!num){toast('Salve o número primeiro','⚠️');return;}
+  toast('Enviando mensagem de teste...','📱');
+  await enviarAlertaMasterWA([{nivel:'ok',titulo:'K2 Flow — Teste de alerta',msg:'Sistema de alertas configurado com sucesso! Você receberá notificações críticas aqui.'}]);
+  toast('Mensagem enviada para '+num,'✅');
+}
+
+function renderUsoIA(){
+  const el=document.getElementById('ia-uso-detalhe');
+  if(!el)return;
+  const l=verificarLimiteIA();
+  const planos={starter:'Starter (R$97/mês)',pro:'Pro (R$197/mês)',premium:'Premium (R$299/mês)'};
+  el.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--t2)">${planos[l.plano]||l.plano}</span>
+      <span style="font-size:14px;font-weight:700;color:${l.pct>=90?'#EF4444':l.pct>=70?'#F59E0B':'#22C55E'}">${l.uso} / ${l.limite} msgs</span>
+    </div>
+    <div style="height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:6px">
+      <div style="height:100%;width:${l.pct}%;background:${l.pct>=90?'#EF4444':l.pct>=70?'#F59E0B':'#22C55E'};border-radius:99px;transition:width .4s"></div>
+    </div>
+    <div style="font-size:10px;color:var(--t3)">${l.pct}% utilizado · Renova dia 1 do próximo mês</div>
+    ${l.alerta?`<div style="margin-top:8px;background:#F59E0B15;border:1px solid #F59E0B30;border-radius:6px;padding:6px 10px;font-size:11px;color:#F59E0B">⚠️ ${l.pct>=100?'Limite atingido — IA bloqueada':'Atenção: uso alto. Considere fazer upgrade.'}</div>`:''}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;font-size:10px;text-align:center">
+      ${[['Starter','500',l.plano==='starter'],['Pro','2.000',l.plano==='pro'],['Premium','10.000',l.plano==='premium']].map(([n,v,at])=>`
+        <div style="background:${at?'rgba(242,100,25,.1)':'var(--bg)'};border:1px solid ${at?'var(--brand-b)':'var(--bd)'};border-radius:6px;padding:6px">
+          <div style="font-weight:700;color:${at?'var(--brand)':'var(--t2)'}">${n}</div>
+          <div style="color:var(--t3)">${v}/mês</div>
+        </div>`).join('')}
+    </div>`;
+}
+
 function salvarClaude(){
   const key=document.getElementById('cfg-ai-key')?.value?.trim();
   if(!key){toast('Cole a API Key do Claude','⚠️');return;}
@@ -6459,7 +6673,7 @@ Clientes: ${E.cliTotal} | Contratos: ${E.contrAtivos} | Campanhas: ${E.campAtiva
 Retorne SOMENTE este JSON sem markdown:
 {"score":<0-100>,"titulo":"<3-5 palavras>","resumo":"<1 frase>","alertas":[{"nivel":"urgente|atencao|ok","modulo":"<WhatsApp|CRM|Orçamentos|Financeiro|Tarefas|Campanhas|Automações>","titulo":"<título curto>","msg":"<ação concreta 1 frase>"}],"prioridade":"<1 ação agora>","projecao":"<projeção 1 frase>"}`;
   try{
-    const txt=await chamarIA(contexto,'',700);
+    const txt=await chamarIAComLimite(contexto,'',700);
     const json=JSON.parse(txt.replace(/```json|```/g,'').trim());
     aplicarAnaliseIA(json);
     dispararNotificacoes(json.alertas);
@@ -7317,6 +7531,79 @@ function setCfgAba(aba,btn){
   });
   document.querySelectorAll('.cfg-aba-h,.cfg-menu-btn,.cfg-aba').forEach(b=>b.classList.remove('on'));
   if(btn) btn.classList.add('on');
+  if(aba==='integracoes') renderIntegracoesAtivas();
+  if(aba==='notificacoes'){
+    const numEl=document.getElementById('cfg-master-wa');
+    if(numEl)numEl.value=localStorage.getItem('k2cfg_master-wa')||'';
+    renderUsoIA();
+    /* Atualiza barra no sidebar também */
+    const l=verificarLimiteIA();
+    atualizarIndicadorUsoIA(l.uso,l.limite);
+  }
+}
+
+async function renderIntegracoesAtivas(){
+  const grid=document.getElementById('int-conectadas-grid');
+  if(!grid)return;
+  grid.innerHTML='<div style="font-size:12px;color:var(--t3);padding:8px">Verificando conexões...</div>';
+
+  /* Verificações reais */
+  const checks={
+    wa:false, gcal:false, claude:false, openai:false, n8n:false
+  };
+
+  /* WhatsApp — testa Evolution API */
+  try{
+    const inst=localStorage.getItem('k2cfg_ev-inst')||'Comercialk2';
+    const key=localStorage.getItem('k2cfg_ev-apikey')||EV_KEY_DEFAULT||'';
+    const r=await fetch(`/ev-api/instance/fetchInstances`,{headers:{'apikey':key},signal:AbortSignal.timeout(4000)});
+    if(r.ok){const d=await r.json();checks.wa=Array.isArray(d)&&d.some(i=>(i.instance?.instanceName||i.name)===inst&&(i.instance?.state||i.connectionStatus)==='open');}
+  }catch(e){}
+
+  /* Claude API */
+  const claudeKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  checks.claude=claudeKey.startsWith('sk-ant-')&&claudeKey.length>20;
+
+  /* OpenAI */
+  const openaiKey=localStorage.getItem('k2cfg_openai-key')||'';
+  checks.openai=openaiKey.startsWith('sk-')&&openaiKey.length>20;
+
+  /* n8n — testa endpoint */
+  try{
+    const n8nUrl=localStorage.getItem('k2cfg_cfg-n8n-url')||'https://n8n-n8n.k8wm1v.easypanel.host';
+    const r=await fetch(n8nUrl+'/healthz',{signal:AbortSignal.timeout(4000)});
+    checks.n8n=r.ok;
+  }catch(e){}
+
+  /* Google Calendar via n8n */
+  checks.gcal=checks.n8n; /* Se n8n está ativo, GCal via n8n funciona */
+
+  /* Monta cards dinâmicos */
+  const integrações=[
+    {id:'wa',ativo:checks.wa,ico:'💬',nome:'WhatsApp',sub:'Evolution API',aba:'whatsapp'},
+    {id:'gcal',ativo:checks.gcal,ico:'📅',nome:'Google Calendar',sub:'via n8n',aba:'whatsapp'},
+    {id:'claude',ativo:checks.claude,ico:'🤖',nome:'Claude IA',sub:'Anthropic',aba:'ia'},
+    {id:'openai',ativo:checks.openai,ico:'🧠',nome:'OpenAI',sub:'GPT-4o mini',aba:'ia'},
+    {id:'n8n',ativo:checks.n8n,ico:'⚡',nome:'n8n',sub:'Automações',aba:'ia'},
+  ];
+
+  const ativas=integrações.filter(i=>i.ativo);
+  const inativas=integrações.filter(i=>!i.ativo);
+
+  grid.innerHTML=(ativas.length?ativas:integrações).map(i=>`
+    <div onclick="setCfgAba('${i.aba}',null)" style="background:var(--light2);border:2px solid ${i.ativo?'#22C55E40':'var(--bd)'};border-radius:12px;padding:16px;text-align:center;cursor:pointer;position:relative;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+      <span style="position:absolute;top:7px;right:7px;background:${i.ativo?'#22C55E20':'#EF444420'};color:${i.ativo?'#22C55E':'#EF4444'};border-radius:99px;padding:1px 7px;font-size:9px;font-weight:700">${i.ativo?'✓ Ativo':'✗ Inativo'}</span>
+      <div style="font-size:26px;margin-bottom:6px">${i.ico}</div>
+      <div style="font-size:12px;font-weight:700">${i.nome}</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:2px">${i.sub}</div>
+    </div>`).join('');
+
+  /* Se há inativas, mostra mensagem */
+  if(inativas.length&&ativas.length){
+    grid.insertAdjacentHTML('afterend',`<div style="font-size:11px;color:var(--t3);margin-bottom:12px">
+      ${inativas.map(i=>`<span style="margin-right:8px">⚠️ ${i.nome}: não configurado — <button onclick="setCfgAba('${i.aba}',null)" style="background:none;border:none;color:var(--brand);cursor:pointer;font-size:11px;font-weight:600">Configurar →</button></span>`).join('')}
+    </div>`);
+  }
 }
 function salvarPerfil(){toast('Perfil salvo!','✅');}
 function setTema(t){document.body.classList.toggle('light-mode',t==='light');localStorage.setItem('k2-tema',t);toast('Tema alterado!','✅');}
