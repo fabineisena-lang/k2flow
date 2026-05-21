@@ -7,12 +7,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="K2 Flow">
-<meta name="description" content="WhatsApp · CRM · IA — Gestão inteligente para sua empresa">
+<meta name="apple-mobile-web-app-title" content="K2 FLOWCORE">
+<meta name="description" content="K2 FLOWCORE — Núcleo de Operação Comercial">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
-<title>K2 Flow</title>
+<title>K2 FLOWCORE</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -685,7 +685,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 <aside class="sb1" id="sb1">
   <div class="sb1-top">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-      <div class="brand"><div class="brand-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="brand-txt"><div class="brand-name">K2 <em>Flow</em></div><div class="brand-tag">WhatsApp · CRM · IA</div></div></div>
+      <div class="brand"><div class="brand-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="brand-txt"><div class="brand-name">K2 <em>FLOWCORE</em></div><div class="brand-tag">WhatsApp | CRM | IA</div></div></div>
       <button class="sb1-tog" onclick="toggleSb()" id="sb1-tog-btn" title="Recolher menu" style="width:28px;height:28px;flex-shrink:0;padding:0">
         <svg id="sb-tog-ico" width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -3639,18 +3639,18 @@ let GCAL_CONNECTED=false;
 const HORARIOS_DISPONIVEIS=['07:00','08:00','09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
 let ORCAMENTOS=[];
 let TASKS=JSON.parse(localStorage.getItem('k2_tasks')||'null')||[
-  {id:'t1',nome:'Criar proposta comercial BMW Jundiaí',status:'Agendado',prioridade:'alta',prazo:'2026-05-22',responsavel:'Fabinei',espaco:'demandas',lido:true,subtarefas:[{nome:'Briefing do cliente',done:true},{nome:'Definir escopo',done:false},{nome:'Enviar PDF',done:false}]},
-  {id:'t2',nome:'Post Instagram — lançamento produto',status:'Em Produção',prioridade:'alta',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
-  {id:'t3',nome:'Revisão do site K2 Company',status:'Revisão',prioridade:'media',prazo:'2026-05-23',responsavel:'Marcos',espaco:'design',lido:false,subtarefas:[]},
-  {id:'t4',nome:'Campanha Google Ads — Clínica Sorriso',status:'Aprovação',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação cliente',done:false}]},
-  {id:'t5',nome:'Relatório mensal Fashion Store',status:'Concluído',prioridade:'baixa',prazo:'2026-05-19',responsavel:'Pedro',espaco:'minhas',lido:true,subtarefas:[]},
-  {id:'t6',nome:'Identidade visual Studio Bela Pele',status:'Em Produção',prioridade:'media',prazo:'2026-05-25',responsavel:'Ana',espaco:'design',lido:true,subtarefas:[{nome:'Logo',done:true},{nome:'Paleta de cores',done:true},{nome:'Manual da marca',done:false}]},
-  {id:'t7',nome:'Story Instagram K2 Company — hoje',status:'Agendado',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'social-media',lido:false,subtarefas:[]},
-  {id:'t8',nome:'Briefing campanha Meta Ads — Dr. Lima',status:'Agendado',prioridade:'media',prazo:'2026-05-21',responsavel:'Marcos',espaco:'demandas',lido:false,subtarefas:[]},
-  {id:'t9',nome:'Edição de vídeo — reels semana',status:'Em Produção',prioridade:'alta',prazo:'2026-05-20',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
-  {id:'t10',nome:'Aprovação arte cliente BERNABÉ',status:'Aprovação',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'jornada',lido:false,subtarefas:[]},
-  {id:'t11',nome:'Planejamento conteúdo Junho',status:'Agendado',prioridade:'media',prazo:'2026-05-28',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
-  {id:'t12',nome:'Setup Evolution API — novo cliente',status:'Em Produção',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
+  {id:'t1',nome:'Criar proposta comercial BMW Jundiaí',status:'Rascunho',prioridade:'alta',prazo:'2026-05-22',responsavel:'Fabinei',espaco:'demandas',lido:true,subtarefas:[{nome:'Briefing do cliente',done:true},{nome:'Definir escopo',done:false},{nome:'Enviar PDF',done:false}]},
+  {id:'t2',nome:'Post Instagram — lançamento produto',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
+  {id:'t3',nome:'Revisão do site K2 Company',status:'Aprovação Interna',prioridade:'media',prazo:'2026-05-23',responsavel:'Marcos',espaco:'design',lido:false,subtarefas:[]},
+  {id:'t4',nome:'Campanha Google Ads — Clínica Sorriso',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação cliente',done:false}]},
+  {id:'t5',nome:'Relatório mensal Fashion Store',status:'Aprovado',prioridade:'baixa',prazo:'2026-05-19',responsavel:'Pedro',espaco:'minhas',lido:true,subtarefas:[]},
+  {id:'t6',nome:'Identidade visual Studio Bela Pele',status:'Para Produzir',prioridade:'media',prazo:'2026-05-25',responsavel:'Ana',espaco:'design',lido:true,subtarefas:[{nome:'Logo',done:true},{nome:'Paleta de cores',done:true},{nome:'Manual da marca',done:false}]},
+  {id:'t7',nome:'Story Instagram K2 Company — hoje',status:'Rascunho',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'social-media',lido:false,subtarefas:[]},
+  {id:'t8',nome:'Briefing campanha Meta Ads — Dr. Lima',status:'Rascunho',prioridade:'media',prazo:'2026-05-21',responsavel:'Marcos',espaco:'demandas',lido:false,subtarefas:[]},
+  {id:'t9',nome:'Edição de vídeo — reels semana',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-20',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
+  {id:'t10',nome:'Aprovação arte cliente BERNABÉ',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'jornada',lido:false,subtarefas:[]},
+  {id:'t11',nome:'Planejamento conteúdo Junho',status:'Rascunho',prioridade:'media',prazo:'2026-05-28',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
+  {id:'t12',nome:'Setup Evolution API — novo cliente',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
 ];
 let FUNCS=[
   {nome:'Admin Master',email:'admin@k2company.com.br',perfil:'Admin',status:'ativo'},
@@ -3696,7 +3696,7 @@ const PAGE_META={
   ads:{title:'Campanhas & Ads',sub:'Meta Ads + Google Ads · performance completa',btn:'+ Campanha',modal:''},
   relatorios:{title:'Relatórios Operacionais',sub:'Saúde geral da operação em tempo real',btn:'↻ Atualizar',modal:'',extraBtn:'<button class="btn-sec btn-sm" onclick="gerarRelatorioGeral()">📤 Exportar</button>'},
   config:{title:'Configurações',sub:'Personalize sua experiência no K2 Flow',btn:'',modal:''},
-  hub:{title:'Work Hub',sub:'Central de tarefas e produção',btn:'Nova Tarefa',modal:'modal-task'},
+  hub:{title:'Work Hub',sub:'Fluxo de produção — K2 FLOWCORE',btn:'Nova Tarefa',modal:'modal-task'},
   sh:{title:'Social Hub',sub:'Gestão de redes sociais',btn:'Novo Post',modal:''},
   aigrowth:{title:'AI Growth Engine',sub:'Diagnóstico inteligente da operação',btn:'Gerar Análise',modal:''},
 };
@@ -5489,7 +5489,7 @@ function criarTask(){
   const nome=document.getElementById('task-nome')?.value?.trim();
   if(!nome){toast('Informe o título','⚠️');return;}
   TASKS=TASKS||[];
-  TASKS.push({id:'t'+Date.now(),nome,status:'Agendado',prioridade:'none',prazo:document.getElementById('task-data')?.value||'',responsavel:'',espaco:_whCurrentSpace||'minhas',lido:false,subtarefas:[]});
+  TASKS.push({id:'t'+Date.now(),nome,status:'Rascunho',prioridade:'none',prazo:document.getElementById('task-data')?.value||'',responsavel:'',espaco:_whCurrentSpace||'minhas',lido:false,subtarefas:[]});
   renderWHtasks();closeModal('modal-task');toast(`Tarefa "${nome}" criada!`,'✅');
   const tnEl=document.getElementById('task-nome');if(tnEl)tnEl.value='';
 }
@@ -5520,7 +5520,7 @@ function renderAGE(){
   const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
   const inadimp=calcInadimplencia();
   const mrr=calcMRR();
-  const tasksPend=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado').length;
+  const tasksPend=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado').length;
   const orcPend=ORCAMENTOS.filter(o=>o.status==='aguardando').length;
   const campAlertas=CAMPANHAS.filter(c=>avaliarAlerta(c)).length;
 
@@ -7417,9 +7417,9 @@ function coletarEstadoCompleto(){
   const orcSemResp=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando'&&(now-new Date(o.data||now).getTime())>d3).length;
   const orcVal=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').reduce((s,o)=>s+Number(o.total||0),0);
   /* Tarefas Work Hub */
-  const taskAtras=(TASKS||[]).filter(t=>t.status!=='Concluído'&&t.prazo&&new Date(t.prazo)<new Date()).length;
-  const taskHoje=(TASKS||[]).filter(t=>t.status!=='Concluído'&&t.prazo&&new Date(t.prazo).toDateString()===new Date().toDateString()).length;
-  const taskPend=(TASKS||[]).filter(t=>t.status!=='Concluído').length;
+  const taskAtras=(TASKS||[]).filter(t=>t.status!=='Aprovado'&&t.prazo&&new Date(t.prazo)<new Date()).length;
+  const taskHoje=(TASKS||[]).filter(t=>t.status!=='Aprovado'&&t.prazo&&new Date(t.prazo).toDateString()===new Date().toDateString()).length;
+  const taskPend=(TASKS||[]).filter(t=>t.status!=='Aprovado').length;
   /* Financeiro */
   const mrr=typeof calcMRR==='function'?calcMRR():0;
   const receita=typeof calcReceitaMes==='function'?calcReceitaMes(mesAtual()):0;
@@ -7587,13 +7587,15 @@ function claudeAddMsg(txt,tipo){
    WORK HUB — ClickUp Style
 ══════════════════════════════════════════════════ */
 const WH_STATUS={
-  'Agendado':   {cor:'#7C3AED',bg:'rgba(124,58,237,.1)'},
-  'Em Produção':{cor:'#2563EB',bg:'rgba(37,99,235,.1)'},
-  'Revisão':    {cor:'#D97706',bg:'rgba(217,119,6,.1)'},
-  'Aprovação':  {cor:'#F26419',bg:'rgba(242,100,25,.1)'},
-  'Concluído':  {cor:'#059669',bg:'rgba(5,150,105,.1)'},
-  'Cancelado':  {cor:'#DC2626',bg:'rgba(220,38,38,.1)'},
+  'Rascunho':         {cor:'#6B7280',bg:'rgba(107,114,128,.1)'},
+  'Para Produzir':    {cor:'#2563EB',bg:'rgba(37,99,235,.1)'},
+  'Aprovação Interna':{cor:'#7C3AED',bg:'rgba(124,58,237,.1)'},
+  'Aprovação Externa':{cor:'#D97706',bg:'rgba(217,119,6,.1)'},
+  'Para Alterar':     {cor:'#DC2626',bg:'rgba(220,38,38,.1)'},
+  'Aprovado':         {cor:'#059669',bg:'rgba(5,150,105,.1)'},
 };
+/* ── Colunas que exigem anexo ou comentário ao mover ── */
+const WH_STATUS_REQ_FILE=new Set(['Aprovação Interna','Aprovação Externa','Para Alterar','Aprovado']);
 const WH_PRIO={alta:{cor:'#DC2626',ico:'⚑'},media:{cor:'#D97706',ico:'⚑'},baixa:{cor:'#059669',ico:'⚑'},none:{cor:'#CBD5E1',ico:'⚑'}};
 let _whView='lista';
 let _whCurrentSpace='minhas';
@@ -7639,7 +7641,7 @@ function whToggleFechadas(){_whShowFechadas=!_whShowFechadas;renderWHtasks();}
 function renderWHtasks(){
   let tasks=[...(TASKS||[])];
   /* Filtra por espaço */
-  if(_whCurrentSpace==='hoje'){tasks=tasks.filter(t=>t.status!=='Concluído'&&t.prazo&&(new Date(t.prazo)<new Date()||new Date(t.prazo).toDateString()===new Date().toDateString()));}
+  if(_whCurrentSpace==='hoje'){tasks=tasks.filter(t=>t.status!=='Aprovado'&&t.prazo&&(new Date(t.prazo)<new Date()||new Date(t.prazo).toDateString()===new Date().toDateString()));}
   else if(_whCurrentSpace==='inbox'){tasks=tasks.filter(t=>!t.lido);}
   else if(_whCurrentSpace!=='minhas'&&_whCurrentSpace!=='pessoal'){tasks=tasks.filter(t=>(t.espaco||'').toLowerCase()===_whCurrentSpace);}
   if(!_whShowFechadas)tasks=tasks.filter(t=>t.status!=='Cancelado');
@@ -7687,12 +7689,12 @@ function renderWHLista(tasks){
 function whTaskRow(t){
   const prio=WH_PRIO[t.prioridade||'none'];
   const prazo=t.prazo?new Date(t.prazo):null;
-  const atrasada=prazo&&prazo<new Date()&&t.status!=='Concluído';
+  const atrasada=prazo&&prazo<new Date()&&t.status!=='Aprovado';
   const prazoStr=prazo?prazo.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'—';
   return`<div class="wh-task-row" draggable="true" data-id="${t.id}" ondragstart="whDragStart(event,'${t.id}')" onclick="whAbrirTask('${t.id}')">
     <div class="wh-task-name-cell">
-      <div class="wh-check ${t.status==='Concluído'?'done':''}" onclick="event.stopPropagation();whToggleConcluido('${t.id}')"></div>
-      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${t.status==='Concluído'?'var(--t3)':'var(--t1)'};text-decoration:${t.status==='Concluído'?'line-through':'none'}">${t.nome}</span>
+      <div class="wh-check ${t.status==='Aprovado'?'done':''}" onclick="event.stopPropagation();whToggleConcluido('${t.id}')"></div>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${t.status==='Aprovado'?'var(--t3)':'var(--t1)'};text-decoration:${t.status==='Aprovado'?'line-through':'none'}">${t.nome}</span>
       ${t.subtarefas?.length?`<span style="font-size:10px;color:var(--t3);background:var(--bd2);border-radius:4px;padding:1px 5px">${t.subtarefas.filter(s=>s.done).length}/${t.subtarefas.length}</span>`:''}
     </div>
     <div class="wh-task-cell" style="width:120px;font-size:11px">${t.responsavel||'—'}</div>
@@ -7754,8 +7756,53 @@ function whDrop(e,status){
   e.preventDefault();
   if(!_whDragTask)return;
   const t=(TASKS||[]).find(x=>x.id===_whDragTask);
-  if(t){t.status=status;salvarTasks();renderWHtasks();toast(`Tarefa movida para ${status}`,'✓');}
-  _whDragTask=null;
+  if(!t||t.status===status){_whDragTask=null;return;}
+  /* Se coluna exige arquivo ou comentário, abre modal */
+  if(WH_STATUS_REQ_FILE.has(status)){
+    _whMovePendTo=status;
+    _whMovePendId=_whDragTask;
+    const cfg=WH_STATUS[status];
+    document.getElementById('wh-move-title').textContent=`→ Mover para "${status}"`;
+    document.getElementById('wh-move-sub').textContent=`Obrigatório: anexe a entrega ou escreva um comentário para avançar.`;
+    document.getElementById('wh-move-overlay').style.display='flex';
+    document.getElementById('wh-move-cmt').value='';
+    document.getElementById('wh-move-files-preview').innerHTML='';
+    document.getElementById('wh-move-err').style.display='none';
+    document.getElementById('wh-move-drop').innerHTML='<div style="font-size:22px;margin-bottom:5px">📎</div><div style="font-size:12px;color:var(--t3)"><strong style="color:var(--t1)">Clique ou arraste</strong> — somente imagens</div>';
+    document.getElementById('wh-move-drop').style.borderColor='';
+    document.getElementById('wh-move-drop').style.background='';
+    _whMoveFiles=[];
+  } else {
+    t.status=status;salvarTasks();renderWHtasks();toast(`Movido para ${status}`,'✓');
+    _whDragTask=null;
+  }
+}
+let _whMovePendTo=null,_whMovePendId=null,_whMoveFiles=[];
+function whMoveConfirm(){
+  const cmt=document.getElementById('wh-move-cmt').value.trim();
+  if(!_whMoveFiles.length&&!cmt){document.getElementById('wh-move-err').style.display='block';return;}
+  const t=(TASKS||[]).find(x=>x.id===_whMovePendId);
+  if(t){
+    t.status=_whMovePendTo;
+    t.lastMove={to:_whMovePendTo,cmt,files:_whMoveFiles.length,date:new Date().toLocaleDateString('pt-BR'),by:'Você'};
+    salvarTasks();renderWHtasks();
+    toast(`Movido para ${_whMovePendTo}`,'✓');
+  }
+  document.getElementById('wh-move-overlay').style.display='none';
+  _whDragTask=null;_whMovePendTo=null;_whMovePendId=null;_whMoveFiles=[];
+}
+function whMoveCancel(){
+  document.getElementById('wh-move-overlay').style.display='none';
+  _whDragTask=null;_whMovePendTo=null;_whMovePendId=null;_whMoveFiles=[];
+}
+function whMoveFile(){document.getElementById('wh-move-file-in').click();}
+function whMoveFileSelect(e){
+  _whMoveFiles=[...e.target.files];
+  const prev=document.getElementById('wh-move-files-preview');
+  prev.innerHTML=_whMoveFiles.map(f=>`<img src="${URL.createObjectURL(f)}" style="width:52px;height:52px;border-radius:6px;object-fit:cover;border:1px solid var(--bd)">`).join('');
+  document.getElementById('wh-move-drop').innerHTML=`<div style="font-size:20px">✅</div><div style="font-size:12px;color:var(--t1);font-weight:600">${_whMoveFiles.length} arquivo(s)</div>`;
+  document.getElementById('wh-move-drop').style.borderColor='var(--ok)';
+  document.getElementById('wh-move-drop').style.background='var(--ok-l)';
 }
 function whDropCal(e,data){
   e.preventDefault();
@@ -7768,7 +7815,7 @@ function salvarTasks(){try{localStorage.setItem('k2_tasks',JSON.stringify(TASKS)
 function whToggleConcluido(id){
   const t=(TASKS||[]).find(x=>x.id===id);
   if(!t)return;
-  t.status=t.status==='Concluído'?'Agendado':'Concluído';
+  t.status=t.status==='Aprovado'?'Agendado':'Concluído';
   salvarTasks();renderWHtasks();
 }
 function whToggleGrupo(status){
@@ -8349,8 +8396,8 @@ function renderDashKPIs(){
   const waSemResp=(CONVS||[]).filter(c=>c.status==='aberta').length;
   const orcAbertos=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length;
   const hoje=new Date().toISOString().split('T')[0];
-  const tasksHoje=(TASKS||[]).filter(t=>t.prazo===hoje&&t.status!=='Concluído').length;
-  const tasksAtr=(TASKS||[]).filter(t=>t.prazo&&t.prazo<hoje&&t.status!=='Concluído').length;
+  const tasksHoje=(TASKS||[]).filter(t=>t.prazo===hoje&&t.status!=='Aprovado').length;
+  const tasksAtr=(TASKS||[]).filter(t=>t.prazo&&t.prazo<hoje&&t.status!=='Aprovado').length;
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
   set('dash-leads',leads);
   set('st-wa-sr',waSemResp);
@@ -8482,7 +8529,7 @@ function renderDashAlertas(){
   if(inadimp>0) alertas.push({tipo:'r',txt:`Inadimplência: ${fmtR(inadimp)}`});
   const orcPend=ORCAMENTOS.filter(o=>o.status==='aguardando').length;
   if(orcPend>0) alertas.push({tipo:'w',txt:`${orcPend} orçamento(s) aguardando aprovação`});
-  const tasksPend=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado').length;
+  const tasksPend=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado').length;
   if(tasksPend>0) alertas.push({tipo:'r',txt:`${tasksPend} tarefa(s) pendente(s)`});
   const badge=document.getElementById('dash-alerta-badge');
   if(badge) badge.textContent=alertas.length+' ativos';
@@ -8493,7 +8540,7 @@ function renderDashAlertas(){
 function renderDashTasks(){
   const hoje=new Date().toLocaleDateString('pt-BR');
   const taskHoje=TASKS.filter(t=>t.data===hoje||t.data===new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
-  const taskAtras=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado');
+  const taskAtras=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado');
 
   const elHoje=document.getElementById('dash-tasks-hoje');
   if(elHoje) elHoje.innerHTML=taskHoje.length?taskHoje.map(t=>`<div style="padding:8px 14px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · ${t.resp||'—'}</div></div><span style="font-size:10px;background:var(--bd2);border-radius:5px;padding:2px 7px">${t.status}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)"><div style="font-size:24px;margin-bottom:6px">📋</div>Nenhuma tarefa para hoje<br><button onclick="goPage(\'hub\',null)" style="margin-top:8px;background:var(--brand);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:10px;cursor:pointer">Criar Tarefa</button></div>';
@@ -8561,7 +8608,7 @@ async function atualizarAnaliseDash(){
   const mrr=calcMRR(),fat=calcReceitaMes(mesAtual()),inadimp=calcInadimplencia();
   const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
   const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
-  const prompt=`Agência K2 Company. Dashboard hoje: MRR=${fmtR(mrr)}, Faturamento=${fmtR(fat)}, Inadimplência=${fmtR(inadimp)}, WA abertos=${waAbertos}, Leads CRM=${leads}, Tarefas pendentes=${TASKS.filter(t=>t.status!=='Concluído').length}. Em 2 frases: situação atual e prioridade do dia.`;
+  const prompt=`Agência K2 Company. Dashboard hoje: MRR=${fmtR(mrr)}, Faturamento=${fmtR(fat)}, Inadimplência=${fmtR(inadimp)}, WA abertos=${waAbertos}, Leads CRM=${leads}, Tarefas pendentes=${TASKS.filter(t=>t.status!=='Aprovado').length}. Em 2 frases: situação atual e prioridade do dia.`;
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
@@ -8720,7 +8767,7 @@ function calcRelOrcamentos(){
   if(lista) lista.innerHTML=pendentes.length?pendentes.slice(0,5).map(o=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${o.cli||o.desc}</div><div style="font-size:10px;color:var(--t3)">${o.desc||'—'} · ${o.valor||'—'}</div></div><span style="font-size:10px;background:#8B5CF620;color:#8B5CF6;border-radius:5px;padding:2px 7px">Sem resposta</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhum orçamento parado</div>';
 }
 function calcRelTasks(){
-  const atrasadas=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado');
+  const atrasadas=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado');
   const el=document.getElementById('rel-task-badge');const lista=document.getElementById('rel-task-lista');
   if(el) el.textContent=atrasadas.length;
   if(lista) lista.innerHTML=atrasadas.length?atrasadas.slice(0,5).map(t=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · ${t.data||'—'}</div></div><span style="font-size:10px;background:#3B82F620;color:#3B82F6;border-radius:5px;padding:2px 7px">${t.status||'Pendente'}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhuma tarefa atrasada</div>';
@@ -8748,7 +8795,7 @@ function calcScoreGeral(){
   const waOk=CONVS.filter(c=>c.status==='aberta').length===0;
   const crmOk=CRM_COLS.reduce((s,c)=>s+c.cards.length,0)===0;
   const orcOk=ORCAMENTOS.filter(o=>o.status==='aguardando').length===0;
-  const taskOk=TASKS.filter(t=>t.status!=='Concluído').length===0;
+  const taskOk=TASKS.filter(t=>t.status!=='Aprovado').length===0;
   const finOk=calcInadimplencia()===0;
   const pontos=[waOk,crmOk,orcOk,taskOk,finOk].filter(Boolean).length;
   const score=Math.round(pontos/5*100);
@@ -8762,7 +8809,7 @@ async function analisarOperacaoIA(){
   if(!apiKey){toast('Configure a API Key do Claude em Configurações → IA','⚠️');return;}
   const desc=document.getElementById('rel-score-desc');
   if(desc)desc.textContent='🔄 Analisando com Claude...';
-  const prompt=`Agência: ${CONVS.filter(c=>c.status==='aberta').length} WA abertos, ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)} leads CRM, ${ORCAMENTOS.filter(o=>o.status==='aguardando').length} orçamentos pendentes, ${TASKS.filter(t=>t.status!=='Concluído').length} tarefas, inadimplência ${fmtR(calcInadimplencia())}. Em 2 frases: prioridade e ação imediata.`;
+  const prompt=`Agência: ${CONVS.filter(c=>c.status==='aberta').length} WA abertos, ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)} leads CRM, ${ORCAMENTOS.filter(o=>o.status==='aguardando').length} orçamentos pendentes, ${TASKS.filter(t=>t.status!=='Aprovado').length} tarefas, inadimplência ${fmtR(calcInadimplencia())}. Em 2 frases: prioridade e ação imediata.`;
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
@@ -8771,7 +8818,7 @@ async function analisarOperacaoIA(){
 }
 function gerarRelatorioGeral(){
   const score=document.getElementById('rel-score')?.textContent||'—';
-  const txt=`📊 *Relatório Operacional K2 Flow*\n📅 ${new Date().toLocaleDateString('pt-BR')}\n\n🎯 *Score:* ${score}\n💬 WA abertos: ${CONVS.filter(c=>c.status==='aberta').length}\n👤 Leads CRM: ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)}\n📄 Orçamentos pendentes: ${ORCAMENTOS.filter(o=>o.status==='aguardando').length}\n✅ Tarefas: ${TASKS.filter(t=>t.status!=='Concluído').length}\n💰 Inadimplência: ${fmtR(calcInadimplencia())}\n\n_K2 Flow_`;
+  const txt=`📊 *Relatório Operacional K2 Flow*\n📅 ${new Date().toLocaleDateString('pt-BR')}\n\n🎯 *Score:* ${score}\n💬 WA abertos: ${CONVS.filter(c=>c.status==='aberta').length}\n👤 Leads CRM: ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)}\n📄 Orçamentos pendentes: ${ORCAMENTOS.filter(o=>o.status==='aguardando').length}\n✅ Tarefas: ${TASKS.filter(t=>t.status!=='Aprovado').length}\n💰 Inadimplência: ${fmtR(calcInadimplencia())}\n\n_K2 Flow_`;
   navigator.clipboard.writeText(txt).catch(()=>{});
   toast('Relatório copiado!','📤');
 }
@@ -9024,5 +9071,31 @@ function instalarPWA(){
   });
 }
 </script>
+
+<!-- WH MOVE MODAL -->
+<div id="wh-move-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;display:none;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:14px;width:430px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden">
+    <div style="padding:18px 22px 14px;border-bottom:1px solid var(--bd)">
+      <div id="wh-move-title" style="font-family:'Barlow',sans-serif;font-weight:800;font-size:16px;color:var(--t1);margin-bottom:2px">Mover tarefa</div>
+      <div id="wh-move-sub" style="font-size:12px;color:var(--t3)">Anexe a entrega ou escreva um comentário</div>
+    </div>
+    <div style="padding:16px 22px">
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Arquivo de entrega <span style="color:var(--er)">*</span></div>
+      <div id="wh-move-drop" onclick="whMoveFile()" style="border:2px dashed var(--bd);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px">
+        <div style="font-size:22px;margin-bottom:5px">📎</div>
+        <div style="font-size:12px;color:var(--t3)"><strong style="color:var(--t1)">Clique ou arraste</strong> — somente imagens</div>
+      </div>
+      <input type="file" id="wh-move-file-in" accept="image/*" multiple style="display:none" onchange="whMoveFileSelect(event)">
+      <div id="wh-move-files-preview" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px"></div>
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Comentário</div>
+      <textarea id="wh-move-cmt" placeholder="O que foi feito? Qual o próximo passo?" style="width:100%;border:1px solid var(--bd);border-radius:8px;padding:9px 11px;font-size:12px;outline:none;resize:none;min-height:65px;font-family:inherit"></textarea>
+      <div id="wh-move-err" style="color:var(--er);font-size:11px;margin-top:5px;display:none">⚠ Anexe um arquivo ou escreva um comentário para continuar.</div>
+    </div>
+    <div style="padding:12px 22px;border-top:1px solid var(--bd);display:flex;gap:7px;justify-content:flex-end">
+      <button onclick="whMoveCancel()" style="padding:7px 15px;border-radius:8px;border:1px solid var(--bd);background:#fff;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer">Cancelar</button>
+      <button onclick="whMoveConfirm()" style="padding:7px 18px;border-radius:8px;border:none;background:var(--brand);color:#fff;font-size:12px;font-weight:700;cursor:pointer">Confirmar Movimentação</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
