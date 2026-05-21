@@ -7,12 +7,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="K2 Flow">
-<meta name="description" content="K2 Flow — Núcleo de Operação Comercial">
+<meta name="apple-mobile-web-app-title" content="K2 FlowCore">
+<meta name="description" content="K2 FlowCore — Núcleo de Operação Comercial">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
-<title>K2 Flow</title>
+<title>K2 FlowCore</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -685,7 +685,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 <aside class="sb1" id="sb1">
   <div class="sb1-top">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-      <div class="brand"><div class="brand-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="brand-txt"><div class="brand-name">K2 <em>Flow</em></div><div class="brand-tag">WhatsApp | CRM | IA</div></div></div>
+      <div class="brand"><div class="brand-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="brand-txt"><div class="brand-name">K2 <em>FLOWCORE</em></div><div class="brand-tag">WhatsApp | CRM | IA</div></div></div>
       <button class="sb1-tog" onclick="toggleSb()" id="sb1-tog-btn" title="Recolher menu" style="width:28px;height:28px;flex-shrink:0;padding:0">
         <svg id="sb-tog-ico" width="14" height="14" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -701,8 +701,8 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <button class="ni" onclick="goPage('clientes',this)"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg><span class="ni-lbl">Clientes</span></button>
     <button class="ni" onclick="goPage('orca',this)"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.5"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ni-lbl">Orçamentos</span></button>
     <div class="nsec">Hubs</div>
-    <button class="ni" id="ni-work" onclick="abrirHub('work')"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="ni-lbl">K2Flow</span><span class="ni-badge b-wh">Tasks</span></button>
-    <button class="ni" id="ni-social" onclick="abrirHub('social')"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#E1306C" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/></svg><span class="ni-lbl">K2 Flow Social</span><span class="ni-badge b-sh">Redes</span></button>
+    <button class="ni" id="ni-work" onclick="abrirHub('work')"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="ni-lbl">Work Hub</span><span class="ni-badge b-wh">Tasks</span></button>
+    <button class="ni" id="ni-social" onclick="abrirHub('social')"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#E1306C" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/></svg><span class="ni-lbl">Social Hub</span><span class="ni-badge b-sh">Redes</span></button>
     <div class="nsec">Análise</div>
     <button class="ni" id="ni-ai" onclick="abrirHub('ai')"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="ni-lbl">AI Growth Engine</span><span class="ni-badge b-ai">IA</span></button>
     <button class="ni" onclick="goPage('ads',this)"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="ni-lbl">Campanhas & Ads</span></button>
@@ -731,7 +731,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
 <!-- SB2 WORK HUB -->
 <aside class="sb2" id="sb2-work">
-  <div class="sb2-head"><button class="sb2-back" onclick="fecharHub()"><svg width="9" height="9" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Menu principal</button><div class="sb2-title"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>K2Flow</div></div>
+  <div class="sb2-head"><button class="sb2-back" onclick="fecharHub()"><svg width="9" height="9" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Menu principal</button><div class="sb2-title"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Work Hub</div></div>
   <div class="sb2-nav">
     <div class="s2sec">Visão Geral</div>
     <button class="s2ni on" onclick="goWH('visao',this)"><svg class="s2ni-ico" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Visão Geral</button>
@@ -760,7 +760,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
 <!-- SB2 SOCIAL HUB -->
 <aside class="sb2" id="sb2-social">
-  <div class="sb2-head"><button class="sb2-back" onclick="fecharHub()"><svg width="9" height="9" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Menu principal</button><div class="sb2-title"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#E1306C" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/></svg>K2 Flow Social</div></div>
+  <div class="sb2-head"><button class="sb2-back" onclick="fecharHub()"><svg width="9" height="9" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Menu principal</button><div class="sb2-title"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#E1306C" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/></svg>Social Hub</div></div>
   <div class="sb2-nav">
     <div class="s2sec">Visão Geral</div>
     <button class="s2ni on" onclick="goSH('sh-analise',this)"><svg class="s2ni-ico" fill="none" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="20" x2="12" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="6" y1="20" x2="6" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Análise Geral</button>
@@ -938,7 +938,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
       <div class="ai-box-h">
 
         <div class="ai-box-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="ai-box-title">Agente IA — Monitoramento K2 Flow</div>
+        <div class="ai-box-title">Agente IA — Monitoramento K2 FlowCore</div>
         <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
           <div style="display:flex;align-items:center;gap:5px">
             <div id="ia-status-dot2" style="width:6px;height:6px;border-radius:50%;background:#9CA3AF"></div>
@@ -1233,127 +1233,118 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     </div>
   </div>
 
-  <!-- WORK HUB — ClickUp Style -->
+  <!-- WORK HUB — Fluxo de Produção para Agência -->
   <div class="page" id="page-hub" style="overflow:hidden;flex-direction:row">
-    <!-- Sidebar interna K2Flow — colapsável -->
+    <!-- Sidebar interna Work Hub -->
     <div id="wh-sb" style="width:220px;min-width:220px;background:var(--dark2);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:width .22s,min-width .22s">
 
-      <!-- Topo: logo + botão colapsar -->
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 10px 8px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0">
         <div style="display:flex;align-items:center;gap:7px;overflow:hidden" class="wh-sb-expand-only">
-          <div style="width:22px;height:22px;background:rgba(129,140,248,.25);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <div style="width:22px;height:22px;background:rgba(242,100,25,.2);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#F26419" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#F26419" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="#F26419" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#F26419" stroke-width="1.8"/></svg>
           </div>
-          <span style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap">K2Flow</span>
+          <span style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap">FlowCore Hub</span>
         </div>
-        <button onclick="whToggleSb()" title="Recolher" style="background:rgba(255,255,255,.07);border:none;border-radius:5px;width:24px;height:24px;cursor:pointer;color:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+        <button onclick="whToggleSb()" style="background:rgba(255,255,255,.07);border:none;border-radius:5px;width:24px;height:24px;cursor:pointer;color:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg id="wh-sb-ico" width="12" height="12" fill="none" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
 
-      <!-- Nav items — K2Flow reorganizado -->
       <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:6px">
 
-        <!-- VISÃO GERAL -->
-        <div class="wh-sb-sec wh-sb-expand-only">Visão Geral</div>
+        <!-- Visão pessoal -->
+        <div class="wh-sb-sec wh-sb-expand-only">Minha visão</div>
         <button class="wh-sb-item on" id="whi-inbox" onclick="whGo('inbox',this)" title="Caixa de entrada">
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" stroke="currentColor" stroke-width="1.5"/></svg>
           <span class="wh-sb-lbl">Caixa de entrada</span>
           <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(220,38,38,.3);color:#FCA5A5;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-inbox-cnt">0</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('minhas',this)" title="Minhas tarefas">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
-          <span class="wh-sb-lbl">Minhas tarefas</span>
+        <button class="wh-sb-item" onclick="whGo('minhas',this)">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="wh-sb-lbl">Minhas demandas</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('hoje',this)" title="Em Atraso">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#DC2626" stroke-width="1.5"/><polyline points="12 6 12 12 16 14" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span class="wh-sb-lbl" style="color:#FCA5A5">Em Atraso</span>
-          <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(220,38,38,.3);color:#FCA5A5;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-atraso-cnt">0</span>
+        <button class="wh-sb-item" onclick="whGo('hoje',this)">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="wh-sb-lbl">Entregas de hoje</span>
         </button>
-        <button class="wh-sb-item" onclick="whToggleView('calendario');whGo('minhas',this)" title="Calendário Editorial">
+        <button class="wh-sb-item" onclick="whGo('atrasadas',this)">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="#EF4444" stroke-width="1.5"/><line x1="12" y1="9" x2="12" y2="13" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="wh-sb-lbl" style="color:#FCA5A5">Em atraso</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(220,38,38,.25);color:#FCA5A5;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-atr-cnt">0</span>
+        </button>
+        <button class="wh-sb-item" onclick="whToggleView('calendario');whGo('minhas',this)">
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
-          <span class="wh-sb-lbl">Calendário Editorial</span>
+          <span class="wh-sb-lbl">Calendário editorial</span>
         </button>
 
-        <!-- OPERAÇÃO -->
-        <div class="wh-sb-sec wh-sb-expand-only">Operação</div>
-        <button class="wh-sb-item" onclick="whGo('producao',this)" title="Produção">
-          <div style="width:9px;height:9px;border-radius:2px;background:#2563EB;flex-shrink:0"></div>
-          <span class="wh-sb-lbl">Produção</span>
+        <!-- Fluxo de produção -->
+        <div class="wh-sb-sec wh-sb-expand-only">Fluxo de produção</div>
+        <button class="wh-sb-item" onclick="whGo('rascunho',this)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#94A3B8;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Rascunho</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:rgba(255,255,255,.25)" id="wh-cnt-rascunho">0</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('design',this)" title="Design">
-          <div style="width:9px;height:9px;border-radius:2px;background:#059669;flex-shrink:0"></div>
-          <span class="wh-sb-lbl">Design</span>
+        <button class="wh-sb-item" onclick="whGo('produzir',this)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#3B82F6;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Para produzir</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:#93C5FD;font-weight:700" id="wh-cnt-produzir">0</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('social-media',this)" title="Social Media">
-          <div style="width:9px;height:9px;border-radius:2px;background:#E1306C;flex-shrink:0"></div>
+        <button class="wh-sb-item" onclick="whGo('aprov-interna',this)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#F59E0B;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Aprovação interna</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:#FCD34D;font-weight:700" id="wh-cnt-aprov-interna">0</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('aprov-externa',this)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#8B5CF6;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Aprovação cliente</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:#C4B5FD;font-weight:700" id="wh-cnt-aprov-externa">0</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('alterar',this)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#EF4444;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Para alterar</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:#FCA5A5;font-weight:700" id="wh-cnt-alterar">0</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('aprovado',this)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Aprovado ✓</span>
+          <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:#86EFAC;font-weight:700" id="wh-cnt-aprovado">0</span>
+        </button>
+
+        <!-- Áreas da agência -->
+        <div class="wh-sb-sec wh-sb-expand-only">Áreas</div>
+        <button class="wh-sb-item" onclick="whGo('design',this)">
+          <div style="width:10px;height:10px;border-radius:3px;background:#059669;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Design Gráfico</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('videomaker',this)">
+          <div style="width:10px;height:10px;border-radius:3px;background:#7C3AED;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Videomaker</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('social-media',this)">
+          <div style="width:10px;height:10px;border-radius:3px;background:#E1306C;flex-shrink:0"></div>
           <span class="wh-sb-lbl">Social Media</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('trafego',this)" title="Tráfego Pago">
-          <div style="width:9px;height:9px;border-radius:2px;background:#F59E0B;flex-shrink:0"></div>
+        <button class="wh-sb-item" onclick="whGo('trafego',this)">
+          <div style="width:10px;height:10px;border-radius:3px;background:#F59E0B;flex-shrink:0"></div>
           <span class="wh-sb-lbl">Tráfego Pago</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('audiovisual',this)" title="Audiovisual">
-          <div style="width:9px;height:9px;border-radius:2px;background:#7C3AED;flex-shrink:0"></div>
-          <span class="wh-sb-lbl">Audiovisual</span>
+        <button class="wh-sb-item" onclick="whGo('automacao',this)">
+          <div style="width:10px;height:10px;border-radius:3px;background:#0EA5E9;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Automação</span>
+        </button>
+        <button class="wh-sb-item" onclick="whGo('processo',this)">
+          <div style="width:10px;height:10px;border-radius:3px;background:#94A3B8;flex-shrink:0"></div>
+          <span class="wh-sb-lbl">Processo Interno</span>
         </button>
 
-        <!-- APROVAÇÃO & ENTREGA -->
-        <div class="wh-sb-sec wh-sb-expand-only">Aprovação & Entrega</div>
-        <button class="wh-sb-item" onclick="whGo('aprovacao-interna',this)" title="Aprovação Interna">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#7C3AED" stroke-width="1.5"/><path d="M9 12l2 2 4-4" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="wh-sb-lbl">Aprovação Interna</span>
-          <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(124,58,237,.25);color:#C4B5FD;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-aprint-cnt">0</span>
+        <button class="wh-sb-item wh-sb-add" onclick="openModal('modal-nova-demanda')">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="wh-sb-lbl">Nova demanda</span>
         </button>
-        <button class="wh-sb-item" onclick="whGo('aprovacao-cliente',this)" title="Aprovação do Cliente">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#D97706" stroke-width="1.5"/><polyline points="14 2 14 8 20 8" stroke="#D97706" stroke-width="1.5"/></svg>
-          <span class="wh-sb-lbl">Aprovação do Cliente</span>
-          <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(217,119,6,.25);color:#FCD34D;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-aprcli-cnt">0</span>
-        </button>
-        <button class="wh-sb-item" onclick="whGo('postados',this)" title="Postados / Entregues">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="wh-sb-lbl">Postados</span>
-          <span class="wh-sb-expand-only" style="margin-left:auto;background:rgba(5,150,105,.2);color:#6EE7B7;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px" id="wh-post-cnt">0</span>
-        </button>
-
-        <!-- CLIENTES -->
-        <div class="wh-sb-sec wh-sb-expand-only">Clientes</div>
-        <div id="wh-cli-list">
-          <button class="wh-sb-item" onclick="whGo('cli-teste1',this)">
-            <div style="width:9px;height:9px;border-radius:50%;background:#2563EB;flex-shrink:0"></div>
-            <span class="wh-sb-lbl">Teste 1</span>
-            <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:rgba(255,255,255,.25)">3</span>
-          </button>
-          <button class="wh-sb-item" onclick="whGo('cli-teste2',this)">
-            <div style="width:9px;height:9px;border-radius:50%;background:#059669;flex-shrink:0"></div>
-            <span class="wh-sb-lbl">Teste 2</span>
-            <span class="wh-sb-expand-only" style="margin-left:auto;font-size:9px;color:rgba(255,255,255,.25)">4</span>
-          </button>
-          <button class="wh-sb-item wh-sb-add" onclick="alert('Adicionar cliente em breve')">
-            <svg width="10" height="10" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <span class="wh-sb-lbl">+ Novo Cliente</span>
-          </button>
-        </div>
-
-        <!-- INTELIGÊNCIA -->
-        <div class="wh-sb-sec wh-sb-expand-only">Inteligência</div>
-        <button class="wh-sb-item" onclick="whGo('wh-rel',this)" title="Relatórios">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="20" x2="12" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="6" y1="20" x2="6" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span class="wh-sb-lbl">Relatórios</span>
-        </button>
-        <button class="wh-sb-item" onclick="whGo('wh-ia',this)" title="IA Integrada">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="wh-sb-lbl">IA Integrada</span>
-        </button>
-        <button class="wh-sb-item" onclick="whGo('wh-auto',this)" title="Automações">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="wh-sb-lbl">Automações</span>
-        </button>
-
       </div>
     </div>
 
-    <!-- Main K2Flow -->
+    <!-- Main Work Hub -->
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0">
       <!-- Topbar WH -->
       <div style="background:var(--light2);border-bottom:1px solid var(--bd);padding:0 16px;height:46px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px">
@@ -1874,7 +1865,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
             </div>
             <div>
               <div style="font-size:12px;font-weight:700">Tarefas em atraso</div>
-              <div style="font-size:10px;color:var(--t3)">K2Flow + K2 Flow Social</div>
+              <div style="font-size:10px;color:var(--t3)">Work Hub + Social Hub</div>
             </div>
           </div>
           <span id="rel-task-badge" style="background:#3B82F620;color:#3B82F6;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:800">0</span>
@@ -2375,7 +2366,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <div class="n8n-grid" id="n8n-workflows" style="margin-bottom:24px"></div>
 
     <!-- Automações disponíveis -->
-    <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:12px">Automações K2 Flow</div>
+    <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:12px">Automações K2 FlowCore</div>
     <div style="display:flex;flex-direction:column;gap:10px">
 
       <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
@@ -2486,7 +2477,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <!-- Header -->
     <div style="margin-bottom:14px">
       
-      <div style="font-size:11px;color:var(--t3)">Personalize sua experiência no K2 Flow</div>
+      <div style="font-size:11px;color:var(--t3)">Personalize sua experiência no K2 FlowCore</div>
     </div>
 
     <!-- Abas horizontais estilo DGFlow -->
@@ -2612,7 +2603,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <div id="cfg-aba-assinatura" style="display:none">
       <div style="background:linear-gradient(135deg,var(--brand),#ff8c42);border-radius:14px;padding:24px;color:#fff;margin-bottom:16px;max-width:600px">
         <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Plano atual</div>
-        <div style="font-size:28px;font-weight:900;font-family:'Barlow',sans-serif">K2 Flow Premium</div>
+        <div style="font-size:28px;font-weight:900;font-family:'Barlow',sans-serif">K2 FlowCore Premium</div>
         <div style="font-size:13px;opacity:.8;margin-top:4px">Todos os módulos desbloqueados</div>
         <div style="margin-top:16px;font-size:12px;opacity:.7">Próximo vencimento: 01/11/2026</div>
       </div>
@@ -3136,8 +3127,72 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
   </div>
 </div>
 
+<!-- MODAL NOVA DEMANDA — Agência -->
+<div class="modal-bg" id="modal-nova-demanda">
+  <div class="modal" style="max-width:560px;max-height:90vh;overflow-y:auto">
+    <div class="modal-h">Nova Demanda de Produção</div>
+    <div class="modal-s">Preencha os dados para criar uma demanda no fluxo de produção</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="field" style="grid-column:1/-1"><label>Título da demanda</label><input class="inp" id="dem-titulo" placeholder="Ex: Post Dia das Mães - Feed"></div>
+      <div class="field"><label>Cliente / Parceiro</label>
+        <select class="inp-sel" id="dem-cliente">
+          <option value="">Selecionar cliente...</option>
+        </select>
+      </div>
+      <div class="field"><label>Área responsável</label>
+        <select class="inp-sel" id="dem-area">
+          <option value="design">Design Gráfico</option>
+          <option value="videomaker">Videomaker</option>
+          <option value="social-media">Social Media</option>
+          <option value="trafego">Tráfego Pago</option>
+          <option value="automacao">Automação</option>
+          <option value="processo">Processo Interno</option>
+        </select>
+      </div>
+      <div class="field"><label>Formato</label>
+        <select class="inp-sel" id="dem-formato">
+          <option value="Feed">Feed (1080x1350)</option>
+          <option value="Story">Story (1080x1920)</option>
+          <option value="Reels">Reels (1080x1920)</option>
+          <option value="Carrossel">Carrossel</option>
+          <option value="Banner">Banner</option>
+          <option value="Logo">Logo / Identidade</option>
+          <option value="Video">Vídeo</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div class="field"><label>Data de entrega</label><input class="inp" type="datetime-local" id="dem-prazo"></div>
+      <div class="field"><label>Designer responsável</label>
+        <select class="inp-sel" id="dem-designer">
+          <option value="">Selecionar...</option>
+        </select>
+      </div>
+      <div class="field"><label>Solicitante</label>
+        <select class="inp-sel" id="dem-solicitante">
+          <option value="">Selecionar...</option>
+        </select>
+      </div>
+      <div class="field" style="grid-column:1/-1"><label>Briefing & Copy</label><textarea class="inp" id="dem-briefing" rows="3" placeholder="Descreva o conteúdo, texto, copy da peça..."></textarea></div>
+      <div class="field" style="grid-column:1/-1"><label>Link de referências (Google Drive)</label><input class="inp" id="dem-refs" placeholder="https://drive.google.com/..."></div>
+    </div>
+
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal('modal-nova-demanda')">Cancelar</button>
+      <button class="btn-ok" onclick="criarDemanda()">Criar demanda</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHES DA DEMANDA -->
+<div class="modal-bg" id="modal-demanda-det" onclick="if(event.target===this)closeModal('modal-demanda-det')">
+  <div class="modal" style="max-width:680px;max-height:92vh;overflow-y:auto;padding:0">
+    <div id="dem-det-content" style="padding:24px"></div>
+  </div>
+</div>
+
 <div class="modal-bg" id="modal-task">
-  <div class="modal"><div class="modal-h">Nova Tarefa — K2Flow</div><div class="modal-s">Criar tarefa no Work Hub</div>
+  <div class="modal"><div class="modal-h">Nova Tarefa</div><div class="modal-s">Criar tarefa no Work Hub</div>
     <div class="field"><label>Título da tarefa</label><input class="inp" type="text" id="task-nome" placeholder="Ex: Reel Institucional Semana 21"></div>
     <div class="grid2-form"><div class="field"><label>Cliente</label><select class="inp-sel" id="task-cli"><option>Teste 1</option><option>Teste 2</option></select></div><div class="field"><label>Área</label><select class="inp-sel" id="task-area"><option>Produção</option><option>Design</option><option>Social Media</option><option>Tráfego Pago</option><option>Audiovisual</option></select></div></div>
     <div class="grid2-form"><div class="field"><label>Prioridade</label><select class="inp-sel" id="task-prio"><option>Alta</option><option>Média</option><option>Baixa</option></select></div><div class="field"><label>Vencimento</label><input class="inp" type="date" id="task-data"></div></div>
@@ -3159,7 +3214,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <div style="padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
       <div>
         <div style="font-size:15px;font-weight:700">Central de Ajuda</div>
-        <div style="font-size:11px;color:var(--t3)">K2 Flow — Perguntas frequentes</div>
+        <div style="font-size:11px;color:var(--t3)">K2 FlowCore — Perguntas frequentes</div>
       </div>
       <button onclick="closeModal('modal-ajuda')" style="background:var(--bd2);border:none;border-radius:6px;width:28px;height:28px;cursor:pointer;color:var(--t2);font-size:16px">✕</button>
     </div>
@@ -3231,7 +3286,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <div id="ob-steps">
       <div id="ob-step-1" style="padding:24px">
         <div style="font-size:36px;margin-bottom:12px">👋</div>
-        <div style="font-size:18px;font-weight:700;font-family:'Barlow',sans-serif;margin-bottom:8px">Bem-vindo ao K2 Flow!</div>
+        <div style="font-size:18px;font-weight:700;font-family:'Barlow',sans-serif;margin-bottom:8px">Bem-vindo ao K2 FlowCore!</div>
         <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">Vamos configurar o essencial em 3 passos rápidos. Começa pelo WhatsApp — é a base de tudo.</div>
         <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:16px">
           <div style="font-size:12px;font-weight:700;color:#25D366;margin-bottom:8px">📱 Conectar WhatsApp</div>
@@ -3267,7 +3322,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
             <div style="font-size:10px;color:var(--t3)">Importar conversa</div>
           </button>
         </div>
-        <div style="background:rgba(242,100,25,.08);border:1px solid var(--brand-b);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--t2);text-align:center">🎉 Tudo pronto! O K2 Flow começa a trabalhar por você.</div>
+        <div style="background:rgba(242,100,25,.08);border:1px solid var(--brand-b);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--t2);text-align:center">🎉 Tudo pronto! O K2 FlowCore começa a trabalhar por você.</div>
       </div>
     </div>
     <div style="padding:16px 24px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
@@ -3673,18 +3728,18 @@ let GCAL_CONNECTED=false;
 const HORARIOS_DISPONIVEIS=['07:00','08:00','09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
 let ORCAMENTOS=[];
 let TASKS=JSON.parse(localStorage.getItem('k2_tasks')||'null')||[
-  {id:'t1',nome:'Criar proposta comercial BMW Jundiaí',status:'Rascunho',prioridade:'alta',prazo:'2026-05-22',responsavel:'Fabinei',espaco:'demandas',lido:true,subtarefas:[{nome:'Briefing do cliente',done:true},{nome:'Definir escopo',done:false},{nome:'Enviar PDF',done:false}]},
-  {id:'t2',nome:'Post Instagram — lançamento produto',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
-  {id:'t3',nome:'Revisão do site K2 Company',status:'Aprovação Interna',prioridade:'media',prazo:'2026-05-23',responsavel:'Marcos',espaco:'design',lido:false,subtarefas:[]},
-  {id:'t4',nome:'Campanha Google Ads — Clínica Sorriso',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação cliente',done:false}]},
-  {id:'t5',nome:'Relatório mensal Fashion Store',status:'Aprovado',prioridade:'baixa',prazo:'2026-05-19',responsavel:'Pedro',espaco:'minhas',lido:true,subtarefas:[]},
-  {id:'t6',nome:'Identidade visual Studio Bela Pele',status:'Para Produzir',prioridade:'media',prazo:'2026-05-25',responsavel:'Ana',espaco:'design',lido:true,subtarefas:[{nome:'Logo',done:true},{nome:'Paleta de cores',done:true},{nome:'Manual da marca',done:false}]},
-  {id:'t7',nome:'Story Instagram K2 Company — hoje',status:'Rascunho',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'social-media',lido:false,subtarefas:[]},
-  {id:'t8',nome:'Briefing campanha Meta Ads — Dr. Lima',status:'Rascunho',prioridade:'media',prazo:'2026-05-21',responsavel:'Marcos',espaco:'demandas',lido:false,subtarefas:[]},
-  {id:'t9',nome:'Edição de vídeo — reels semana',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-20',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
-  {id:'t10',nome:'Aprovação arte cliente BERNABÉ',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'jornada',lido:false,subtarefas:[]},
-  {id:'t11',nome:'Planejamento conteúdo Junho',status:'Rascunho',prioridade:'media',prazo:'2026-05-28',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
-  {id:'t12',nome:'Setup Evolution API — novo cliente',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
+  {id:'t1',nome:'Criar proposta comercial BMW Jundiaí',status:'Agendado',prioridade:'alta',prazo:'2026-05-22',responsavel:'Fabinei',espaco:'demandas',lido:true,subtarefas:[{nome:'Briefing do cliente',done:true},{nome:'Definir escopo',done:false},{nome:'Enviar PDF',done:false}]},
+  {id:'t2',nome:'Post Instagram — lançamento produto',status:'Em Produção',prioridade:'alta',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
+  {id:'t3',nome:'Revisão do site K2 Company',status:'Revisão',prioridade:'media',prazo:'2026-05-23',responsavel:'Marcos',espaco:'design',lido:false,subtarefas:[]},
+  {id:'t4',nome:'Campanha Google Ads — Clínica Sorriso',status:'Aprovação',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação cliente',done:false}]},
+  {id:'t5',nome:'Relatório mensal Fashion Store',status:'Concluído',prioridade:'baixa',prazo:'2026-05-19',responsavel:'Pedro',espaco:'minhas',lido:true,subtarefas:[]},
+  {id:'t6',nome:'Identidade visual Studio Bela Pele',status:'Em Produção',prioridade:'media',prazo:'2026-05-25',responsavel:'Ana',espaco:'design',lido:true,subtarefas:[{nome:'Logo',done:true},{nome:'Paleta de cores',done:true},{nome:'Manual da marca',done:false}]},
+  {id:'t7',nome:'Story Instagram K2 Company — hoje',status:'Agendado',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'social-media',lido:false,subtarefas:[]},
+  {id:'t8',nome:'Briefing campanha Meta Ads — Dr. Lima',status:'Agendado',prioridade:'media',prazo:'2026-05-21',responsavel:'Marcos',espaco:'demandas',lido:false,subtarefas:[]},
+  {id:'t9',nome:'Edição de vídeo — reels semana',status:'Em Produção',prioridade:'alta',prazo:'2026-05-20',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
+  {id:'t10',nome:'Aprovação arte cliente BERNABÉ',status:'Aprovação',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'jornada',lido:false,subtarefas:[]},
+  {id:'t11',nome:'Planejamento conteúdo Junho',status:'Agendado',prioridade:'media',prazo:'2026-05-28',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
+  {id:'t12',nome:'Setup Evolution API — novo cliente',status:'Em Produção',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
 ];
 let FUNCS=[
   {nome:'Admin Master',email:'admin@k2company.com.br',perfil:'Admin',status:'ativo'},
@@ -3729,9 +3784,9 @@ const PAGE_META={
   n8n:{title:'n8n · Fluxos',sub:'Workflows e automações ativas',btn:'',modal:''},
   ads:{title:'Campanhas & Ads',sub:'Meta Ads + Google Ads · performance completa',btn:'+ Campanha',modal:''},
   relatorios:{title:'Relatórios Operacionais',sub:'Saúde geral da operação em tempo real',btn:'↻ Atualizar',modal:'',extraBtn:'<button class="btn-sec btn-sm" onclick="gerarRelatorioGeral()">📤 Exportar</button>'},
-  config:{title:'Configurações',sub:'Personalize sua experiência no K2 Flow',btn:'',modal:''},
-  hub:{title:'K2Flow',sub:'Fluxo de produção — K2 Flow',btn:'Nova Tarefa',modal:'modal-task'},
-  sh:{title:'K2 Flow Social',sub:'Gestão de redes sociais',btn:'Novo Post',modal:''},
+  config:{title:'Configurações',sub:'Personalize sua experiência no K2 FlowCore',btn:'',modal:''},
+  hub:{title:'Work Hub',sub:'Central de tarefas e produção',btn:'Nova Tarefa',modal:'modal-task'},
+  sh:{title:'Social Hub',sub:'Gestão de redes sociais',btn:'Novo Post',modal:''},
   aigrowth:{title:'AI Growth Engine',sub:'Diagnóstico inteligente da operação',btn:'Gerar Análise',modal:''},
 };
 
@@ -5517,13 +5572,12 @@ function renderWHtasks_old(filter){
   const el=document.getElementById('wh-lista-view');
   if(el){}/* usa nova função */
 }
-function setWHView(view,el2){whToggleView(view);}
 function setWhProj(el,proj){}
 function criarTask(){
   const nome=document.getElementById('task-nome')?.value?.trim();
   if(!nome){toast('Informe o título','⚠️');return;}
   TASKS=TASKS||[];
-  TASKS.push({id:'t'+Date.now(),nome,status:'Rascunho',prioridade:'none',prazo:document.getElementById('task-data')?.value||'',responsavel:'',espaco:_whCurrentSpace||'minhas',lido:false,subtarefas:[]});
+  TASKS.push({id:'t'+Date.now(),nome,status:'Agendado',prioridade:'none',prazo:document.getElementById('task-data')?.value||'',responsavel:'',espaco:_whCurrentSpace||'minhas',lido:false,subtarefas:[]});
   renderWHtasks();closeModal('modal-task');toast(`Tarefa "${nome}" criada!`,'✅');
   const tnEl=document.getElementById('task-nome');if(tnEl)tnEl.value='';
 }
@@ -5554,7 +5608,7 @@ function renderAGE(){
   const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
   const inadimp=calcInadimplencia();
   const mrr=calcMRR();
-  const tasksPend=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado').length;
+  const tasksPend=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado').length;
   const orcPend=ORCAMENTOS.filter(o=>o.status==='aguardando').length;
   const campAlertas=CAMPANHAS.filter(c=>avaliarAlerta(c)).length;
 
@@ -7451,9 +7505,9 @@ function coletarEstadoCompleto(){
   const orcSemResp=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando'&&(now-new Date(o.data||now).getTime())>d3).length;
   const orcVal=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').reduce((s,o)=>s+Number(o.total||0),0);
   /* Tarefas Work Hub */
-  const taskAtras=(TASKS||[]).filter(t=>t.status!=='Aprovado'&&t.prazo&&new Date(t.prazo)<new Date()).length;
-  const taskHoje=(TASKS||[]).filter(t=>t.status!=='Aprovado'&&t.prazo&&new Date(t.prazo).toDateString()===new Date().toDateString()).length;
-  const taskPend=(TASKS||[]).filter(t=>t.status!=='Aprovado').length;
+  const taskAtras=(TASKS||[]).filter(t=>t.status!=='Concluído'&&t.prazo&&new Date(t.prazo)<new Date()).length;
+  const taskHoje=(TASKS||[]).filter(t=>t.status!=='Concluído'&&t.prazo&&new Date(t.prazo).toDateString()===new Date().toDateString()).length;
+  const taskPend=(TASKS||[]).filter(t=>t.status!=='Concluído').length;
   /* Financeiro */
   const mrr=typeof calcMRR==='function'?calcMRR():0;
   const receita=typeof calcReceitaMes==='function'?calcReceitaMes(mesAtual()):0;
@@ -7621,15 +7675,13 @@ function claudeAddMsg(txt,tipo){
    WORK HUB — ClickUp Style
 ══════════════════════════════════════════════════ */
 const WH_STATUS={
-  'Rascunho':         {cor:'#6B7280',bg:'rgba(107,114,128,.1)'},
-  'Para Produzir':    {cor:'#2563EB',bg:'rgba(37,99,235,.1)'},
-  'Aprovação Interna':{cor:'#7C3AED',bg:'rgba(124,58,237,.1)'},
-  'Aprovação Externa':{cor:'#D97706',bg:'rgba(217,119,6,.1)'},
-  'Para Alterar':     {cor:'#DC2626',bg:'rgba(220,38,38,.1)'},
-  'Aprovado':         {cor:'#059669',bg:'rgba(5,150,105,.1)'},
+  'Agendado':   {cor:'#7C3AED',bg:'rgba(124,58,237,.1)'},
+  'Em Produção':{cor:'#2563EB',bg:'rgba(37,99,235,.1)'},
+  'Revisão':    {cor:'#D97706',bg:'rgba(217,119,6,.1)'},
+  'Aprovação':  {cor:'#F26419',bg:'rgba(242,100,25,.1)'},
+  'Concluído':  {cor:'#059669',bg:'rgba(5,150,105,.1)'},
+  'Cancelado':  {cor:'#DC2626',bg:'rgba(220,38,38,.1)'},
 };
-/* ── Colunas que exigem anexo ou comentário ao mover ── */
-const WH_STATUS_REQ_FILE=new Set(['Aprovação Interna','Aprovação Externa','Para Alterar','Aprovado']);
 const WH_PRIO={alta:{cor:'#DC2626',ico:'⚑'},media:{cor:'#D97706',ico:'⚑'},baixa:{cor:'#059669',ico:'⚑'},none:{cor:'#CBD5E1',ico:'⚑'}};
 let _whView='lista';
 let _whCurrentSpace='minhas';
@@ -7672,26 +7724,6 @@ function whToggleView(v){
 function whFiltrar(){toast('Filtros avançados em breve','🔍');}
 function whToggleFechadas(){_whShowFechadas=!_whShowFechadas;renderWHtasks();}
 
-function renderWHtasks(){
-  let tasks=[...(TASKS||[])];
-  /* Filtra por espaço */
-  if(_whCurrentSpace==='hoje'){tasks=tasks.filter(t=>t.status!=='Aprovado'&&t.prazo&&(new Date(t.prazo)<new Date()||new Date(t.prazo).toDateString()===new Date().toDateString()));}
-  else if(_whCurrentSpace==='inbox'){tasks=tasks.filter(t=>!t.lido);}
-  else if(_whCurrentSpace!=='minhas'&&_whCurrentSpace!=='pessoal'){tasks=tasks.filter(t=>(t.espaco||'').toLowerCase()===_whCurrentSpace);}
-  if(!_whShowFechadas)tasks=tasks.filter(t=>t.status!=='Cancelado');
-
-  if(_whView==='lista') renderWHLista(tasks);
-  else if(_whView==='kanban') renderWHKanban(tasks);
-  else renderWHCal(tasks);
-
-  /* Badge inbox */
-  const ibEl=document.getElementById('wh-inbox-cnt');if(ibEl)ibEl.textContent=(TASKS||[]).filter(t=>!t.lido).length;
-  const atEl=document.getElementById('wh-atraso-cnt');if(atEl){const n=(TASKS||[]).filter(t=>t.prazo&&new Date(t.prazo)<new Date()&&t.status!=='Aprovado').length;atEl.textContent=n;atEl.style.display=n?'':'none';}
-  const aprIntEl=document.getElementById('wh-aprint-cnt');if(aprIntEl){const n=(TASKS||[]).filter(t=>t.status==='Aprovação Interna').length;aprIntEl.textContent=n;aprIntEl.style.display=n?'':'none';}
-  const aprCliEl=document.getElementById('wh-aprcli-cnt');if(aprCliEl){const n=(TASKS||[]).filter(t=>t.status==='Aprovação Externa').length;aprCliEl.textContent=n;aprCliEl.style.display=n?'':'none';}
-  const postEl=document.getElementById('wh-post-cnt');if(postEl){const n=(TASKS||[]).filter(t=>t.status==='Aprovado').length;postEl.textContent=n;postEl.style.display=n?'':'none';}
-}
-
 function renderWHLista(tasks){
   const el=document.getElementById('wh-lista-view');
   if(!el)return;
@@ -7726,12 +7758,12 @@ function renderWHLista(tasks){
 function whTaskRow(t){
   const prio=WH_PRIO[t.prioridade||'none'];
   const prazo=t.prazo?new Date(t.prazo):null;
-  const atrasada=prazo&&prazo<new Date()&&t.status!=='Aprovado';
+  const atrasada=prazo&&prazo<new Date()&&t.status!=='Concluído';
   const prazoStr=prazo?prazo.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'—';
   return`<div class="wh-task-row" draggable="true" data-id="${t.id}" ondragstart="whDragStart(event,'${t.id}')" onclick="whAbrirTask('${t.id}')">
     <div class="wh-task-name-cell">
-      <div class="wh-check ${t.status==='Aprovado'?'done':''}" onclick="event.stopPropagation();whToggleConcluido('${t.id}')"></div>
-      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${t.status==='Aprovado'?'var(--t3)':'var(--t1)'};text-decoration:${t.status==='Aprovado'?'line-through':'none'}">${t.nome}</span>
+      <div class="wh-check ${t.status==='Concluído'?'done':''}" onclick="event.stopPropagation();whToggleConcluido('${t.id}')"></div>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${t.status==='Concluído'?'var(--t3)':'var(--t1)'};text-decoration:${t.status==='Concluído'?'line-through':'none'}">${t.nome}</span>
       ${t.subtarefas?.length?`<span style="font-size:10px;color:var(--t3);background:var(--bd2);border-radius:4px;padding:1px 5px">${t.subtarefas.filter(s=>s.done).length}/${t.subtarefas.length}</span>`:''}
     </div>
     <div class="wh-task-cell" style="width:120px;font-size:11px">${t.responsavel||'—'}</div>
@@ -7793,53 +7825,8 @@ function whDrop(e,status){
   e.preventDefault();
   if(!_whDragTask)return;
   const t=(TASKS||[]).find(x=>x.id===_whDragTask);
-  if(!t||t.status===status){_whDragTask=null;return;}
-  /* Se coluna exige arquivo ou comentário, abre modal */
-  if(WH_STATUS_REQ_FILE.has(status)){
-    _whMovePendTo=status;
-    _whMovePendId=_whDragTask;
-    const cfg=WH_STATUS[status];
-    document.getElementById('wh-move-title').textContent=`→ Mover para "${status}"`;
-    document.getElementById('wh-move-sub').textContent=`Obrigatório: anexe a entrega ou escreva um comentário para avançar.`;
-    document.getElementById('wh-move-overlay').style.display='flex';
-    document.getElementById('wh-move-cmt').value='';
-    document.getElementById('wh-move-files-preview').innerHTML='';
-    document.getElementById('wh-move-err').style.display='none';
-    document.getElementById('wh-move-drop').innerHTML='<div style="font-size:22px;margin-bottom:5px">📎</div><div style="font-size:12px;color:var(--t3)"><strong style="color:var(--t1)">Clique ou arraste</strong> — somente imagens</div>';
-    document.getElementById('wh-move-drop').style.borderColor='';
-    document.getElementById('wh-move-drop').style.background='';
-    _whMoveFiles=[];
-  } else {
-    t.status=status;salvarTasks();renderWHtasks();toast(`Movido para ${status}`,'✓');
-    _whDragTask=null;
-  }
-}
-let _whMovePendTo=null,_whMovePendId=null,_whMoveFiles=[];
-function whMoveConfirm(){
-  const cmt=document.getElementById('wh-move-cmt').value.trim();
-  if(!_whMoveFiles.length&&!cmt){document.getElementById('wh-move-err').style.display='block';return;}
-  const t=(TASKS||[]).find(x=>x.id===_whMovePendId);
-  if(t){
-    t.status=_whMovePendTo;
-    t.lastMove={to:_whMovePendTo,cmt,files:_whMoveFiles.length,date:new Date().toLocaleDateString('pt-BR'),by:'Você'};
-    salvarTasks();renderWHtasks();
-    toast(`Movido para ${_whMovePendTo}`,'✓');
-  }
-  document.getElementById('wh-move-overlay').style.display='none';
-  _whDragTask=null;_whMovePendTo=null;_whMovePendId=null;_whMoveFiles=[];
-}
-function whMoveCancel(){
-  document.getElementById('wh-move-overlay').style.display='none';
-  _whDragTask=null;_whMovePendTo=null;_whMovePendId=null;_whMoveFiles=[];
-}
-function whMoveFile(){document.getElementById('wh-move-file-in').click();}
-function whMoveFileSelect(e){
-  _whMoveFiles=[...e.target.files];
-  const prev=document.getElementById('wh-move-files-preview');
-  prev.innerHTML=_whMoveFiles.map(f=>`<img src="${URL.createObjectURL(f)}" style="width:52px;height:52px;border-radius:6px;object-fit:cover;border:1px solid var(--bd)">`).join('');
-  document.getElementById('wh-move-drop').innerHTML=`<div style="font-size:20px">✅</div><div style="font-size:12px;color:var(--t1);font-weight:600">${_whMoveFiles.length} arquivo(s)</div>`;
-  document.getElementById('wh-move-drop').style.borderColor='var(--ok)';
-  document.getElementById('wh-move-drop').style.background='var(--ok-l)';
+  if(t){t.status=status;salvarTasks();renderWHtasks();toast(`Tarefa movida para ${status}`,'✓');}
+  _whDragTask=null;
 }
 function whDropCal(e,data){
   e.preventDefault();
@@ -7852,7 +7839,7 @@ function salvarTasks(){try{localStorage.setItem('k2_tasks',JSON.stringify(TASKS)
 function whToggleConcluido(id){
   const t=(TASKS||[]).find(x=>x.id===id);
   if(!t)return;
-  t.status=t.status==='Aprovado'?'Agendado':'Concluído';
+  t.status=t.status==='Concluído'?'Agendado':'Concluído';
   salvarTasks();renderWHtasks();
 }
 function whToggleGrupo(status){
@@ -8261,7 +8248,7 @@ function executarBusca(q){
   /* Orçamentos */
   (ORCAMENTOS||[]).filter(o=>(o.cliente||'').toLowerCase().includes(q)).slice(0,3).forEach(o=>add('Orçamentos','📄',o.cliente,'R$'+(o.total||0).toLocaleString('pt-BR'),'orca'));
   /* Tarefas */
-  (TASKS||[]).filter(t=>(t.nome||'').toLowerCase().includes(q)).slice(0,3).forEach(t=>add('K2Flow','✅',t.nome,t.status,'hub'));
+  (TASKS||[]).filter(t=>(t.nome||'').toLowerCase().includes(q)).slice(0,3).forEach(t=>add('Work Hub','✅',t.nome,t.status,'hub'));
   /* WhatsApp */
   (CONVS||[]).filter(c=>(c.nome||'').toLowerCase().includes(q)).slice(0,3).forEach(c=>add('WhatsApp','💬',c.nome||c.num,'','wa'));
   /* Páginas */
@@ -8271,7 +8258,7 @@ function executarBusca(q){
 }
 function renderBuscaRes(){
   const el=document.getElementById('busca-resultados');if(!el)return;
-  const cor={CRM:'#378ADD',Clientes:'#1D9E75','Orçamentos':'#F59E0B','K2Flow':'#818CF8',WhatsApp:'#25D366',Financeiro:'#F26419','Ir para':'var(--t3)'};
+  const cor={CRM:'#378ADD',Clientes:'#1D9E75','Orçamentos':'#F59E0B','Work Hub':'#818CF8',WhatsApp:'#25D366',Financeiro:'#F26419','Ir para':'var(--t3)'};
   el.innerHTML=_buscaRes.map((r,i)=>`<div onclick="fecharBusca();goPage('${r.pagina}',null)" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;background:${i===_buscaIdx?'var(--bd2)':'transparent'};transition:background .1s" onmouseover="this.style.background='var(--bd2)'" onmouseout="this.style.background='${i===_buscaIdx?'var(--bd2)':'transparent'}'">
     <span style="font-size:18px">${r.ico}</span>
     <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.titulo}</div>${r.sub?`<div style="font-size:11px;color:var(--t3)">${r.sub}</div>`:''}</div>
@@ -8398,10 +8385,296 @@ function executarExporte(){
 }
 
 /* Botão exportar no topbar de relatórios */
-function gerarRelatorioGeral(){abrirExportar();}
+function criarDemanda(){
+  const titulo=document.getElementById('dem-titulo')?.value?.trim();
+  if(!titulo){toast('Informe o título da demanda','⚠️');return;}
+  const dem={
+    id:'dem-'+Date.now(),
+    titulo,
+    cliente:document.getElementById('dem-cliente')?.value||'',
+    area:document.getElementById('dem-area')?.value||'design',
+    formato:document.getElementById('dem-formato')?.value||'Feed',
+    prazo:document.getElementById('dem-prazo')?.value||'',
+    designer:document.getElementById('dem-designer')?.value||'',
+    solicitante:document.getElementById('dem-solicitante')?.value||'',
+    briefing:document.getElementById('dem-briefing')?.value||'',
+    refs:document.getElementById('dem-refs')?.value||'',
+    status:'Rascunho',
+    criadoEm:new Date().toISOString(),
+    historico:[{acao:'Demanda criada',de:'—',para:'Rascunho',por:localStorage.getItem('k2_email')||'Admin',ts:Date.now()}],
+    versoes:[],
+    comentarios:[]
+  };
+  DEMANDAS.unshift(dem);
+  localStorage.setItem('k2_demandas',JSON.stringify(DEMANDAS));
+  closeModal('modal-nova-demanda');
+  renderWHtasks();
+  atualizarContadoresWH();
+  toast('Demanda criada!','✅');
+  /* Limpa form */
+  ['dem-titulo','dem-briefing','dem-refs'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+
+function abrirDemanda(id){
+  const dem=DEMANDAS.find(d=>d.id===id);if(!dem)return;
+  const cor=WH_STATUS_CORES[dem.status]||WH_STATUS_CORES['Rascunho'];
+  const area=WH_AREA_COLS[dem.area]||{nome:dem.area,cor:'#888'};
+  const prazoFmt=dem.prazo?new Date(dem.prazo).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+  const atrasado=dem.prazo&&new Date(dem.prazo)<new Date()&&dem.status!=='Aprovado';
+
+  const nextStatus=WH_STATUS_FLOW[WH_STATUS_FLOW.indexOf(dem.status)+1];
+  const prevStatus=WH_STATUS_FLOW[WH_STATUS_FLOW.indexOf(dem.status)-1];
+
+  document.getElementById('dem-det-content').innerHTML=`
+    <!-- Breadcrumb -->
+    <div style="font-size:11px;color:var(--t3);margin-bottom:16px;display:flex;align-items:center;gap:6px">
+      <span>Work Hub</span><span>›</span>
+      <span style="color:${area.cor}">${area.nome}</span><span>›</span>
+      <span>Demanda</span>
+    </div>
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+      <div style="flex:1;min-width:0">
+        <h2 style="font-size:20px;font-weight:700;font-family:'Barlow',sans-serif;margin-bottom:8px">${dem.titulo}</h2>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="background:${cor.light};color:${cor.txt};border-radius:99px;padding:3px 12px;font-size:11px;font-weight:700">${dem.status}</span>
+          ${atrasado?`<span style="background:#EF444420;color:#FCA5A5;border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700">⚠ EM ATRASO: ${prazoFmt}</span>`:''}
+          <span style="background:${area.cor}20;color:${area.cor};border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700">${area.nome}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        ${prevStatus?`<button onclick="moverDemanda('${id}','${prevStatus}')" style="background:rgba(255,255,255,.07);border:none;border-radius:7px;padding:7px 12px;font-size:11px;color:var(--t2);cursor:pointer">‹ ${prevStatus}</button>`:''}
+        ${nextStatus?`<button onclick="moverDemanda('${id}','${nextStatus}')" style="background:var(--brand);border:none;border-radius:7px;padding:7px 14px;font-size:12px;color:#fff;font-weight:700;cursor:pointer">Avançar: ${nextStatus} →</button>`:''}
+      </div>
+    </div>
+
+    ${dem.status==='Para Alterar'?`
+    <div style="background:#EF444415;border:1px solid #EF444430;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:12px;color:#FCA5A5"><strong>Alteração solicitada.</strong> Envie uma nova versão para aprovação.</div>
+      <button onclick="enviarNovaVersao('${id}')" style="background:#EF4444;border:none;border-radius:7px;padding:7px 14px;font-size:12px;color:#fff;font-weight:700;cursor:pointer">Enviar nova versão</button>
+    </div>`:''}
+
+    ${dem.status==='Aprovação Cliente'?`
+    <div style="background:#8B5CF615;border:1px solid #8B5CF630;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:12px;color:#C4B5FD"><strong>Aguardando aprovação do cliente.</strong></div>
+      <button onclick="enviarLinkAprovacao('${id}')" style="background:#8B5CF6;border:none;border-radius:7px;padding:7px 14px;font-size:12px;color:#fff;font-weight:700;cursor:pointer">📱 Enviar link via WhatsApp</button>
+    </div>`:''}
+
+    <!-- Briefing -->
+    <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em">Briefing & Copy</div>
+        <button onclick="navigator.clipboard.writeText('${dem.briefing.replace(/'/g,"\\'")}');toast('Copy copiado!','📋')" style="background:none;border:none;color:var(--brand);font-size:11px;cursor:pointer;font-weight:600">📋 Copiar copy</button>
+      </div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.6;white-space:pre-wrap">${dem.briefing||'Sem briefing'}</div>
+    </div>
+
+    <!-- Especificações -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+      <div style="background:var(--dark);border-radius:8px;padding:12px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Formato</div>
+        <div style="font-size:14px;font-weight:700">${dem.formato||'—'}</div>
+      </div>
+      <div style="background:var(--dark);border-radius:8px;padding:12px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Data de entrega</div>
+        <div style="font-size:13px;font-weight:700;color:${atrasado?'#FCA5A5':'var(--t1)'}">${prazoFmt}</div>
+      </div>
+      <div style="background:var(--dark);border-radius:8px;padding:12px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Cliente</div>
+        <div style="font-size:14px;font-weight:700">${dem.cliente||'—'}</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+      <div style="background:var(--dark);border-radius:8px;padding:12px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Designer</div>
+        <div style="font-size:13px;font-weight:700">${dem.designer||'—'}</div>
+      </div>
+      <div style="background:var(--dark);border-radius:8px;padding:12px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Solicitante</div>
+        <div style="font-size:13px;font-weight:700">${dem.solicitante||'—'}</div>
+      </div>
+      <div style="background:var(--dark);border-radius:8px;padding:12px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Área</div>
+        <div style="font-size:13px;font-weight:700;color:${area.cor}">${area.nome}</div>
+      </div>
+    </div>
+
+    ${dem.refs?`<div style="margin-bottom:14px"><a href="${dem.refs}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#4285F420;border:1px solid #4285F440;color:#93C5FD;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;text-decoration:none">📁 Ver referências no Google Drive →</a></div>`:''}
+
+    <!-- Histórico -->
+    <div style="border-top:1px solid var(--bd);padding-top:14px">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Histórico de atividade</div>
+      ${(dem.historico||[]).slice().reverse().map(h=>`
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--brand-l);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${(h.por||'?').charAt(0).toUpperCase()}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;color:var(--t1)"><strong>${h.por||'Sistema'}</strong> ${h.acao}</div>
+            <div style="font-size:10px;color:var(--t3)">${new Date(h.ts).toLocaleString('pt-BR')}</div>
+          </div>
+        </div>`).join('')}
+
+      <!-- Comentário -->
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input type="text" id="dem-coment-inp" placeholder="Escrever um comentário..." style="flex:1;background:var(--dark);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--t1);outline:none" onkeydown="if(event.key==='Enter')adicionarComentario('${id}')">
+        <button onclick="adicionarComentario('${id}')" style="background:var(--brand);border:none;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+  openModal('modal-demanda-det');
+}
+
+function moverDemanda(id,novoStatus){
+  const dem=DEMANDAS.find(d=>d.id===id);if(!dem)return;
+  const statusAnt=dem.status;
+  dem.status=novoStatus;
+  dem.historico=dem.historico||[];
+  dem.historico.push({
+    acao:`alterou o status de "${statusAnt}" para "${novoStatus}"`,
+    de:statusAnt,para:novoStatus,
+    por:localStorage.getItem('k2_email')||'Admin',
+    ts:Date.now()
+  });
+  localStorage.setItem('k2_demandas',JSON.stringify(DEMANDAS));
+  closeModal('modal-demanda-det');
+  renderWHtasks();
+  atualizarContadoresWH();
+  toast(`Demanda movida: ${novoStatus}`,'✅');
+  /* Notifica se aprovação do cliente */
+  if(novoStatus==='Aprovação Cliente'){
+    toast('Envie o link de aprovação para o cliente!','📱');
+  }
+}
+
+function enviarLinkAprovacao(id){
+  const dem=DEMANDAS.find(d=>d.id===id);if(!dem)return;
+  const msg=`Olá! Sua demanda *${dem.titulo}* está pronta para aprovação. Acesse o link para aprovar ou solicitar alterações: crm.k2company.com.br/aprovacao/${id}`;
+  /* Tenta enviar via WA se cliente tem número */
+  const num=(dem.clienteNum||'').replace(/\D/g,'');
+  if(num){
+    window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+  }else{
+    navigator.clipboard.writeText(msg);
+    toast('Link copiado! Cole no WhatsApp do cliente.','📋');
+  }
+}
+
+function enviarNovaVersao(id){
+  const dem=DEMANDAS.find(d=>d.id===id);if(!dem)return;
+  /* Abre input de arquivo ou link do Drive */
+  const link=prompt('Cole o link do Google Drive com a nova versão:');
+  if(!link)return;
+  dem.versoes=dem.versoes||[];
+  dem.versoes.push({link,ts:Date.now(),por:localStorage.getItem('k2_email')||'Admin'});
+  dem.historico.push({acao:`enviou nova versão`,por:localStorage.getItem('k2_email')||'Admin',ts:Date.now()});
+  dem.status='Aprovação Interna';
+  localStorage.setItem('k2_demandas',JSON.stringify(DEMANDAS));
+  closeModal('modal-demanda-det');
+  renderWHtasks();
+  toast('Nova versão enviada para aprovação interna!','✅');
+}
+
+function adicionarComentario(id){
+  const dem=DEMANDAS.find(d=>d.id===id);if(!dem)return;
+  const inp=document.getElementById('dem-coment-inp');
+  const txt=inp?.value?.trim();if(!txt)return;
+  dem.historico.push({acao:`comentou: "${txt}"`,por:localStorage.getItem('k2_email')||'Admin',ts:Date.now()});
+  localStorage.setItem('k2_demandas',JSON.stringify(DEMANDAS));
+  abrirDemanda(id);/* Reabre para atualizar */
+  toast('Comentário adicionado','💬');
+}
+
+function atualizarContadoresWH(){
+  const cnts={};
+  const statusMap={
+    'Rascunho':'rascunho','Para Produzir':'produzir',
+    'Aprovação Interna':'aprov-interna','Aprovação Cliente':'aprov-externa',
+    'Para Alterar':'alterar','Aprovado':'aprovado'
+  };
+  DEMANDAS.forEach(d=>{const k=statusMap[d.status];if(k)cnts[k]=(cnts[k]||0)+1;});
+  Object.entries(cnts).forEach(([k,v])=>{const el=document.getElementById('wh-cnt-'+k);if(el)el.textContent=v;});
+  const atrasadas=DEMANDAS.filter(d=>d.prazo&&new Date(d.prazo)<new Date()&&d.status!=='Aprovado').length;
+  const atrEl=document.getElementById('wh-atr-cnt');if(atrEl)atrEl.textContent=atrasadas;
+}
+
+/* Preenche selects de designer/solicitante com usuários da equipe */
+function preencherSelectsDemanda(){
+  ['dem-designer','dem-solicitante'].forEach(id=>{
+    const sel=document.getElementById(id);if(!sel)return;
+    const atual=sel.value;
+    sel.innerHTML='<option value="">Selecionar...</option>';
+    (_usuarios||[]).forEach(u=>{
+      const opt=document.createElement('option');
+      opt.value=u.nome||u.email;opt.textContent=u.nome||u.email;
+      sel.appendChild(opt);
+    });
+    if(atual)sel.value=atual;
+  });
+  const cliSel=document.getElementById('dem-cliente');
+  if(cliSel){
+    cliSel.innerHTML='<option value="">Selecionar cliente...</option>';
+    (CLIENTES||[]).forEach(c=>{
+      const opt=document.createElement('option');
+      opt.value=c.nome;opt.textContent=c.nome;
+      cliSel.appendChild(opt);
+    });
+  }
+}
+
+function whCardDem(d,cor){
+  const atrasado=d.prazo&&new Date(d.prazo)<new Date()&&d.status!=='Aprovado';
+  const prazoFmt=d.prazo?new Date(d.prazo).toLocaleDateString('pt-BR'):'—';
+  const area=WH_AREA_COLS[d.area]||{nome:d.area,cor:'#888'};
+  return`<div onclick="abrirDemanda('${d.id}')" style="background:var(--dark);border:1px solid ${atrasado?'rgba(239,68,68,.35)':'rgba(255,255,255,.07)'};border-radius:9px;padding:12px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.18)'" onmouseout="this.style.borderColor='${atrasado?'rgba(239,68,68,.35)':'rgba(255,255,255,.07)'}'">
+    ${atrasado?`<div style="font-size:9px;font-weight:700;color:#FCA5A5;background:rgba(239,68,68,.15);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:6px">⚠ EM ATRASO</div>`:''}
+    <div style="font-size:12px;font-weight:600;margin-bottom:6px;line-height:1.4">${d.titulo}</div>
+    ${d.cliente?`<div style="font-size:10px;color:var(--t3);margin-bottom:6px">${d.cliente}</div>`:''}
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+      <span style="font-size:10px;background:${area.cor}20;color:${area.cor};border-radius:4px;padding:2px 7px">${area.nome}</span>
+      <span style="font-size:10px;color:${atrasado?'#FCA5A5':'var(--t3)'}">${prazoFmt}</span>
+    </div>
+    ${d.formato?`<div style="font-size:10px;color:var(--t3);margin-top:4px">${d.formato}</div>`:''}
+  </div>`;
+}
+
+function renderWHtasks(){
+  atualizarContadoresWH();
+  preencherSelectsDemanda();
+  const mainArea=document.getElementById('wh-main-area');
+  if(!mainArea)return;
+  const statusMap={
+    'rascunho':'Rascunho','produzir':'Para Produzir',
+    'aprov-interna':'Aprovação Interna','aprov-externa':'Aprovação Cliente',
+    'alterar':'Para Alterar','aprovado':'Aprovado'
+  };
+  const areaKeys=['design','videomaker','social-media','trafego','automacao','processo'];
+  let dems=[...DEMANDAS];
+  const space=_whCurrentSpace||'inbox';
+  if(statusMap[space])dems=dems.filter(d=>d.status===statusMap[space]);
+  else if(areaKeys.includes(space))dems=dems.filter(d=>d.area===space);
+  else if(space==='hoje'){const h=new Date().toDateString();dems=dems.filter(d=>d.prazo&&new Date(d.prazo).toDateString()===h);}
+  else if(space==='atrasadas')dems=dems.filter(d=>d.prazo&&new Date(d.prazo)<new Date()&&d.status!=='Aprovado');
+  else if(space==='inbox')dems=dems.filter(d=>d.status==='Para Produzir'||d.status==='Para Alterar');
+  const cols=Object.entries(WH_STATUS_CORES);
+  mainArea.innerHTML='<div style="display:flex;gap:12px;overflow-x:auto;padding:4px 0;min-height:60vh">'+
+    cols.map(([st,cor])=>{
+      const items=dems.filter(d=>d.status===st);
+      return'<div style="min-width:260px;max-width:260px;flex-shrink:0">'+
+        '<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">'+
+        '<div style="width:10px;height:10px;border-radius:50%;background:'+cor.bg+'"></div>'+
+        '<span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6)">'+st+'</span>'+
+        '<span style="margin-left:auto;font-size:11px;font-weight:700;color:'+cor.txt+'">'+items.length+'</span></div>'+
+        '<div style="display:flex;flex-direction:column;gap:8px">'+
+        items.map(d=>whCardDem(d,cor)).join('')+
+        '<button onclick="openModal(\'modal-nova-demanda\')" style="width:100%;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;color:rgba(255,255,255,.25);cursor:pointer">+ Nova demanda</button>'+
+        '</div></div>';
+    }).join('')+'</div>';
+}
 
 function renderDashboard(){
-
   renderDashMeta();
   renderDashKPIs();
   renderDashFinanceiro();
@@ -8433,8 +8706,8 @@ function renderDashKPIs(){
   const waSemResp=(CONVS||[]).filter(c=>c.status==='aberta').length;
   const orcAbertos=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length;
   const hoje=new Date().toISOString().split('T')[0];
-  const tasksHoje=(TASKS||[]).filter(t=>t.prazo===hoje&&t.status!=='Aprovado').length;
-  const tasksAtr=(TASKS||[]).filter(t=>t.prazo&&t.prazo<hoje&&t.status!=='Aprovado').length;
+  const tasksHoje=(TASKS||[]).filter(t=>t.prazo===hoje&&t.status!=='Concluído').length;
+  const tasksAtr=(TASKS||[]).filter(t=>t.prazo&&t.prazo<hoje&&t.status!=='Concluído').length;
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
   set('dash-leads',leads);
   set('st-wa-sr',waSemResp);
@@ -8566,7 +8839,7 @@ function renderDashAlertas(){
   if(inadimp>0) alertas.push({tipo:'r',txt:`Inadimplência: ${fmtR(inadimp)}`});
   const orcPend=ORCAMENTOS.filter(o=>o.status==='aguardando').length;
   if(orcPend>0) alertas.push({tipo:'w',txt:`${orcPend} orçamento(s) aguardando aprovação`});
-  const tasksPend=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado').length;
+  const tasksPend=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado').length;
   if(tasksPend>0) alertas.push({tipo:'r',txt:`${tasksPend} tarefa(s) pendente(s)`});
   const badge=document.getElementById('dash-alerta-badge');
   if(badge) badge.textContent=alertas.length+' ativos';
@@ -8577,7 +8850,7 @@ function renderDashAlertas(){
 function renderDashTasks(){
   const hoje=new Date().toLocaleDateString('pt-BR');
   const taskHoje=TASKS.filter(t=>t.data===hoje||t.data===new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
-  const taskAtras=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado');
+  const taskAtras=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado');
 
   const elHoje=document.getElementById('dash-tasks-hoje');
   if(elHoje) elHoje.innerHTML=taskHoje.length?taskHoje.map(t=>`<div style="padding:8px 14px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · ${t.resp||'—'}</div></div><span style="font-size:10px;background:var(--bd2);border-radius:5px;padding:2px 7px">${t.status}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)"><div style="font-size:24px;margin-bottom:6px">📋</div>Nenhuma tarefa para hoje<br><button onclick="goPage(\'hub\',null)" style="margin-top:8px;background:var(--brand);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:10px;cursor:pointer">Criar Tarefa</button></div>';
@@ -8645,7 +8918,7 @@ async function atualizarAnaliseDash(){
   const mrr=calcMRR(),fat=calcReceitaMes(mesAtual()),inadimp=calcInadimplencia();
   const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
   const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
-  const prompt=`Agência K2 Company. Dashboard hoje: MRR=${fmtR(mrr)}, Faturamento=${fmtR(fat)}, Inadimplência=${fmtR(inadimp)}, WA abertos=${waAbertos}, Leads CRM=${leads}, Tarefas pendentes=${TASKS.filter(t=>t.status!=='Aprovado').length}. Em 2 frases: situação atual e prioridade do dia.`;
+  const prompt=`Agência K2 Company. Dashboard hoje: MRR=${fmtR(mrr)}, Faturamento=${fmtR(fat)}, Inadimplência=${fmtR(inadimp)}, WA abertos=${waAbertos}, Leads CRM=${leads}, Tarefas pendentes=${TASKS.filter(t=>t.status!=='Concluído').length}. Em 2 frases: situação atual e prioridade do dia.`;
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
@@ -8804,7 +9077,7 @@ function calcRelOrcamentos(){
   if(lista) lista.innerHTML=pendentes.length?pendentes.slice(0,5).map(o=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${o.cli||o.desc}</div><div style="font-size:10px;color:var(--t3)">${o.desc||'—'} · ${o.valor||'—'}</div></div><span style="font-size:10px;background:#8B5CF620;color:#8B5CF6;border-radius:5px;padding:2px 7px">Sem resposta</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhum orçamento parado</div>';
 }
 function calcRelTasks(){
-  const atrasadas=TASKS.filter(t=>t.status!=='Aprovado'&&t.status!=='Aprovado');
+  const atrasadas=TASKS.filter(t=>t.status!=='Concluído'&&t.status!=='Aprovado');
   const el=document.getElementById('rel-task-badge');const lista=document.getElementById('rel-task-lista');
   if(el) el.textContent=atrasadas.length;
   if(lista) lista.innerHTML=atrasadas.length?atrasadas.slice(0,5).map(t=>`<div style="padding:10px 16px;border-bottom:1px solid var(--bd2);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${t.nome}</div><div style="font-size:10px;color:var(--t3)">${t.cli||'—'} · ${t.data||'—'}</div></div><span style="font-size:10px;background:#3B82F620;color:#3B82F6;border-radius:5px;padding:2px 7px">${t.status||'Pendente'}</span></div>`).join(''):'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhuma tarefa atrasada</div>';
@@ -8832,7 +9105,7 @@ function calcScoreGeral(){
   const waOk=CONVS.filter(c=>c.status==='aberta').length===0;
   const crmOk=CRM_COLS.reduce((s,c)=>s+c.cards.length,0)===0;
   const orcOk=ORCAMENTOS.filter(o=>o.status==='aguardando').length===0;
-  const taskOk=TASKS.filter(t=>t.status!=='Aprovado').length===0;
+  const taskOk=TASKS.filter(t=>t.status!=='Concluído').length===0;
   const finOk=calcInadimplencia()===0;
   const pontos=[waOk,crmOk,orcOk,taskOk,finOk].filter(Boolean).length;
   const score=Math.round(pontos/5*100);
@@ -8846,7 +9119,7 @@ async function analisarOperacaoIA(){
   if(!apiKey){toast('Configure a API Key do Claude em Configurações → IA','⚠️');return;}
   const desc=document.getElementById('rel-score-desc');
   if(desc)desc.textContent='🔄 Analisando com Claude...';
-  const prompt=`Agência: ${CONVS.filter(c=>c.status==='aberta').length} WA abertos, ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)} leads CRM, ${ORCAMENTOS.filter(o=>o.status==='aguardando').length} orçamentos pendentes, ${TASKS.filter(t=>t.status!=='Aprovado').length} tarefas, inadimplência ${fmtR(calcInadimplencia())}. Em 2 frases: prioridade e ação imediata.`;
+  const prompt=`Agência: ${CONVS.filter(c=>c.status==='aberta').length} WA abertos, ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)} leads CRM, ${ORCAMENTOS.filter(o=>o.status==='aguardando').length} orçamentos pendentes, ${TASKS.filter(t=>t.status!=='Concluído').length} tarefas, inadimplência ${fmtR(calcInadimplencia())}. Em 2 frases: prioridade e ação imediata.`;
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
@@ -8855,7 +9128,7 @@ async function analisarOperacaoIA(){
 }
 function gerarRelatorioGeral(){
   const score=document.getElementById('rel-score')?.textContent||'—';
-  const txt=`📊 *Relatório Operacional K2 Flow*\n📅 ${new Date().toLocaleDateString('pt-BR')}\n\n🎯 *Score:* ${score}\n💬 WA abertos: ${CONVS.filter(c=>c.status==='aberta').length}\n👤 Leads CRM: ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)}\n📄 Orçamentos pendentes: ${ORCAMENTOS.filter(o=>o.status==='aguardando').length}\n✅ Tarefas: ${TASKS.filter(t=>t.status!=='Aprovado').length}\n💰 Inadimplência: ${fmtR(calcInadimplencia())}\n\n_K2 Flow_`;
+  const txt=`📊 *Relatório Operacional K2 Flow*\n📅 ${new Date().toLocaleDateString('pt-BR')}\n\n🎯 *Score:* ${score}\n💬 WA abertos: ${CONVS.filter(c=>c.status==='aberta').length}\n👤 Leads CRM: ${CRM_COLS.reduce((s,c)=>s+c.cards.length,0)}\n📄 Orçamentos pendentes: ${ORCAMENTOS.filter(o=>o.status==='aguardando').length}\n✅ Tarefas: ${TASKS.filter(t=>t.status!=='Concluído').length}\n💰 Inadimplência: ${fmtR(calcInadimplencia())}\n\n_K2 Flow_`;
   navigator.clipboard.writeText(txt).catch(()=>{});
   toast('Relatório copiado!','📤');
 }
@@ -9108,31 +9381,5 @@ function instalarPWA(){
   });
 }
 </script>
-
-<!-- WH MOVE MODAL -->
-<div id="wh-move-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;display:none;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:14px;width:430px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden">
-    <div style="padding:18px 22px 14px;border-bottom:1px solid var(--bd)">
-      <div id="wh-move-title" style="font-family:'Barlow',sans-serif;font-weight:800;font-size:16px;color:var(--t1);margin-bottom:2px">Mover tarefa</div>
-      <div id="wh-move-sub" style="font-size:12px;color:var(--t3)">Anexe a entrega ou escreva um comentário</div>
-    </div>
-    <div style="padding:16px 22px">
-      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Arquivo de entrega <span style="color:var(--er)">*</span></div>
-      <div id="wh-move-drop" onclick="whMoveFile()" style="border:2px dashed var(--bd);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px">
-        <div style="font-size:22px;margin-bottom:5px">📎</div>
-        <div style="font-size:12px;color:var(--t3)"><strong style="color:var(--t1)">Clique ou arraste</strong> — somente imagens</div>
-      </div>
-      <input type="file" id="wh-move-file-in" accept="image/*" multiple style="display:none" onchange="whMoveFileSelect(event)">
-      <div id="wh-move-files-preview" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px"></div>
-      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Comentário</div>
-      <textarea id="wh-move-cmt" placeholder="O que foi feito? Qual o próximo passo?" style="width:100%;border:1px solid var(--bd);border-radius:8px;padding:9px 11px;font-size:12px;outline:none;resize:none;min-height:65px;font-family:inherit"></textarea>
-      <div id="wh-move-err" style="color:var(--er);font-size:11px;margin-top:5px;display:none">⚠ Anexe um arquivo ou escreva um comentário para continuar.</div>
-    </div>
-    <div style="padding:12px 22px;border-top:1px solid var(--bd);display:flex;gap:7px;justify-content:flex-end">
-      <button onclick="whMoveCancel()" style="padding:7px 15px;border-radius:8px;border:1px solid var(--bd);background:#fff;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer">Cancelar</button>
-      <button onclick="whMoveConfirm()" style="padding:7px 18px;border-radius:8px;border:none;background:var(--brand);color:#fff;font-size:12px;font-weight:700;cursor:pointer">Confirmar Movimentação</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
