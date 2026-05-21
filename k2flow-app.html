@@ -2622,14 +2622,27 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
     <!-- ABA: IA & APIs -->
     <div id="cfg-aba-ia" style="display:none;max-width:600px">
-      <div style="font-size:13px;font-weight:700;margin-bottom:14px">IA & APIs</div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px">IA & APIs</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:16px">Configure qual IA irá gerenciar o sistema. Você pode ter ambas configuradas — o K2 Flow usa a que você definir como padrão.</div>
+
+      <!-- Seletor de IA padrão -->
+      <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:2px">IA padrão do sistema</div>
+          <div style="font-size:11px;color:var(--t3)">Agente, chat, legendas e análises usam esta</div>
+        </div>
+        <select id="cfg-ia-provider" class="inp-sel" style="width:160px;font-size:12px" onchange="salvarProviderIA()">
+          <option value="claude">Claude (Anthropic)</option>
+          <option value="openai">GPT-4o mini (OpenAI)</option>
+        </select>
+      </div>
 
       <!-- Claude -->
       <div class="cfg-int-card" style="margin-bottom:12px">
         <div class="cfg-int-hd" onclick="toggleCfg('claude')">
           <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:#FF6B3520;display:flex;align-items:center;justify-content:center">🤖</div>
-            <div><div style="font-size:13px;font-weight:600">Claude API</div><div style="font-size:11px;color:var(--t3)">Anthropic · IA do K2 Flow</div></div>
+            <div style="width:36px;height:36px;border-radius:10px;background:#FF6B3520;display:flex;align-items:center;justify-content:center;font-size:18px">🤖</div>
+            <div><div style="font-size:13px;font-weight:600">Claude API</div><div style="font-size:11px;color:var(--t3)">Anthropic · Haiku + Sonnet</div></div>
           </div>
           <span class="cfg-int-badge" id="badge-claude">Configurar</span>
         </div>
@@ -2640,11 +2653,31 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
         </div>
       </div>
 
+      <!-- OpenAI -->
+      <div class="cfg-int-card" style="margin-bottom:12px">
+        <div class="cfg-int-hd" onclick="toggleCfg('openai')">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:#10A37F20;display:flex;align-items:center;justify-content:center;font-size:18px">🧠</div>
+            <div><div style="font-size:13px;font-weight:600">OpenAI API</div><div style="font-size:11px;color:var(--t3)">GPT-4o mini · platform.openai.com</div></div>
+          </div>
+          <span class="cfg-int-badge" id="badge-openai">Configurar</span>
+        </div>
+        <div class="cfg-int-body" id="body-openai">
+          <div class="field"><label>API Key da OpenAI</label><input class="inp" id="cfg-openai-key" type="password" placeholder="sk-proj-..."></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-prim" style="font-size:12px;background:#10A37F;border-color:#10A37F" onclick="salvarOpenAI()">Salvar</button>
+            <button class="btn-sec" style="font-size:12px" onclick="testarOpenAI()">Testar</button>
+          </div>
+          <div style="font-size:10px;color:var(--t3);margin-top:6px">Obtenha em: platform.openai.com → API Keys → Create new secret key</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px">Modelo usado: <strong>gpt-4o-mini</strong> · Custo ~R$0,05 por análise completa</div>
+        </div>
+      </div>
+
       <!-- n8n -->
       <div class="cfg-int-card">
         <div class="cfg-int-hd" onclick="toggleCfg('n8n')">
           <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:#EA483520;display:flex;align-items:center;justify-content:center">⚡</div>
+            <div style="width:36px;height:36px;border-radius:10px;background:#EA483520;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
             <div><div style="font-size:13px;font-weight:600">n8n</div><div style="font-size:11px;color:var(--t3)">Automações e workflows</div></div>
           </div>
           <span class="cfg-int-badge bk-ok" id="badge-n8n">Conectado</span>
@@ -2653,6 +2686,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
           <div class="field"><label>URL do n8n</label><input class="inp" id="cfg-n8n-url" value="https://n8n-n8n.k8wm1v.easypanel.host" placeholder="https://seu-n8n.com"></div>
           <div style="display:flex;gap:8px"><button class="btn-prim" style="font-size:12px" onclick="salvarN8n()">Salvar</button><button class="btn-sec" style="font-size:12px" onclick="window.open(document.getElementById('cfg-n8n-url').value,'_blank')">Abrir editor →</button></div>
         </div>
+      </div>
 
       <!-- Conta -->
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)">
@@ -3134,6 +3168,93 @@ document.addEventListener('DOMContentLoaded',()=>{
 /* ── NAVEGAÇÃO PRINCIPAL — com auto-render por página ── */
 
 
+/* ══════════════════════════════════════════════
+   SISTEMA MULTI-IA — Claude + OpenAI
+   chamarIA() usa o provider configurado
+══════════════════════════════════════════════ */
+function getIAProvider(){return localStorage.getItem('k2cfg_ia-provider')||'claude';}
+function getIAKey(){
+  const p=getIAProvider();
+  return p==='openai'?localStorage.getItem('k2cfg_openai-key')||'':localStorage.getItem('k2cfg_cfg-ai-key')||'';
+}
+
+async function chamarIA(prompt,sistemaPrompt,maxTokens){
+  maxTokens=maxTokens||600;
+  const provider=getIAProvider();
+  const key=getIAKey();
+  if(!key)throw new Error('Configure a API Key em Configurações → IA & APIs');
+  if(provider==='openai'){
+    const msgs=[];
+    if(sistemaPrompt)msgs.push({role:'system',content:sistemaPrompt});
+    msgs.push({role:'user',content:prompt});
+    const r=await fetch('https://api.openai.com/v1/chat/completions',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},
+      body:JSON.stringify({model:'gpt-4o-mini',max_tokens:maxTokens,messages:msgs})
+    });
+    const d=await r.json();
+    if(d.error)throw new Error(d.error.message);
+    return d.choices?.[0]?.message?.content||'';
+  }else{
+    const body={model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]};
+    if(sistemaPrompt)body.system=sistemaPrompt;
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify(body)
+    });
+    const d=await r.json();
+    if(d.error)throw new Error(d.error.message||JSON.stringify(d.error));
+    return d.content?.[0]?.text||'';
+  }
+}
+
+function salvarProviderIA(){
+  const sel=document.getElementById('cfg-ia-provider');if(!sel)return;
+  localStorage.setItem('k2cfg_ia-provider',sel.value);
+  toast({claude:'IA padrão: Claude (Anthropic)',openai:'IA padrão: GPT-4o mini (OpenAI)'}[sel.value]||'Salvo','🤖');
+}
+function salvarOpenAI(){
+  const key=document.getElementById('cfg-openai-key')?.value?.trim();
+  if(!key||!key.startsWith('sk-')){toast('Key inválida — deve começar com sk-','❌');return;}
+  localStorage.setItem('k2cfg_openai-key',key);
+  const b=document.getElementById('badge-openai');
+  if(b){b.textContent='✅ Configurado';b.className='cfg-int-badge bk-ok';}
+  toast('OpenAI configurada!','🧠');
+}
+async function testarOpenAI(){
+  const key=document.getElementById('cfg-openai-key')?.value?.trim()||localStorage.getItem('k2cfg_openai-key')||'';
+  if(!key){toast('Configure a API Key primeiro','⚠️');return;}
+  toast('Testando OpenAI...','⏳');
+  try{
+    const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o-mini',max_tokens:15,messages:[{role:'user',content:'Diga apenas: OK'}]})});
+    const d=await r.json();
+    if(d.error)throw new Error(d.error.message);
+    toast('OpenAI conectada ✅','🧠');
+    const b=document.getElementById('badge-openai');if(b){b.textContent='✅ Conectado';b.className='cfg-int-badge bk-ok';}
+  }catch(e){toast('Erro: '+e.message,'❌');}
+}
+function salvarClaude(){
+  const key=document.getElementById('cfg-ai-key')?.value?.trim();
+  if(!key){toast('Cole a API Key do Claude','⚠️');return;}
+  localStorage.setItem('k2cfg_cfg-ai-key',key);
+  const b=document.getElementById('badge-claude');
+  if(b){b.textContent='✅ Configurado';b.className='cfg-int-badge bk-ok';}
+  toast('Claude configurado!','🤖');
+}
+async function testarClaude(){
+  const key=document.getElementById('cfg-ai-key')?.value?.trim()||localStorage.getItem('k2cfg_cfg-ai-key')||'';
+  if(!key){toast('Configure a API Key primeiro','⚠️');return;}
+  toast('Testando Claude...','⏳');
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:15,messages:[{role:'user',content:'Diga apenas: OK'}]})});
+    const d=await r.json();
+    if(d.error)throw new Error(d.error.message||JSON.stringify(d.error));
+    toast('Claude conectado ✅','🤖');
+    const b=document.getElementById('badge-claude');if(b){b.textContent='✅ Conectado';b.className='cfg-int-badge bk-ok';}
+  }catch(e){toast('Erro: '+e.message,'❌');}
+}
+
 function carregarConfig(){
   /* Só seta defaults se o campo ainda não foi salvo pelo usuário */
   const defaults={
@@ -3156,6 +3277,18 @@ function carregarConfig(){
     const el=document.getElementById(k);
     if(el) el.value=localStorage.getItem('k2cfg_'+k)||defaults[k];
   });
+  /* Carregar provider IA e OpenAI key */
+  const provSel=document.getElementById('cfg-ia-provider');
+  if(provSel)provSel.value=localStorage.getItem('k2cfg_ia-provider')||'claude';
+  const oaiInp=document.getElementById('cfg-openai-key');
+  if(oaiInp&&localStorage.getItem('k2cfg_openai-key'))oaiInp.value=localStorage.getItem('k2cfg_openai-key');
+  /* Badges de status */
+  if(localStorage.getItem('k2cfg_cfg-ai-key')){
+    const b=document.getElementById('badge-claude');if(b){b.textContent='✅ Configurado';b.className='cfg-int-badge bk-ok';}
+  }
+  if(localStorage.getItem('k2cfg_openai-key')){
+    const b=document.getElementById('badge-openai');if(b){b.textContent='✅ Configurado';b.className='cfg-int-badge bk-ok';}
+  }
   if(localStorage.getItem('k2cfg_google')==='1'){
     document.querySelectorAll('#google-st').forEach(el=>{el.textContent='✅ Conectado';el.style.background='var(--ok-l)';el.style.color='var(--ok)';});
   }
@@ -6310,8 +6443,8 @@ function coletarEstadoCompleto(){
 
 async function rodarAgenteIA(){
   if(_iaRodando)return;
-  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
-  if(!apiKey)return;
+  const key=getIAKey();
+  if(!key)return;
   _iaRodando=true;
   atualizarStatusIA('analisando');
   const E=coletarEstadoCompleto();
@@ -6321,20 +6454,16 @@ WhatsApp: ${E.waAbertos} abertas | ${E.waSemResp7} sem resposta +7d | ${E.waHoje
 CRM: ${E.crmTotal} leads | ${E.crmParados} parados +7d
 Orçamentos: ${E.orcPend} pendentes | ${E.orcSemResp} sem resposta +3d | R$${E.orcVal.toLocaleString('pt-BR')} em risco
 Tarefas: ${E.taskAtras} atrasadas | ${E.taskHoje} vencem hoje | ${E.taskPend} pendentes
-Financeiro: MRR R$${E.mrr.toLocaleString('pt-BR')} | Receita mês R$${E.receita.toLocaleString('pt-BR')} | Despesa R$${E.despesa.toLocaleString('pt-BR')} | Inadimp R$${E.inadimp.toLocaleString('pt-BR')}
-Clientes: ${E.cliTotal} | Contratos ativos: ${E.contrAtivos}
-Campanhas: ${E.campAtivas} ativas | ${E.campBudgetBaixo} com budget baixo
-Automações com falha: ${E.automFalha}
+Financeiro: MRR R$${E.mrr.toLocaleString('pt-BR')} | Receita R$${E.receita.toLocaleString('pt-BR')} | Despesa R$${E.despesa.toLocaleString('pt-BR')} | Inadimp R$${E.inadimp.toLocaleString('pt-BR')}
+Clientes: ${E.cliTotal} | Contratos: ${E.contrAtivos} | Campanhas: ${E.campAtivas} ativas | Automações c/ falha: ${E.automFalha}
 Retorne SOMENTE este JSON sem markdown:
 {"score":<0-100>,"titulo":"<3-5 palavras>","resumo":"<1 frase>","alertas":[{"nivel":"urgente|atencao|ok","modulo":"<WhatsApp|CRM|Orçamentos|Financeiro|Tarefas|Campanhas|Automações>","titulo":"<título curto>","msg":"<ação concreta 1 frase>"}],"prioridade":"<1 ação agora>","projecao":"<projeção 1 frase>"}`;
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,messages:[{role:'user',content:contexto}]})});
-    const data=await resp.json();
-    const txt=data.content?.[0]?.text||'{}';
+    const txt=await chamarIA(contexto,'',700);
     const json=JSON.parse(txt.replace(/```json|```/g,'').trim());
     aplicarAnaliseIA(json);
     dispararNotificacoes(json.alertas);
-  }catch(e){atualizarStatusIA('erro');}
+  }catch(e){atualizarStatusIA('erro');console.warn('Agente IA erro:',e.message);}
   finally{_iaRodando=false;}
 }
 
@@ -6398,40 +6527,44 @@ async function claudeEnviar(){
   const inp=document.getElementById('claude-inp');
   const pergunta=inp.value.trim();
   if(!pergunta)return;
-  const apiKey=localStorage.getItem('k2cfg_cfg-ai-key')||'';
-  if(!apiKey){
-    claudeAddMsg('Configure a API Key do Claude em Configurações → IA para usar o assistente.','ai');
-    return;
-  }
+  const key=getIAKey();
+  if(!key){claudeAddMsg('Configure uma API Key em Configurações → IA & APIs para usar o assistente.','ai');return;}
   inp.value='';
-  document.getElementById('claude-sugestoes').style.display='none';
+  const sugEl=document.getElementById('claude-sugestoes');if(sugEl)sugEl.style.display='none';
   claudeAddMsg(pergunta,'user');
-  const thinking=claudeAddMsg('Analisando os dados da operação...','thinking');
-  /* Coleta contexto completo */
+  const provider=getIAProvider();
+  const thinking=claudeAddMsg((provider==='openai'?'GPT-4o mini':'Claude')+' analisando os dados...','thinking');
   const E=coletarEstadoCompleto();
   const ctx=`Você é o assistente integrado do K2 Flow, CRM para pequenas empresas brasileiras.
-Você tem acesso COMPLETO aos dados da operação em tempo real:
-- WhatsApp: ${E.waAbertos} conversas abertas | ${E.waSemResp7} sem resposta +7d
+Dados da operação em tempo real:
+- WhatsApp: ${E.waAbertos} abertas | ${E.waSemResp7} sem resposta +7d
 - CRM: ${E.crmTotal} leads | ${E.crmParados} parados +7d
-- Orçamentos: ${E.orcPend} pendentes | R$${E.orcVal.toLocaleString('pt-BR')} em aberto | ${E.orcSemResp} sem resposta
-- Tarefas: ${E.taskAtras} atrasadas | ${E.taskHoje} vencem hoje | ${E.taskPend} pendentes
-- Financeiro: MRR R$${E.mrr.toLocaleString('pt-BR')} | Receita R$${E.receita.toLocaleString('pt-BR')} | Despesa R$${E.despesa.toLocaleString('pt-BR')} | Inadimplência R$${E.inadimp.toLocaleString('pt-BR')}
-- Clientes: ${E.cliTotal} | Contratos recorrentes: ${E.contrAtivos}
-- Campanhas: ${E.campAtivas} ativas | ${E.campBudgetBaixo} com budget baixo
-- Automações com falha: ${E.automFalha}
-Responda em português, seja direto e útil. Máx 3 parágrafos curtos.`;
+- Orçamentos: ${E.orcPend} pendentes | R$${E.orcVal.toLocaleString('pt-BR')} em aberto
+- Tarefas: ${E.taskAtras} atrasadas | ${E.taskHoje} vencem hoje
+- Financeiro: MRR R$${E.mrr.toLocaleString('pt-BR')} | Receita R$${E.receita.toLocaleString('pt-BR')} | Inadimplência R$${E.inadimp.toLocaleString('pt-BR')}
+- Clientes: ${E.cliTotal} | Campanhas: ${E.campAtivas} ativas
+Responda em português, seja direto. Máx 3 parágrafos.`;
   _claudeHistory.push({role:'user',content:pergunta});
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:500,system:ctx,messages:_claudeHistory.slice(-10)})});
-    const data=await resp.json();
-    const resposta=data.content?.[0]?.text||'Não consegui analisar os dados.';
+    /* Para manter histórico com OpenAI, precisamos incluir o contexto no primeiro sistema */
+    let resposta='';
+    if(provider==='openai'){
+      const msgs=[{role:'system',content:ctx},..._claudeHistory.slice(-10)];
+      const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o-mini',max_tokens:500,messages:msgs})});
+      const d=await r.json();if(d.error)throw new Error(d.error.message);
+      resposta=d.choices?.[0]?.message?.content||'Não consegui analisar.';
+    }else{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:500,system:ctx,messages:_claudeHistory.slice(-10)})});
+      const d=await r.json();if(d.error)throw new Error(d.error.message||JSON.stringify(d.error));
+      resposta=d.content?.[0]?.text||'Não consegui analisar.';
+    }
     thinking.remove();
     claudeAddMsg(resposta,'ai');
     _claudeHistory.push({role:'assistant',content:resposta});
     if(_claudeHistory.length>20)_claudeHistory=_claudeHistory.slice(-20);
   }catch(e){
     thinking.remove();
-    claudeAddMsg('Erro ao conectar. Verifique sua API Key em Configurações → IA.','ai');
+    claudeAddMsg('Erro: '+e.message+'. Verifique a API Key em Configurações → IA & APIs.','ai');
   }
 }
 
