@@ -439,6 +439,10 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
 /* ── FIN TABS ── */
 .fin-tabs{display:flex;gap:6px;margin-bottom:14px}
+.fin-kpi-card{background:var(--dark);border-radius:10px;padding:14px 16px}
+.fin-kpi-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.fin-kpi-val{font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;margin-bottom:3px}
+.fin-kpi-sub{font-size:10px;color:rgba(255,255,255,.3)}
 .fin-tab{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--bd);color:var(--t2);background:var(--light2);transition:all .15s}
 .fin-tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
 .fin-per-btn{padding:5px 10px;font-size:11px;font-weight:600;border:none;background:var(--light2);color:var(--t2);cursor:pointer;transition:all .15s}
@@ -721,7 +725,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
         <div id="ia-uso-bar" style="height:100%;width:0%;background:#22C55E;border-radius:99px;transition:width .4s"></div>
       </div>
     </div>
-    <button class="ni-foot"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ni-lbl">Suporte</span></button>
+    <button class="ni-foot" onclick="abrirAjuda()"><svg class="ni-ico" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ni-lbl">Suporte & Ajuda</span></button>
   </div>
 </aside>
 
@@ -820,6 +824,15 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         Instalar App
       </button>
+      <button onclick="abrirExportar()" title="Exportar dados" style="background:var(--bd2);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Exportar
+      </button>
+      <button onclick="abrirBusca()" title="Busca global (Ctrl+K)" style="background:var(--bd2);border:1px solid var(--bd);border-radius:6px;padding:6px 12px;font-size:11px;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Buscar
+        <kbd style="background:var(--bd);border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700">⌘K</kbd>
+      </button>
       <button class="btn-prim" id="btn-prim" onclick="openActionModal()"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="btn-prim-txt">Novo Agendamento</span></button>
     </div>
   </div>
@@ -838,79 +851,73 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
       </div>
     </div>
 
-    <!-- Meta de Receita + KPIs -->
-    <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-bottom:14px">
-
-      <!-- Meta de Receita -->
-      <div class="card" style="padding:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <div style="font-size:12px;font-weight:700;color:var(--t1)">Meta de Receita</div>
-          <button onclick="abrirMetaModal()" style="background:none;border:none;color:var(--brand);font-size:11px;cursor:pointer;font-weight:600">Editar meta</button>
+    <!-- KPIs Operacionais — sem dados financeiros -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+      <div class="card" style="padding:14px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <div style="width:28px;height:28px;background:#3B82F620;border-radius:7px;display:flex;align-items:center;justify-content:center">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#3B82F6" stroke-width="2"/><circle cx="9" cy="7" r="4" stroke="#3B82F6" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span style="font-size:11px;color:var(--t3)">Novos Leads</span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
-          <span style="font-size:22px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--ok)" id="dash-meta-atual">R$0</span>
-          <span style="font-size:12px;color:var(--t3)">/ <span id="dash-meta-total">R$10.000</span></span>
-        </div>
-        <div style="height:8px;background:var(--bd);border-radius:99px;overflow:hidden;margin-bottom:6px">
-          <div id="dash-meta-bar" style="height:100%;background:linear-gradient(90deg,var(--ok),#16a34a);border-radius:99px;width:0%;transition:width .6s"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3)">
-          <span id="dash-meta-pct">0% alcançado</span>
-          <span id="dash-meta-falta">Faltam R$10.000</span>
-        </div>
+        <div style="font-size:22px;font-weight:900;font-family:'Barlow',sans-serif;color:#3B82F6" id="dash-leads">0</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:4px">via WhatsApp e CRM</div>
       </div>
-
-      <!-- KPIs -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-        <div class="card" style="padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <div style="width:28px;height:28px;background:var(--brand-l);border-radius:7px;display:flex;align-items:center;justify-content:center">
-              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <span style="font-size:11px;color:var(--t3)">Faturamento do Mês</span>
+      <div class="card" style="padding:14px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <div style="width:28px;height:28px;background:#25D36620;border-radius:7px;display:flex;align-items:center;justify-content:center">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" stroke-width="1.5"/></svg>
           </div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--ok)" id="dash-fat">R$0</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:4px">Recebido: <span id="dash-rec">R$0</span> | Pendente: <span id="dash-pend">R$0</span></div>
+          <span style="font-size:11px;color:var(--t3)">WA s/ Resposta</span>
         </div>
-        <div class="card" style="padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <div style="width:28px;height:28px;background:#3B82F620;border-radius:7px;display:flex;align-items:center;justify-content:center">
-              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#3B82F6" stroke-width="2"/><circle cx="9" cy="7" r="4" stroke="#3B82F6" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <span style="font-size:11px;color:var(--t3)">Novos Leads</span>
+        <div style="font-size:22px;font-weight:900;font-family:'Barlow',sans-serif;color:#25D366" id="st-wa-sr">0</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:4px">aguardando retorno</div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <div style="width:28px;height:28px;background:var(--wa-l,#F59E0B20);border-radius:7px;display:flex;align-items:center;justify-content:center">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#F59E0B" stroke-width="1.5"/><polyline points="14 2 14 8 20 8" stroke="#F59E0B" stroke-width="1.5"/></svg>
           </div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:#3B82F6" id="dash-leads">0</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:4px">via WhatsApp e CRM</div>
+          <span style="font-size:11px;color:var(--t3)">Orçamentos Abertos</span>
         </div>
-        <div class="card" style="padding:14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-            <div style="width:28px;height:28px;background:#22C55E20;border-radius:7px;display:flex;align-items:center;justify-content:center">
-              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 1 18" stroke="#22C55E" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <span style="font-size:11px;color:var(--t3)">WhatsApp s/ Resposta</span>
+        <div style="font-size:22px;font-weight:900;font-family:'Barlow',sans-serif;color:#F59E0B" id="dash-orca-abertos">0</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:4px">aguardando fechamento</div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <div style="width:28px;height:28px;background:#818CF820;border-radius:7px;display:flex;align-items:center;justify-content:center">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke="#818CF8" stroke-width="1.5" stroke-linecap="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#818CF8" stroke-width="1.5"/></svg>
           </div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--wa)" id="st-wa-sr">0</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:4px">aguardando retorno</div>
+          <span style="font-size:11px;color:var(--t3)">Tarefas Hoje</span>
         </div>
+        <div style="font-size:22px;font-weight:900;font-family:'Barlow',sans-serif;color:#818CF8" id="dash-tasks-hoje">0</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:4px" id="dash-tasks-atr">0 atrasadas</div>
       </div>
     </div>
 
-    <!-- Gráfico + Alertas -->
+    <!-- Funil CRM + Alertas operacionais -->
     <div style="display:grid;grid-template-columns:1fr 340px;gap:14px;margin-bottom:14px">
 
-      <!-- Análise Financeira -->
+      <!-- Mini funil CRM -->
       <div class="card" style="padding:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
           <div>
-            <div style="font-size:12px;font-weight:700;color:var(--t1)">Análise Financeira Consolidada</div>
-            <div style="font-size:10px;color:var(--t3)">Faturamento Total · MRR · Despesas</div>
+            <div style="font-size:12px;font-weight:700;color:var(--t1)">Pipeline CRM</div>
+            <div style="font-size:10px;color:var(--t3)">Leads por estágio</div>
           </div>
+          <button onclick="goPage('crm',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver CRM →</button>
         </div>
-        <canvas id="dash-chart-financeiro" height="140"></canvas>
-        <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
-          <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:#22C55E"></div><span style="font-size:10px;color:var(--t3)">Faturamento</span></div>
-          <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:#F26419"></div><span style="font-size:10px;color:var(--t3)">MRR</span></div>
-          <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:50%;background:#EF4444"></div><span style="font-size:10px;color:var(--t3)">Despesas</span></div>
+        <div id="dash-crm-mini" style="display:flex;flex-direction:column;gap:6px"></div>
+
+        <!-- Orçamentos pendentes -->
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="font-size:11px;font-weight:700;color:var(--t1)">Orçamentos para enviar</div>
+            <button onclick="goPage('orca',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todos →</button>
+          </div>
+          <div id="dash-orca-mini" style="display:flex;flex-direction:column;gap:5px">
+            <div style="font-size:11px;color:var(--t3)">Nenhum orçamento pendente</div>
+          </div>
         </div>
       </div>
 
@@ -929,6 +936,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <!-- WIDGET IA — Monitoramento em tempo real -->
     <div class="ai-box" style="margin-bottom:14px">
       <div class="ai-box-h">
+
         <div class="ai-box-ico"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="ai-box-title">Agente IA — Monitoramento K2 Flow</div>
         <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
@@ -1922,11 +1930,12 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <!-- Abas -->
     <div style="display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--bd);overflow-x:auto">
       <button class="fin-aba on" onclick="setFinAba('geral',this)">• Visão Geral</button>
+      <button class="fin-aba" onclick="setFinAba('analise',this)">📊 Análise</button>
       <button class="fin-aba" onclick="setFinAba('receber',this)">↑ Receber</button>
       <button class="fin-aba" onclick="setFinAba('pagar',this)">↓ Pagar</button>
       <button class="fin-aba" onclick="setFinAba('recorrentes',this)">↻ Recorrentes</button>
       <button class="fin-aba" onclick="setFinAba('caixa',this)">$ Caixa</button>
-      <button class="fin-aba" onclick="setFinAba('relatorios',this)">📊 Relatórios</button>
+      <button class="fin-aba" onclick="setFinAba('relatorios',this)">📈 Relatórios</button>
     </div>
 
     <!-- ABA: VISÃO GERAL -->
@@ -2084,6 +2093,120 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     </div>
 
     <!-- ABA: RECEBER -->
+    <!-- ABA: ANÁLISE FINANCEIRA COMPLETA -->
+    <div id="fin-aba-analise" style="display:none">
+
+      <!-- KPIs executivos — linha 1 -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px">
+        <div class="fin-kpi-card" id="fa-mrr-card">
+          <div class="fin-kpi-label">MRR</div>
+          <div class="fin-kpi-val" id="fa-mrr">R$0</div>
+          <div class="fin-kpi-sub" id="fa-mrr-sub">Recorrente mensal</div>
+        </div>
+        <div class="fin-kpi-card">
+          <div class="fin-kpi-label">Receita Mês</div>
+          <div class="fin-kpi-val" style="color:#22C55E" id="fa-receita">R$0</div>
+          <div class="fin-kpi-sub" id="fa-receita-sub">total faturado</div>
+        </div>
+        <div class="fin-kpi-card">
+          <div class="fin-kpi-label">Despesas</div>
+          <div class="fin-kpi-val" style="color:#EF4444" id="fa-despesa">R$0</div>
+          <div class="fin-kpi-sub" id="fa-despesa-sub">total gasto</div>
+        </div>
+        <div class="fin-kpi-card">
+          <div class="fin-kpi-label">Lucro Líquido</div>
+          <div class="fin-kpi-val" id="fa-lucro">R$0</div>
+          <div class="fin-kpi-sub" id="fa-margem-sub">margem —</div>
+        </div>
+        <div class="fin-kpi-card">
+          <div class="fin-kpi-label">Inadimplência</div>
+          <div class="fin-kpi-val" style="color:#F59E0B" id="fa-inadimp">R$0</div>
+          <div class="fin-kpi-sub" id="fa-inadimp-sub">em atraso</div>
+        </div>
+      </div>
+
+      <!-- Gráfico de evolução + pizza de categorias -->
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:14px;margin-bottom:14px">
+
+        <!-- Gráfico de linha — evolução mensal -->
+        <div class="card" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div>
+              <div style="font-size:13px;font-weight:700">Evolução mensal</div>
+              <div style="font-size:10px;color:var(--t3)">Receita vs Despesas vs Lucro · últimos 6 meses</div>
+            </div>
+            <div style="display:flex;gap:10px;font-size:10px">
+              <span style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:#22C55E"></div>Receita</span>
+              <span style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:#EF4444"></div>Despesa</span>
+              <span style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:#F26419"></div>Lucro</span>
+            </div>
+          </div>
+          <canvas id="fa-chart-linha" height="180"></canvas>
+        </div>
+
+        <!-- Pizza — categorias de despesa -->
+        <div class="card" style="padding:16px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">Onde está o gasto</div>
+          <div style="font-size:10px;color:var(--t3);margin-bottom:12px">Despesas por categoria</div>
+          <canvas id="fa-chart-pizza" height="160" style="margin:0 auto;display:block"></canvas>
+          <div id="fa-legenda-pizza" style="margin-top:10px;display:flex;flex-direction:column;gap:4px"></div>
+        </div>
+      </div>
+
+      <!-- Barras mensais + análise de crescimento -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+        <!-- Barras — receita x despesa mensal -->
+        <div class="card" style="padding:16px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">Receita vs Despesa</div>
+          <div style="font-size:10px;color:var(--t3);margin-bottom:12px">Comparativo mensal em barras</div>
+          <canvas id="fa-chart-barras" height="180"></canvas>
+        </div>
+
+        <!-- Análise de crescimento -->
+        <div class="card" style="padding:16px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px">Indicadores de crescimento</div>
+          <div id="fa-indicadores" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </div>
+
+      <!-- Orçamentos em aberto + maiores despesas -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+        <!-- Orçamentos para fechar -->
+        <div class="card" style="padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-size:13px;font-weight:700">Oportunidades abertas</div>
+              <div style="font-size:10px;color:var(--t3)">Orçamentos aguardando fechamento</div>
+            </div>
+            <button onclick="goPage('orca',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todos →</button>
+          </div>
+          <div id="fa-orca-abertos" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+
+        <!-- Maiores despesas -->
+        <div class="card" style="padding:16px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">Maiores despesas</div>
+          <div style="font-size:10px;color:var(--t3);margin-bottom:12px">O que mais consome o caixa</div>
+          <div id="fa-maiores-despesas" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+      </div>
+
+      <!-- Análise IA financeira -->
+      <div class="ai-box">
+        <div class="ai-box-h">
+          <div class="ai-box-ico">🧠</div>
+          <div class="ai-box-title">Análise Financeira — Assistente K2</div>
+          <button onclick="analisarFinanceiroIA()" style="margin-left:auto;background:rgba(242,100,25,.15);border:1px solid rgba(242,100,25,.25);color:#FCD34D;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer">↻ Analisar agora</button>
+        </div>
+        <div id="fa-ia-analise" class="ai-box-body">
+          Configure a API Key do Claude ou OpenAI em <strong>Configurações → IA & APIs</strong> para ativar a análise financeira inteligente.
+        </div>
+      </div>
+
+    </div>
+
     <div id="fin-aba-receber" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
         <div style="font-weight:700;font-size:14px;color:var(--ok)">↑ Contas a Receber</div>
@@ -2335,6 +2458,7 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
     <!-- Abas horizontais estilo DGFlow -->
     <div style="display:flex;gap:2px;margin-bottom:20px;background:var(--light2);border:1px solid var(--bd);border-radius:8px;padding:3px;overflow-x:auto;flex-wrap:nowrap">
       <button class="cfg-aba-h on" onclick="setCfgAba('perfil',this)">Perfil</button>
+      <button class="cfg-aba-h" onclick="setCfgAba('usuarios',this)">Usuários</button>
       <button class="cfg-aba-h" onclick="setCfgAba('aparencia',this)">Aparência</button>
       <button class="cfg-aba-h" onclick="setCfgAba('assinatura',this)">Assinatura</button>
       <button class="cfg-aba-h" onclick="setCfgAba('notificacoes',this)">Notificações</button>
@@ -2384,6 +2508,52 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
           <div class="field"><label>Confirmar senha</label><input class="inp" type="password" id="cfg-senha-conf" placeholder="••••••••"></div>
         </div>
         <button class="btn-sec" onclick="toast('Senha atualizada!','✅')">Atualizar Senha</button>
+      </div>
+    </div>
+
+    <!-- ABA: USUÁRIOS -->
+    <div id="cfg-aba-usuarios" style="display:none;max-width:700px">
+
+      <!-- Header + Convidar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:13px;font-weight:700">Equipe</div>
+          <div style="font-size:11px;color:var(--t3)" id="usr-count-label">Carregando...</div>
+        </div>
+        <button class="btn-prim" style="font-size:12px" onclick="openModal('modal-convidar')">+ Convidar usuário</button>
+      </div>
+
+      <!-- Lista de usuários -->
+      <div id="usr-lista" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+        <div style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Carregando equipe...</div>
+      </div>
+
+      <!-- Painel de permissões -->
+      <div id="usr-perm-painel" style="display:none">
+        <div style="font-size:12px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
+          <span>Permissões de <span id="usr-perm-nome" style="color:var(--brand)">—</span></span>
+          <button onclick="document.getElementById('usr-perm-painel').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:11px">Fechar ✕</button>
+        </div>
+        <div style="background:var(--dark);border-radius:10px;overflow:hidden">
+          <div style="display:flex;align-items:center;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.06)">
+            <div style="flex:1;font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em">Módulo</div>
+            <div style="display:flex;gap:4px">
+              <div style="width:52px;text-align:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.35)">Ver</div>
+              <div style="width:52px;text-align:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.35)">Editar</div>
+              <div style="width:52px;text-align:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.35)">Oculto</div>
+            </div>
+          </div>
+          <div id="usr-perm-rows"></div>
+        </div>
+        <button onclick="salvarPermissoes()" class="btn-prim" style="font-size:12px;margin-top:10px;width:100%">✓ Salvar permissões</button>
+      </div>
+
+      <!-- Log de acesso -->
+      <div style="margin-top:20px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:10px">Registro de acesso — últimas 48h</div>
+        <div id="usr-log" style="display:flex;flex-direction:column;gap:6px">
+          <div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Nenhum registro ainda</div>
+        </div>
       </div>
     </div>
 
@@ -2949,6 +3119,176 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
   </div>
 </div>
 
+<!-- CENTRAL DE AJUDA -->
+<div class="modal-bg" id="modal-ajuda" style="z-index:1800;align-items:flex-end" onclick="if(event.target===this)closeModal('modal-ajuda')">
+  <div style="width:100%;max-width:560px;margin:0 auto 0;background:var(--light2);border-radius:16px 16px 0 0;max-height:85vh;display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <div>
+        <div style="font-size:15px;font-weight:700">Central de Ajuda</div>
+        <div style="font-size:11px;color:var(--t3)">K2 Flow — Perguntas frequentes</div>
+      </div>
+      <button onclick="closeModal('modal-ajuda')" style="background:var(--bd2);border:none;border-radius:6px;width:28px;height:28px;cursor:pointer;color:var(--t2);font-size:16px">✕</button>
+    </div>
+    <!-- Busca na ajuda -->
+    <div style="padding:12px 20px;border-bottom:1px solid var(--bd);flex-shrink:0">
+      <input type="text" id="ajuda-busca" placeholder="Buscar dúvidas..." oninput="filtrarAjuda(this.value)" style="width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:13px;outline:none">
+    </div>
+    <!-- FAQs -->
+    <div style="flex:1;overflow-y:auto;padding:12px 20px" id="ajuda-lista">
+      <div id="ajuda-faqs"></div>
+      <!-- Contato direto -->
+      <div style="margin-top:16px;padding:14px 16px;background:var(--dark);border-radius:10px;text-align:center">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Não encontrou sua dúvida?</div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:10px">Fale com o suporte K2 Company</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button onclick="window.open('https://wa.me/5511999999999?text=Suporte+K2+Flow','_blank')" style="background:#25D36615;border:1px solid #25D36640;color:#25D366;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer">💬 WhatsApp</button>
+          <button onclick="window.open('mailto:suporte@k2company.com.br','_blank')" style="background:var(--brand-l);border:1px solid var(--brand-b);color:var(--brand);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer">📧 Email</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EXPORTAR -->
+<div class="modal-bg" id="modal-exportar" onclick="if(event.target===this)closeModal('modal-exportar')">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-h">📤 Exportar dados</div>
+    <div class="modal-s">Escolha o módulo e o formato</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:4px">Módulo</div>
+      <select class="inp-sel" id="exp-modulo">
+        <option value="clientes">Clientes</option>
+        <option value="crm">CRM — Leads</option>
+        <option value="orcamentos">Orçamentos</option>
+        <option value="financeiro">Financeiro</option>
+        <option value="tarefas">Tarefas</option>
+        <option value="conversas">WhatsApp — Conversas</option>
+      </select>
+      <div style="font-size:12px;font-weight:600;color:var(--t2);margin:8px 0 4px">Formato</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--dark);border-radius:8px;cursor:pointer;border:1px solid var(--bd)">
+          <input type="radio" name="exp-fmt" value="csv" checked> <span style="font-size:13px;font-weight:600">CSV</span> <span style="font-size:10px;color:var(--t3)">Excel/Sheets</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--dark);border-radius:8px;cursor:pointer;border:1px solid var(--bd)">
+          <input type="radio" name="exp-fmt" value="json"> <span style="font-size:13px;font-weight:600">JSON</span> <span style="font-size:10px;color:var(--t3)">Backup</span>
+        </label>
+      </div>
+    </div>
+    <div id="exp-preview" style="background:var(--dark);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--t3);margin-bottom:14px;min-height:40px">Selecione um módulo para ver o preview</div>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal('modal-exportar')">Cancelar</button>
+      <button class="btn-ok" onclick="executarExporte()">⬇ Baixar arquivo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ONBOARDING -->
+<div class="modal-bg" id="modal-onboarding" style="z-index:2000;align-items:center">
+  <div class="modal" style="max-width:520px;padding:0;overflow:hidden;border-radius:16px">
+    <div style="height:3px;background:var(--bd)"><div id="ob-progress" style="height:100%;background:var(--brand);transition:width .4s;width:33%"></div></div>
+    <div style="padding:18px 24px 0;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;gap:6px" id="ob-dots">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--brand)"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--bd)"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--bd)"></div>
+      </div>
+      <span style="font-size:11px;color:var(--t3)" id="ob-step-lbl">Passo 1 de 3</span>
+    </div>
+    <div id="ob-steps">
+      <div id="ob-step-1" style="padding:24px">
+        <div style="font-size:36px;margin-bottom:12px">👋</div>
+        <div style="font-size:18px;font-weight:700;font-family:'Barlow',sans-serif;margin-bottom:8px">Bem-vindo ao K2 Flow!</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">Vamos configurar o essencial em 3 passos rápidos. Começa pelo WhatsApp — é a base de tudo.</div>
+        <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:16px">
+          <div style="font-size:12px;font-weight:700;color:#25D366;margin-bottom:8px">📱 Conectar WhatsApp</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px">Vá em <strong>Configurações → WhatsApp</strong> e escaneie o QR Code com o celular da empresa.</div>
+          <button onclick="goPage('config',null);setCfgAba('whatsapp',null);fecharOnboarding()" style="background:#25D36615;border:1px solid #25D36640;color:#25D366;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer">Ir para WhatsApp →</button>
+        </div>
+        <div style="font-size:11px;color:var(--t3);text-align:center">Pode pular e fazer depois</div>
+      </div>
+      <div id="ob-step-2" style="padding:24px;display:none">
+        <div style="font-size:36px;margin-bottom:12px">🤖</div>
+        <div style="font-size:18px;font-weight:700;font-family:'Barlow',sans-serif;margin-bottom:8px">Ativar o Assistente K2</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">A IA monitora sua operação a cada 5 minutos — WhatsApp sem resposta, pagamentos em atraso, leads parados.</div>
+        <div style="background:var(--dark);border-radius:10px;padding:14px 16px;margin-bottom:16px">
+          <div style="font-size:12px;font-weight:700;color:var(--brand);margin-bottom:8px">⚡ Configurar API Key</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px">1. Acesse <strong>platform.claude.ai</strong> ou <strong>platform.openai.com</strong><br>2. Crie uma API Key<br>3. Cole em Configurações → IA & APIs</div>
+          <button onclick="goPage('config',null);setCfgAba('ia',null);fecharOnboarding()" style="background:rgba(242,100,25,.1);border:1px solid var(--brand-b);color:var(--brand);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer">Configurar IA →</button>
+        </div>
+        <div style="font-size:11px;color:var(--t3);text-align:center">Pode configurar depois</div>
+      </div>
+      <div id="ob-step-3" style="padding:24px;display:none">
+        <div style="font-size:36px;margin-bottom:12px">🎯</div>
+        <div style="font-size:18px;font-weight:700;font-family:'Barlow',sans-serif;margin-bottom:8px">Adicionar seu primeiro cliente</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">Cadastre um cliente ou lead no CRM manualmente ou importe do WhatsApp.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <button onclick="goPage('crm',null);openModal('modal-lead');fecharOnboarding()" style="background:var(--dark);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center;cursor:pointer;width:100%">
+            <div style="font-size:22px;margin-bottom:6px">➕</div>
+            <div style="font-size:12px;font-weight:700">Adicionar lead</div>
+            <div style="font-size:10px;color:var(--t3)">Formulário manual</div>
+          </button>
+          <button onclick="goPage('wa',null);fecharOnboarding()" style="background:var(--dark);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center;cursor:pointer;width:100%">
+            <div style="font-size:22px;margin-bottom:6px">💬</div>
+            <div style="font-size:12px;font-weight:700">Do WhatsApp</div>
+            <div style="font-size:10px;color:var(--t3)">Importar conversa</div>
+          </button>
+        </div>
+        <div style="background:rgba(242,100,25,.08);border:1px solid var(--brand-b);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--t2);text-align:center">🎉 Tudo pronto! O K2 Flow começa a trabalhar por você.</div>
+      </div>
+    </div>
+    <div style="padding:16px 24px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+      <button onclick="fecharOnboarding()" style="background:none;border:none;color:var(--t3);font-size:12px;cursor:pointer">Pular configuração</button>
+      <div style="display:flex;gap:8px">
+        <button id="ob-btn-ant" onclick="obNavegar(-1)" style="display:none" class="btn-sec">‹ Anterior</button>
+        <button id="ob-btn-prox" onclick="obNavegar(1)" class="btn-prim" style="font-size:13px;padding:8px 20px">Próximo →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUSCA GLOBAL Ctrl+K -->
+<div class="modal-bg" id="modal-busca" style="z-index:1900;align-items:flex-start;padding-top:80px" onclick="if(event.target===this)fecharBusca()">
+  <div style="width:100%;max-width:580px;margin:0 auto;background:var(--light2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--bd)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="var(--t3)" stroke-width="1.5"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input id="busca-inp" type="text" placeholder="Buscar clientes, tarefas, orçamentos, conversas..." oninput="executarBusca(this.value)" onkeydown="buscaNavegar(event)" style="flex:1;background:transparent;border:none;outline:none;font-size:14px;color:var(--t1)">
+      <kbd style="background:var(--bd);border-radius:4px;padding:2px 7px;font-size:10px;color:var(--t3);flex-shrink:0">ESC</kbd>
+    </div>
+    <div id="busca-resultados" style="max-height:420px;overflow-y:auto;padding:8px">
+      <div style="text-align:center;padding:28px;color:var(--t3);font-size:12px">Digite para buscar em todos os módulos</div>
+    </div>
+    <div style="padding:8px 14px;border-top:1px solid var(--bd);display:flex;gap:14px;font-size:10px;color:var(--t3)">
+      <span>↑↓ navegar</span><span>↵ abrir</span><span>ESC fechar</span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-convidar">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-h">Convidar usuário</div>
+    <div class="modal-s">O usuário receberá um link de acesso por email</div>
+    <div class="field"><label>Email</label><input class="inp" type="email" id="conv-email" placeholder="maria@empresa.com"></div>
+    <div class="field"><label>Nome</label><input class="inp" type="text" id="conv-nome" placeholder="Maria Aparecida"></div>
+    <div class="field"><label>Cargo / função</label>
+      <select class="inp-sel" id="conv-cargo">
+        <option value="atendimento">Atendimento</option>
+        <option value="designer">Designer</option>
+        <option value="financeiro">Financeiro</option>
+        <option value="marketing">Marketing</option>
+        <option value="gestor">Gestor</option>
+        <option value="outro">Outro</option>
+      </select>
+    </div>
+    <div style="background:var(--bd2);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--t3);margin-bottom:12px">
+      💡 Após convidar, você pode definir o que cada usuário pode ver em <strong>Permissões</strong>
+    </div>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeModal('modal-convidar')">Cancelar</button>
+      <button class="btn-ok" onclick="convidarUsuario()">Enviar convite</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="modal-plano">
   <div class="modal"><div class="modal-h">Novo Plano / Serviço</div><div class="modal-s">Adicionar plano oferecido pela clínica</div>
     <div class="grid2-form"><div class="field"><label>Nome do plano</label><input class="inp" id="plano-nome" placeholder="Ex: Ortodontia Completa"></div><div class="field"><label>Valor</label><input class="inp" id="plano-valor" placeholder="R$ 0,00"></div></div>
@@ -3386,8 +3726,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     carregarGCal();
     renderDashboard();
     atualizarRelatorios();
-    /* Sincroniza dados com Supabase em background */
     sincronizarDados();
+    aplicarNivelAcesso();
+    setTimeout(iniciarOnboarding, 1500);
   },600);
 
   /* ═══════════════════════════════════════════════════════
@@ -5841,6 +6182,213 @@ function calcAPagar30(){
 }
 
 /* ── Render principal ── */
+function setFinAba(aba,btn){
+  ['geral','analise','receber','pagar','recorrentes','caixa','relatorios'].forEach(a=>{
+    const el=document.getElementById('fin-aba-'+a);
+    if(el)el.style.display=a===aba?'block':'none';
+  });
+  document.querySelectorAll('.fin-aba').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  if(aba==='analise')renderFinAnalise();
+}
+
+function renderFinAnalise(){
+  const mes=mesAtual();
+  const mrr=calcMRR();
+  const receita=calcReceitaMes(mes);
+  const despesa=calcDespesaMes(mes);
+  const lucro=receita-despesa;
+  const inadimp=calcInadimplencia();
+  const margem=receita>0?Math.round((lucro/receita)*100):0;
+  const set=(id,v,cor)=>{const e=document.getElementById(id);if(!e)return;e.textContent=v;if(cor)e.style.color=cor;};
+
+  /* KPIs */
+  set('fa-mrr',fmtR(mrr));
+  set('fa-receita',fmtR(receita),'#22C55E');
+  set('fa-despesa',fmtR(despesa),'#EF4444');
+  set('fa-lucro',fmtR(lucro),lucro>=0?'#22C55E':'#EF4444');
+  set('fa-inadimp',fmtR(inadimp),'#F59E0B');
+  set('fa-mrr-sub',`ARR: ${fmtR(mrr*12)}`);
+  set('fa-receita-sub','total faturado');
+  set('fa-despesa-sub','total gasto');
+  set('fa-margem-sub',`margem ${margem}%`);
+  set('fa-inadimp-sub','boletos em atraso');
+
+  /* Gráfico de linha — 6 meses */
+  const meses6=Array.from({length:6},(_,i)=>addMeses(mes,i-5));
+  const labels=meses6.map(m=>{const[a,mo]=m.split('-');return['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][parseInt(mo)-1]+'/'+a.slice(2);});
+  const recs=meses6.map(m=>calcReceitaMes(m));
+  const desps=meses6.map(m=>calcDespesaMes(m));
+  const lucros=meses6.map(m=>calcReceitaMes(m)-calcDespesaMes(m));
+  desenharLinhas('fa-chart-linha',labels,recs,desps,lucros);
+
+  /* Gráfico de barras — comparativo */
+  desenharBarras('fa-chart-barras',labels,recs,desps);
+
+  /* Pizza — categorias de despesa */
+  const cats={};
+  (DESPESAS_FIN||[]).filter(d=>d.competencia===mes).forEach(d=>{
+    const cat=d.categoria||d.cat||'Outros';
+    cats[cat]=(cats[cat]||0)+Number(d.valor||0);
+  });
+  const catEntries=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  if(catEntries.length===0)catEntries.push(['Sem dados',1]);
+  desenharPizza('fa-chart-pizza','fa-legenda-pizza',catEntries);
+
+  /* Indicadores de crescimento */
+  const mesAnt=addMeses(mes,-1);
+  const recAnt=calcReceitaMes(mesAnt);
+  const despAnt=calcDespesaMes(mesAnt);
+  const cresc=recAnt>0?Math.round(((receita-recAnt)/recAnt)*100):0;
+  const crescDesp=despAnt>0?Math.round(((despesa-despAnt)/despAnt)*100):0;
+  const el=document.getElementById('fa-indicadores');
+  if(el)el.innerHTML=[
+    {l:'Crescimento de receita',v:(cresc>=0?'+':'')+cresc+'%',ok:cresc>=0},
+    {l:'Variação de despesas',v:(crescDesp>=0?'+':'')+crescDesp+'%',ok:crescDesp<=0},
+    {l:'Margem líquida',v:margem+'%',ok:margem>=30},
+    {l:'Cobertura de inadimplência',v:inadimp>0&&receita>0?Math.round((inadimp/receita)*100)+'% da receita':'0%',ok:inadimp===0},
+    {l:'ARR projetado',v:fmtR(mrr*12),ok:mrr>0},
+    {l:'Orçamentos em aberto',v:(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length+' pendentes',ok:(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length===0},
+  ].map(ind=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd2)">
+    <span style="font-size:12px;color:var(--t2)">${ind.l}</span>
+    <span style="font-size:12px;font-weight:700;color:${ind.ok?'#22C55E':'#F59E0B'}">${ind.v}</span>
+  </div>`).join('');
+
+  /* Orçamentos abertos */
+  const orcEl=document.getElementById('fa-orca-abertos');
+  const orcAbertos=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').slice(0,5);
+  if(orcEl)orcEl.innerHTML=orcAbertos.length?orcAbertos.map(o=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bd2);border-radius:7px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.cliente||'Cliente'}</div>
+        <div style="font-size:10px;color:var(--t3)">${o.data||'—'}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;margin-left:10px">
+        <div style="font-size:13px;font-weight:800;color:#22C55E">${fmtR(o.total||0)}</div>
+        <div style="font-size:9px;background:#F59E0B20;color:#F59E0B;border-radius:4px;padding:1px 6px">Aguardando</div>
+      </div>
+    </div>`).join('')
+  :'<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Nenhum orçamento aguardando 🎉</div>';
+
+  /* Maiores despesas */
+  const despEl=document.getElementById('fa-maiores-despesas');
+  const maiores=(DESPESAS_FIN||[]).filter(d=>d.competencia===mes).sort((a,b)=>Number(b.valor||0)-Number(a.valor||0)).slice(0,6);
+  const totalDesp=maiores.reduce((s,d)=>s+Number(d.valor||0),0)||1;
+  if(despEl)despEl.innerHTML=maiores.length?maiores.map((d,i)=>{
+    const pct=Math.round((Number(d.valor||0)/totalDesp)*100);
+    const cores=['#EF4444','#F59E0B','#F26419','#818CF8','#60A5FA','#34D399'];
+    return`<div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="color:var(--t2)">${d.desc||d.categoria||'Despesa'}</span>
+        <span style="font-weight:700">${fmtR(Number(d.valor||0))}</span>
+      </div>
+      <div style="height:5px;background:var(--bd);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${cores[i]||'#EF4444'};border-radius:99px"></div>
+      </div>
+    </div>`;
+  }).join('')
+  :'<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Nenhuma despesa lançada ainda</div>';
+}
+
+function desenharLinhas(id,labels,recs,desps,lucros){
+  const canvas=document.getElementById(id);if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||500,H=180;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  const pad=36;const maxV=Math.max(...recs,...desps,1000);
+  const x=i=>pad+i*(W-pad*2)/(labels.length-1||1);
+  const y=v=>H-20-(v/maxV)*(H-30);
+  /* Grid lines */
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const yy=H-20-i*(H-30)/4;ctx.beginPath();ctx.moveTo(pad,yy);ctx.lineTo(W-pad,yy);ctx.stroke();}
+  /* Labels X */
+  ctx.fillStyle='rgba(255,255,255,.25)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  labels.forEach((l,i)=>ctx.fillText(l,x(i),H-4));
+  /* Draw lines */
+  const drawLine=(data,cor,dashed=false)=>{
+    ctx.strokeStyle=cor;ctx.lineWidth=2;if(dashed)ctx.setLineDash([4,3]);else ctx.setLineDash([]);
+    ctx.beginPath();data.forEach((v,i)=>{i===0?ctx.moveTo(x(i),y(v)):ctx.lineTo(x(i),y(v));});ctx.stroke();
+    ctx.setLineDash([]);
+    data.forEach((v,i)=>{ctx.beginPath();ctx.arc(x(i),y(v),3,0,Math.PI*2);ctx.fillStyle=cor;ctx.fill();});
+  };
+  drawLine(recs,'#22C55E');drawLine(desps,'#EF4444');drawLine(lucros,'#F26419',true);
+}
+
+function desenharBarras(id,labels,recs,desps){
+  const canvas=document.getElementById(id);if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||400,H=180;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  const pad=30;const maxV=Math.max(...recs,...desps,1000);
+  const bw=(W-pad*2)/(labels.length*2+labels.length-1);
+  const x=(i,j)=>pad+i*(bw*2+bw)+j*bw;
+  const bh=v=>((v/maxV)*(H-30));
+  ctx.fillStyle='rgba(255,255,255,.25)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  labels.forEach((l,i)=>{
+    /* Receita */
+    const rx=x(i,0),rh=bh(recs[i]);
+    ctx.fillStyle='#22C55E';ctx.fillRect(rx,H-20-rh,bw-2,rh);
+    /* Despesa */
+    const dx=x(i,1),dh=bh(desps[i]);
+    ctx.fillStyle='#EF4444';ctx.fillRect(dx,H-20-dh,bw-2,dh);
+    ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillText(l,rx+bw-1,H-4);
+  });
+}
+
+function desenharPizza(id,legendaId,entries){
+  const canvas=document.getElementById(id);if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const S=140;canvas.width=S;canvas.height=S;ctx.clearRect(0,0,S,S);
+  const total=entries.reduce((s,[,v])=>s+v,0);
+  const cores=['#EF4444','#F59E0B','#F26419','#818CF8','#60A5FA','#34D399','#E1306C'];
+  let start=-Math.PI/2;
+  entries.slice(0,7).forEach(([cat,val],i)=>{
+    const pct=val/total;const angle=pct*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(70,70);ctx.arc(70,70,60,start,start+angle);ctx.closePath();
+    ctx.fillStyle=cores[i]||'#888';ctx.fill();
+    start+=angle;
+  });
+  /* Donut hole */
+  ctx.beginPath();ctx.arc(70,70,35,0,Math.PI*2);ctx.fillStyle='var(--light2,#1a1f2e)';ctx.fill();
+  /* Legenda */
+  const lEl=document.getElementById(legendaId);
+  if(lEl)lEl.innerHTML=entries.slice(0,5).map(([cat,val],i)=>`
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px">
+      <div style="width:8px;height:8px;border-radius:2px;background:${cores[i]||'#888'};flex-shrink:0"></div>
+      <span style="flex:1;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat}</span>
+      <span style="font-weight:700;color:var(--t1)">${Math.round((val/total)*100)}%</span>
+    </div>`).join('');
+}
+
+async function analisarFinanceiroIA(){
+  const key=getIAKey();
+  if(!key){toast('Configure a API Key em Configurações → IA & APIs','⚠️');return;}
+  const el=document.getElementById('fa-ia-analise');
+  if(el)el.textContent='Analisando dados financeiros...';
+  const mes=mesAtual();
+  const receita=calcReceitaMes(mes);
+  const despesa=calcDespesaMes(mes);
+  const mrr=calcMRR();
+  const inadimp=calcInadimplencia();
+  const orcAbertos=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length;
+  const totalOrc=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').reduce((s,o)=>s+Number(o.total||0),0);
+  try{
+    const txt=await chamarIAComLimite(`Você é um consultor financeiro sênior. Analise estes dados financeiros de uma PME brasileira e dê insights acionáveis em PT-BR:
+Receita do mês: R$${receita.toLocaleString('pt-BR')}
+Despesas do mês: R$${despesa.toLocaleString('pt-BR')}
+MRR (recorrente): R$${mrr.toLocaleString('pt-BR')}
+Inadimplência: R$${inadimp.toLocaleString('pt-BR')}
+Orçamentos em aberto: ${orcAbertos} (R$${totalOrc.toLocaleString('pt-BR')} em potencial)
+Margem líquida: ${receita>0?Math.round(((receita-despesa)/receita)*100):0}%
+
+Responda em 3 parágrafos curtos:
+1. Situação atual (saúde financeira)
+2. Alertas e riscos identificados  
+3. 2-3 ações concretas para melhorar`,'',600);
+    if(el)el.innerHTML=txt.replace(/\n\n/g,'</p><p style="margin-top:8px">').replace(/\n/g,'<br>');
+  }catch(e){if(el)el.textContent='Erro na análise: '+e.message;}
+}
+
 function renderFinanceiro(){
   const mes=mesAtual();
   const hoje=new Date();
@@ -7583,6 +8131,190 @@ window._hubInit=function(page){
   }
 };
 
+/* ══════════════════════════════════════════════
+   ONBOARDING — 3 passos para novos usuários
+══════════════════════════════════════════════ */
+let _obStep=1;
+function iniciarOnboarding(){if(localStorage.getItem('k2_onboarding_done')==='1')return;_obStep=1;const m=document.getElementById('modal-onboarding');if(m)m.style.display='flex';obAtualizarUI();}
+function fecharOnboarding(){const m=document.getElementById('modal-onboarding');if(m)m.style.display='none';localStorage.setItem('k2_onboarding_done','1');}
+function obNavegar(dir){
+  const novo=_obStep+dir;if(novo<1||novo>3)return;
+  const c=document.getElementById('ob-step-'+_obStep);if(c)c.style.display='none';
+  _obStep=novo;
+  const n=document.getElementById('ob-step-'+_obStep);if(n)n.style.display='block';
+  obAtualizarUI();
+}
+function obAtualizarUI(){
+  const prog=document.getElementById('ob-progress');if(prog)prog.style.width=Math.round((_obStep/3)*100)+'%';
+  const lbl=document.getElementById('ob-step-lbl');if(lbl)lbl.textContent=`Passo ${_obStep} de 3`;
+  const ant=document.getElementById('ob-btn-ant');if(ant)ant.style.display=_obStep>1?'block':'none';
+  const prox=document.getElementById('ob-btn-prox');
+  if(prox){prox.textContent=_obStep===3?'Concluir ✓':'Próximo →';prox.onclick=_obStep===3?fecharOnboarding:()=>obNavegar(1);}
+  const dots=document.getElementById('ob-dots');
+  if(dots)[...dots.children].forEach((d,i)=>{d.style.background=i+1===_obStep?'var(--brand)':i+1<_obStep?'var(--ok)':'var(--bd)';});
+}
+
+/* ══════════════════════════════════════════════
+   BUSCA GLOBAL — Ctrl+K
+══════════════════════════════════════════════ */
+let _buscaIdx=-1,_buscaRes=[];
+function abrirBusca(){
+  const m=document.getElementById('modal-busca');if(!m)return;m.style.display='flex';
+  setTimeout(()=>{const i=document.getElementById('busca-inp');if(i){i.value='';i.focus();}
+  const r=document.getElementById('busca-resultados');if(r)r.innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:12px">Digite para buscar em todos os módulos</div>';_buscaIdx=-1;},50);
+}
+function fecharBusca(){const m=document.getElementById('modal-busca');if(m)m.style.display='none';}
+function executarBusca(q){
+  const el=document.getElementById('busca-resultados');if(!el)return;
+  q=(q||'').trim().toLowerCase();
+  if(!q){el.innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:12px">Digite para buscar</div>';_buscaRes=[];return;}
+  _buscaRes=[];
+  const add=(tipo,ico,titulo,sub,pagina)=>_buscaRes.push({tipo,ico,titulo:titulo||'—',sub:sub||'',pagina});
+  /* CRM */
+  (CRM_COLS||[]).reduce((a,c)=>[...a,...c.cards],[]).filter(l=>(l.nome||'').toLowerCase().includes(q)).slice(0,4).forEach(l=>add('CRM','👥',l.nome,l.wa||l.origem,'crm'));
+  /* Clientes */
+  (CLIENTES||[]).filter(c=>(c.nome||'').toLowerCase().includes(q)).slice(0,3).forEach(c=>add('Clientes','👤',c.nome,c.email,'clientes'));
+  /* Orçamentos */
+  (ORCAMENTOS||[]).filter(o=>(o.cliente||'').toLowerCase().includes(q)).slice(0,3).forEach(o=>add('Orçamentos','📄',o.cliente,'R$'+(o.total||0).toLocaleString('pt-BR'),'orca'));
+  /* Tarefas */
+  (TASKS||[]).filter(t=>(t.nome||'').toLowerCase().includes(q)).slice(0,3).forEach(t=>add('Work Hub','✅',t.nome,t.status,'hub'));
+  /* WhatsApp */
+  (CONVS||[]).filter(c=>(c.nome||'').toLowerCase().includes(q)).slice(0,3).forEach(c=>add('WhatsApp','💬',c.nome||c.num,'','wa'));
+  /* Páginas */
+  [{k:'dashboard',ico:'📊',p:'dash'},{k:'agenda',ico:'📅',p:'agenda'},{k:'financeiro',ico:'💰',p:'financeiro'},{k:'relatórios',ico:'📈',p:'relatorios'},{k:'configurações',ico:'⚙️',p:'config'},{k:'work hub',ico:'✅',p:'hub'},{k:'social hub',ico:'📱',p:'sh'}].filter(x=>x.k.includes(q)).forEach(x=>add('Ir para',x.ico,x.k.charAt(0).toUpperCase()+x.k.slice(1),'Acessar módulo',x.p));
+  if(!_buscaRes.length){el.innerHTML=`<div style="text-align:center;padding:28px;color:var(--t3);font-size:12px">Nenhum resultado para "${q}"</div>`;return;}
+  _buscaIdx=-1;renderBuscaRes();
+}
+function renderBuscaRes(){
+  const el=document.getElementById('busca-resultados');if(!el)return;
+  const cor={CRM:'#378ADD',Clientes:'#1D9E75','Orçamentos':'#F59E0B','Work Hub':'#818CF8',WhatsApp:'#25D366',Financeiro:'#F26419','Ir para':'var(--t3)'};
+  el.innerHTML=_buscaRes.map((r,i)=>`<div onclick="fecharBusca();goPage('${r.pagina}',null)" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;background:${i===_buscaIdx?'var(--bd2)':'transparent'};transition:background .1s" onmouseover="this.style.background='var(--bd2)'" onmouseout="this.style.background='${i===_buscaIdx?'var(--bd2)':'transparent'}'">
+    <span style="font-size:18px">${r.ico}</span>
+    <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.titulo}</div>${r.sub?`<div style="font-size:11px;color:var(--t3)">${r.sub}</div>`:''}</div>
+    <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:${cor[r.tipo]||'var(--bd)'}20;color:${cor[r.tipo]||'var(--t3)'};flex-shrink:0">${r.tipo}</span>
+  </div>`).join('');
+}
+function buscaNavegar(e){
+  if(e.key==='Escape'){fecharBusca();return;}
+  if(e.key==='ArrowDown'){e.preventDefault();_buscaIdx=Math.min(_buscaIdx+1,_buscaRes.length-1);renderBuscaRes();}
+  if(e.key==='ArrowUp'){e.preventDefault();_buscaIdx=Math.max(_buscaIdx-1,-1);renderBuscaRes();}
+  if(e.key==='Enter'&&_buscaIdx>=0&&_buscaRes[_buscaIdx]){fecharBusca();goPage(_buscaRes[_buscaIdx].pagina,null);}
+}
+/* Atalho global Ctrl+K */
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();abrirBusca();}
+  if(e.key==='Escape'){fecharBusca();const ob=document.getElementById('modal-onboarding');if(ob)ob.style.display='none';}
+});
+
+/* ══════════════════════════════════════════════
+   CENTRAL DE AJUDA — FAQ integrado
+══════════════════════════════════════════════ */
+const FAQS=[
+  {cat:'WhatsApp',q:'Como conectar o WhatsApp?',r:'Vá em Configurações → WhatsApp → escaneie o QR Code com o celular da empresa. O WhatsApp precisa ficar conectado à internet.'},
+  {cat:'WhatsApp',q:'O WhatsApp desconectou, o que fazer?',r:'Vá em Configurações → WhatsApp → clique em "Reconectar" e escaneie o QR Code novamente. Isso acontece quando o celular fica sem internet por muito tempo.'},
+  {cat:'WhatsApp',q:'Posso usar meu WhatsApp pessoal?',r:'Não recomendamos. Use um número exclusivo da empresa para evitar misturar conversas pessoais com as do negócio.'},
+  {cat:'IA',q:'Como ativar o Assistente K2?',r:'Vá em Configurações → IA & APIs → cole sua API Key do Claude (platform.claude.ai) ou OpenAI (platform.openai.com) → clique Salvar → Testar.'},
+  {cat:'IA',q:'Qual IA usar — Claude ou OpenAI?',r:'Claude Haiku tem melhor português e custa igual. Use Claude como padrão. OpenAI (GPT-4o mini) é uma boa alternativa se já tiver crédito lá.'},
+  {cat:'IA',q:'Por que o Assistente K2 não responde?',r:'Verifique: 1) API Key configurada em Configurações → IA & APIs, 2) Saldo disponível na conta da IA, 3) Conexão com internet ativa.'},
+  {cat:'CRM',q:'Como adicionar um lead manualmente?',r:'Vá em CRM → clique em "+ Novo Lead" no topo → preencha nome, WhatsApp e interesse → clique Adicionar. O lead entra na coluna "Primeiro Contato".'},
+  {cat:'CRM',q:'Como mover um lead no funil?',r:'Arraste o card do lead para a coluna desejada (Kanban). Ou clique no lead → altere o status no painel lateral.'},
+  {cat:'Financeiro',q:'Como lançar uma receita ou despesa?',r:'Vá em Financeiro → clique em "+ Lançamento" → selecione Receita ou Despesa → preencha o valor, descrição e data → Salvar.'},
+  {cat:'Financeiro',q:'O que é MRR?',r:'MRR (Monthly Recurring Revenue) é a receita mensal recorrente — soma de todos os contratos ou assinaturas que se renovam todo mês.'},
+  {cat:'Agenda',q:'Como sincronizar com o Google Calendar?',r:'Vá em Configurações → Integrações → Google Calendar → clique "Configurar". Você precisará de um Client ID e Client Secret do Google Cloud Console.'},
+  {cat:'Equipe',q:'Como convidar um funcionário?',r:'Vá em Configurações → Usuários → "+ Convidar usuário" → preencha o email e cargo. Depois defina as permissões clicando em "Permissões" no card do usuário.'},
+  {cat:'Equipe',q:'Como limitar o que um funcionário vê?',r:'Configurações → Usuários → clique em "🔐 Permissões" no card do usuário → marque Ver, Editar ou Oculto para cada módulo → Salvar permissões.'},
+  {cat:'Exportar',q:'Como exportar minha lista de clientes?',r:'Clique no ícone 📤 no topbar ou vá em Relatórios → Exportar → selecione "Clientes" e o formato CSV → Baixar arquivo.'},
+  {cat:'Geral',q:'O K2 Flow funciona no celular?',r:'Sim. Acesse crm.k2company.com.br pelo Chrome no Android → menu → "Adicionar à tela inicial" para instalar como app. No iPhone use Safari → Compartilhar → Adicionar à Tela de Início.'},
+  {cat:'Geral',q:'Meus dados são salvos onde?',r:'Os dados são salvos no Supabase (banco de dados seguro na nuvem) e localmente no seu dispositivo como backup. Você não perde dados se fechar o app.'},
+];
+
+function abrirAjuda(){
+  openModal('modal-ajuda');
+  renderFAQs(FAQS);
+}
+function renderFAQs(lista){
+  const el=document.getElementById('ajuda-faqs');if(!el)return;
+  const cats=[...new Set(lista.map(f=>f.cat))];
+  el.innerHTML=cats.map(cat=>`
+    <div style="margin-bottom:16px">
+      <div style="font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">${cat}</div>
+      ${lista.filter(f=>f.cat===cat).map((f,i)=>`
+        <div style="border:1px solid var(--bd);border-radius:8px;margin-bottom:6px;overflow:hidden">
+          <button onclick="toggleFaq(this)" style="width:100%;text-align:left;padding:11px 14px;background:var(--light2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <span style="font-size:12.5px;font-weight:500;color:var(--t1)">${f.q}</span>
+            <span style="font-size:14px;color:var(--t3);flex-shrink:0;transition:transform .2s">+</span>
+          </button>
+          <div style="display:none;padding:10px 14px;font-size:12px;color:var(--t2);line-height:1.6;background:var(--bg);border-top:1px solid var(--bd)">${f.r}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+function toggleFaq(btn){
+  const body=btn.nextElementSibling;
+  const ico=btn.querySelector('span:last-child');
+  const aberto=body.style.display==='block';
+  body.style.display=aberto?'none':'block';
+  ico.textContent=aberto?'+':'−';
+  ico.style.transform=aberto?'':'rotate(45deg)';
+}
+function filtrarAjuda(q){
+  const filtrado=q?FAQS.filter(f=>f.q.toLowerCase().includes(q.toLowerCase())||f.r.toLowerCase().includes(q.toLowerCase())):FAQS;
+  renderFAQs(filtrado);
+}
+
+/* ══════════════════════════════════════════════
+   EXPORTAR DADOS — CSV e JSON
+══════════════════════════════════════════════ */
+function abrirExportar(){openModal('modal-exportar');atualizarPreviewExporte();}
+
+function atualizarPreviewExporte(){
+  const mod=document.getElementById('exp-modulo')?.value;
+  const el=document.getElementById('exp-preview');if(!el)return;
+  const counts={
+    clientes:(CLIENTES||[]).length+' clientes cadastrados',
+    crm:(CRM_COLS||[]).reduce((s,c)=>s+c.cards.length,0)+' leads no funil',
+    orcamentos:(ORCAMENTOS||[]).length+' orçamentos',
+    financeiro:'lançamentos financeiros',
+    tarefas:(TASKS||[]).length+' tarefas',
+    conversas:(CONVS||[]).length+' conversas do WhatsApp'
+  };
+  el.textContent='📊 '+counts[mod||'clientes'];
+}
+
+function executarExporte(){
+  const mod=document.getElementById('exp-modulo')?.value||'clientes';
+  const fmt=document.querySelector('input[name="exp-fmt"]:checked')?.value||'csv';
+  let dados=[],nome=mod;
+
+  if(mod==='clientes') dados=CLIENTES||[];
+  else if(mod==='crm') dados=(CRM_COLS||[]).reduce((a,c)=>[...a,...c.cards.map(k=>({...k,coluna:c.title}))],[]);
+  else if(mod==='orcamentos') dados=ORCAMENTOS||[];
+  else if(mod==='financeiro') dados=LANCAMENTOS||[];
+  else if(mod==='tarefas') dados=TASKS||[];
+  else if(mod==='conversas') dados=(CONVS||[]).map(c=>({nome:c.nome,numero:c.num,status:c.status,mensagens:(c.msgs||[]).length}));
+
+  if(!dados.length){toast('Nenhum dado para exportar','⚠️');return;}
+
+  let conteudo='',tipo='',ext='';
+  if(fmt==='csv'){
+    const keys=Object.keys(dados[0]||{}).filter(k=>typeof dados[0][k]!=='object');
+    conteudo=keys.join(',')+'\n'+dados.map(r=>keys.map(k=>'"'+(r[k]||'').toString().replace(/"/g,'""')+'"').join(',')).join('\n');
+    tipo='text/csv';ext='csv';
+  }else{
+    conteudo=JSON.stringify(dados,null,2);tipo='application/json';ext='json';
+  }
+
+  const blob=new Blob([conteudo],{type:tipo+';charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`k2flow-${nome}-${new Date().toISOString().slice(0,10)}.${ext}`;
+  a.click();URL.revokeObjectURL(url);
+  closeModal('modal-exportar');
+  toast(`${dados.length} registros exportados!`,'📥');
+}
+
+/* Botão exportar no topbar de relatórios */
+function gerarRelatorioGeral(){abrirExportar();}
 
 function renderDashboard(){
 
@@ -7612,17 +8344,98 @@ function renderDashMeta(){
 }
 
 function renderDashKPIs(){
-  const mrr=calcMRR();
-  const fat=calcReceitaMes(mesAtual());
-  const pend=calcAReceber30();
-  const leads=CRM_COLS.reduce((s,c)=>s+c.cards.length,0);
-  const waAbertos=CONVS.filter(c=>c.status==='aberta').length;
+  /* KPIs operacionais — sem dados financeiros */
+  const leads=(CRM_COLS||[]).reduce((s,c)=>s+c.cards.length,0);
+  const waSemResp=(CONVS||[]).filter(c=>c.status==='aberta').length;
+  const orcAbertos=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').length;
+  const hoje=new Date().toISOString().split('T')[0];
+  const tasksHoje=(TASKS||[]).filter(t=>t.prazo===hoje&&t.status!=='Concluído').length;
+  const tasksAtr=(TASKS||[]).filter(t=>t.prazo&&t.prazo<hoje&&t.status!=='Concluído').length;
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  set('dash-fat',fmtR(fat));
-  set('dash-rec',fmtR(fat-pend));
-  set('dash-pend',fmtR(pend));
   set('dash-leads',leads);
-  set('st-wa-sr',waAbertos);
+  set('st-wa-sr',waSemResp);
+  set('dash-orca-abertos',orcAbertos);
+  set('dash-tasks-hoje',tasksHoje);
+  set('dash-tasks-atr',tasksAtr+' atrasadas');
+
+  /* Mini funil CRM */
+  const crmEl=document.getElementById('dash-crm-mini');
+  if(crmEl){
+    const total=Math.max(leads,1);
+    const cores=['#3B82F6','#F59E0B','#7C3AED','#F26419','#22C55E'];
+    crmEl.innerHTML=(CRM_COLS||[]).slice(0,5).map((col,i)=>{
+      const pct=Math.round((col.cards.length/total)*100);
+      return`<div style="display:flex;align-items:center;gap:8px;font-size:12px">
+        <span style="min-width:110px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${col.title}</span>
+        <div style="flex:1;height:6px;background:var(--bd);border-radius:99px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${cores[i]||'var(--brand)'};border-radius:99px;transition:width .5s"></div></div>
+        <span style="min-width:24px;text-align:right;font-weight:700;color:${cores[i]||'var(--brand)'}">${col.cards.length}</span>
+      </div>`;
+    }).join('')||'<div style="font-size:11px;color:var(--t3)">Nenhum lead no CRM ainda</div>';
+  }
+
+  /* Orçamentos pendentes */
+  const orcEl=document.getElementById('dash-orca-mini');
+  if(orcEl){
+    const pendentes=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').slice(0,3);
+    orcEl.innerHTML=pendentes.length?pendentes.map(o=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;background:var(--bd2);border-radius:6px;font-size:11px">
+        <span style="color:var(--t1);font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.cliente||'Cliente'}</span>
+        <span style="color:var(--wa);font-weight:700;flex-shrink:0;margin-left:8px">${fmtR(o.total||0)}</span>
+      </div>`).join('')
+    :'<div style="font-size:11px;color:var(--t3)">Nenhum orçamento pendente</div>';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   3 NÍVEIS DE ACESSO — Básico, Intermediário, Master
+══════════════════════════════════════════════ */
+const PERFIS_ACESSO={
+  basico:{
+    label:'Básico',
+    descricao:'Atendimento e operação',
+    visivel:['dash','agenda','wa','crm','clientes','orca','hub','sh'],
+    oculto:['financeiro','automacoes','n8n','config','ads','relatorios','aigrowth']
+  },
+  intermediario:{
+    label:'Intermediário',
+    descricao:'Operação + análise',
+    visivel:['dash','agenda','wa','crm','clientes','orca','hub','sh','ads','relatorios','aigrowth'],
+    oculto:['financeiro','automacoes','n8n','config']
+  },
+  master:{
+    label:'Master',
+    descricao:'Acesso completo',
+    visivel:['dash','agenda','wa','crm','clientes','orca','hub','sh','ads','relatorios','aigrowth','financeiro','automacoes','n8n','config'],
+    oculto:[]
+  }
+};
+
+function aplicarNivelAcesso(){
+  const role=localStorage.getItem('k2_role')||'master';
+  const perfil=PERFIS_ACESSO[role]||PERFIS_ACESSO.master;
+  /* Oculta itens do menu conforme perfil */
+  document.querySelectorAll('.ni[data-page]').forEach(btn=>{
+    const page=btn.getAttribute('data-page');
+    if(page&&perfil.oculto.includes(page)){
+      btn.style.display='none';
+    }else{
+      btn.style.display='';
+    }
+  });
+  /* Bloqueia acesso direto a páginas restritas */
+  window._perfilAtivo=perfil;
+}
+
+function temAcesso(page){
+  const perfil=window._perfilAtivo||PERFIS_ACESSO.master;
+  return!perfil.oculto.includes(page);
+}
+
+/* Aplicar perfil ao definir role via Configurações */
+function definirPerfilUsuario(role){
+  localStorage.setItem('k2_role',role);
+  aplicarNivelAcesso();
+  toast(`Perfil alterado: ${PERFIS_ACESSO[role]?.label||role}`,'🔐');
 }
 
 function renderDashFinanceiro(){
@@ -7768,18 +8581,18 @@ function abrirMetaModal(){
 /* Atualiza dashboard quando muda de aba */
 const _origGoPage=typeof goPage==='function'?goPage:null;
 function setCfgAba(aba,btn){
-  ['perfil','aparencia','assinatura','notificacoes','automacoes','integracoes','whatsapp','ia'].forEach(a=>{
+  ['perfil','usuarios','aparencia','assinatura','notificacoes','automacoes','integracoes','whatsapp','ia'].forEach(a=>{
     const el=document.getElementById('cfg-aba-'+a);
     if(el) el.style.display=a===aba?'block':'none';
   });
   document.querySelectorAll('.cfg-aba-h,.cfg-menu-btn,.cfg-aba').forEach(b=>b.classList.remove('on'));
   if(btn) btn.classList.add('on');
   if(aba==='integracoes') renderIntegracoesAtivas();
+  if(aba==='usuarios') renderUsuarios();
   if(aba==='notificacoes'){
     const numEl=document.getElementById('cfg-master-wa');
     if(numEl)numEl.value=localStorage.getItem('k2cfg_master-wa')||'';
     renderUsoIA();
-    /* Atualiza barra no sidebar também */
     const l=verificarLimiteIA();
     atualizarIndicadorUsoIA(l.uso,l.limite);
   }
