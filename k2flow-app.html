@@ -808,6 +808,21 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
 <!-- MAIN -->
 <main class="main">
+  <!-- GREETING BAR — aparece em todas as telas -->
+  <div id="greeting-bar" style="background:var(--dark);padding:7px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div id="greeting-av" style="width:26px;height:26px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">F</div>
+      <div>
+        <div id="greeting-txt" style="font-size:12px;font-weight:600;color:#fff">Boa tarde, Fabinei! 👋</div>
+        <div id="greeting-role" style="font-size:9px;color:rgba(255,255,255,.35)">Designer Gráfico · K2 Flow</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div id="greeting-date" style="font-size:11px;color:rgba(255,255,255,.4)">Quinta-feira, 21 de Maio</div>
+      <div id="greeting-time" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.65);font-family:'Barlow',sans-serif;letter-spacing:.5px">18:03</div>
+      <div id="greeting-weather" style="font-size:11px;color:rgba(255,255,255,.4)">☀️ 21° · Jundiaí</div>
+    </div>
+  </div>
   <div class="topbar">
     <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-sub" id="tb-sub">Visão geral da operação</div></div>
     <div class="tb-right">
@@ -1234,9 +1249,10 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
   </div>
 
   <!-- WORK HUB — ClickUp Style -->
-  <div class="page" id="page-hub" style="overflow:hidden;flex-direction:row">
-    <!-- Sidebar interna K2Flow — colapsável -->
-    <div id="wh-sb" style="width:220px;min-width:220px;background:var(--dark2);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:width .22s,min-width .22s">
+  <div class="page" id="page-hub" style="overflow:hidden;flex-direction:column">
+    <!-- K2Flow — barra superior de navegação (substitui sidebar interna) -->
+    <!-- wh-sb REMOVIDO — agora é barra de abas no topo, igual WOLV -->
+    <div id="wh-sb" style="display:none">
 
       <!-- Topo: logo + botão colapsar -->
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 10px 8px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0">
@@ -1351,43 +1367,86 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
         </button>
 
       </div>
-    </div>
+    </div><!-- end hidden wh-sb -->
 
-    <!-- Main K2Flow -->
+    <!-- Main K2Flow — layout de 2 painéis (sb1 + conteúdo) -->
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0">
-      <!-- Topbar WH -->
-      <div style="background:var(--light2);border-bottom:1px solid var(--bd);padding:0 16px;height:46px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px">
-        <div style="display:flex;align-items:center;gap:8px;min-width:0">
-          <div style="font-size:12px;color:var(--t3);white-space:nowrap" id="wh-breadcrumb">Minhas tarefas / <strong style="color:var(--t1)" id="wh-view-name">Atribuídas a mim</strong></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-          <button class="wh-filter-btn" onclick="whToggleView('lista')">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Lista
-          </button>
-          <button class="wh-filter-btn" onclick="whToggleView('kanban')">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="3" width="5" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="3" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+
+      <!-- HEADER K2Flow: só abas + filtros (título já está na topbar principal) -->
+      <div style="background:var(--light2);border-bottom:1px solid var(--bd);flex-shrink:0">
+        <!-- Abas + filtros -->
+        <div style="display:flex;align-items:center;gap:0;padding:0 18px;border-bottom:1px solid var(--bd);overflow-x:auto">
+          <button class="wh-filter-btn on" id="wh-tab-kb" onclick="whToggleView('kanban');whSetTab(this)" style="border-bottom:2px solid var(--brand);border-radius:0;padding:10px 14px;font-weight:600;color:var(--brand)">
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="3" width="5" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="3" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
             Kanban
           </button>
-          <button class="wh-filter-btn" onclick="whToggleView('calendario')">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+          <button class="wh-filter-btn" id="wh-tab-ls" onclick="whToggleView('lista');whSetTab(this)" style="border-bottom:2px solid transparent;border-radius:0;padding:10px 14px">
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Lista
+          </button>
+          <button class="wh-filter-btn" id="wh-tab-cal" onclick="whToggleView('calendario');whSetTab(this)" style="border-bottom:2px solid transparent;border-radius:0;padding:10px 14px">
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
             Calendário
           </button>
-          <div style="width:1px;height:20px;background:var(--bd)"></div>
-          <button class="wh-filter-btn" onclick="whFiltrar()">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Filtro
-          </button>
-          <button class="wh-filter-btn" onclick="whToggleFechadas()">Fechado</button>
-          <button class="btn-prim" style="font-size:11px;padding:6px 12px" onclick="openModal('modal-task')">+ Nova Tarefa</button>
-        </div>
-      </div>
 
-      <!-- Status filter bar -->
-      <div id="wh-status-bar" style="padding:8px 16px;border-bottom:1px solid var(--bd);background:var(--light2);display:flex;align-items:center;gap:8px;font-size:12px;flex-shrink:0">
-        <span style="color:var(--t3)">Grupo:</span>
-        <span style="background:rgba(242,100,25,.1);color:var(--brand);border-radius:99px;padding:2px 10px;font-size:11px;font-weight:600">Status</span>
-        <span style="background:var(--bd2);color:var(--t2);border-radius:99px;padding:2px 10px;font-size:11px">Subtarefas</span>
+          <!-- Separador -->
+          <div style="width:1px;height:20px;background:var(--bd);margin:0 8px"></div>
+
+          <!-- Filtros inline -->
+          <div style="display:flex;align-items:center;gap:4px;flex:1;overflow-x:auto">
+            <!-- Espaço/Área -->
+            <select onchange="whFiltroEspaco(this.value)" style="border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--t2);background:#fff;cursor:pointer;outline:none" id="wh-sel-espaco">
+              <option value="">Todos os espaços</option>
+              <option value="producao">🔵 Produção</option>
+              <option value="design">🟢 Design</option>
+              <option value="social-media">🔴 Social Media</option>
+              <option value="trafego">🟡 Tráfego Pago</option>
+              <option value="audiovisual">🟣 Audiovisual</option>
+            </select>
+            <!-- Empresa/Cliente -->
+            <select onchange="whFiltroCliente(this.value)" style="border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--t2);background:#fff;cursor:pointer;outline:none">
+              <option value="">Empresa / Parceiro</option>
+              <option>Clínica Sorriso</option>
+              <option>Studio Bela Pele</option>
+              <option>Aplausos Bar</option>
+              <option>Barbearia Tô em Casa</option>
+              <option>Teste 1</option>
+              <option>Teste 2</option>
+            </select>
+            <!-- Status -->
+            <select onchange="whFiltroStatus(this.value)" style="border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--t2);background:#fff;cursor:pointer;outline:none">
+              <option value="">Status</option>
+              <option value="Rascunho">Rascunho</option>
+              <option value="Para Produzir">Para Produzir</option>
+              <option value="Aprovação Interna">Aprovação Interna</option>
+              <option value="Aprovação Externa">Aprovação Externa</option>
+              <option value="Para Alterar">Para Alterar</option>
+              <option value="Aprovado">Aprovado</option>
+            </select>
+            <!-- Designer -->
+            <select onchange="whFiltroResponsavel(this.value)" style="border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--t2);background:#fff;cursor:pointer;outline:none">
+              <option value="">Designer / Resp.</option>
+              <option>Fabinei</option>
+              <option>Ana</option>
+              <option>Marcos</option>
+              <option>Pedro</option>
+            </select>
+            <!-- Tipo -->
+            <select onchange="whFiltroTipo(this.value)" style="border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--t2);background:#fff;cursor:pointer;outline:none">
+              <option value="">Tipo / Formato</option>
+              <option>Feed</option>
+              <option>Stories</option>
+              <option>Reels</option>
+              <option>Tráfego</option>
+              <option>Outro</option>
+            </select>
+            <!-- Limpar filtros -->
+            <button onclick="whLimparFiltros()" style="border:none;background:transparent;font-size:11px;color:var(--t3);cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .15s" onmouseover="this.style.background='var(--er-l)';this.style.color='var(--er)'" onmouseout="this.style.background='transparent';this.style.color='var(--t3)'">✕ Limpar</button>
+          </div>
+
+          <!-- Fechado toggle -->
+          <button class="wh-filter-btn" onclick="whToggleFechadas()" style="margin-left:8px;border:1px solid var(--bd)">Fechado</button>
+        </div>
       </div>
 
       <!-- Content área -->
@@ -3673,18 +3732,23 @@ let GCAL_CONNECTED=false;
 const HORARIOS_DISPONIVEIS=['07:00','08:00','09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
 let ORCAMENTOS=[];
 let TASKS=JSON.parse(localStorage.getItem('k2_tasks')||'null')||[
-  {id:'t1',nome:'Criar proposta comercial BMW Jundiaí',status:'Rascunho',prioridade:'alta',prazo:'2026-05-22',responsavel:'Fabinei',espaco:'demandas',lido:true,subtarefas:[{nome:'Briefing do cliente',done:true},{nome:'Definir escopo',done:false},{nome:'Enviar PDF',done:false}]},
-  {id:'t2',nome:'Post Instagram — lançamento produto',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
-  {id:'t3',nome:'Revisão do site K2 Company',status:'Aprovação Interna',prioridade:'media',prazo:'2026-05-23',responsavel:'Marcos',espaco:'design',lido:false,subtarefas:[]},
-  {id:'t4',nome:'Campanha Google Ads — Clínica Sorriso',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação cliente',done:false}]},
-  {id:'t5',nome:'Relatório mensal Fashion Store',status:'Aprovado',prioridade:'baixa',prazo:'2026-05-19',responsavel:'Pedro',espaco:'minhas',lido:true,subtarefas:[]},
-  {id:'t6',nome:'Identidade visual Studio Bela Pele',status:'Para Produzir',prioridade:'media',prazo:'2026-05-25',responsavel:'Ana',espaco:'design',lido:true,subtarefas:[{nome:'Logo',done:true},{nome:'Paleta de cores',done:true},{nome:'Manual da marca',done:false}]},
-  {id:'t7',nome:'Story Instagram K2 Company — hoje',status:'Rascunho',prioridade:'alta',prazo:'2026-05-20',responsavel:'Fabinei',espaco:'social-media',lido:false,subtarefas:[]},
-  {id:'t8',nome:'Briefing campanha Meta Ads — Dr. Lima',status:'Rascunho',prioridade:'media',prazo:'2026-05-21',responsavel:'Marcos',espaco:'demandas',lido:false,subtarefas:[]},
-  {id:'t9',nome:'Edição de vídeo — reels semana',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-20',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
-  {id:'t10',nome:'Aprovação arte cliente BERNABÉ',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'jornada',lido:false,subtarefas:[]},
-  {id:'t11',nome:'Planejamento conteúdo Junho',status:'Rascunho',prioridade:'media',prazo:'2026-05-28',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
-  {id:'t12',nome:'Setup Evolution API — novo cliente',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
+  /* ── DESIGN ── */
+  {id:'t1',nome:'Post Feed — Dia dos Pais',cliente:'Barbearia Tô em Casa',tipo:'Feed',dimensao:'1080x1350',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-19',responsavel:'Fabinei',espaco:'design',lido:true,subtarefas:[{nome:'Criar arte',done:true},{nome:'Escrever legenda',done:false}]},
+  {id:'t2',nome:'Story promoção junho',cliente:'Clínica Sorriso',tipo:'Stories',dimensao:'1080x1920',status:'Aprovação Interna',prioridade:'alta',prazo:'2026-05-22',responsavel:'Ana',espaco:'design',lido:false,subtarefas:[{nome:'Layout',done:true},{nome:'Revisão copy',done:true}]},
+  {id:'t3',nome:'Identidade visual — Studio Bela Pele',cliente:'Studio Bela Pele',tipo:'Outro',dimensao:'—',status:'Rascunho',prioridade:'media',prazo:'2026-05-28',responsavel:'Fabinei',espaco:'design',lido:true,subtarefas:[{nome:'Logo principal',done:false},{nome:'Paleta de cores',done:false},{nome:'Manual da marca',done:false}]},
+  /* ── SOCIAL MEDIA ── */
+  {id:'t4',nome:'Planejamento conteúdo Junho',cliente:'Aplausos Bar',tipo:'Feed',dimensao:'1080x1350',status:'Aprovação Externa',prioridade:'alta',prazo:'2026-05-20',responsavel:'Ana',espaco:'social-media',lido:false,subtarefas:[{nome:'Calendário',done:true},{nome:'Envio para cliente',done:false}]},
+  {id:'t5',nome:'Reels semana — Barbearia',cliente:'Barbearia Tô em Casa',tipo:'Reels',dimensao:'1080x1920',status:'Para Alterar',prioridade:'alta',prazo:'2026-05-19',responsavel:'Pedro',espaco:'social-media',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Edição',done:true},{nome:'Legenda',done:false}]},
+  {id:'t6',nome:'Story Instagram — K2 Company',cliente:'K2 Company',tipo:'Stories',dimensao:'1080x1920',status:'Aprovado',prioridade:'media',prazo:'2026-05-21',responsavel:'Ana',espaco:'social-media',lido:true,subtarefas:[]},
+  /* ── TRÁFEGO PAGO ── */
+  {id:'t7',nome:'Campanha Google Ads — Clínica Sorriso',cliente:'Clínica Sorriso',tipo:'Tráfego',dimensao:'—',status:'Aprovação Interna',prioridade:'alta',prazo:'2026-05-19',responsavel:'Marcos',espaco:'trafego',lido:false,subtarefas:[{nome:'Criar anúncios',done:true},{nome:'Revisar copy',done:true},{nome:'Aprovação',done:false}]},
+  {id:'t8',nome:'Meta Ads — Dr. Lima Ortopedia',cliente:'Dr. Lima',tipo:'Tráfego',dimensao:'—',status:'Para Produzir',prioridade:'media',prazo:'2026-05-24',responsavel:'Marcos',espaco:'trafego',lido:true,subtarefas:[{nome:'Briefing recebido',done:true},{nome:'Criação dos anúncios',done:false}]},
+  /* ── PRODUÇÃO ── */
+  {id:'t9',nome:'Edição de vídeo — reels semana',cliente:'Aplausos Bar',tipo:'Audiovisual',dimensao:'—',status:'Para Produzir',prioridade:'alta',prazo:'2026-05-19',responsavel:'Pedro',espaco:'producao',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Edição',done:false},{nome:'Legenda',done:false}]},
+  {id:'t10',nome:'Setup Evolution API — novo cliente',cliente:'K2 Company',tipo:'Outro',dimensao:'—',status:'Rascunho',prioridade:'alta',prazo:'2026-05-22',responsavel:'Marcos',espaco:'producao',lido:false,subtarefas:[{nome:'Criar instância',done:false},{nome:'Conectar WhatsApp',done:false}]},
+  /* ── AUDIOVISUAL ── */
+  {id:'t11',nome:'Vídeo institucional — Bendito Quintal',cliente:'Bendito Quintal',tipo:'Audiovisual',dimensao:'—',status:'Aprovação Externa',prioridade:'media',prazo:'2026-05-23',responsavel:'Pedro',espaco:'audiovisual',lido:false,subtarefas:[{nome:'Roteiro',done:true},{nome:'Gravação',done:true},{nome:'Edição',done:true}]},
+  {id:'t12',nome:'Reels produto — Centro Óptico',cliente:'Centro Óptico',tipo:'Reels',dimensao:'1080x1920',status:'Para Produzir',prioridade:'baixa',prazo:'2026-05-27',responsavel:'Pedro',espaco:'audiovisual',lido:true,subtarefas:[]},
 ];
 let FUNCS=[
   {nome:'Admin Master',email:'admin@k2company.com.br',perfil:'Admin',status:'ativo'},
@@ -3737,6 +3801,7 @@ const PAGE_META={
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
+  initGreetingBar();
   checkAuth();
   carregarConfig();
   carregarCRM();
@@ -4127,6 +4192,31 @@ function checkAuth(){
 }
 
 /* ── NAVEGAÇÃO PRINCIPAL ── */
+
+/* ── GREETING BAR ── */
+function initGreetingBar(){
+  const now=new Date();
+  const h=now.getHours();
+  const saudacao=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+  const dias=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const nome=localStorage.getItem('k2_username')||'Fabinei';
+  const role=localStorage.getItem('k2_userrole')||'Designer Gráfico';
+  const gtxt=document.getElementById('greeting-txt');
+  const grole=document.getElementById('greeting-role');
+  const gdate=document.getElementById('greeting-date');
+  const gtime=document.getElementById('greeting-time');
+  const gav=document.getElementById('greeting-av');
+  if(gtxt) gtxt.textContent=`${saudacao}, ${nome}! 👋`;
+  if(grole) grole.textContent=`${role} · K2 Flow`;
+  if(gav) gav.textContent=nome.charAt(0).toUpperCase();
+  if(gdate) gdate.textContent=`${dias[now.getDay()]}, ${now.getDate()} de ${meses[now.getMonth()]}`;
+  if(gtime) gtime.textContent=`${String(h).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  setInterval(()=>{
+    const n=new Date();
+    if(gtime) gtime.textContent=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+  },30000);
+}
 function goPage(page,el){
   fecharHub();
   document.body.classList.remove('hub-ativo','sh-ativo');
@@ -7679,6 +7769,11 @@ function renderWHtasks(){
   else if(_whCurrentSpace==='inbox'){tasks=tasks.filter(t=>!t.lido);}
   else if(_whCurrentSpace!=='minhas'&&_whCurrentSpace!=='pessoal'){tasks=tasks.filter(t=>(t.espaco||'').toLowerCase()===_whCurrentSpace);}
   if(!_whShowFechadas)tasks=tasks.filter(t=>t.status!=='Cancelado');
+  /* Filtros inline do header */
+  if(_whFiltroCliente)tasks=tasks.filter(t=>(t.cliente||t.nome||'').toLowerCase().includes(_whFiltroCliente.toLowerCase()));
+  if(_whFiltroStatus)tasks=tasks.filter(t=>t.status===_whFiltroStatus);
+  if(_whFiltroResp)tasks=tasks.filter(t=>(t.responsavel||'')===_whFiltroResp);
+  if(_whFiltroTipo)tasks=tasks.filter(t=>(t.tipo||t.espaco||'').toLowerCase().includes(_whFiltroTipo.toLowerCase()));
 
   if(_whView==='lista') renderWHLista(tasks);
   else if(_whView==='kanban') renderWHKanban(tasks);
@@ -7849,6 +7944,28 @@ function whDropCal(e,data){
   _whDragTask=null;
 }
 function salvarTasks(){try{localStorage.setItem('k2_tasks',JSON.stringify(TASKS));}catch(e){}}
+/* ── K2Flow filtros inline ── */
+let _whFiltroEspaco='',_whFiltroCliente='',_whFiltroStatus='',_whFiltroResp='',_whFiltroTipo='';
+function whFiltroEspaco(v){_whFiltroEspaco=v;_whCurrentSpace=v||'minhas';
+  const t=document.getElementById('wh-page-title');if(t){const names={producao:'Produção',design:'Design','social-media':'Social Media',trafego:'Tráfego Pago',audiovisual:'Audiovisual'};t.textContent='K2Flow — '+(names[v]||'Todos os espaços');}
+  renderWHtasks();}
+function whFiltroCliente(v){_whFiltroCliente=v;renderWHtasks();}
+function whFiltroStatus(v){_whFiltroStatus=v;renderWHtasks();}
+function whFiltroResponsavel(v){_whFiltroResp=v;renderWHtasks();}
+function whFiltroTipo(v){_whFiltroTipo=v;renderWHtasks();}
+function whLimparFiltros(){
+  _whFiltroEspaco=_whFiltroCliente=_whFiltroStatus=_whFiltroResp=_whFiltroTipo='';
+  _whCurrentSpace='minhas';
+  ['wh-sel-espaco'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('#page-hub select').forEach(s=>s.value='');
+  const t=document.getElementById('wh-page-title');if(t)t.textContent='K2Flow';
+  renderWHtasks();
+}
+function whSetTab(el){
+  document.querySelectorAll('#page-hub .wh-filter-btn').forEach(b=>{b.style.borderBottom='2px solid transparent';b.style.color='';});
+  el.style.borderBottom='2px solid var(--brand)';el.style.color='var(--brand)';
+}
+
 function whToggleConcluido(id){
   const t=(TASKS||[]).find(x=>x.id===id);
   if(!t)return;
