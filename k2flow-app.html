@@ -2,7 +2,16 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#F26419">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="K2 Flow">
+<meta name="description" content="WhatsApp · CRM · IA — Gestão inteligente para sua empresa">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
 <title>K2 Flow</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -806,6 +815,10 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="notif-dot" id="notif-dot" style="display:none"></span>
         <span id="notif-count" style="position:absolute;top:-4px;right:-4px;background:var(--er);color:#fff;font-size:8px;font-weight:800;min-width:16px;height:16px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px">0</span>
+      </button>
+      <button id="pwa-install-btn" onclick="instalarPWA()" title="Instalar app" style="display:none;align-items:center;gap:6px;background:rgba(242,100,25,.12);border:1px solid var(--brand-b);color:var(--brand);border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Instalar App
       </button>
       <button class="btn-prim" id="btn-prim" onclick="openActionModal()"><svg width="13" height="13" fill="none" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="btn-prim-txt">Novo Agendamento</span></button>
     </div>
@@ -7933,6 +7946,40 @@ function toggleSb(){
   ico.innerHTML=isMin
     ?'<polyline points="9 18 15 12 9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
     :'<polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+}
+</script>
+<script>
+/* ── PWA — Registro do Service Worker ── */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .then(r=>console.log('K2 Flow SW registrado:',r.scope))
+      .catch(e=>console.warn('SW falhou:',e));
+  });
+}
+/* ── PWA — Prompt de instalação ── */
+let _pwaPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  _pwaPrompt=e;
+  /* Mostra botão de instalar se disponível */
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn)btn.style.display='flex';
+});
+window.addEventListener('appinstalled',()=>{
+  _pwaPrompt=null;
+  toast('K2 Flow instalado no seu dispositivo! 🎉','✅');
+});
+function instalarPWA(){
+  if(!_pwaPrompt){
+    toast('Para instalar: menu do browser → "Adicionar à tela inicial"','📱');
+    return;
+  }
+  _pwaPrompt.prompt();
+  _pwaPrompt.userChoice.then(r=>{
+    if(r.outcome==='accepted')toast('Instalando K2 Flow...','📱');
+    _pwaPrompt=null;
+  });
 }
 </script>
 </body>
