@@ -440,8 +440,6 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 /* ── FIN TABS ── */
 .fin-tabs{display:flex;gap:6px;margin-bottom:14px}
 .fin-kpi-card{background:var(--dark);border-radius:10px;padding:14px 16px}
-.rel-per-btn{padding:5px 10px;font-size:11px;font-weight:600;border:none;background:transparent;color:var(--t2);cursor:pointer;transition:all .12s}
-.rel-per-btn.on{background:var(--brand);color:#fff}
 .fin-kpi-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
 .fin-kpi-val{font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;margin-bottom:3px}
 .fin-kpi-sub{font-size:10px;color:rgba(255,255,255,.3)}
@@ -897,46 +895,25 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
       </div>
     </div>
 
-    <!-- Funil de Vendas Visual + Alertas -->
+    <!-- Funil CRM + Alertas operacionais -->
     <div style="display:grid;grid-template-columns:1fr 340px;gap:14px;margin-bottom:14px">
 
-      <!-- FUNIL DE VENDAS -->
+      <!-- Mini funil CRM -->
       <div class="card" style="padding:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
           <div>
-            <div style="font-size:13px;font-weight:700;color:var(--t1)">Funil de Vendas</div>
-            <div style="font-size:10px;color:var(--t3)">Conversão por estágio · Pipeline completo</div>
+            <div style="font-size:12px;font-weight:700;color:var(--t1)">Pipeline CRM</div>
+            <div style="font-size:10px;color:var(--t3)">Leads por estágio</div>
           </div>
           <button onclick="goPage('crm',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver CRM →</button>
         </div>
-
-        <!-- Funil visual -->
-        <div id="dash-funil-visual" style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px">
-          <!-- Gerado por renderFunilVendas() -->
-          <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3)">Carregando funil...</div>
-        </div>
-
-        <!-- Taxa de conversão geral -->
-        <div style="background:var(--dark);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-          <div>
-            <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:2px">Conversão geral (Lead → Fechado)</div>
-            <div style="font-size:18px;font-weight:900;font-family:'Barlow',sans-serif;color:var(--brand)" id="dash-conv-geral">0%</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:2px">Ticket médio</div>
-            <div style="font-size:15px;font-weight:700;color:#22C55E" id="dash-ticket-medio">R$0</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:2px">Pipeline total</div>
-            <div style="font-size:15px;font-weight:700;color:#3B82F6" id="dash-pipeline-total">R$0</div>
-          </div>
-        </div>
+        <div id="dash-crm-mini" style="display:flex;flex-direction:column;gap:6px"></div>
 
         <!-- Orçamentos pendentes -->
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)">
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <div style="font-size:11px;font-weight:700;color:var(--t1)">Orçamentos em aberto</div>
-            <button onclick="goPage('orca',null)" style="font-size:10px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todos →</button>
+            <div style="font-size:11px;font-weight:700;color:var(--t1)">Orçamentos para enviar</div>
+            <button onclick="goPage('orca',null)" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600">Ver todos →</button>
           </div>
           <div id="dash-orca-mini" style="display:flex;flex-direction:column;gap:5px">
             <div style="font-size:11px;color:var(--t3)">Nenhum orçamento pendente</div>
@@ -1145,7 +1122,6 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
             <div style="display:flex;align-items:center;gap:6px">
               <span class="ia-badge" id="wa-ia-badge">IA Ativa</span>
               <button onclick="renderWA()" title="Atualizar conversas" style="background:transparent;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1" id="wa-refresh-btn">↺</button>
-              <span id="wa-refresh-timer" style="font-size:9px;color:var(--t3);margin-left:2px">30s</span>
             </div>
           </div>
           <div class="wa-search"><input class="wa-search-inp" type="text" placeholder="Buscar conversa..." oninput="filterConvs(this.value)"></div>
@@ -2333,130 +2309,24 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
     <!-- ABA: RELATÓRIOS -->
     <div id="fin-aba-relatorios" style="display:none">
-
-      <!-- Seletor de período + exportar -->
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-        <span style="font-size:12px;font-weight:700;color:var(--t2)">Período de análise:</span>
-        <div style="display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden">
-          <button class="fin-per-btn on" onclick="setRelPeriodo(1,this)">1M</button>
-          <button class="fin-per-btn" onclick="setRelPeriodo(3,this)" style="border-left:1px solid var(--bd)">3M</button>
-          <button class="fin-per-btn" onclick="setRelPeriodo(6,this)" style="border-left:1px solid var(--bd)">6M</button>
-          <button class="fin-per-btn" onclick="setRelPeriodo(9,this)" style="border-left:1px solid var(--bd)">9M</button>
-          <button class="fin-per-btn" onclick="setRelPeriodo(12,this)" style="border-left:1px solid var(--bd)">1A</button>
-          <button class="fin-per-btn" onclick="setRelPeriodo(24,this)" style="border-left:1px solid var(--bd)">2A</button>
-        </div>
-        <div style="margin-left:auto;display:flex;gap:8px">
-          <button class="btn-sec" style="font-size:11px" onclick="exportarRelatorioCSV()">⬇ CSV</button>
-          <button class="btn-sec" style="font-size:11px" onclick="exportarRelatorioPDF()">⬇ PDF</button>
-        </div>
-      </div>
-
-      <!-- KPIs do relatório -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
-        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px">
-          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Total Faturado</div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:#22C55E" id="rel-total-fat">—</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:4px" id="rel-fat-sub">no período</div>
-        </div>
-        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px">
-          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Total Recebido</div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:#3B82F6" id="rel-total-rec">—</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:4px" id="rel-rec-pct">taxa de recebimento</div>
-        </div>
-        <div style="background:var(--light2);border:1px solid #FECACA;border-radius:10px;padding:14px">
-          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Inadimplência Total</div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif;color:#EF4444" id="rel-inadimp">—</div>
-          <div style="font-size:10px;color:#EF4444;margin-top:4px" id="rel-inadimp-pct">— da receita</div>
-        </div>
-        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:10px;padding:14px">
-          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Crescimento Mensal</div>
-          <div style="font-size:20px;font-weight:900;font-family:'Barlow',sans-serif" id="rel-crescimento" style="color:#22C55E">—</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:4px">vs período anterior</div>
-        </div>
-      </div>
-
-      <!-- Ranking de clientes: bons vs maus pagadores -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
-
-        <!-- Melhores pagadores -->
-        <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
-          <div style="padding:12px 16px;background:#F0FDF4;border-bottom:1px solid #BBF7D0;display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">✅</span>
-            <div>
-              <div style="font-size:12px;font-weight:700;color:#166534">Melhores pagadores</div>
-              <div style="font-size:10px;color:#4ADE80">Clientes que pagam em dia</div>
-            </div>
-          </div>
-          <div id="rel-bons-pagadores" style="padding:10px 0">
-            <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Adicione transações para ver o ranking</div>
-          </div>
-        </div>
-
-        <!-- Maiores inadimplentes -->
-        <div style="background:var(--light2);border:1px solid #FECACA;border-radius:12px;overflow:hidden">
-          <div style="padding:12px 16px;background:#FEF2F2;border-bottom:1px solid #FECACA;display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">⚠️</span>
-            <div>
-              <div style="font-size:12px;font-weight:700;color:#991B1B">Clientes em atraso</div>
-              <div style="font-size:10px;color:#EF4444">Prioridade de cobrança</div>
-            </div>
-          </div>
-          <div id="rel-maus-pagadores" style="padding:10px 0">
-            <div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Nenhum cliente em atraso</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Análise de crescimento por período -->
-      <div style="background:var(--light2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:18px">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-size:12px;font-weight:700">Evolução de Receita por Período</div>
-            <div style="font-size:10px;color:var(--t3)">Crescimento mês a mês comparado</div>
-          </div>
-        </div>
-        <div style="padding:16px" id="rel-evolucao-tabela">
-          <table style="width:100%;border-collapse:collapse;font-size:12px">
-            <thead>
-              <tr style="background:var(--bd2)">
-                <th style="padding:8px 12px;text-align:left;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:700">Período</th>
-                <th style="padding:8px 12px;text-align:right;font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Receita</th>
-                <th style="padding:8px 12px;text-align:right;font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Despesa</th>
-                <th style="padding:8px 12px;text-align:right;font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Lucro</th>
-                <th style="padding:8px 12px;text-align:right;font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Inadimp.</th>
-                <th style="padding:8px 12px;text-align:right;font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Var. %</th>
-              </tr>
-            </thead>
-            <tbody id="rel-evolucao-tbody">
-              <tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t3);font-size:11px">Adicione lançamentos para ver a evolução</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Relatórios para exportar -->
-      <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Exportar relatórios</div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:14px">📊 Relatórios</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
-        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Gerando DRE...','📊')">
+        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Exportando DRE...','📊')">
           <div style="font-size:20px;margin-bottom:8px">📋</div>
           <div style="font-weight:700;font-size:13px;margin-bottom:4px">DRE — Resultado</div>
           <div style="font-size:11px;color:var(--t3)">Demonstrativo de Resultado do Exercício</div>
-          <div style="margin-top:10px;background:var(--brand-l);color:var(--brand);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;text-align:center">Gerar PDF</div>
         </div>
-        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Gerando Fluxo de Caixa...','💵')">
+        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Exportando Fluxo...','💵')">
           <div style="font-size:20px;margin-bottom:8px">💵</div>
           <div style="font-weight:700;font-size:13px;margin-bottom:4px">Fluxo de Caixa</div>
-          <div style="font-size:11px;color:var(--t3)">Entradas e saídas projetadas por mês</div>
-          <div style="margin-top:10px;background:var(--brand-l);color:var(--brand);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;text-align:center">Gerar PDF</div>
+          <div style="font-size:11px;color:var(--t3)">Entradas e saídas projetadas</div>
         </div>
-        <div class="card" style="padding:18px;cursor:pointer" onclick="exportarRelatorioCSV()">
+        <div class="card" style="padding:18px;cursor:pointer" onclick="toast('Exportando Extrato...','📑')">
           <div style="font-size:20px;margin-bottom:8px">📑</div>
           <div style="font-weight:700;font-size:13px;margin-bottom:4px">Extrato Completo</div>
-          <div style="font-size:11px;color:var(--t3)">Todas as transações do período em CSV</div>
-          <div style="margin-top:10px;background:#22C55E20;color:#22C55E;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;text-align:center">Exportar CSV</div>
+          <div style="font-size:11px;color:var(--t3)">Todas as transações do período</div>
         </div>
       </div>
-
     </div>
 
   </div>
@@ -2925,28 +2795,54 @@ body.sh-ativo .sb2{display:none!important;width:0!important;min-width:0!importan
 
 
     <!-- ABA: WHATSAPP -->
-    <div id="cfg-aba-whatsapp" style="display:none;max-width:600px">
-      <div style="font-size:13px;font-weight:700;margin-bottom:14px">WhatsApp — Evolution API</div>
-      <div class="cfg-int-card" style="margin-bottom:12px">
-        <div class="cfg-int-body" id="body-wa" style="display:block">
-          <div class="grid2-form" style="margin-bottom:10px">
-            <div class="field"><label>URL da Evolution API</label><input class="inp" id="ev-url" placeholder="https://..." value="https://appk2-evolution-api.k8wm1v.easypanel.host"></div>
-            <div class="field"><label>API Key Global</label><input class="inp" id="ev-apikey" type="password" placeholder="429683C4..."></div>
-          </div>
-          <div class="field" style="margin-bottom:10px"><label>Nome da instância</label><input class="inp" id="ev-inst" placeholder="minha-clinica" value="Comercialk2"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn-prim" style="font-size:12px" onclick="salvarEvolution()">Salvar</button>
-            <button class="btn-sec" style="font-size:12px" onclick="testarConexaoWA()">Testar conexão</button>
-            <button class="btn-sec" style="font-size:12px" onclick="gerarQRCode()">📱 Gerar QR Code</button>
-          </div>
-          <div class="qr-box" id="qr-box" style="display:none;margin-top:12px">
-            <div class="qr-status"><div class="qr-status-dot" id="qr-dot" style="background:#D97706"></div><div class="qr-status-txt" id="qr-st-txt">Aguardando...</div></div>
-            <div class="qr-img-wrap" id="qr-img-wrap"><div style="font-size:12px;color:var(--t3);text-align:center">Gerando...<br>Aguarde</div></div>
-            <div class="qr-hint">Abra o WhatsApp → Dispositivos conectados → Escanear</div>
-          </div>
-          <div id="wa-status-box" style="margin-top:10px;display:none"></div>
+    <div id="cfg-aba-whatsapp" style="display:none;max-width:560px">
+
+      <!-- Status card -->
+      <div id="wa-connect-status-card" style="background:var(--dark);border-radius:14px;padding:20px 24px;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+          <div id="wa-status-indicator" style="width:10px;height:10px;border-radius:50%;background:#6B7280;flex-shrink:0;transition:background .3s"></div>
+          <div style="font-size:14px;font-weight:700;color:#fff" id="wa-status-label">Não conectado</div>
         </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);padding-left:22px" id="wa-status-phone"></div>
       </div>
+
+      <!-- QR Code área -->
+      <div id="wa-qr-area" style="display:none;background:var(--light2);border:1px solid var(--bd);border-radius:14px;padding:28px;text-align:center;margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">Escaneie o QR Code</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:20px">Abra o WhatsApp → Dispositivos conectados → Conectar dispositivo</div>
+
+        <!-- QR Code imagem -->
+        <div id="wa-qr-img-wrap" style="width:220px;height:220px;margin:0 auto 16px;background:var(--bd2);border-radius:12px;display:flex;align-items:center;justify-content:center;border:2px solid var(--bd)">
+          <div style="font-size:11px;color:var(--t3);text-align:center">
+            <div style="font-size:32px;margin-bottom:8px">📱</div>
+            Gerando QR Code...
+          </div>
+        </div>
+
+        <!-- Contador de expiração -->
+        <div id="wa-qr-timer" style="font-size:11px;color:var(--t3);margin-bottom:12px"></div>
+
+        <button onclick="iniciarConexaoWA()" style="background:none;border:1px solid var(--bd);border-radius:8px;padding:6px 16px;font-size:11px;color:var(--t2);cursor:pointer">↺ Gerar novo QR</button>
+      </div>
+
+      <!-- Conectado -->
+      <div id="wa-conectado-area" style="display:none;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:24px;text-align:center;margin-bottom:20px">
+        <div style="font-size:36px;margin-bottom:10px">✅</div>
+        <div style="font-size:15px;font-weight:700;color:#166534;margin-bottom:4px">WhatsApp Conectado!</div>
+        <div style="font-size:12px;color:#4ADE80" id="wa-num-conectado"></div>
+        <button onclick="desconectarWA()" style="margin-top:16px;background:none;border:1px solid #FECACA;color:#EF4444;border-radius:8px;padding:6px 14px;font-size:11px;cursor:pointer">Desconectar</button>
+      </div>
+
+      <!-- Botão principal -->
+      <div id="wa-btn-area">
+        <button id="wa-connect-btn" onclick="iniciarConexaoWA()" style="width:100%;background:var(--brand);border:none;color:#fff;border-radius:12px;padding:16px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Conectar WhatsApp
+        </button>
+        <div style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px">Funciona igual ao WhatsApp Web — escaneie com seu celular</div>
+      </div>
+
+    </div><!-- fim aba whatsapp -->
       <div class="cfg-sec">
         <div class="cfg-sec-h">Google Calendar</div>
         <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px 12px;font-size:11.5px;color:#065F46;margin-bottom:12px;line-height:1.7">
@@ -3956,25 +3852,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   ═══════════════════════════════════════════════════════ */
   setInterval(()=>orquestradorK2(), 300000);
   setTimeout(()=>orquestradorK2(), 4000);
-  setTimeout(()=>renderFunilVendas(), 2000);
-
-  /* ── Countdown timer do refresh WhatsApp ── */
-  let waCountdown=30;
-  setInterval(()=>{
-    waCountdown--;
-    const el=document.getElementById('wa-refresh-timer');
-    if(el)el.textContent=waCountdown+'s';
-    if(waCountdown<=0){waCountdown=30;}
-  },1000);
-
-  /* ── Auto-refresh WhatsApp a cada 30 segundos ── */
-  setInterval(()=>{
-    if(document.getElementById('page-wa')?.classList.contains('on')){
-      renderWA();
-      const btn=document.getElementById('wa-refresh-btn');
-      if(btn){btn.style.color='var(--ok)';setTimeout(()=>btn.style.color='',800);}
-    }
-  }, 30000);
 });
 
 /* ══════════════════════════════════════════════════════
@@ -5803,16 +5680,162 @@ function conectarN8n(){toast('Conectando ao n8n...','🔄');setTimeout(()=>toast
 
 /* ── CONFIG ── */
 function salvarEvolution(){
-  const url=document.getElementById('ev-url').value.trim();
-  const key=document.getElementById('ev-apikey').value.trim();
-  const inst=document.getElementById('ev-inst').value.trim();
-  if(!key||!inst){toast('Preencha API Key e nome da instância','⚠️');return;}
-  localStorage.setItem('k2cfg_ev-url',url);
-  localStorage.setItem('k2cfg_ev-apikey',key);
-  localStorage.setItem('k2cfg_ev-inst',inst);
-  /* atualiza badge */
-  const badge=document.getElementById('badge-wa');if(badge){badge.textContent='✅ Salvo';badge.style.background='var(--ok-l)';badge.style.color='var(--ok)';}
-  toast('WhatsApp configurado e salvo!','✅');
+  const url=document.getElementById('ev-url')?.value?.trim();
+  const key=document.getElementById('ev-apikey')?.value?.trim();
+  const inst=document.getElementById('ev-inst')?.value?.trim();
+  if(url)localStorage.setItem('k2cfg_ev-url',url);
+  if(key)localStorage.setItem('k2cfg_ev-apikey',key);
+  if(inst)localStorage.setItem('k2cfg_ev-inst',inst);
+  toast('WhatsApp configurado!','✅');
+}
+
+/* ══════════════════════════════════════════════════════
+   NOVA CONEXÃO WHATSAPP — SEM CAMPOS TÉCNICOS
+   Chama n8n → cria instância → exibe QR Code
+══════════════════════════════════════════════════════ */
+async function iniciarConexaoWA(){
+  const btn=document.getElementById('wa-connect-btn');
+  const qrArea=document.getElementById('wa-qr-area');
+  const qrWrap=document.getElementById('wa-qr-img-wrap');
+  const timer=document.getElementById('wa-qr-timer');
+  const label=document.getElementById('wa-status-label');
+  const dot=document.getElementById('wa-status-indicator');
+
+  // Estado: carregando
+  if(btn){btn.disabled=true;btn.innerHTML='<span style="opacity:.6">⏳ Gerando QR Code...</span>';}
+  if(label)label.textContent='Gerando QR Code...';
+  if(dot)dot.style.background='#F59E0B';
+  if(qrArea)qrArea.style.display='block';
+  if(qrWrap)qrWrap.innerHTML='<div style="font-size:11px;color:var(--t3);text-align:center;padding:30px"><div style="font-size:28px;margin-bottom:8px">⏳</div>Aguarde...</div>';
+
+  const tenant_id = localStorage.getItem('k2_tenant_id') || localStorage.getItem('k2_user_id') || 'assessoria';
+  const N8N = 'https://n8n-n8n.k8wm1v.easypanel.host';
+
+  try {
+    // 1. Chama n8n para criar/buscar instância e gerar QR
+    const resp = await fetch(`${N8N}/webhook/k2/whatsapp/connect`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ tenant_id })
+    });
+
+    const data = await resp.json();
+
+    if(!data.ok){
+      throw new Error(data.error || 'Erro ao gerar QR Code');
+    }
+
+    // 2. Exibe QR Code
+    const qrCode = data.qr_code || '';
+    if(qrCode && qrCode.length > 50){
+      const src = qrCode.startsWith('data:') ? qrCode : 'data:image/png;base64,'+qrCode;
+      if(qrWrap)qrWrap.innerHTML=`<img src="${src}" style="width:200px;height:200px;border-radius:8px">`;
+      if(label)label.textContent='Aguardando escaneamento...';
+      if(dot)dot.style.background='#25D366';
+      if(btn){btn.disabled=false;btn.innerHTML='<svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Conectar WhatsApp';}
+
+      // Salva instance_name para polling
+      if(data.instance_name)localStorage.setItem('k2cfg_ev-inst', data.instance_name);
+
+      // 3. Inicia polling para detectar conexão
+      iniciarPollingConexao(data.instance_name || tenant_id, timer);
+
+    } else {
+      // QR vazio — instância já pode estar conectada
+      verificarStatusWA();
+    }
+
+  } catch(e) {
+    // Fallback: usa Evolution API diretamente
+    if(qrWrap)qrWrap.innerHTML=`<div style="font-size:11px;color:var(--er);text-align:center;padding:20px">❌ ${e.message}<br><span style="color:var(--t3)">Verifique se o n8n está ativo</span></div>`;
+    if(label)label.textContent='Erro de conexão';
+    if(dot)dot.style.background='#EF4444';
+    if(btn){btn.disabled=false;btn.innerHTML='<svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#fff" stroke-width="2"/></svg> Tentar novamente';}
+    // Tenta diretamente pela Evolution como fallback
+    gerarQRCodeFallback();
+  }
+}
+
+function iniciarPollingConexao(instanceName, timerEl){
+  let seg = 60;
+  const countdown = setInterval(()=>{
+    seg--;
+    if(timerEl)timerEl.textContent = `QR Code expira em ${seg}s`;
+    if(seg <= 0){
+      clearInterval(countdown);
+      if(timerEl)timerEl.textContent = 'QR Code expirado — gere um novo';
+    }
+  }, 1000);
+
+  let tentativas = 0;
+  const poll = setInterval(async()=>{
+    tentativas++;
+    try {
+      const inst = instanceName || localStorage.getItem('k2cfg_ev-inst') || 'Comercialk2';
+      const d = await evCall('instance/connectionState/'+inst);
+      const state = getWAState(d);
+      if(state === 'open'){
+        clearInterval(poll);
+        clearInterval(countdown);
+        waConectadoUI(d);
+      }
+    } catch(e){}
+    if(tentativas > 30) clearInterval(poll);
+  }, 3000);
+}
+
+function waConectadoUI(data){
+  const phone = data?.instance?.owner || data?.data?.instance?.owner || '';
+  document.getElementById('wa-qr-area').style.display='none';
+  document.getElementById('wa-btn-area').style.display='none';
+  const area = document.getElementById('wa-conectado-area');
+  if(area){
+    area.style.display='block';
+    const num = document.getElementById('wa-num-conectado');
+    if(num && phone) num.textContent = phone.replace('@s.whatsapp.net','');
+  }
+  const label = document.getElementById('wa-status-label');
+  const dot = document.getElementById('wa-status-indicator');
+  if(label) label.textContent = '✅ Conectado';
+  if(dot) dot.style.background = '#22C55E';
+  toast('WhatsApp conectado!','✅');
+  setTimeout(()=>renderWA(), 1500);
+}
+
+async function verificarStatusWA(){
+  const inst = localStorage.getItem('k2cfg_ev-inst') || 'Comercialk2';
+  try {
+    const d = await evCall('instance/connectionState/'+inst);
+    if(getWAState(d)==='open') waConectadoUI(d);
+  } catch(e){}
+}
+
+function desconectarWA(){
+  if(!confirm('Desconectar o WhatsApp?')) return;
+  const inst = localStorage.getItem('k2cfg_ev-inst') || 'Comercialk2';
+  evCall('instance/logout/'+inst,'DELETE').then(()=>{
+    document.getElementById('wa-conectado-area').style.display='none';
+    document.getElementById('wa-btn-area').style.display='block';
+    const dot=document.getElementById('wa-status-indicator');
+    const label=document.getElementById('wa-status-label');
+    if(dot)dot.style.background='#6B7280';
+    if(label)label.textContent='Não conectado';
+    toast('WhatsApp desconectado','👋');
+  }).catch(()=>toast('Erro ao desconectar','❌'));
+}
+
+function gerarQRCodeFallback(){
+  // Fallback direto pela Evolution quando n8n não responde
+  const inst = localStorage.getItem('k2cfg_ev-inst') || 'Comercialk2';
+  const qrWrap = document.getElementById('wa-qr-img-wrap');
+  evCall('instance/connect/'+inst).then(d=>{
+    const b64 = getQRBase64(d);
+    if(b64 && b64.length > 50){
+      const src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,'+b64;
+      if(qrWrap)qrWrap.innerHTML=`<img src="${src}" style="width:200px;height:200px;border-radius:8px">`;
+      pollWAStatus(inst);
+    }
+  }).catch(()=>{});
 }
 function salvarIA(){
   const key=document.getElementById('cfg-ai-key').value;
@@ -6427,7 +6450,6 @@ function setFinAba(aba,btn){
   document.querySelectorAll('.fin-aba').forEach(b=>b.classList.remove('on'));
   if(btn)btn.classList.add('on');
   if(aba==='analise')renderFinAnalise();
-  if(aba==='relatorios')renderRelatorioInadimplencia();
 }
 
 function renderFinAnalise(){
@@ -8835,183 +8857,6 @@ function renderDashboard(){
   renderDashLembretes();
   renderDashConteudos();
   renderDashAIBody();
-  renderFunilVendas();
-}
-
-/* ═══════════════════════════════════════════════════
-   FUNIL DE VENDAS VISUAL — Dashboard
-═══════════════════════════════════════════════════ */
-function renderFunilVendas(){
-  const funil=document.getElementById('dash-funil-visual');
-  if(!funil)return;
-
-  const etapas=CRM_COLS||[];
-  const total=etapas.reduce((s,c)=>s+(c.cards||[]).length,0)||1;
-  const coresEtapa=['#3B82F6','#8B5CF6','#F59E0B','#F26419','#22C55E','#6B7280'];
-  const maxCards=Math.max(...etapas.map(c=>(c.cards||[]).length),1);
-
-  // Calcular pipeline total (valor dos orçamentos vinculados)
-  const totalPipeline=(ORCAMENTOS||[]).filter(o=>o.status==='aguardando').reduce((s,o)=>s+(o.total||0),0);
-  const fechados=(etapas.find(c=>c.title&&c.title.includes('Fechado'))||{}).cards||[];
-  const convGeral=total>0?Math.round((fechados.length/total)*100):0;
-  const ticketMedio=fechados.length>0?totalPipeline/Math.max(fechados.length,1):0;
-
-  // Atualiza métricas do rodapé do funil
-  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  set('dash-conv-geral', convGeral+'%');
-  set('dash-ticket-medio', ticketMedio>0?fmtR(ticketMedio):'—');
-  set('dash-pipeline-total', totalPipeline>0?fmtR(totalPipeline):'—');
-
-  if(total===1&&etapas.every(c=>!(c.cards||[]).length)){
-    funil.innerHTML='<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Adicione leads no CRM para ver o funil</div>';
-    return;
-  }
-
-  funil.innerHTML=etapas.slice(0,6).map((col,i)=>{
-    const qtd=(col.cards||[]).length;
-    const pctLargura=Math.max(8,Math.round((qtd/total)*100));
-    const pctConv=i===0?100:Math.round((qtd/Math.max(etapas[0].cards.length,1))*100);
-    const cor=coresEtapa[i]||'#6B7280';
-    const varPct=i>0&&etapas[i-1].cards.length>0?Math.round(((qtd-etapas[i-1].cards.length)/etapas[i-1].cards.length)*100):0;
-
-    return`<div style="position:relative">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">
-        <div style="width:10px;height:10px;border-radius:50%;background:${cor};flex-shrink:0"></div>
-        <span style="font-size:11px;color:var(--t2);min-width:120px;white-space:nowrap">${col.title||col.nome||'Etapa '+(i+1)}</span>
-        <div style="flex:1;height:28px;background:var(--bd2);border-radius:6px;overflow:hidden;position:relative">
-          <div style="height:100%;width:${pctLargura}%;background:${cor};opacity:.85;border-radius:6px;transition:width .6s ease;display:flex;align-items:center;padding:0 8px;min-width:28px">
-            <span style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap">${qtd}</span>
-          </div>
-        </div>
-        <span style="font-size:10px;color:var(--t3);min-width:38px;text-align:right">${pctConv}%</span>
-        ${i>0?`<span style="font-size:9px;min-width:32px;text-align:right;color:${varPct>=0?'#22C55E':'#EF4444'}">${varPct>=0?'+':''}${varPct}%</span>`:'<span style="min-width:32px"></span>'}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-/* ═══════════════════════════════════════════════════
-   RELATÓRIO DE INADIMPLÊNCIA
-═══════════════════════════════════════════════════ */
-let REL_MESES=1;
-function setRelPeriodo(m,btn){
-  REL_MESES=m;
-  document.querySelectorAll('.fin-per-btn').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  renderRelatorioInadimplencia();
-}
-
-function renderRelatorioInadimplencia(){
-  const fin=FIN_DATA||[];
-  const agora=new Date();
-  const inicio=new Date(agora);
-  inicio.setMonth(inicio.getMonth()-REL_MESES);
-
-  const periodo=fin.filter(f=>{
-    const d=new Date(f.vencimento||f.data||agora);
-    return d>=inicio && d<=agora;
-  });
-
-  const receitas=periodo.filter(f=>f.tipo==='receita');
-  const totalFat=receitas.reduce((s,f)=>s+(f.valor||0),0);
-  const totalRec=receitas.filter(f=>['recebido','pago'].includes(f.status)).reduce((s,f)=>s+(f.valor||0),0);
-  const inadimp=receitas.filter(f=>f.status==='atrasado').reduce((s,f)=>s+(f.valor||0),0);
-  const pctInadimp=totalFat>0?Math.round((inadimp/totalFat)*100):0;
-  const pctRec=totalFat>0?Math.round((totalRec/totalFat)*100):0;
-
-  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  set('rel-total-fat',fmtR(totalFat));
-  set('rel-fat-sub','nos últimos '+REL_MESES+' mês(es)');
-  set('rel-total-rec',fmtR(totalRec));
-  set('rel-rec-pct',pctRec+'% taxa de recebimento');
-  set('rel-inadimp',fmtR(inadimp));
-  set('rel-inadimp-pct',pctInadimp+'% da receita');
-
-  // Ranking por cliente — bons pagadores
-  const porCliente={};
-  receitas.forEach(f=>{
-    const cli=f.cliente||f.nome||'—';
-    if(!porCliente[cli])porCliente[cli]={nome:cli,total:0,recebido:0,atrasado:0,count:0};
-    porCliente[cli].total+=(f.valor||0);
-    if(['recebido','pago'].includes(f.status))porCliente[cli].recebido+=(f.valor||0);
-    if(f.status==='atrasado')porCliente[cli].atrasado+=(f.valor||0);
-    porCliente[cli].count++;
-  });
-
-  const clientes=Object.values(porCliente).sort((a,b)=>b.total-a.total);
-  const bons=clientes.filter(c=>c.atrasado===0&&c.recebido>0).sort((a,b)=>b.recebido-a.recebido);
-  const maus=clientes.filter(c=>c.atrasado>0).sort((a,b)=>b.atrasado-a.atrasado);
-
-  const bEl=document.getElementById('rel-bons-pagadores');
-  if(bEl){
-    bEl.innerHTML=bons.length?bons.slice(0,6).map((c,i)=>`
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--bd2)">
-        <span style="font-size:11px;font-weight:700;color:#22C55E;min-width:16px">#${i+1}</span>
-        <span style="flex:1;font-size:12px;font-weight:600;color:var(--t1)">${c.nome}</span>
-        <span style="font-size:11px;font-weight:700;color:#22C55E">${fmtR(c.recebido)}</span>
-        <span style="font-size:9px;background:#F0FDF4;color:#166534;border-radius:99px;padding:2px 7px;font-weight:700">${c.count}x pago</span>
-      </div>`).join('')
-    :'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">Nenhum cliente adicionado ainda</div>';
-  }
-
-  const mEl=document.getElementById('rel-maus-pagadores');
-  if(mEl){
-    mEl.innerHTML=maus.length?maus.slice(0,6).map((c,i)=>`
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid #FEE2E2">
-        <span style="font-size:11px;font-weight:700;color:#EF4444;min-width:16px">#${i+1}</span>
-        <span style="flex:1;font-size:12px;font-weight:600;color:var(--t1)">${c.nome}</span>
-        <span style="font-size:11px;font-weight:700;color:#EF4444">${fmtR(c.atrasado)}</span>
-        <button onclick="toast('Cobrança enviada para ${c.nome}','📲')" style="font-size:9px;background:#FEF2F2;color:#EF4444;border:1px solid #FECACA;border-radius:6px;padding:2px 8px;cursor:pointer;white-space:nowrap;font-weight:700">Cobrar</button>
-      </div>`).join('')
-    :'<div style="text-align:center;padding:20px;font-size:11px;color:var(--t3)">✅ Nenhum cliente em atraso</div>';
-  }
-
-  // Tabela de evolução por mês
-  const tbody=document.getElementById('rel-evolucao-tbody');
-  if(tbody){
-    const meses=[];
-    for(let i=REL_MESES-1;i>=0;i--){
-      const d=new Date(agora);
-      d.setMonth(d.getMonth()-i);
-      const key=d.toISOString().slice(0,7);
-      const label=d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'});
-      const rec=fin.filter(f=>f.tipo==='receita'&&(f.vencimento||f.data||'').startsWith(key));
-      const dep=fin.filter(f=>f.tipo==='despesa'&&(f.vencimento||f.data||'').startsWith(key));
-      const recTotal=rec.reduce((s,f)=>s+(f.valor||0),0);
-      const depTotal=dep.reduce((s,f)=>s+(f.valor||0),0);
-      const inadTotal=rec.filter(f=>f.status==='atrasado').reduce((s,f)=>s+(f.valor||0),0);
-      const lucro=recTotal-depTotal;
-      meses.push({label,recTotal,depTotal,lucro,inadTotal});
-    }
-    tbody.innerHTML=meses.map((m,i)=>{
-      const prev=i>0?meses[i-1].recTotal:null;
-      const varPct=prev&&prev>0?Math.round(((m.recTotal-prev)/prev)*100):null;
-      return`<tr style="border-bottom:1px solid var(--bd2)">
-        <td style="padding:8px 12px;font-weight:600;color:var(--t1)">${m.label}</td>
-        <td style="padding:8px 12px;text-align:right;font-weight:700;color:#22C55E">${fmtR(m.recTotal)}</td>
-        <td style="padding:8px 12px;text-align:right;color:#EF4444">${fmtR(m.depTotal)}</td>
-        <td style="padding:8px 12px;text-align:right;font-weight:700;color:${m.lucro>=0?'#22C55E':'#EF4444'}">${fmtR(m.lucro)}</td>
-        <td style="padding:8px 12px;text-align:right;color:#F59E0B">${m.inadTotal>0?fmtR(m.inadTotal):'—'}</td>
-        <td style="padding:8px 12px;text-align:right;font-weight:700;color:${varPct===null?'var(--t3)':varPct>=0?'#22C55E':'#EF4444'}">${varPct===null?'—':(varPct>=0?'+':'')+varPct+'%'}</td>
-      </tr>`;
-    }).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t3);font-size:11px">Nenhum lançamento no período</td></tr>';
-  }
-}
-
-function exportarRelatorioCSV(){
-  const fin=FIN_DATA||[];
-  if(!fin.length){toast('Nenhum lançamento para exportar','⚠️');return;}
-  const header='Data,Descrição,Cliente,Categoria,Tipo,Valor,Status\n';
-  const rows=fin.map(f=>`${f.vencimento||f.data||'—'},"${f.desc||'—'}","${f.cliente||'—'}","${f.cat||'—'}",${f.tipo||'—'},${f.valor||0},${f.status||'—'}`).join('\n');
-  const blob=new Blob(['\uFEFF'+header+rows],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='k2flow-financeiro-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
-  toast('CSV exportado!','📊');
-}
-
-function exportarRelatorioPDF(){
-  window.print();
-  toast('Abrindo impressão/PDF...','📄');
 }
 
 function renderDashMeta(){
